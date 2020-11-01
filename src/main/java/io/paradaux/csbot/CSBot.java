@@ -3,10 +3,14 @@ package io.paradaux.csbot;
 import io.paradaux.csbot.api.ConfigurationCache;
 import io.paradaux.csbot.api.ConfigurationUtils;
 import io.paradaux.csbot.api.Logging;
+import io.paradaux.csbot.listeners.MessageReceivedListener;
+import io.paradaux.csbot.listeners.ReadyListener;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.security.auth.login.LoginException;
 import java.io.FileNotFoundException;
 
 /**
@@ -19,28 +23,64 @@ import java.io.FileNotFoundException;
 
 public class CSBot {
 
-    private static JDA jda;
-    public static JDA getJda() { return jda; }
+    private static JDA client;
+    public static JDA getClient() { return client; }
 
     private static ConfigurationCache configurationCache;
     public static ConfigurationCache getConfigurationCache() { return configurationCache; }
 
+    /**
+     * This is the main method for the application. It handles the instantiation of dependencies, and the discord bot as a whole
+     * @param args Command line arguments are not used in this application.
+     * */
     public static void main(String[] args) {
 
         // Instantiate Logger instance.
         Logging logging = new Logging();
         Logger logger = Logging.getLogger();
 
+
         // Version Information
-        System.out.println("CSBot v0.1.0 - Maintained by Rían Errity <rian@paradaux.io>");
+        logger.info("CSBot v0.1.0 - Maintained by Rían Errity <rian@paradaux.io>");
 
         // Prepare Configuration File/Cache
+        logger.info("Preparing Configuration File...");
         ConfigurationUtils.deployConfiguration();
         try {
             configurationCache = ConfigurationUtils.readConfigurationFile();
         } catch (FileNotFoundException exception) {
             logger.error("Could not find the configuration file!", exception);
         }
+
+        // Login
+        logger.info("Attempting to login...");
+        try {
+            client = login(configurationCache.getToken());
+        } catch (LoginException exception) {
+            logger.error("There was an issue logging in: ", exception);
+            return;
+        }
+    }
+
+    /**
+     * Creates an Instance of JDA from the provided token.
+     * @param token The Discord Token taken from the configuration file.
+     * @return JDA An Instance of JDA
+     * @throws LoginException When logging in proved unsuccessful.
+     * */
+    public static JDA login (String token) throws LoginException {
+        Logger logger = Logging.getLogger();
+
+        JDABuilder builder = JDABuilder.createDefault(token)
+                .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
+                .setBulkDeleteSplittingEnabled(false)
+                .addEventListeners(new ReadyListener(configurationCache), new MessageReceivedListener(configurationCache));
+
+        if (token == null) {
+            throw new LoginException("The Configuration File does not contain a token.");
+        }
+
+        return builder.build();
 
     }
 

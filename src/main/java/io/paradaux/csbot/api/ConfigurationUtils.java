@@ -6,7 +6,6 @@ import io.paradaux.csbot.CSBot;
 import org.slf4j.Logger;
 
 import java.io.*;
-import java.util.Arrays;
 
 /**
  * ConfigurationUtils serves as a basis for the FileIO done by the application
@@ -16,6 +15,7 @@ import java.util.Arrays;
  * @since 1/11/2020 DD/MM/YY
  * @see CSBot
  * */
+
 public class ConfigurationUtils {
 
     /**
@@ -67,6 +67,12 @@ public class ConfigurationUtils {
         return jarFolder + resourceName;
     }
 
+    /**
+     * Reads the configuration file and maps it to the ConfigurationCache object
+     * @return An Instance of ConfigurationCache
+     * @throws FileNotFoundException When the configuration file does not exist.
+     * @see ConfigurationCache
+     * */
     public static ConfigurationCache readConfigurationFile() throws FileNotFoundException {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
