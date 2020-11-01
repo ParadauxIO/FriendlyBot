@@ -18,17 +18,16 @@ import java.util.Arrays;
  * */
 public class ConfigurationUtils {
 
-    static Logger logger = CSBot.getLogger();
-
     /**
      * Copies the configuration file from the JAR to the current directory on first run
      */
     public static void deployConfiguration() {
+        Logger logger = Logging.getLogger();
         if (!new File("config.yml").exists()) {
             try {
-                ExportResource("config.json");
+                ExportResource("/config.json");
             } catch (Exception exception) {
-                logger.error("Failed to deploy configuration.\n" + Arrays.toString(exception.getStackTrace()));
+                logger.error("Failed to deploy configuration.\n", exception);
             }
 
         }
@@ -72,7 +71,7 @@ public class ConfigurationUtils {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("configuration.json"));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("config.json"));
         return gson.fromJson(bufferedReader, ConfigurationCache.class);
     }
 
