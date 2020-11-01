@@ -1,7 +1,12 @@
 {
-  "token": "",
+  "token": "NzcyNTY3NzA1OTIzNDg1NzI3.X58jvg.4nH5JdZdrLKkvzFvaLqJvmGrauw",
   "prefix": ";",
-  "listeningChannel": "",
+  "listeningChannel": "772589960384741396",
   "admins": ["150993042558418944"],
-  "verifiedRole": "772574090291970048"
+  "verifiedRole": "772574090291970048",
+  "mongoUri": "",
+  "smtpUser": "",
+  "smtpPass": "",
+  "smtpServer": "",
+  "smtpPort": ""
 }
