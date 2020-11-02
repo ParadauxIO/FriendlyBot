@@ -41,7 +41,7 @@ public class InviteCommand extends Command {
     String[] aliases;
     String help;
 
-    public InviteCommand(String name, String[] aliases, String help) {
+    public InviteCommand() {
         this.name = "invite";
         this.aliases = new String[]{"inv", "i"};
         this.help = "Provides the user with an invite link.";

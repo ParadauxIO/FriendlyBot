@@ -25,13 +25,17 @@
 
 package io.paradaux.csbot;
 
+import com.jagrosh.jdautilities.command.CommandClient;
+import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import io.paradaux.csbot.api.ConfigurationCache;
 import io.paradaux.csbot.api.ConfigurationUtils;
 import io.paradaux.csbot.api.Logging;
+import io.paradaux.csbot.commands.InviteCommand;
 import io.paradaux.csbot.listeners.MessageReceivedListener;
 import io.paradaux.csbot.listeners.ReadyListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.slf4j.Logger;
 
@@ -99,14 +103,27 @@ public class CSBot {
         JDABuilder builder = JDABuilder.createDefault(token)
                 .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
                 .setBulkDeleteSplittingEnabled(false)
-                .addEventListeners(new ReadyListener(configurationCache), new MessageReceivedListener(configurationCache));
+                .addEventListeners(new ReadyListener(configurationCache), new MessageReceivedListener(configurationCache), createCommandClient());
 
         if (token == null) {
             throw new LoginException("The Configuration File does not contain a token.");
         }
 
         return builder.build();
+    }
 
+    /**
+     * Creates a CommanddClient instance which is provided by JDAUtilities. It handles a lot of the command listening, and acts as a clean command wrapper.
+     * @return An instance of CommandClient.
+     * */
+    public static CommandClient createCommandClient() {
+        CommandClientBuilder builder = new CommandClientBuilder()
+                .setOwnerId(configurationCache.getAdmins().get(0))
+                .setPrefix(configurationCache.getPrefix())
+                .setActivity(Activity.playing("with your emotions"))
+                .addCommand(new InviteCommand());
+
+        return builder.build();
     }
 
 }
