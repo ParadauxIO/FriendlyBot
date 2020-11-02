@@ -66,6 +66,10 @@ public class VerificationSystem {
         return pendingVerification.get(userID);
     }
 
+    /**
+     * Logs a user to the verification.log which is a replacement for the database for the time being.
+     * @param user  The Discord user who is getting logged as verified.
+     * */
     public static void setVerified(User user) {
         try {
             File file = new File("verification.log");
