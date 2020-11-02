@@ -56,9 +56,9 @@ public class ReadyListener extends ListenerAdapter {
         int userCount = 0;
 
         for (Guild guild : event.getJDA().getGuilds()) {
-            userCount += guild.getMembers().size();
+            userCount += guild.getMemberCount();
         }
 
-        logger.info("Currently serving {} users in {} guilds", userCount, guildCount);
+        logger.info("Currently serving {} user(s) in {} guild(s)", userCount, guildCount);
     }
 }
