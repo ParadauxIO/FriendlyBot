@@ -60,7 +60,7 @@ public class EmailUtils {
         return email.substring(email.indexOf("@") + 1);
     }
 
-    public String generateVerificationCode(String email) {
+    public String generateVerificationCode() {
         return String.format("%06d", new Random().nextInt(999999));
     }
 
