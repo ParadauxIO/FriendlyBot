@@ -1,12 +1,13 @@
 {
-  "token": "",
+  "token": "TOKENGOESHERE",
   "prefix": ";",
+  "guild": "757903425311604786",
   "listeningChannel": "772589960384741396",
   "admins": ["150993042558418944"],
   "verifiedRole": "772574090291970048",
   "mongoUri": "",
-  "smtpUser": "",
+  "smtpUser": "verification@paradaux.io",
   "smtpPass": "",
-  "smtpServer": "",
-  "smtpPort": ""
+  "smtpServer": "srv2.paradaux.io",
+  "smtpPort": "587"
 }
