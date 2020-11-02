@@ -23,45 +23,40 @@
 
 package io.paradaux.csbot.api;
 
-import javax.annotation.Nullable;
-import java.util.Random;
-import java.util.regex.Pattern;
+import java.util.HashMap;
 
 /**
  * EmailUtils provides various utilities pertaining to the email functionality of the discord-bot used for verifying @tcd.ie emails
+ * As of 2/11/2020 This is based on a static hashmap. This will be replaced with a MongoDB Collection on full release.
  *
  * @author Rían Errity
  * @version Last Modified for 0.1.0-SNAPSHOT
- * @since 1/11/2020 DD/MM/YY
+ * @since 2/11/2020 DD/MM/YY
  * @see io.paradaux.csbot.CSBot
  * */
 
-public class EmailUtils {
+public class VerificationSystem {
 
     /**
-     * Checks against a regex pattern whether or not the email provided is valid
-     * @param email The Email you wish to verify is valid
-     * @return Whether or not the email is valid
+     * This map represents the list of currently pending verification requests.
      * */
-    public boolean isValidEmail(String email) {
-        Pattern emailValidator = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
-        if (email==null) return false;
-        return emailValidator.matcher(email).matches();
+    public static HashMap<String, String> pendingVerification = new HashMap<>();
+
+    public static void addPendingUser(String userID, String verificationCode) {
+        pendingVerification.put(userID, verificationCode);
     }
 
-    /**
-     * Gets the domain (the section after the @ sign) from an email address.
-     * @param email The Email you wish to get the domain of
-     * @return The Domain of an email. Returns null if the email is invalid
-     * */
-    @Nullable
-    public String getEmailDomain(String email) {
-        if (!isValidEmail(email)) return null;
-        return email.substring(email.indexOf("@") + 1);
+    public static boolean isPending(String userID) {
+        return pendingVerification.containsKey(userID);
     }
 
-    public String generateVerificationCode(String email) {
-        return String.format("%06d", new Random().nextInt(999999));
+    public static void removePendingUser(String userID) {
+        pendingVerification.remove(userID);
     }
+
+    public static String getVerificationCode(String userID) {
+        return pendingVerification.get(userID);
+    }
+
 
 }

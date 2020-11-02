@@ -24,7 +24,9 @@
 package io.paradaux.csbot.listeners;
 
 import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.api.EmailUtils;
 import io.paradaux.csbot.api.Logging;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -51,6 +53,34 @@ public class MessageReceivedListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+        EmailUtils emailutils = new EmailUtils();
+
+        if (!event.getChannel().getId().equals(configurationCache.getListeningChannel())) return;
+
+        Message message = event.getMessage();
+        message.delete().queue();
+        String email = message.getContentRaw();
+
+        if (!emailutils.isValidEmail(email)) {
+            event.getAuthor().openPrivateChannel().queue((channel) -> {
+                channel.sendMessage("Your message did not contain an email.").queue();
+            });
+
+            return;
+        }
+
+        if (!emailutils.getEmailDomain(email).equalsIgnoreCase("tcd.ie")) {
+            event.getAuthor().openPrivateChannel().queue((channel) -> {
+                channel.sendMessage("The provided email must be of the tcd.ie domain. If you are not a trinity student, please contact a moderator for manual verification").queue();
+            });
+
+            return;
+        };
+
+        event.getAuthor().openPrivateChannel().queue((channel) -> {
+            channel.sendMessage("Please check your email for a verification token. Once you have it, please paste it into this private message channel.").queue();
+        });
+
 
     }
 }
