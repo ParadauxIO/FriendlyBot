@@ -30,8 +30,10 @@ import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import io.paradaux.csbot.api.ConfigurationCache;
 import io.paradaux.csbot.api.ConfigurationUtils;
 import io.paradaux.csbot.api.Logging;
+import io.paradaux.csbot.api.SMTPConnection;
 import io.paradaux.csbot.commands.InviteCommand;
 import io.paradaux.csbot.listeners.MessageReceivedListener;
+import io.paradaux.csbot.listeners.PrivateMessageReceivedListener;
 import io.paradaux.csbot.listeners.ReadyListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -58,6 +60,8 @@ public class CSBot {
     private static ConfigurationCache configurationCache;
     public static ConfigurationCache getConfigurationCache() { return configurationCache; }
 
+    private static SMTPConnection smtpConnection;
+
     /**
      * This is the main method for the application. It handles the instantiation of dependencies, and the discord bot as a whole
      * @param args Command line arguments are not used in this application.
@@ -81,6 +85,9 @@ public class CSBot {
             logger.error("Could not find the configuration file!", exception);
         }
 
+        // Email
+        smtpConnection = new SMTPConnection(configurationCache);
+
         // Login
         logger.info("Attempting to login...");
         try {
@@ -89,6 +96,7 @@ public class CSBot {
             logger.error("There was an issue logging in: ", exception);
             return;
         }
+
     }
 
     /**
@@ -103,7 +111,8 @@ public class CSBot {
         JDABuilder builder = JDABuilder.createDefault(token)
                 .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
                 .setBulkDeleteSplittingEnabled(false)
-                .addEventListeners(new ReadyListener(configurationCache), new MessageReceivedListener(configurationCache), createCommandClient());
+                .addEventListeners(new ReadyListener(configurationCache), new MessageReceivedListener(configurationCache, smtpConnection),
+                        new PrivateMessageReceivedListener(configurationCache), createCommandClient());
 
         if (token == null) {
             throw new LoginException("The Configuration File does not contain a token.");
