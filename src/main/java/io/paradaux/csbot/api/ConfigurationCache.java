@@ -41,13 +41,23 @@ public class ConfigurationCache {
     String listeningChannel;
     List<String> admins;
     String verifiedRole;
+    String mongoUri;
+    String smtpUser;
+    String smtpPass;
+    String smtpServer;
+    String smtpPort;
 
-    public ConfigurationCache(String token, String prefix, List<String> admins, String verifiedRole) {
+    public ConfigurationCache(String token, String prefix, String listeningChannel, List<String> admins, String verifiedRole, String mongoUri, String smtpUser, String smtpPass, String smtpServer, String smtpPort) {
         this.token = token;
         this.prefix = prefix;
+        this.listeningChannel = listeningChannel;
         this.admins = admins;
         this.verifiedRole = verifiedRole;
-        getToken();
+        this.mongoUri = mongoUri;
+        this.smtpUser = smtpUser;
+        this.smtpPass = smtpPass;
+        this.smtpServer = smtpServer;
+        this.smtpPort = smtpPort;
     }
 
     /**
@@ -83,5 +93,40 @@ public class ConfigurationCache {
      */
     public String getListeningChannel() {
         return listeningChannel;
+    }
+
+    /**
+     * @return The MongoURI used to connect to the MongoDB Server
+     * */
+    public String getMongoUri() {
+        return mongoUri;
+    }
+
+    /**
+     * @return The SMTP Username
+     * */
+    public String getSmtpUser() {
+        return smtpUser;
+    }
+
+    /**
+     * @return The SMTP Password
+     * */
+    public String getSmtpPass() {
+        return smtpPass;
+    }
+
+    /**
+     * @return The SMTP FQDN.
+     * */
+    public String getSmtpServer() {
+        return smtpServer;
+    }
+
+    /**
+     * @return The SMTP Server Port.
+     * */
+    public String getSmtpPort() {
+        return smtpPort;
     }
 }

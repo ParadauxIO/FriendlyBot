@@ -23,6 +23,11 @@
 
 package io.paradaux.csbot.api;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Properties;
+
 /**
  * SMTPConnection represents the connection to the SMTP Server and facilitates the sending of emails for the project.
  *
@@ -34,6 +39,42 @@ package io.paradaux.csbot.api;
 
 public class SMTPConnection {
 
-    
+    Properties props = new Properties();
+    String smtpUser, smtpPass, smtpServer, smtpPort;
+    Session session;
+
+    public SMTPConnection(ConfigurationCache configurationCache) {
+        this.smtpUser = configurationCache.getSmtpUser();
+        this.smtpPass = configurationCache.getSmtpPass();
+        this.smtpServer = configurationCache.getSmtpServer();
+        this.smtpPort = configurationCache.getSmtpPort();
+
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", smtpServer);
+        props.put("mail.smtp.port", smtpPort);
+
+        session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(smtpUser, smtpPass);
+            }
+        });
+    }
+
+    public void sendVerificationEmail(String email, String verificationCode) throws MessagingException {
+        Message message = new MimeMessage(session);
+
+        message.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
+        message.setFrom(new InternetAddress("verification@paradaux.io"));
+        message.setReplyTo(InternetAddress.parse("verification-support@paradaux.io"));
+
+        message.setSubject("Your Friendly Verification Code has arrived!");
+        message.setText("We're so happy you've gone through verification. Your email address is not saved on our servers, we respect your privacy! " +
+                "We just needed to make sure you're actually a student here. It helps us mitigate against raiding, and makes our members accountable for their actions." +
+                "\n\nYour Verification Code is: " + verificationCode + "\n\n Message this code to the bot via a private message (DM) Do not post this into the verification channel.");
+
+        Transport.send(message);
+    }
 
 }
