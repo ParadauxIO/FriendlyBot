@@ -23,14 +23,14 @@
 
 package io.paradaux.csbot.listeners;
 
-import io.paradaux.csbot.api.ConfigurationCache;
-import io.paradaux.csbot.api.EmailUtils;
-import io.paradaux.csbot.api.Logging;
+import io.paradaux.csbot.api.*;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
+
+import javax.mail.MessagingException;
 
 /**
  * This event handles the parsing of email addresses within the listener channel, and calls for verification emails to be sent.
@@ -44,16 +44,19 @@ import org.slf4j.Logger;
 public class MessageReceivedListener extends ListenerAdapter {
 
     ConfigurationCache configurationCache;
+    SMTPConnection smtpConnection;
     Logger logger;
 
-    public MessageReceivedListener(ConfigurationCache configurationCache) {
+    public MessageReceivedListener(ConfigurationCache configurationCache, SMTPConnection smtpConnection) {
         this.configurationCache = configurationCache;
+        this.smtpConnection = smtpConnection;
         logger = Logging.getLogger();
+
     }
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        EmailUtils emailutils = new EmailUtils();
+        EmailUtils emailUtils = new EmailUtils();
 
         if (!event.getChannel().getId().equals(configurationCache.getListeningChannel())) return;
 
@@ -61,7 +64,7 @@ public class MessageReceivedListener extends ListenerAdapter {
         message.delete().queue();
         String email = message.getContentRaw();
 
-        if (!emailutils.isValidEmail(email)) {
+        if (!emailUtils.isValidEmail(email)) {
             event.getAuthor().openPrivateChannel().queue((channel) -> {
                 channel.sendMessage("Your message did not contain an email.").queue();
             });
@@ -69,7 +72,7 @@ public class MessageReceivedListener extends ListenerAdapter {
             return;
         }
 
-        if (!emailutils.getEmailDomain(email).equalsIgnoreCase("tcd.ie")) {
+        if (!emailUtils.getEmailDomain(email).equalsIgnoreCase("tcd.ie")) {
             event.getAuthor().openPrivateChannel().queue((channel) -> {
                 channel.sendMessage("The provided email must be of the tcd.ie domain. If you are not a trinity student, please contact a moderator for manual verification").queue();
             });
@@ -80,6 +83,14 @@ public class MessageReceivedListener extends ListenerAdapter {
         event.getAuthor().openPrivateChannel().queue((channel) -> {
             channel.sendMessage("Please check your email for a verification token. Once you have it, please paste it into this private message channel.").queue();
         });
+
+        VerificationSystem.addPendingUser(event.getAuthor().getId(), emailUtils.generateVerificationCode());
+        try {
+            smtpConnection.sendVerificationEmail(email, VerificationSystem.getVerificationCode(event.getAuthor().getId()));
+        } catch (MessagingException exception) {
+            logger.error("There was an error sending the verification email for {}", event.getAuthor().getName(), exception);
+            return;
+        }
 
 
     }

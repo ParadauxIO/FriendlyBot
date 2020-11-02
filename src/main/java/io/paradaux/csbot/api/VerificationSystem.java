@@ -23,6 +23,13 @@
 
 package io.paradaux.csbot.api;
 
+import net.dv8tion.jda.api.entities.User;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -41,6 +48,7 @@ public class VerificationSystem {
      * This map represents the list of currently pending verification requests.
      * */
     public static HashMap<String, String> pendingVerification = new HashMap<>();
+    public static HashMap<String, String> verifiedUsers = new HashMap<>();
 
     public static void addPendingUser(String userID, String verificationCode) {
         pendingVerification.put(userID, verificationCode);
@@ -56,6 +64,21 @@ public class VerificationSystem {
 
     public static String getVerificationCode(String userID) {
         return pendingVerification.get(userID);
+    }
+
+    public static void setVerified(User user) {
+        try {
+            File file = new File("verification.log");
+            FileWriter fr = new FileWriter(file, true);
+            BufferedWriter br = new BufferedWriter(fr);
+            br.write("\nDiscord User " + user.getAsTag() + " has verified their tcd email. @ " + new Date().toString());
+            br.close();
+            fr.close();
+        } catch (IOException exception) {
+            Logging.getLogger().error("Error writing to the verification logs. ", exception);
+        }
+
+
     }
 
 
