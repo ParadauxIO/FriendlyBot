@@ -32,6 +32,7 @@ import io.paradaux.csbot.api.ConfigurationUtils;
 import io.paradaux.csbot.api.Logging;
 import io.paradaux.csbot.api.SMTPConnection;
 import io.paradaux.csbot.commands.InviteCommand;
+import io.paradaux.csbot.commands.PingCommand;
 import io.paradaux.csbot.listeners.MessageReceivedListener;
 import io.paradaux.csbot.listeners.PrivateMessageReceivedListener;
 import io.paradaux.csbot.listeners.ReadyListener;
@@ -130,7 +131,8 @@ public class CSBot {
                 .setOwnerId(configurationCache.getAdmins().get(0))
                 .setPrefix(configurationCache.getPrefix())
                 .setActivity(Activity.playing("with your emotions"))
-                .addCommand(new InviteCommand());
+                .addCommand(new InviteCommand())
+                .addCommand(new PingCommand());
 
         return builder.build();
     }
