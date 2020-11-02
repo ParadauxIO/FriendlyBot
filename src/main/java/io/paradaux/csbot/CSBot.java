@@ -112,8 +112,8 @@ public class CSBot {
         JDABuilder builder = JDABuilder.createDefault(token)
                 .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
                 .setBulkDeleteSplittingEnabled(false)
-                .addEventListeners(new ReadyListener(configurationCache), new MessageReceivedListener(configurationCache, smtpConnection),
-                        new PrivateMessageReceivedListener(configurationCache), createCommandClient());
+                .addEventListeners(createCommandClient(), new ReadyListener(configurationCache), new MessageReceivedListener(configurationCache, smtpConnection),
+                        new PrivateMessageReceivedListener(configurationCache));
 
         if (token == null) {
             throw new LoginException("The Configuration File does not contain a token.");
@@ -131,8 +131,7 @@ public class CSBot {
                 .setOwnerId(configurationCache.getAdmins().get(0))
                 .setPrefix(configurationCache.getPrefix())
                 .setActivity(Activity.playing("with your emotions"))
-                .addCommand(new InviteCommand())
-                .addCommand(new PingCommand());
+                .addCommands(new InviteCommand(), new PingCommand());
 
         return builder.build();
     }
