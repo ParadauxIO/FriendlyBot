@@ -33,6 +33,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/**
+ * PrivateMessageReceivedListener listens to the VerificationCodes sent to the bot privately, parses them and sets the user as verified if approrpriate.
+ *
+ * @author Rían Errity
+ * @version Last Modified for 0.1.0-SNAPSHOT
+ * @since 1/11/2020 DD/MM/YY
+ * @see io.paradaux.csbot.CSBot
+ * */
+
+
 public class PrivateMessageReceivedListener extends ListenerAdapter {
 
     ConfigurationCache configurationCache;

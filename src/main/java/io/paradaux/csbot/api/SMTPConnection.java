@@ -43,6 +43,10 @@ public class SMTPConnection {
     String smtpUser, smtpPass, smtpServer, smtpPort;
     Session session;
 
+    /**
+     * This constructor intialises instance variables as well as the Javax Mail Session
+     * @param configurationCache Required to initalise variables from the cache.
+     * */
     public SMTPConnection(ConfigurationCache configurationCache) {
         this.smtpUser = configurationCache.getSmtpUser();
         this.smtpPass = configurationCache.getSmtpPass();
@@ -62,6 +66,11 @@ public class SMTPConnection {
         });
     }
 
+    /**
+     * Given an email and the verification code send a templated email via Javax Mail to the user informing them of the verification code
+     * @param email The Recipient Email
+     * @param verificationCode The Verification code to be used by the user.
+     * */
     public void sendVerificationEmail(String email, String verificationCode) throws MessagingException {
         Message message = new MimeMessage(session);
 
