@@ -46,13 +46,20 @@ public class ConfigurationUtils {
      */
     public static void deployConfiguration() {
         Logger logger = Logging.getLogger();
-        if (!new File("config.yml").exists()) {
+        if (!new File("config.json").exists()) {
             try {
                 ExportResource("/config.json");
             } catch (Exception exception) {
                 logger.error("Failed to deploy configuration.\n", exception);
             }
+        }
 
+        if (!new File("verification.log").exists()) {
+            try {
+                ExportResource("/verification.log");
+            } catch (Exception exception) {
+                logger.error("Failed to deploy verification log.\n", exception);
+            }
         }
     }
 

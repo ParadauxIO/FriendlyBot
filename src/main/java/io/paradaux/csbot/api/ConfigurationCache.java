@@ -38,6 +38,7 @@ public class ConfigurationCache {
 
     String token;
     String prefix;
+    String guild;
     String listeningChannel;
     List<String> admins;
     String verifiedRole;
@@ -47,9 +48,10 @@ public class ConfigurationCache {
     String smtpServer;
     String smtpPort;
 
-    public ConfigurationCache(String token, String prefix, String listeningChannel, List<String> admins, String verifiedRole, String mongoUri, String smtpUser, String smtpPass, String smtpServer, String smtpPort) {
+    public ConfigurationCache(String token, String prefix, String guild, String listeningChannel, List<String> admins, String verifiedRole, String mongoUri, String smtpUser, String smtpPass, String smtpServer, String smtpPort) {
         this.token = token;
         this.prefix = prefix;
+        this.guild = guild;
         this.listeningChannel = listeningChannel;
         this.admins = admins;
         this.verifiedRole = verifiedRole;
@@ -128,5 +130,12 @@ public class ConfigurationCache {
      * */
     public String getSmtpPort() {
         return smtpPort;
+    }
+
+    /**
+     * @return The ID of the Computer Science Friendly Discord
+     * */
+    public String getGuild() {
+        return guild;
     }
 }

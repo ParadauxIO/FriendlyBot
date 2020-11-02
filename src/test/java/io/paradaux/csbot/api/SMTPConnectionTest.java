@@ -25,14 +25,15 @@ package io.paradaux.csbot.api;
 
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.mail.MessagingException;
 import java.util.ArrayList;
 
 class SMTPConnectionTest {
 
-    Logger logger = Logging.getLogger();
-    ConfigurationCache configurationCache = new ConfigurationCache("", "", "", new ArrayList<String>(), "", "",
+    Logger logger = LoggerFactory.getLogger(getClass());
+    ConfigurationCache configurationCache = new ConfigurationCache("", "", "", "", new ArrayList<String>(), "", "",
             "verification@paradaux.io", "EmailPassword", "srv2.paradaux.io", "587");
 
     SMTPConnection smtpConnection = new SMTPConnection(configurationCache);
