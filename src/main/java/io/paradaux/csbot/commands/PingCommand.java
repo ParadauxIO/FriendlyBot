@@ -38,13 +38,8 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 
 public class PingCommand extends Command {
 
-    String name;
-    String[] aliases;
-    String help;
-
     public PingCommand() {
         this.name = "ping";
-        this.aliases = new String[]{"p"};
         this.help = "Latency Test Command.";
     }
 
