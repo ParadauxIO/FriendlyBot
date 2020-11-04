@@ -39,9 +39,9 @@ import net.dv8tion.jda.api.entities.Message;
 public class WarnCommand extends Command {
 
     public WarnCommand() {
-        this.name = "";
-        this.aliases = new String[]{};
-        this.help = "";
+        this.name = "warn";
+        this.aliases = new String[]{"w"};
+        this.help = "Warns the specified user";
     }
 
     @Override

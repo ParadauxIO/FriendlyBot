@@ -26,8 +26,11 @@ package io.paradaux.csbot.controllers;
 import com.jagrosh.jdautilities.command.CommandClient;
 import io.paradaux.csbot.api.ConfigurationCache;
 import io.paradaux.csbot.api.SMTPConnection;
+import io.paradaux.csbot.listeners.ReactionRoleListener;
 import io.paradaux.csbot.listeners.ReadyListener;
+import io.paradaux.csbot.listeners.message.ChatFilterListener;
 import io.paradaux.csbot.listeners.message.DMListener;
+import io.paradaux.csbot.listeners.message.VerificationCodeReceivedListener;
 import io.paradaux.csbot.listeners.message.VerificationEmailReceivedListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -46,6 +49,7 @@ public class BotController implements  IController {
     private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
     private static final Logger logger = LogController.getLogger();
 
+    @Override
     public void initialise() {
         logger.info("Attempting to login");
         try {
@@ -75,9 +79,12 @@ public class BotController implements  IController {
                 .setBulkDeleteSplittingEnabled(false)
                 .addEventListeners (
                         commandClient,
-                        new ReadyListener(configurationCache),
-                        new VerificationEmailReceivedListener(configurationCache, smtpConnection),
-                        new DMListener(configurationCache)
+                        new ReadyListener(),
+                        new ReactionRoleListener(),
+                        new ChatFilterListener(),
+                        new DMListener(),
+                        new VerificationCodeReceivedListener(),
+                        new VerificationEmailReceivedListener()
                 );
 
         if (token == null) {

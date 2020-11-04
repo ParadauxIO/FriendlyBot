@@ -27,6 +27,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
+import javax.annotation.Nullable;
+
 public class RulesEmbed implements IEmbedMessage {
 
     EmbedBuilder builder;
@@ -34,24 +36,61 @@ public class RulesEmbed implements IEmbedMessage {
 
     public RulesEmbed() {
         this.builder = new EmbedBuilder();
+        create();
+        embed = this.build();
     }
 
     public void create() {
-        builder.setAuthor("CSFD | Rules and Regulations");
+        builder.setAuthor("The Computer Science Friendly Discord.");
+
         builder.setColor(EmbedColour.INFO.getColour());
-        builder.addField("Rules", "Please ensure you have read these rules in their entirety before proceeding to make use of the discord server.\n\nThanks, The Mod Team.", false);
-        builder.setFooter("Computer Science Friendly Bot | v0.1");
+
+        builder.addField("Discord Rules / Code of Conduct", "As a member of this discord server, you are expected to have read these rules in their " +
+        builder.addField("Discord Rules / Code of Conduct", "As a member of this discord server, you are expected to have read these rules in their " +
+                "entirety, and by continuing to make use of the discord server you agree to follow these at all times.", false);
+
+        builder.addField("1.", "You are expected to show respect to all fellow students and Trinity Staff at all times. Any form of name-calling," +
+                " drama-stirring and falsely accusing people will not be tolerated. Harassment and repeated targeted abuse of discord members is unacceptable" +
+                " and will be met with a permanent ban. ", true);
+
+        builder.addField("2. ", "Political and religious discussion is prohibited. It goes outside of the scope of this discord server, which aims" +
+                " to provide academic support to our fellow students, and to facilitate intercommunication in computer science generally. These topics only cause " +
+                "division and discourage new people from joining in the conversation.", true);
+
+        builder.addField("3. ", "Any form of drama, whether it started within the server or not must be continued in private. If you have an issue with" +
+                " another member of the discord report it to your class representative or someone on the moderation team by using the mod-mail feature or via " +
+                "direct-messaging (DM.) ", true);
+
+        builder.addField("4. ", "Members may not use the discord to share pornography, gore and otherwise illicit content. Furthermore, any discussion of" +
+                " related material is prohibited. This includes topics such as piracy/copyright infringement.", true);
+
+        builder.addField("5. ", "Discord members are expected to conduct themselves as if they were using an official Trinity College social medium. As such, " +
+                "all rules and regulations subject to those apply here. Please see the footnote for more information. This includes condoning plagiarism.", true);
+
+        builder.addField("6. ", "This platform is hosted on discord, as such, the discord terms of service must be followed at all times.", true);
+
+        builder.addField("Please note:", "The Rules set is subject to change at any time. Staff members may take action upon something which is not explicitly " +
+                "listed, moderators are trusted to act on their own discretion. If you have an issue with this please use the mod-mail feature or contact a technician. ", false);
+
+        builder.addField("Footnotes:", " [Trinity College: Ethics Policy](https://www.tcd.ie/about/policies/ethics-policy.php)\n" +
+                "[Trinity College: Dignity and Respect Policy](https://www.tcd.ie/equality/policy/dignity-respect-policy/)\n" +
+                "[Discord: Terms of Service](https://discord.com/terms)", false);
+
+        builder.setFooter("Computer Science Friendly Bot | v0.1 | Rules Last Edited: 4/11/2020");
 
 
     }
 
     @Override
     public MessageEmbed build() {
-        return null;
+        return builder.build();
     }
 
     @Override
-    public void sendEmbed(MessageChannel channel, MessageEmbed embed) {
-
+    public void sendEmbed(MessageChannel channel, @Nullable MessageEmbed embed) {
+        if (embed == null) {
+            embed = this.build();
+        }
+        channel.sendMessage(embed).queue();
     }
 }

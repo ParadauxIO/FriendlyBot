@@ -27,13 +27,15 @@ import io.paradaux.csbot.embeds.EmbedColour;
 import io.paradaux.csbot.embeds.ModerationActionEmbed;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
+import javax.annotation.Nullable;
+
 public class ModerationAction {
 
-    public static MessageEmbed kickUser(String guildID, String discordID, String reason, String context) {
+    public static MessageEmbed kickUser(String guildID, String discordID, String reason, @Nullable String context) {
         return new ModerationActionEmbed(EmbedColour.MODERATION, discordID, guildID, reason).build();
     }
 
-    public static MessageEmbed warnUser(String guildID, String discordID, String reason, String context) {
+    public static MessageEmbed warnUser(String guildID, String discordID, String reason, @Nullable String context) {
         return new ModerationActionEmbed(EmbedColour.MODERATION, discordID, guildID, reason).build();
     }
 

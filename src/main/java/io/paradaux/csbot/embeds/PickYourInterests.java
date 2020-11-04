@@ -23,5 +23,5 @@
 
 package io.paradaux.csbot.embeds;
 
-public class Interests {
+public class PickYourInterests {
 }

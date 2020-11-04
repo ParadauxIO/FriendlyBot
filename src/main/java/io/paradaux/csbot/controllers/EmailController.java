@@ -35,6 +35,7 @@ public class EmailController implements IController {
 
     private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
 
+    @Override
     public void initialise() {
         smtpConnection = new SMTPConnection(configurationCache);
         INSTANCE = this;

@@ -37,12 +37,12 @@ public class ChatFilterListener extends ListenerAdapter {
     final public String[] kickList = new String[]{"nigger, nigga, niglet, kike, fag, faggot, fanny, kike", "retard", "retarded", "incest", "incest",
             "incestuous", "tranny", "transvestite", "coon", "uncle tom", "sissy", "nancy", "girlie", "sodomite", "nelly", "poofter", "quean", "batty boy",
             "nellie", "dyke", "lesbo", "fauxbians", "trannie", "heshe", "troon", "cuntboy", "hefemale", "shemale", "dickgirl", "chicks with dicls", "femboy",
-            "incel", "muzzie", "osama"};
+            "incel", "muzzie", "osama", "inbred"};
 
     // List of words which go against the ethos of the server.
     final public String[] warnList = new String[]{"newb, noob", "nub", "asshole", "you're stupid", "nazi", "nazism", "commie", "libtard", "tanker",
             "anarchist", "anarcho", "neo", "bolshevik", "communism", "jreg", "centard", "alibaba", "ali baba", "isis", "terrorist", "knacker", "nacker",
-            "bot trotter", "bot-trotter", "bog irish", "prod", "proddie", "tinker", "gypsy", "horse-fucker", "jaffa", "snout", "fascist"};
+            "bog trotter", "bog-trotter", "bog irish", "prod", "proddie", "tinker", "gypsy", "horse-fucker", "jaffa", "snout", "fascist"};
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -50,15 +50,17 @@ public class ChatFilterListener extends ListenerAdapter {
 
         if (message.getAuthor().isBot()) return;
 
-        String messageContent = event.getMessage().getContentRaw();
+        String messageContent = message.getContentRaw();
         String guildID = message.getGuild().getId();
         String discordID = message.getAuthor().getId();
 
         if (containsWarnableWord(messageContent)) {
+            message.delete().queue();
             event.getChannel().sendMessage(ModerationAction.warnUser(guildID, discordID, "Illicit word use", messageContent)).queue();
         }
 
         if (containsKickableWord(messageContent)) {
+            message.delete().queue();
             event.getChannel().sendMessage(ModerationAction.kickUser(guildID, discordID, "Illicit word use", messageContent)).queue();
         }
 
