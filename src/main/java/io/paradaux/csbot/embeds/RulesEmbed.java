@@ -44,8 +44,7 @@ public class RulesEmbed implements IEmbedMessage {
         builder.setAuthor("The Computer Science Friendly Discord.");
 
         builder.setColor(EmbedColour.INFO.getColour());
-
-        builder.addField("Discord Rules / Code of Conduct", "As a member of this discord server, you are expected to have read these rules in their " +
+        
         builder.addField("Discord Rules / Code of Conduct", "As a member of this discord server, you are expected to have read these rules in their " +
                 "entirety, and by continuing to make use of the discord server you agree to follow these at all times.", false);
 
