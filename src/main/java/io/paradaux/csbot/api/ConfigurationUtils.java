@@ -26,6 +26,7 @@ package io.paradaux.csbot.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.paradaux.csbot.CSBot;
+import io.paradaux.csbot.controllers.LogController;
 import org.slf4j.Logger;
 
 import java.io.*;
@@ -45,7 +46,7 @@ public class ConfigurationUtils {
      * Copies the configuration file from the JAR to the current directory on first run
      */
     public static void deployConfiguration() {
-        Logger logger = Logging.getLogger();
+        Logger logger = LogController.getLogger();
         if (!new File("config.json").exists()) {
             try {
                 ExportResource("/config.json");

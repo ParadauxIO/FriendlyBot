@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.listeners;
+package io.paradaux.csbot.listeners.message;
 
 import io.paradaux.csbot.api.ConfigurationCache;
 import io.paradaux.csbot.api.VerificationSystem;
@@ -43,11 +43,11 @@ import java.util.Objects;
  * */
 
 
-public class PrivateMessageReceivedListener extends ListenerAdapter {
+public class DMListener extends ListenerAdapter {
 
     ConfigurationCache configurationCache;
 
-    public PrivateMessageReceivedListener(ConfigurationCache configurationCache) {
+    public DMListener(ConfigurationCache configurationCache) {
         this.configurationCache = configurationCache;
     }
 
@@ -61,7 +61,6 @@ public class PrivateMessageReceivedListener extends ListenerAdapter {
 
         Message message = event.getMessage();
         String verificationCode = VerificationSystem.getVerificationCode(event.getAuthor().getId());
-
 
         if (verificationCode != null && verificationCode.equals(message.getContentRaw())) {
 

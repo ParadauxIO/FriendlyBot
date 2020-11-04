@@ -25,25 +25,8 @@
 
 package io.paradaux.csbot;
 
-import com.jagrosh.jdautilities.command.CommandClient;
-import com.jagrosh.jdautilities.command.CommandClientBuilder;
-import io.paradaux.csbot.api.ConfigurationCache;
-import io.paradaux.csbot.api.ConfigurationUtils;
-import io.paradaux.csbot.api.Logging;
-import io.paradaux.csbot.api.SMTPConnection;
-import io.paradaux.csbot.commands.InviteCommand;
-import io.paradaux.csbot.commands.PingCommand;
-import io.paradaux.csbot.listeners.MessageReceivedListener;
-import io.paradaux.csbot.listeners.PrivateMessageReceivedListener;
-import io.paradaux.csbot.listeners.ReadyListener;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import io.paradaux.csbot.controllers.*;
 import org.slf4j.Logger;
-
-import javax.security.auth.login.LoginException;
-import java.io.FileNotFoundException;
 
 /**
  * CSBot is the main (executable) class for the project. It provides a set of lazy dependency injection instances
@@ -55,85 +38,44 @@ import java.io.FileNotFoundException;
 
 public class CSBot {
 
-    private static JDA client;
-    public static JDA getClient() { return client; }
-
-    private static ConfigurationCache configurationCache;
-    public static ConfigurationCache getConfigurationCache() { return configurationCache; }
-
-    private static SMTPConnection smtpConnection;
-
     /**
      * This is the main method for the application. It handles the instantiation of dependencies, and the discord bot as a whole
      * @param args Command line arguments are not used in this application.
      * */
     public static void main(String[] args) {
 
-        // Instantiate Logger instance.
-        Logging logging = new Logging();
-        Logger logger = Logging.getLogger();
-
-
-        // Version Information
-        logger.info("CSBot v0.1.0 - Maintained by Rían Errity <rian@paradaux.io>");
+        // Instantiate Logger instance, so we can log the other controllers properly.
+        System.out.println("Initialising Controllers. This may take some time...");
+        new LogController().initialise();
+        Logger logger = LogController.getLogger();
 
         // Prepare Configuration File/Cache
-        logger.info("Preparing Configuration File...");
-        ConfigurationUtils.deployConfiguration();
-        try {
-            configurationCache = ConfigurationUtils.readConfigurationFile();
-        } catch (FileNotFoundException exception) {
-            logger.error("Could not find the configuration file!", exception);
-        }
+        logger.info("Initialising: ConfigurationController");
+        new ConfigurationController().initialise();
 
         // Email
-        smtpConnection = new SMTPConnection(configurationCache);
+        logger.info("Initialising: EmailController");
+        new EmailController().initialise();
 
-        // Login
-        logger.info("Attempting to login...");
-        try {
-            client = login(configurationCache.getToken());
-        } catch (LoginException exception) {
-            logger.error("There was an issue logging in: ", exception);
-            return;
-        }
+        // Commands
+        logger.info("Initialising: CommandController");
+        new CommandController().initialise();
 
+        // The Bot
+        logger.info("Initialising: BotController");
+        new BotController().initialise();
+
+        // ModerationAction
+        logger.info("Initialising: ModerationActionController");
+        new ModerationActionController().initialise();
+
+        // VerificationSystem
+        logger.info("Initialising: VerificationSystemController");
+        new VerificationSystemController().initialise();
     }
 
-    /**
-     * Creates an Instance of JDA from the provided token.
-     * @param token The Discord Token taken from the configuration file.
-     * @return JDA An Instance of JDA
-     * @throws LoginException When logging in proved unsuccessful.
-     * */
-    public static JDA login (String token) throws LoginException {
-        Logger logger = Logging.getLogger();
 
-        JDABuilder builder = JDABuilder.createDefault(token)
-                .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
-                .setBulkDeleteSplittingEnabled(false)
-                .addEventListeners(createCommandClient(), new ReadyListener(configurationCache), new MessageReceivedListener(configurationCache, smtpConnection),
-                        new PrivateMessageReceivedListener(configurationCache));
 
-        if (token == null) {
-            throw new LoginException("The Configuration File does not contain a token.");
-        }
 
-        return builder.build();
-    }
-
-    /**
-     * Creates a CommanddClient instance which is provided by JDAUtilities. It handles a lot of the command listening, and acts as a clean command wrapper.
-     * @return An instance of CommandClient.
-     * */
-    public static CommandClient createCommandClient() {
-        CommandClientBuilder builder = new CommandClientBuilder()
-                .setOwnerId(configurationCache.getAdmins().get(0))
-                .setPrefix(configurationCache.getPrefix())
-                .setActivity(Activity.playing("with your emotions"))
-                .addCommands(new InviteCommand(), new PingCommand());
-
-        return builder.build();
-    }
 
 }
