@@ -24,7 +24,8 @@
 package io.paradaux.csbot.listeners;
 
 import io.paradaux.csbot.api.ConfigurationCache;
-import io.paradaux.csbot.api.Logging;
+import io.paradaux.csbot.controllers.ConfigurationController;
+import io.paradaux.csbot.controllers.LogController;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -44,9 +45,9 @@ public class ReadyListener extends ListenerAdapter {
     ConfigurationCache configurationCache;
     Logger logger;
 
-    public ReadyListener(ConfigurationCache configurationCache) {
-        this.configurationCache = configurationCache;
-        logger = Logging.getLogger();
+    public ReadyListener() {
+        this.configurationCache = ConfigurationController.getConfigurationCache();
+        logger = LogController.getLogger();
     }
 
     @Override

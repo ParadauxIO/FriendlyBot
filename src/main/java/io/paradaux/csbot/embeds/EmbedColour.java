@@ -1,17 +1,17 @@
 /*
  * Copyright (c) 2020, Rían Errity. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-
+ *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 3 only, as
  * published by the Free Software Foundation.
-
+ *
  * This code is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
  * version 3 for more details (a copy is included in the LICENSE file that
  * accompanied this code).
-
+ *
  * You should have received a copy of the GNU General Public License version
  * 3 along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -21,31 +21,35 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands;
+package io.paradaux.csbot.embeds;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
-import net.dv8tion.jda.api.entities.Message;
+import javax.annotation.Nullable;
 
-/**
- * This is a command which provides the user with an invite link to the current discord server.
- *
- * @author Rían Errity
- * @version Last modified for 0.1.0-SNAPSHOT
- * @since 1/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
- * */
+public enum EmbedColour {
 
-public class InviteCommand extends Command {
+    INFO(0x1D3557),
+    MODERATION(0x457B9D),
+    AUTOMATIC(0xA8DADC),
+    NEUTRAL(0xF1FAEE),
+    ISSUE(0xA8DADC);
 
-    public InviteCommand() {
-        this.name = "invite";
-        this.aliases = new String[]{"inv", "i"};
-        this.help = "Provides the user with an invite link to invite the bot.";
+    public final int colour;
+    EmbedColour(int colour) {
+        this.colour = colour;
     }
 
-    @Override
-    protected void execute(CommandEvent event) {
-        Message message = event.getMessage();
+    public int getColour() {
+        return colour;
     }
+
+    @Nullable
+    public EmbedColour valueOf(int value) {
+        for (EmbedColour color : values()) {
+            if (color.getColour() == value) {
+                return color;
+            }
+        }
+        return null;
+    }
+
 }
