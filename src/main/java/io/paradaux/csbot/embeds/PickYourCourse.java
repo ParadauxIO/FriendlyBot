@@ -23,5 +23,22 @@
 
 package io.paradaux.csbot.embeds;
 
-public class PickYourCourse {
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+
+public class PickYourCourse implements IEmbedMessage {
+
+    EmbedBuilder builder;
+
+    public PickYourCourse(EmbedBuilder builder) {
+        this.builder = builder;
+    }
+
+    @Override
+    public void create() {}
+
+    @Override
+    public MessageEmbed build() {
+        return builder.build();
+    }
 }

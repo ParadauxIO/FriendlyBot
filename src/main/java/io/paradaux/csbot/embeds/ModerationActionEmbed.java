@@ -24,7 +24,6 @@
 package io.paradaux.csbot.embeds;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class ModerationActionEmbed implements IEmbedMessage {
@@ -43,22 +42,13 @@ public class ModerationActionEmbed implements IEmbedMessage {
         this.reason = reason;
     }
 
-
     @Override
-    public void create() {
-        builder.setAuthor("CSFD | Automatic Moderation Action");
-        builder.setColor(EmbedColour.ISSUE.getColour());
-        builder.addField("", "Your message", false);
-        builder.setFooter("Computer Science Friendly Bot | v0.1");
-    }
+    public void create() {}
 
     @Override
     public MessageEmbed build() {
         return builder.build();
     }
 
-    @Override
-    public void sendEmbed(MessageChannel channel, MessageEmbed embed) {
 
-    }
 }

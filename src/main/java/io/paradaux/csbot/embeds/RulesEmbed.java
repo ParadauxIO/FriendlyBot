@@ -24,27 +24,21 @@
 package io.paradaux.csbot.embeds;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-
-import javax.annotation.Nullable;
 
 public class RulesEmbed implements IEmbedMessage {
 
     EmbedBuilder builder;
-    MessageEmbed embed;
 
     public RulesEmbed() {
         this.builder = new EmbedBuilder();
         create();
-        embed = this.build();
     }
 
     public void create() {
         builder.setAuthor("The Computer Science Friendly Discord.");
-
         builder.setColor(EmbedColour.INFO.getColour());
-        
+
         builder.addField("Discord Rules / Code of Conduct", "As a member of this discord server, you are expected to have read these rules in their " +
                 "entirety, and by continuing to make use of the discord server you agree to follow these at all times.", false);
 
@@ -76,8 +70,6 @@ public class RulesEmbed implements IEmbedMessage {
                 "[Discord: Terms of Service](https://discord.com/terms)", false);
 
         builder.setFooter("Computer Science Friendly Bot | v0.1 | Rules Last Edited: 4/11/2020");
-
-
     }
 
     @Override
@@ -85,11 +77,4 @@ public class RulesEmbed implements IEmbedMessage {
         return builder.build();
     }
 
-    @Override
-    public void sendEmbed(MessageChannel channel, @Nullable MessageEmbed embed) {
-        if (embed == null) {
-            embed = this.build();
-        }
-        channel.sendMessage(embed).queue();
-    }
 }
