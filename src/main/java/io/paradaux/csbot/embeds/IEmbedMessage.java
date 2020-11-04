@@ -26,18 +26,18 @@ package io.paradaux.csbot.embeds;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
+import javax.annotation.Nullable;
+
 public interface IEmbedMessage {
 
     void create();
     MessageEmbed build();
 
-    default void sendEmbed(MessageChannel channel, MessageEmbed embed) {
-        if (channel == null) return;
-        if (embed == null) return;
+    default void sendEmbed(MessageChannel channel, @Nullable MessageEmbed embed) {
+        if (embed == null) {
+            embed = this.build();
+        }
         channel.sendMessage(embed).queue();
+
     }
-
-
-
-
 }

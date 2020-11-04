@@ -24,7 +24,6 @@
 package io.paradaux.csbot.embeds;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class ChatFilterEmbed implements IEmbedMessage {
@@ -36,20 +35,12 @@ public class ChatFilterEmbed implements IEmbedMessage {
     }
 
     @Override
-    public void create() {
-        builder.setAuthor("CSFD | Rules and Regulations");
-        builder.setColor(EmbedColour.INFO.getColour());
-        builder.addField("Rules", "Please ensure you have read these rules in their entirety before proceeding to make use of the discord server.\n\nThanks, The Mod Team.", false);
-        builder.setFooter("Computer Science Friendly Bot | v0.1");
-    }
+    public void create() {}
 
     @Override
     public MessageEmbed build() {
-        return null;
+        return builder.build();
     }
 
-    @Override
-    public void sendEmbed(MessageChannel channel, MessageEmbed embed) {
 
-    }
 }
