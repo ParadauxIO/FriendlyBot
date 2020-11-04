@@ -23,30 +23,25 @@
 
 package io.paradaux.csbot.listeners;
 
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
-import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
-import java.util.HashMap;
 
 public class ReactionRoleListener extends ListenerAdapter {
 
-    private final HashMap<String,Long> map;
-
-    @Override
-    public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event) {
-        Role role = event.getGuild().getRoleById(map.getOrDefault(key(event.getMessageIdLong(),event.getReactionEmote()), 0L));
-
-
-
-    }
-
-    @Override
-    public void onGuildMessageReactionRemove(GuildMessageReactionRemoveEvent event) {
-        Role role = event.getGuild().getRoleById(map.getOrDefault(key(event.getMessageIdLong(),event.getReactionEmote()), 0L));
-        if(role!=null)
-            event.getGuild().getController().removeSingleRoleFromMember(event.getMember(), role).queue();
-    }
+//    private final HashMap<String,Long> map;
+//
+//    @Override
+//    public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event) {
+//        Role role = event.getGuild().getRoleById(map.getOrDefault(key(event.getMessageIdLong(),event.getReactionEmote()), 0L));
+//
+//
+//
+//    }
+//
+//    @Override
+//    public void onGuildMessageReactionRemove(GuildMessageReactionRemoveEvent event) {
+//        Role role = event.getGuild().getRoleById(map.getOrDefault(key(event.getMessageIdLong(),event.getReactionEmote()), 0L));
+//        if(role!=null)
+//            event.getGuild().getController().removeSingleRoleFromMember(event.getMember(), role).queue();
+//    }
 
 }

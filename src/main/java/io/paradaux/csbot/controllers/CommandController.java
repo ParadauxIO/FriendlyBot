@@ -38,6 +38,7 @@ public class CommandController implements IController {
 
     private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
 
+    @Override
     public void initialise() {
         commandClient = createCommandClient();
         INSTANCE = this;

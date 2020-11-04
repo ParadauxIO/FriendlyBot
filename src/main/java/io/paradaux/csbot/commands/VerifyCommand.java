@@ -39,9 +39,9 @@ import net.dv8tion.jda.api.entities.Message;
 public class VerifyCommand extends Command {
 
     public VerifyCommand() {
-        this.name = "";
-        this.aliases = new String[]{};
-        this.help = "";
+        this.name = "verify";
+        this.aliases = new String[]{"v"};
+        this.help = "Verifies the executing user using the provided verification code";
     }
 
     @Override

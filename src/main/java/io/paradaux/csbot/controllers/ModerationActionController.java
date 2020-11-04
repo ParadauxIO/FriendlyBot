@@ -27,6 +27,7 @@ public class ModerationActionController implements IController {
 
     public static ModerationActionController INSTANCE;
 
+    @Override
     public void initialise() {
         INSTANCE = this;
     }

@@ -25,7 +25,6 @@ package io.paradaux.csbot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import net.dv8tion.jda.api.entities.Message;
 
 /**
  * Ping Command is used to gauge DiscordAPI Latency.
@@ -47,7 +46,6 @@ public class PingCommand extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
-        Message message = event.getMessage();
-        message.getChannel().sendMessage("Pong!").queue();
+        event.getChannel().sendMessage("Pong!").queue();
     }
 }

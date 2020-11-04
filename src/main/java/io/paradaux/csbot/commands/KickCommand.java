@@ -39,9 +39,8 @@ import net.dv8tion.jda.api.entities.Message;
 public class KickCommand extends Command {
 
     public KickCommand() {
-        this.name = "";
-        this.aliases = new String[]{};
-        this.help = "";
+        this.name = "kick";
+        this.help = "Kicks the specified user";
     }
 
     @Override

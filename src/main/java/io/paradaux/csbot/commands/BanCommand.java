@@ -39,9 +39,8 @@ import net.dv8tion.jda.api.entities.Message;
 public class BanCommand  extends Command {
 
     public BanCommand() {
-        this.name = "";
-        this.aliases = new String[]{};
-        this.help = "";
+        this.name = "ban";
+        this.help = "Bans the specified user";
     }
 
     @Override

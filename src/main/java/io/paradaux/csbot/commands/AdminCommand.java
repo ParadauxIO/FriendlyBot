@@ -25,6 +25,7 @@ package io.paradaux.csbot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.csbot.embeds.RulesEmbed;
 import net.dv8tion.jda.api.entities.Message;
 
 /**
@@ -47,5 +48,21 @@ public class AdminCommand extends Command {
     @Override
     protected void execute(CommandEvent event) {
         Message message = event.getMessage();
+        System.out.println("Admin executed");
+        String[] args = event.getArgs().split(" "); // Space
+        System.out.println(String.join(", ", args));
+        switch (args[0]) {
+
+            case "sendembed": {
+                if (args[1].equalsIgnoreCase("rules")) {
+                    System.out.println("trying to send embed rules");
+                    new RulesEmbed().sendEmbed(event.getChannel(), null);
+                }
+            }
+
+        }
+
     }
+
+
 }

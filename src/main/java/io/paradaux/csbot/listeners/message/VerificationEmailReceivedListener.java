@@ -23,7 +23,13 @@
 
 package io.paradaux.csbot.listeners.message;
 
-import io.paradaux.csbot.api.*;
+import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.api.EmailUtils;
+import io.paradaux.csbot.api.SMTPConnection;
+import io.paradaux.csbot.api.VerificationSystem;
+import io.paradaux.csbot.controllers.ConfigurationController;
+import io.paradaux.csbot.controllers.EmailController;
+import io.paradaux.csbot.controllers.LogController;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -38,10 +44,10 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
     SMTPConnection smtpConnection;
     Logger logger;
 
-    public VerificationEmailReceivedListener(ConfigurationCache configurationCache, SMTPConnection smtpConnection) {
-        this.configurationCache = configurationCache;
-        this.smtpConnection = smtpConnection;
-        logger = Logging.getLogger();
+    public VerificationEmailReceivedListener() {
+        this.configurationCache = ConfigurationController.getConfigurationCache();
+        this.smtpConnection = EmailController.getSmtpConnection();
+        logger = LogController.getLogger();
     }
 
     @Override

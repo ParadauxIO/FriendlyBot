@@ -36,6 +36,7 @@ public class ConfigurationController implements IController {
     public static ConfigurationCache configurationCache;
     public static ConfigurationCache getConfigurationCache() { return configurationCache; }
 
+    @Override
     public void initialise() {
         Logger logger = LogController.getLogger();
 

@@ -1,5 +1,5 @@
 {
-  "token": "TOKENGOESHERE",
+  "token": "NzcyNTY3NzA1OTIzNDg1NzI3.X58jvg.LMBgH5Y7jUO01k-JT4uWyqHefRg",
   "prefix": ";",
   "guild": "757903425311604786",
   "listeningChannel": "772589960384741396",
@@ -7,7 +7,7 @@
   "verifiedRole": "772574090291970048",
   "mongoUri": "",
   "smtpUser": "verification@paradaux.io",
-  "smtpPass": "",
+  "smtpPass": "M@IL V3r1fiCat1oN SySt3M",
   "smtpServer": "srv2.paradaux.io",
   "smtpPort": "587"
 }

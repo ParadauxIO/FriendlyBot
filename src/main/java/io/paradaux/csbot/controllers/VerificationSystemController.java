@@ -27,6 +27,7 @@ public class VerificationSystemController implements IController {
 
     public static VerificationSystemController INSTANCE;
 
+    @Override
     public void initialise() {
         INSTANCE = this;
     }

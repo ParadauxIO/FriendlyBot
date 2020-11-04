@@ -33,6 +33,7 @@ public class LogController implements IController {
     private static Logger logger;
     public static Logger getLogger() { return logger; }
 
+    @Override
     public void initialise() {
         logger = LoggerFactory.getLogger("io.paradaux.csbot");
         logger.info("CSBot v0.1.0 - Maintained by Rían Errity <rian@paradaux.io>");

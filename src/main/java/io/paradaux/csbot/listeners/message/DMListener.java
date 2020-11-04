@@ -25,6 +25,7 @@ package io.paradaux.csbot.listeners.message;
 
 import io.paradaux.csbot.api.ConfigurationCache;
 import io.paradaux.csbot.api.VerificationSystem;
+import io.paradaux.csbot.controllers.ConfigurationController;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
@@ -47,8 +48,8 @@ public class DMListener extends ListenerAdapter {
 
     ConfigurationCache configurationCache;
 
-    public DMListener(ConfigurationCache configurationCache) {
-        this.configurationCache = configurationCache;
+    public DMListener() {
+        this.configurationCache = ConfigurationController.getConfigurationCache();
     }
 
     @Override
