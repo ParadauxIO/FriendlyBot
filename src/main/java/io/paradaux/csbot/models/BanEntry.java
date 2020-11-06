@@ -21,38 +21,9 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands;
+package io.paradaux.csbot.models;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
-import net.dv8tion.jda.api.entities.Message;
-
-/**
- * This is a command which
- *
- * @author Rían Errity
- * @version Last modified for 0.1.0-SNAPSHOT
- * @since 4/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
- * */
-
-public class WarnCommand extends Command {
-
-    public WarnCommand() {
-        this.name = "warn";
-        this.aliases = new String[]{"w"};
-        this.help = "Warns the specified user";
-    }
-
-    @Override
-    protected void execute(CommandEvent event) {
-        Message message = event.getMessage();
-        String[] args = event.getArgs().split(" ");
+public class BanEntry {
 
 
-
-
-
-
-    }
 }

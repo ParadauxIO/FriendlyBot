@@ -29,6 +29,7 @@ import io.paradaux.csbot.controllers.EmailController;
 import io.paradaux.csbot.embeds.ModMailEmbed;
 import io.paradaux.csbot.embeds.PickYourCourseEmbed;
 import io.paradaux.csbot.embeds.RulesEmbed;
+import io.paradaux.csbot.embeds.VerificationEmbed;
 import net.dv8tion.jda.api.entities.Message;
 
 import javax.mail.MessagingException;
@@ -63,6 +64,8 @@ public class AdminCommand extends Command {
                     new ModMailEmbed().sendEmbed(event.getChannel(), null);
                 } else if (args[1].equalsIgnoreCase("pickcourse")) {
                     new PickYourCourseEmbed().sendEmbed(event.getChannel(), null);
+                } else if (args[1].equalsIgnoreCase("verification")) {
+                    new VerificationEmbed().sendEmbed(event.getChannel(), null);
                 }
             }
 
