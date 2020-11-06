@@ -21,38 +21,30 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.embeds;
 
-import io.paradaux.csbot.api.ConfigurationCache;
-import org.slf4j.Logger;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
-import java.io.FileNotFoundException;
+public class PickYourCourseEmbed implements IEmbedMessage {
 
-public class ConfigurationController implements IController {
+    EmbedBuilder builder;
 
-    public static ConfigurationController INSTANCE;
-
-    public static ConfigurationCache configurationCache;
-    public static ConfigurationCache getConfigurationCache() { return configurationCache; }
-
-    public ConfigurationController() {}
-
-    public ConfigurationController(ConfigurationCache suppliedConfigurationCache) {
-        configurationCache = suppliedConfigurationCache;
+    public PickYourCourseEmbed() {
+        this.builder = new EmbedBuilder();
+        create();
     }
 
     @Override
-    public void initialise() {
-        Logger logger = LogController.getLogger();
-
-        FileController.deployConfiguration();
-        try {
-            configurationCache = FileController.readConfigurationFile();
-        } catch (FileNotFoundException exception) {
-            logger.error("Could not find the configuration file!", exception);
-        }
-
-        INSTANCE = this;
+    public void create() {
+        builder.setDescription("**What course are you doing?**");
+        builder.addField("\uD83D\uDDA5", "Integrated Computer Science", true);
+        builder.addField("\uD83D\uDCC8", "Computer Science & Language", true);
+        builder.addField("\uD83D\uDCAC", "Computer Science & Business", true);
     }
 
+    @Override
+    public MessageEmbed build() {
+        return builder.build();
+    }
 }

@@ -49,6 +49,10 @@ public class CSBot {
         new LogController().initialise();
         Logger logger = LogController.getLogger();
 
+        // Prepare File Controller, which includes various utilities used by the below controllers.
+        logger.info("Initialising: FileController");
+        new FileController().initialise();
+
         // Prepare Configuration File/Cache
         logger.info("Initialising: ConfigurationController");
         new ConfigurationController().initialise();

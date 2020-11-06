@@ -35,11 +35,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.io.InputStream;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class EmailController implements IController {
@@ -81,24 +79,7 @@ public class EmailController implements IController {
         });
     }
 
-    @Nullable
-    public String readEmailTemplate() {
-        StringBuilder emailTemplate = new StringBuilder();
 
-        InputStream emailTemplateStream = getClass().getClassLoader().getResourceAsStream("emailtemplate.html");
-        if (emailTemplateStream == null) {
-            return null;
-        }
-
-        Scanner scanner = new Scanner(emailTemplateStream);
-
-        while (scanner.hasNext()) {
-            emailTemplate.append(scanner.next()).append("\n");
-        }
-
-        scanner.close();
-        return emailTemplate.toString();
-    }
 
 
     public void sendVerificationEmail(String email, String verificationCode, String discordUserName) throws MessagingException {
@@ -113,7 +94,7 @@ public class EmailController implements IController {
 
         // Add the html
         BodyPart messageBodyPart = new MimeBodyPart();
-        String htmlText = Objects.requireNonNull(readEmailTemplate())
+        String htmlText = Objects.requireNonNull(FileController.INSTANCE.readEmailTemplate())
                 .replace("%discord_username%", discordUserName)
                 .replace("%verification_code%", verificationCode);
         messageBodyPart.setContent(htmlText, "text/html");

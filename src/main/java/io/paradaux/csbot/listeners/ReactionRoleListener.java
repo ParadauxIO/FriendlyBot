@@ -23,25 +23,24 @@
 
 package io.paradaux.csbot.listeners;
 
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionAddEvent;
+import net.dv8tion.jda.api.events.message.guild.react.GuildMessageReactionRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class ReactionRoleListener extends ListenerAdapter {
 
-//    private final HashMap<String,Long> map;
-//
-//    @Override
-//    public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event) {
-//        Role role = event.getGuild().getRoleById(map.getOrDefault(key(event.getMessageIdLong(),event.getReactionEmote()), 0L));
-//
-//
-//
-//    }
-//
-//    @Override
-//    public void onGuildMessageReactionRemove(GuildMessageReactionRemoveEvent event) {
-//        Role rol  e = event.getGuild().getRoleById(map.getOrDefault(key(event.getMessageIdLong(),event.getReactionEmote()), 0L));
-//        if(role!=null)
-//            event.getGuild().getController().removeSingleRoleFromMember(event.getMember(), role).queue();
-//    }
+
+    @Override
+    public void onGuildMessageReactionAdd(GuildMessageReactionAddEvent event) {
+        event.getMessageId();
+        event.getReaction();
+
+
+    }
+
+    @Override
+    public void onGuildMessageReactionRemove(GuildMessageReactionRemoveEvent event) {
+
+    }
 
 }

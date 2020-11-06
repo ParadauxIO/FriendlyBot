@@ -21,24 +21,9 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.embeds;
+package io.paradaux.csbot.commands;
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import io.paradaux.csbot.controllers.IController;
 
-public class PickYourCourse implements IEmbedMessage {
-
-    EmbedBuilder builder;
-
-    public PickYourCourse(EmbedBuilder builder) {
-        this.builder = builder;
-    }
-
-    @Override
-    public void create() {}
-
-    @Override
-    public MessageEmbed build() {
-        return builder.build();
-    }
+public class ReactionRoleController implements IController {
 }
