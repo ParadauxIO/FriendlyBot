@@ -21,9 +21,16 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands;
-
-import io.paradaux.csbot.controllers.IController;
+package io.paradaux.csbot.controllers;
 
 public class ReactionRoleController implements IController {
+
+    public static ReactionRoleController INSTANCE;
+
+    @Override
+    public void initialise() {
+        INSTANCE = this;
+    }
+
+    public void exportCache() {}
 }
