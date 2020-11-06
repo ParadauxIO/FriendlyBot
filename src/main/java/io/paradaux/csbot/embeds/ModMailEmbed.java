@@ -26,23 +26,27 @@ package io.paradaux.csbot.embeds;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
-public class PickYourYear implements IEmbedMessage {
+public class ModMailEmbed implements IEmbedMessage {
 
     EmbedBuilder builder;
 
-    public PickYourYear(EmbedBuilder builder) {
-        this.builder = builder;
+    public ModMailEmbed() {
+        this.builder = new EmbedBuilder();
+        create();
     }
 
-    @Override
-    public void create() {}
+    public void create() {
+        builder.setAuthor("The Computer Science Friendly Discord.");
+        builder.setColor(EmbedColour.INFO.getColour());
+
+        builder.addField("Mod Mail System", "If you are having issues with verification, with another user or have any general questions, please send them into this channel" +
+                "your message will be automatically deleted and forwarded on to the moderators. Otherwise, DM the bot. It will also go to the moderators.", false);
+
+        builder.setFooter("Computer Science Friendly Bot | v0.1");
+    }
 
     @Override
     public MessageEmbed build() {
         return builder.build();
     }
-
-
-
-
 }

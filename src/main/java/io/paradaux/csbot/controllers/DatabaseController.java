@@ -25,8 +25,10 @@ package io.paradaux.csbot.controllers;
 
 public class DatabaseController implements IController {
 
+    public static DatabaseController INSTANCE;
+
     @Override
     public void initialise() {
-
+        INSTANCE = this;
     }
 }

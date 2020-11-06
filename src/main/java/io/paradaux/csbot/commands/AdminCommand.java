@@ -26,6 +26,8 @@ package io.paradaux.csbot.commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.controllers.EmailController;
+import io.paradaux.csbot.embeds.ModMailEmbed;
+import io.paradaux.csbot.embeds.PickYourCourseEmbed;
 import io.paradaux.csbot.embeds.RulesEmbed;
 import net.dv8tion.jda.api.entities.Message;
 
@@ -57,6 +59,10 @@ public class AdminCommand extends Command {
             case "sendembed": {
                 if (args[1].equalsIgnoreCase("rules")) {
                     new RulesEmbed().sendEmbed(event.getChannel(), null);
+                } else if (args[1].equalsIgnoreCase("modmail")) {
+                    new ModMailEmbed().sendEmbed(event.getChannel(), null);
+                } else if (args[1].equalsIgnoreCase("pickcourse")) {
+                    new PickYourCourseEmbed().sendEmbed(event.getChannel(), null);
                 }
             }
 

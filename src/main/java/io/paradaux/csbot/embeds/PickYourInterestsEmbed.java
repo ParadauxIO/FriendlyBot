@@ -21,38 +21,25 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.embeds;
 
-import io.paradaux.csbot.api.ConfigurationCache;
-import org.slf4j.Logger;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
-import java.io.FileNotFoundException;
+public class PickYourInterestsEmbed implements IEmbedMessage{
 
-public class ConfigurationController implements IController {
+    EmbedBuilder builder;
 
-    public static ConfigurationController INSTANCE;
-
-    public static ConfigurationCache configurationCache;
-    public static ConfigurationCache getConfigurationCache() { return configurationCache; }
-
-    public ConfigurationController() {}
-
-    public ConfigurationController(ConfigurationCache suppliedConfigurationCache) {
-        configurationCache = suppliedConfigurationCache;
+    public PickYourInterestsEmbed() {
+        this.builder = new EmbedBuilder();
+        create();
     }
 
     @Override
-    public void initialise() {
-        Logger logger = LogController.getLogger();
+    public void create() {}
 
-        FileController.deployConfiguration();
-        try {
-            configurationCache = FileController.readConfigurationFile();
-        } catch (FileNotFoundException exception) {
-            logger.error("Could not find the configuration file!", exception);
-        }
-
-        INSTANCE = this;
+    @Override
+    public MessageEmbed build() {
+        return builder.build();
     }
-
 }

@@ -36,7 +36,7 @@ class EmailControllerTest {
     static LogController logController = new LogController();
 
     static ConfigurationCache configurationCache = new ConfigurationCache("", "", "", "", new ArrayList<String>(), "", "",
-            "verification@paradaux.io", "", "srv2.paradaux.io", "587");
+            "verification@paradaux.io", "SMTPPASSHERE", "srv2.paradaux.io", "587");
 
     static ConfigurationController configurationController = new ConfigurationController(configurationCache);
 
