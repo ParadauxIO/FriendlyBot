@@ -21,38 +21,37 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands;
+package io.paradaux.csbot.controllers;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
-import net.dv8tion.jda.api.entities.Message;
+import io.paradaux.csbot.api.ConfigurationCache;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-/**
- * This is a command which
- *
- * @author Rían Errity
- * @version Last modified for 0.1.0-SNAPSHOT
- * @since 4/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
- * */
+class DatabaseControllerTest {
 
-public class WarnCommand extends Command {
+    static LogController logController = new LogController();
 
-    public WarnCommand() {
-        this.name = "warn";
-        this.aliases = new String[]{"w"};
-        this.help = "Warns the specified user";
+    static ConfigurationCache configurationCache = new ConfigurationCache("", "", "", "", null, "",
+            "CONNECTION STRING GOES HERE",
+            "", "", "", "");
+
+    static ConfigurationController configurationController = new ConfigurationController(configurationCache);
+    static DatabaseController databaseController = new DatabaseController();
+
+    @BeforeAll
+    static void setup() {
+        logController.initialise();
+        databaseController.initialise();
     }
 
-    @Override
-    protected void execute(CommandEvent event) {
-        Message message = event.getMessage();
-        String[] args = event.getArgs().split(" ");
-
-
-
-
-
-
+    @Test
+    public void createPendingVerificationEntryTest() {
+        databaseController.addPendingVerificationUser("150993042558418944", "", "69420");
     }
+
+    @Test
+    public void setVerifiedTest() {
+        databaseController.setVerifiedUser("150993042558418944", "757903425311604786");
+    }
+
 }

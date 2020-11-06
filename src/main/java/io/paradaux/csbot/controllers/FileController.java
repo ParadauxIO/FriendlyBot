@@ -53,7 +53,7 @@ public class FileController implements IController {
         OutputStream resStreamOut = null;
         String jarFolder;
         try {
-            stream = FileController.class.getClassLoader().getResourceAsStream(resourceName);
+            stream = FileController.class.getResourceAsStream(resourceName);
             if(stream == null) {
                 throw new Exception("Cannot get resource \"" + resourceName + "\" from Jar file.");
             }

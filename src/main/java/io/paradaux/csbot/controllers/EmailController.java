@@ -79,9 +79,6 @@ public class EmailController implements IController {
         });
     }
 
-
-
-
     public void sendVerificationEmail(String email, String verificationCode, String discordUserName) throws MessagingException {
         Message message = new MimeMessage(session);
 
@@ -121,7 +118,6 @@ public class EmailController implements IController {
         } catch (AuthenticationFailedException exception) {
             LogController.getLogger().error("Failed to login to the SMTP Server, is the login information set?");
         }
-
 
     }
 
