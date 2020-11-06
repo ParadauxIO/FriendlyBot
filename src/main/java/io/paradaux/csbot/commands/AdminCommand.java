@@ -25,8 +25,11 @@ package io.paradaux.csbot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.csbot.controllers.EmailController;
 import io.paradaux.csbot.embeds.RulesEmbed;
 import net.dv8tion.jda.api.entities.Message;
+
+import javax.mail.MessagingException;
 
 /**
  * This is a command which
@@ -48,16 +51,26 @@ public class AdminCommand extends Command {
     @Override
     protected void execute(CommandEvent event) {
         Message message = event.getMessage();
-        System.out.println("Admin executed");
         String[] args = event.getArgs().split(" "); // Space
-        System.out.println(String.join(", ", args));
         switch (args[0]) {
 
             case "sendembed": {
                 if (args[1].equalsIgnoreCase("rules")) {
-                    System.out.println("trying to send embed rules");
                     new RulesEmbed().sendEmbed(event.getChannel(), null);
                 }
+            }
+
+            case "sendemail": {
+                if (args.length > 3) {
+                    event.reply("You need to supply both an email and a verification code.");
+                }
+
+                try {
+                    EmailController.INSTANCE.sendVerificationEmail(args[1], args[2], args[3]);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+
             }
 
         }

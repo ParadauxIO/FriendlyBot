@@ -23,8 +23,24 @@
 
 package io.paradaux.csbot.controllers;
 
+import io.paradaux.csbot.CSBot;
 import io.paradaux.csbot.api.ConfigurationCache;
 import io.paradaux.csbot.api.SMTPConnection;
+import org.slf4j.Logger;
+
+import javax.activation.DataHandler;
+import javax.annotation.Nullable;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.io.InputStream;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class EmailController implements IController {
 
@@ -34,11 +50,128 @@ public class EmailController implements IController {
     public static SMTPConnection getSmtpConnection() { return smtpConnection; }
 
     private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Properties properties = new Properties();
+    private static Session session;
+    Logger logger;
 
     @Override
     public void initialise() {
         smtpConnection = new SMTPConnection(configurationCache);
+
+        this.logger = LogController.getLogger();
+        configure();
+        session = login();
         INSTANCE = this;
+    }
+
+    public void configure() {
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+    }
+
+    public Session login() {
+        properties.put("mail.smtp.host", configurationCache.getSmtpServer());
+        properties.put("mail.smtp.port", configurationCache.getSmtpPort());
+
+        return Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(configurationCache.getSmtpUser(), configurationCache.getSmtpPass());
+            }
+        });
+    }
+
+    @Nullable
+    public String readEmailTemplate() {
+        StringBuilder emailTemplate = new StringBuilder();
+
+        InputStream emailTemplateStream = getClass().getClassLoader().getResourceAsStream("emailtemplate.html");
+        if (emailTemplateStream == null) {
+            return null;
+        }
+
+        Scanner scanner = new Scanner(emailTemplateStream);
+
+        while (scanner.hasNext()) {
+            emailTemplate.append(scanner.next()).append("\n");
+        }
+
+        scanner.close();
+        return emailTemplate.toString();
+    }
+
+
+    public void sendVerificationEmail(String email, String verificationCode, String discordUserName) throws MessagingException {
+        Message message = new MimeMessage(session);
+
+        message.setFrom(new InternetAddress("verification@paradaux.io"));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+        message.setReplyTo(InternetAddress.parse("verification-support@paradaux.io"));
+
+        message.setSubject("Your CSFC Verification Code has arrived!");
+        MimeMultipart multipart = new MimeMultipart("related");
+
+        // Add the html
+        BodyPart messageBodyPart = new MimeBodyPart();
+        String htmlText = Objects.requireNonNull(readEmailTemplate())
+                .replace("%discord_username%", discordUserName)
+                .replace("%verification_code%", verificationCode);
+        messageBodyPart.setContent(htmlText, "text/html");
+        multipart.addBodyPart(messageBodyPart);
+
+        // Add the header image
+        messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setDisposition(MimeBodyPart.INLINE);
+        messageBodyPart.setDataHandler(new DataHandler(CSBot.class.getResource("/verification.png")));
+        messageBodyPart.setHeader("Content-ID", "<verification-header>");
+        multipart.addBodyPart(messageBodyPart);
+
+        // Add the forest image
+        messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setDisposition(MimeBodyPart.INLINE);
+        messageBodyPart.setDataHandler(new DataHandler(CSBot.class.getResource("/fir-forest.png")));
+        messageBodyPart.setHeader("Content-ID", "<fir-forest>");
+        multipart.addBodyPart(messageBodyPart);
+
+        message.setContent(multipart);
+
+        try {
+            Transport.send(message);
+        } catch (AuthenticationFailedException exception) {
+            LogController.getLogger().error("Failed to login to the SMTP Server, is the login information set?");
+        }
+
+
+    }
+
+    /**
+     * Checks against a regex pattern whether or not the email provided is valid
+     * @param email The Email you wish to verify is valid
+     * @return Whether or not the email is valid
+     * */
+    public static boolean isValidEmail(String email) {
+        Pattern emailValidator = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
+        if (email==null) return false;
+        return emailValidator.matcher(email).matches();
+    }
+
+    /**
+     * Gets the domain (the section after the @ sign) from an email address.
+     * @param email The Email you wish to get the domain of
+     * @return The Domain of an email. Returns null if the email is invalid
+     * */
+    @Nullable
+    public static String getEmailDomain(String email) {
+        if (!isValidEmail(email)) return null;
+        return email.substring(email.indexOf("@") + 1);
+    }
+
+    /**
+     * Generates a six-digit code with leading zeros.
+     * @return 6-digit number with leading zeroes.
+     * */
+    public static String generateVerificationCode() {
+        return String.format("%06d", new Random().nextInt(999999));
     }
 
 }

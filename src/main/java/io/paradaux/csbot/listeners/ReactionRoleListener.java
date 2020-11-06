@@ -39,7 +39,7 @@ public class ReactionRoleListener extends ListenerAdapter {
 //
 //    @Override
 //    public void onGuildMessageReactionRemove(GuildMessageReactionRemoveEvent event) {
-//        Role role = event.getGuild().getRoleById(map.getOrDefault(key(event.getMessageIdLong(),event.getReactionEmote()), 0L));
+//        Role rol  e = event.getGuild().getRoleById(map.getOrDefault(key(event.getMessageIdLong(),event.getReactionEmote()), 0L));
 //        if(role!=null)
 //            event.getGuild().getController().removeSingleRoleFromMember(event.getMember(), role).queue();
 //    }
