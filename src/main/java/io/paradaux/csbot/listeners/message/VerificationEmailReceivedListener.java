@@ -24,7 +24,6 @@
 package io.paradaux.csbot.listeners.message;
 
 import io.paradaux.csbot.api.ConfigurationCache;
-import io.paradaux.csbot.api.EmailUtils;
 import io.paradaux.csbot.api.SMTPConnection;
 import io.paradaux.csbot.api.VerificationSystem;
 import io.paradaux.csbot.controllers.ConfigurationController;
@@ -53,15 +52,13 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
-        EmailUtils emailUtils = new EmailUtils();
-
         if (!event.getChannel().getId().equals(configurationCache.getListeningChannel())) return;
 
         Message message = event.getMessage();
         message.delete().queue();
         String email = message.getContentRaw();
 
-        if (!emailUtils.isValidEmail(email)) {
+        if (!EmailController.isValidEmail(email)) {
             event.getAuthor().openPrivateChannel().queue((channel) -> {
                 channel.sendMessage("Your message did not contain an email.").queue();
             });
@@ -69,7 +66,7 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
             return;
         }
 
-        if (!emailUtils.getEmailDomain(email).equalsIgnoreCase("tcd.ie")) {
+        if (!EmailController.getEmailDomain(email).equalsIgnoreCase("tcd.ie")) {
             event.getAuthor().openPrivateChannel().queue((channel) -> {
                 channel.sendMessage("The provided email must be of the tcd.ie domain. If you are not a trinity student, please contact a moderator for manual verification").queue();
             });
@@ -81,7 +78,7 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
             channel.sendMessage("Please check your email for a verification token. Once you have it, please paste it into this private message channel.").queue();
         });
 
-        VerificationSystem.addPendingUser(event.getAuthor().getId(), emailUtils.generateVerificationCode());
+        VerificationSystem.addPendingUser(event.getAuthor().getId(), EmailController.generateVerificationCode());
         try {
             smtpConnection.sendVerificationEmail(email, VerificationSystem.getVerificationCode(event.getAuthor().getId()));
         } catch (MessagingException exception) {
