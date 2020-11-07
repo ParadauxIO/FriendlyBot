@@ -29,19 +29,23 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import javax.mail.MessagingException;
-import java.util.ArrayList;
 
 class EmailControllerTest {
 
     static LogController logController = new LogController();
 
-    static ConfigurationCache configurationCache = new ConfigurationCache("", "", "", "", new ArrayList<String>(), "", "",
-            "verification@paradaux.io", "SMTPPASSHERE", "srv2.paradaux.io", "587");
-
-    static ConfigurationController configurationController = new ConfigurationController(configurationCache);
+    static ConfigurationCache configurationCache = new ConfigurationCache();
+    static ConfigurationController configurationController = new ConfigurationController();
 
     @BeforeAll
     static void setup() {
+        configurationCache
+                .setSmtpUser("verification@paradaux.io")
+                .setSmtpPass("SMTP-PASS-HERE")
+                .setSmtpHost("srv2.paradaux.io")
+                .setSmtpPort("587");
+
+        configurationController = new ConfigurationController(configurationCache);
         logController.initialise();
     }
 
