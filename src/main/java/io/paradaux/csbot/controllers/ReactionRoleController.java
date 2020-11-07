@@ -23,9 +23,18 @@
 
 package io.paradaux.csbot.controllers;
 
+import io.paradaux.csbot.IController;
+import io.paradaux.csbot.api.ConfigurationCache;
+import org.slf4j.Logger;
+
 public class ReactionRoleController implements IController {
 
+    // Singleton Instance
     public static ReactionRoleController INSTANCE;
+
+    // Dependencies
+    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Logger logger = LogController.getLogger();
 
     @Override
     public void initialise() {

@@ -25,18 +25,24 @@ package io.paradaux.csbot.controllers;
 
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
+import io.paradaux.csbot.IController;
 import io.paradaux.csbot.api.ConfigurationCache;
 import io.paradaux.csbot.commands.*;
 import net.dv8tion.jda.api.entities.Activity;
+import org.slf4j.Logger;
 
 public class CommandController implements IController {
 
-    public static CommandController INSTANCE;
+    // Singleton Instance
+    public  static CommandController INSTANCE;
 
+    // Dependencies
+    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Logger logger = LogController.getLogger();
+
+    // Singleton Fields
     public static CommandClient commandClient;
     public static CommandClient getCommandClient() { return commandClient; }
-
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
 
     @Override
     public void initialise() {
@@ -50,8 +56,7 @@ public class CommandController implements IController {
      * */
     public static CommandClient createCommandClient() {
         CommandClientBuilder builder = new CommandClientBuilder()
-                .setOwnerId(configurationCache.getAdmins().get(0))
-                .setPrefix(configurationCache.getPrefix())
+                .setPrefix(configurationCache.getCommandPrefix())
                 .setActivity(Activity.playing("with your emotions"))
                 .addCommands(
                         new AdminCommand(),

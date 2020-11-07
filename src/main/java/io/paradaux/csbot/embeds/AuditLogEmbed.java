@@ -21,10 +21,40 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.embeds;
 
-public interface IController {
+import io.paradaux.csbot.IEmbedMessage;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
-    void initialise();
+public class AuditLogEmbed implements IEmbedMessage {
 
+    String cause, target, action;
+
+
+    public AuditLogEmbed() { }
+
+    @Override
+    public void create() {
+        
+    }
+
+    @Override
+    public MessageEmbed build() {
+        return null;
+    }
+
+    public AuditLogEmbed setCause(String cause) {
+        this.cause = cause;
+        return this;
+    }
+
+    public AuditLogEmbed setTarget(String target) {
+        this.target = target;
+        return this;
+    }
+
+    public AuditLogEmbed setAction(String action) {
+        this.action = action;
+        return this;
+    }
 }

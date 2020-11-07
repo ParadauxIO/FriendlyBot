@@ -24,8 +24,8 @@
 package io.paradaux.csbot.controllers;
 
 import io.paradaux.csbot.CSBot;
+import io.paradaux.csbot.IController;
 import io.paradaux.csbot.api.ConfigurationCache;
-import io.paradaux.csbot.api.SMTPConnection;
 import org.slf4j.Logger;
 
 import javax.activation.DataHandler;
@@ -42,21 +42,19 @@ import java.util.regex.Pattern;
 
 public class EmailController implements IController {
 
+    // Singleton Instance
     public static EmailController INSTANCE;
 
-    private static SMTPConnection smtpConnection;
-    public static SMTPConnection getSmtpConnection() { return smtpConnection; }
-
+    // Dependencies
     private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Logger logger = LogController.getLogger();
+
     private static final Properties properties = new Properties();
     private static Session session;
-    Logger logger;
+
 
     @Override
     public void initialise() {
-        smtpConnection = new SMTPConnection(configurationCache);
-
-        this.logger = LogController.getLogger();
         configure();
         session = login();
         INSTANCE = this;
@@ -68,7 +66,7 @@ public class EmailController implements IController {
     }
 
     public Session login() {
-        properties.put("mail.smtp.host", configurationCache.getSmtpServer());
+        properties.put("mail.smtp.host", configurationCache.getSmtpHost());
         properties.put("mail.smtp.port", configurationCache.getSmtpPort());
 
         return Session.getInstance(properties, new Authenticator() {

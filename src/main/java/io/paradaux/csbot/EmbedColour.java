@@ -21,25 +21,35 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.api;
-
-import io.paradaux.csbot.embeds.EmbedColour;
-import io.paradaux.csbot.embeds.ModerationActionEmbed;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+package io.paradaux.csbot;
 
 import javax.annotation.Nullable;
 
-public class ModerationAction {
+public enum EmbedColour {
 
-    public static MessageEmbed kickUser(String guildID, String discordID, String reason, @Nullable String context) {
-        return new ModerationActionEmbed(EmbedColour.MODERATION, discordID, guildID, reason).build();
+    INFO(0x1D3557),
+    MODERATION(0x457B9D),
+    AUTOMATIC(0xA8DADC),
+    NEUTRAL(0xF1FAEE),
+    ISSUE(0xA8DADC);
+
+    public final int colour;
+    EmbedColour(int colour) {
+        this.colour = colour;
     }
 
-    public static MessageEmbed warnUser(String guildID, String discordID, String reason, @Nullable String context) {
-        return new ModerationActionEmbed(EmbedColour.MODERATION, discordID, guildID, reason).build();
+    public int getColour() {
+        return colour;
     }
 
-    public static MessageEmbed banUser(String guildID, String discordID, String reason) {
-        return new ModerationActionEmbed(EmbedColour.MODERATION, discordID, guildID, reason).build();
+    @Nullable
+    public EmbedColour valueOf(int value) {
+        for (EmbedColour color : values()) {
+            if (color.getColour() == value) {
+                return color;
+            }
+        }
+        return null;
     }
+
 }
