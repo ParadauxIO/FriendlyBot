@@ -27,56 +27,41 @@ import io.paradaux.csbot.EmbedColour;
 import io.paradaux.csbot.IEmbedMessage;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 
-public class AuditLogEmbed implements IEmbedMessage {
+import javax.annotation.Nullable;
+
+public class ChatFilterKickEmbed implements IEmbedMessage {
 
     EmbedBuilder builder = new EmbedBuilder();
-    Integer color;
-    String cause, target, action;
+    String discordID, message;
+    User user;
 
-    public AuditLogEmbed() { }
-
-    public AuditLogEmbed(Integer color, String cause, String target, String action) {
-        this.color = color;
-        this.cause = cause;
-        this.target = target;
-        this.action = action;
+    public ChatFilterKickEmbed(User user, @Nullable String message) {
+        this.discordID = user.getId();
+        this.message = message;
+        this.user = user;
         create();
     }
 
     @Override
     public void create() {
-        builder.setColor(color==null ? EmbedColour.MODERATION.getColour() : color);
-        builder.setDescription(cause);
+        if (message == null) {
+            builder.setAuthor(user.getAsTag() + " has triggered the chat filter", null, user.getAvatarUrl());
+            builder.setColor(EmbedColour.AUTOMATIC.getColour());
+            builder.setDescription("The offending chat message has been removed, and this put in its place. The User has been kicked for this action.");
+            return;
+        }
 
-        builder.addField("Action: ", action, true);
-
-        if (target != null)
-            builder.addField("Target: ", target, true);
+        builder.setAuthor("You have triggered the chat filter", null, user.getAvatarUrl());
+        builder.setColor(EmbedColour.MODERATION.getColour());
+        builder.setDescription("The offending chat message has been removed, and this put in its place. You have been kicked for this action.\n" +
+                "Contact the moderators via moderation-csfc@paradaux.io to appeal this, or use the mod-mail feature once you rejoin.");
+        builder.addField("Removed Message: ", message, false);
     }
 
     @Override
     public MessageEmbed build() {
         return builder.build();
-    }
-
-    public AuditLogEmbed setColor(Integer color) {
-        this.color = color;
-        return this;
-    }
-
-    public AuditLogEmbed setCause(String cause) {
-        this.cause = cause;
-        return this;
-    }
-
-    public AuditLogEmbed setTarget(String target) {
-        this.target = target;
-        return this;
-    }
-
-    public AuditLogEmbed setAction(String action) {
-        this.action = action;
-        return this;
     }
 }
