@@ -25,51 +25,29 @@ package io.paradaux.csbot.embeds;
 
 import io.paradaux.csbot.EmbedColour;
 import io.paradaux.csbot.IEmbedMessage;
-import io.paradaux.csbot.controllers.BotController;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 
 import javax.annotation.Nullable;
 
-public class ChatFilterEmbed implements IEmbedMessage {
+public class ChatFilterWarnEmbed implements IEmbedMessage {
 
-    EmbedBuilder builder;
+    EmbedBuilder builder = new EmbedBuilder();
+    String discordID, message;
     User user;
-    String discordID;
-    String message;
-    boolean wasKicked;
 
-    public ChatFilterEmbed(String discordID, @Nullable String message, boolean wasKicked) {
-        this.builder = new EmbedBuilder();
-        this.discordID = discordID;
+    public ChatFilterWarnEmbed(User user, @Nullable String message) {
+        this.discordID = user.getId();
         this.message = message;
-        this.wasKicked = wasKicked;
-        this.user = BotController.getClient().getUserById(discordID);
+        this.user = user;
         create();
     }
 
     @Override
     public void create() {
-
-        if (wasKicked) {
-
-            if (message == null) {
-                builder.setAuthor(user.getAsTag() + "has triggered the chat filter", null, user.getAvatarUrl());
-                builder.setColor(EmbedColour.AUTOMATIC.getColour());
-                builder.setDescription("The offending chat message has been removed, and this put in its place. The User has been kicked for this action.");
-                return;
-            }
-
-            builder.setAuthor("You have triggered the chat filter", null, user.getAvatarUrl());
-            builder.setColor(EmbedColour.MODERATION.getColour());
-            builder.setDescription("The offending chat message has been removed, and this put in its place. You have been kicked for this action.\n" +
-                    "Contact the moderators via moderation-csfc@paradaux.io to appeal this, or use the mod-mail feature once you rejoin.");
-            return;
-        }
-
         if (message == null) {
-            builder.setAuthor(user.getAsTag() + "has triggered the chat filter", null, user.getAvatarUrl());
+            builder.setAuthor(user.getAsTag() + " has triggered the chat filter", null, user.getAvatarUrl());
             builder.setColor(EmbedColour.AUTOMATIC.getColour());
             builder.setDescription("The offending chat message has been removed, and this put in its place. The User has been given an automatic warning point.\n" +
                     "Contact the moderators via mod-mail if you believe this to be a mistake.");
@@ -81,13 +59,10 @@ public class ChatFilterEmbed implements IEmbedMessage {
         builder.setDescription("The offending chat message has been removed, and this put in its place. You have been given an automatic warning point.\n" +
                 "Contact the moderators via mod-mail if you believe this to be a mistake.");
         builder.addField("Removed Message:", message, false);
-
     }
 
     @Override
     public MessageEmbed build() {
         return builder.build();
     }
-
-
 }
