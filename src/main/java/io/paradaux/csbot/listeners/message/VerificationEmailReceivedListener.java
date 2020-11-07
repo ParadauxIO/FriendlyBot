@@ -51,6 +51,7 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
 
         if (event.getAuthor().isBot()) return;
         if (!event.getChannel().getId().equals(configurationCache.getListeningChannel())) return;
+        if (databaseController.isVerified(discordID)) return;
         if (databaseController.isPendingVerification(discordID)) return;
 
         // We need to handle the message deletion.
