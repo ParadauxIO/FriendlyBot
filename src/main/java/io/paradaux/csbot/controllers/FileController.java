@@ -26,7 +26,7 @@ package io.paradaux.csbot.controllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.paradaux.csbot.IController;
-import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.ConfigurationCache;
 import io.paradaux.csbot.models.ChatFilterEntry;
 import org.slf4j.Logger;
 

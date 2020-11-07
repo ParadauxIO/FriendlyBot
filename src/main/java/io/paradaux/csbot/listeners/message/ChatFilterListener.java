@@ -23,11 +23,12 @@
 
 package io.paradaux.csbot.listeners.message;
 
-import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.ConfigurationCache;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.FileController;
 import io.paradaux.csbot.controllers.LogController;
 import io.paradaux.csbot.controllers.ModerationActionController;
+import io.paradaux.csbot.embeds.ChatFilterEmbed;
 import io.paradaux.csbot.models.ChatFilterEntry;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -71,15 +72,25 @@ public class ChatFilterListener extends ListenerAdapter {
 
         if (containsWarnableWord(messageContent)) {
             message.delete().queue();
+
+            event.getChannel().sendMessage(new ChatFilterEmbed(discordID, null, false).build()).queue();
+            event.getAuthor().openPrivateChannel().queue((channel) -> {
+                channel.sendMessage(new ChatFilterEmbed(discordID, messageContent, false).build()).queue();
+            });
+
             ModerationActionController.INSTANCE.warnUser(guildID, discordID, "Illicit word use", messageContent, true);
-            event.getChannel().sendMessage().queue();
         }
 
         if (containsKickableWord(messageContent)) {
             message.delete().queue();
+
+            event.getChannel().sendMessage(new ChatFilterEmbed(discordID, null, true).build()).queue();
+            event.getAuthor().openPrivateChannel().queue((channel) -> {
+                channel.sendMessage(new ChatFilterEmbed(discordID, messageContent, true).build()).queue();
+            });
+
             ModerationActionController.INSTANCE.kickUser(guildID, discordID, "Illicit word use", messageContent);
 
-            event.getChannel().sendMessage().queue();
         }
 
     }

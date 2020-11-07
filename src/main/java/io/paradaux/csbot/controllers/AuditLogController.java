@@ -24,7 +24,7 @@
 package io.paradaux.csbot.controllers;
 
 import io.paradaux.csbot.IController;
-import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.ConfigurationCache;
 import io.paradaux.csbot.embeds.AuditLogEmbed;
 import io.paradaux.csbot.models.AuditLogEntry;
 import org.slf4j.Logger;
