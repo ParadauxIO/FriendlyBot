@@ -23,6 +23,7 @@
 
 package io.paradaux.csbot.api;
 
+import io.paradaux.csbot.controllers.LogController;
 import net.dv8tion.jda.api.entities.User;
 
 import java.io.BufferedWriter;
@@ -79,7 +80,7 @@ public class VerificationSystem {
             br.close();
             fr.close();
         } catch (IOException exception) {
-            Logging.getLogger().error("Error writing to the verification logs. ", exception);
+            LogController.getLogger().error("Error writing to the verification logs. ", exception);
         }
 
 

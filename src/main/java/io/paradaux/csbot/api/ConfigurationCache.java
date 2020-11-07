@@ -23,6 +23,8 @@
 
 package io.paradaux.csbot.api;
 
+import io.paradaux.csbot.controllers.ConfigurationController;
+
 import java.util.List;
 
 /**
@@ -31,7 +33,7 @@ import java.util.List;
  * @author Rían Errity
  * @version Last modified for 0.1.0-SNAPSHOT
  * @since 1/11/2020 DD/MM/YY
- * @see ConfigurationUtils
+ * @see ConfigurationController
  * */
 
 public class ConfigurationCache {
