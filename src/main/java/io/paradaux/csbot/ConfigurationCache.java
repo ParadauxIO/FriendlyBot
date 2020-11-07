@@ -43,6 +43,9 @@ public class ConfigurationCache {
     // Used to access instances of particular channels / to give roles
     String csFriendlyGuildID;
 
+    // Audit Log System Configuration
+    String auditLogChannelID;
+
     // Verification System Configuration
     String verificationChannelID;
     String verifiedRoleID;
@@ -64,10 +67,11 @@ public class ConfigurationCache {
     public ConfigurationCache() { }
 
     // General constructor.
-    public ConfigurationCache(String botToken, String commandPrefix, String csFriendlyGuildID, String verificationChannelID, String verifiedRoleID, String modmailInputChannelID, String modmailOutputChannelID, String mongoConnectionUri, String smtpUser, String smtpPass, String smtpHost, String smtpPort) {
+    public ConfigurationCache(String botToken, String commandPrefix, String csFriendlyGuildID, String auditLogChannelID, String verificationChannelID, String verifiedRoleID, String modmailInputChannelID, String modmailOutputChannelID, String mongoConnectionUri, String smtpUser, String smtpPass, String smtpHost, String smtpPort) {
         this.botToken = botToken;
         this.commandPrefix = commandPrefix;
         this.csFriendlyGuildID = csFriendlyGuildID;
+        this.auditLogChannelID = auditLogChannelID;
         this.verificationChannelID = verificationChannelID;
         this.verifiedRoleID = verifiedRoleID;
         this.modmailInputChannelID = modmailInputChannelID;
@@ -101,6 +105,10 @@ public class ConfigurationCache {
 
     public String getVerifiedRoleID() {
         return verifiedRoleID;
+    }
+
+    public String getAuditLogChannelID() {
+        return auditLogChannelID;
     }
 
     public String getModmailInputChannelID() {
@@ -153,6 +161,11 @@ public class ConfigurationCache {
 
     public ConfigurationCache setVerificationChannelID(String verificationChannelID) {
         this.verificationChannelID = verificationChannelID;
+        return this;
+    }
+
+    public ConfigurationCache setAuditLogChannelID(String auditLogChannelID) {
+        this.auditLogChannelID = auditLogChannelID;
         return this;
     }
 

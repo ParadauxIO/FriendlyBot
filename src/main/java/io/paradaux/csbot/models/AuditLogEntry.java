@@ -23,6 +23,8 @@
 
 package io.paradaux.csbot.models;
 
+import javax.annotation.Nullable;
+
 public class AuditLogEntry {
 
     String cause;
@@ -31,7 +33,7 @@ public class AuditLogEntry {
 
     public AuditLogEntry() { }
 
-    public AuditLogEntry(String cause, String target, String action) {
+    public AuditLogEntry(String cause, @Nullable String target, String action) {
         this.cause = cause;
         this.target = target;
         this.action = action;
