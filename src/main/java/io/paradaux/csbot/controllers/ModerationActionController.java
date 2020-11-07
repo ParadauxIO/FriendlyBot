@@ -24,7 +24,7 @@
 package io.paradaux.csbot.controllers;
 
 import io.paradaux.csbot.IController;
-import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.ConfigurationCache;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -45,6 +45,6 @@ public class ModerationActionController implements IController {
 
     public void warnUser (String guildID, String discordID, String reason, String messageContent, @Nullable boolean automaticAction) {}
     public void kickUser (String guildID, String discordID, String reason, String messageContent) { }
-    public void banUser  (String guildID, String discordID, String reason, String messageContent() {  }
+    public void banUser  (String guildID, String discordID, String reason, String messageContent) { }
 
 }

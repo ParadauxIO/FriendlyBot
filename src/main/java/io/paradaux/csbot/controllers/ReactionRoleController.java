@@ -24,7 +24,7 @@
 package io.paradaux.csbot.controllers;
 
 import io.paradaux.csbot.IController;
-import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.ConfigurationCache;
 import org.slf4j.Logger;
 
 public class ReactionRoleController implements IController {

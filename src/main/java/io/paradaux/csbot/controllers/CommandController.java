@@ -26,7 +26,7 @@ package io.paradaux.csbot.controllers;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import io.paradaux.csbot.IController;
-import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.ConfigurationCache;
 import io.paradaux.csbot.commands.*;
 import net.dv8tion.jda.api.entities.Activity;
 import org.slf4j.Logger;
