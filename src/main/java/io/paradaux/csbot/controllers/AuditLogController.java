@@ -23,12 +23,48 @@
 
 package io.paradaux.csbot.controllers;
 
+import io.paradaux.csbot.IController;
+import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.embeds.AuditLogEmbed;
+import io.paradaux.csbot.models.AuditLogEntry;
+import org.slf4j.Logger;
+
 public class AuditLogController implements IController {
 
-    public static AuditLogController INSTANCE;
+    // Singleton Instance
+    public  static AuditLogController INSTANCE;
+
+    // Dependencies
+    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Logger logger = LogController.getLogger();
 
     @Override
     public void initialise() {
+        logger.info("Initialising: AuditLogController");
         INSTANCE = this;
+    }
+
+    public void log(String cause, String target, String action) {
+        AuditLogEmbed embed = new AuditLogEmbed()
+                .setCause(cause)
+                .setTarget(target)
+                .setAction(action);
+
+        AuditLogEntry auditLogEntry = new AuditLogEntry()
+                .setCause(cause)
+                .setTarget(target)
+                .setAction(action);
+
+        BotController.getClient().getGuildChannelById("");
+    }
+
+    public void log(String cause, String action) {
+        AuditLogEmbed embed = new AuditLogEmbed()
+                .setCause(cause)
+                .setAction(action);
+
+        AuditLogEntry auditLogEntry = new AuditLogEntry()
+                .setCause(cause)
+                .setAction(action);
     }
 }

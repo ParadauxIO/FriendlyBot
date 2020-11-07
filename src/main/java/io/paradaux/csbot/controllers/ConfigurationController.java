@@ -23,6 +23,7 @@
 
 package io.paradaux.csbot.controllers;
 
+import io.paradaux.csbot.IController;
 import io.paradaux.csbot.api.ConfigurationCache;
 import org.slf4j.Logger;
 
@@ -30,8 +31,13 @@ import java.io.FileNotFoundException;
 
 public class ConfigurationController implements IController {
 
+    // Singleton Instance
     public static ConfigurationController INSTANCE;
 
+    // Dependencies
+    private static final Logger logger = LogController.getLogger();
+
+    // Singleton Fields
     public static ConfigurationCache configurationCache;
     public static ConfigurationCache getConfigurationCache() { return configurationCache; }
 

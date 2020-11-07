@@ -43,7 +43,7 @@ public class VerificationCodeReceivedListener extends ListenerAdapter {
         String verificationCode = message.getContentRaw();
 
         if (event.getAuthor().isBot()) return;
-        if (!event.getChannel().getId().equals(configurationCache.getListeningChannel())) return;
+        if (!event.getChannel().getId().equals(configurationCache.getVerificationChannelID())) return;
 
         // If they aren't expected to input a verification code
         if (!databaseController.isPendingVerification(event.getAuthor().getId())) return;

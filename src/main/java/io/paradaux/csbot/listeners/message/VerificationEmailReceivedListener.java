@@ -50,7 +50,7 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
         String email = message.getContentRaw();
 
         if (event.getAuthor().isBot()) return;
-        if (!event.getChannel().getId().equals(configurationCache.getListeningChannel())) return;
+        if (!event.getChannel().getId().equals(configurationCache.getVerificationChannelID())) return;
         if (databaseController.isVerified(discordID)) return;
         if (databaseController.isPendingVerification(discordID)) return;
 

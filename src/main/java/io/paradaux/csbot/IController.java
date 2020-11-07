@@ -21,35 +21,10 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.embeds;
+package io.paradaux.csbot;
 
-import javax.annotation.Nullable;
+public interface IController {
 
-public enum EmbedColour {
-
-    INFO(0x1D3557),
-    MODERATION(0x457B9D),
-    AUTOMATIC(0xA8DADC),
-    NEUTRAL(0xF1FAEE),
-    ISSUE(0xA8DADC);
-
-    public final int colour;
-    EmbedColour(int colour) {
-        this.colour = colour;
-    }
-
-    public int getColour() {
-        return colour;
-    }
-
-    @Nullable
-    public EmbedColour valueOf(int value) {
-        for (EmbedColour color : values()) {
-            if (color.getColour() == value) {
-                return color;
-            }
-        }
-        return null;
-    }
+    void initialise();
 
 }

@@ -25,8 +25,6 @@ package io.paradaux.csbot.api;
 
 import io.paradaux.csbot.controllers.ConfigurationController;
 
-import java.util.List;
-
 /**
  * Contains a cached copy of the configuration file's contents, to allow easy access within the application
  *
@@ -38,106 +36,163 @@ import java.util.List;
 
 public class ConfigurationCache {
 
-    String token;
-    String prefix;
-    String guild;
-    String listeningChannel;
-    List<String> admins;
-    String verifiedRole;
-    String mongoUri;
+    // Required to have a discord bot
+    String botToken;
+    String commandPrefix;
+
+    // Used to access instances of particular channels / to give roles
+    String csFriendlyGuildID;
+
+    // Verification System Configuration
+    String verificationChannelID;
+    String verifiedRoleID;
+
+    // Modmail System Configuration
+    String modmailInputChannelID;
+    String modmailOutputChannelID;
+
+    // Database Controller Configuration
+    String mongoConnectionUri;
+
+    // SMTP Login Information.
     String smtpUser;
     String smtpPass;
-    String smtpServer;
+    String smtpHost;
     String smtpPort;
 
-    public ConfigurationCache(String token, String prefix, String guild, String listeningChannel, List<String> admins, String verifiedRole, String mongoUri, String smtpUser, String smtpPass, String smtpServer, String smtpPort) {
-        this.token = token;
-        this.prefix = prefix;
-        this.guild = guild;
-        this.listeningChannel = listeningChannel;
-        this.admins = admins;
-        this.verifiedRole = verifiedRole;
-        this.mongoUri = mongoUri;
+    // Constructor for builder-pattern generation
+    public ConfigurationCache() { }
+
+    // General constructor.
+    public ConfigurationCache(String botToken, String commandPrefix, String csFriendlyGuildID, String verificationChannelID, String verifiedRoleID, String modmailInputChannelID, String modmailOutputChannelID, String mongoConnectionUri, String smtpUser, String smtpPass, String smtpHost, String smtpPort) {
+        this.botToken = botToken;
+        this.commandPrefix = commandPrefix;
+        this.csFriendlyGuildID = csFriendlyGuildID;
+        this.verificationChannelID = verificationChannelID;
+        this.verifiedRoleID = verifiedRoleID;
+        this.modmailInputChannelID = modmailInputChannelID;
+        this.modmailOutputChannelID = modmailOutputChannelID;
+        this.mongoConnectionUri = mongoConnectionUri;
         this.smtpUser = smtpUser;
         this.smtpPass = smtpPass;
-        this.smtpServer = smtpServer;
+        this.smtpHost = smtpHost;
         this.smtpPort = smtpPort;
     }
 
-    /**
-     * @return Discord bot token.
-     * */
-    public String getToken() {
-        return token;
+    /* 
+    * Standard Getters
+    * */
+    
+    public String getBotToken() {
+        return botToken;
     }
 
-    /**
-     * @return Command Prefix
-     * */
-    public String getPrefix() {
-        return prefix;
+    public String getCommandPrefix() {
+        return commandPrefix;
     }
 
-    /**
-     * @return List of Discord IDs which represent the administrators.
-     * */
-    public List<String> getAdmins() {
-        return admins;
+    public String getCsFriendlyGuildID() {
+        return csFriendlyGuildID;
     }
 
-    /**
-     * @return The Role ID which represents the Verified Role.
-     * */
-    public String getVerifiedRole() {
-        return verifiedRole;
+    public String getVerificationChannelID() {
+        return verificationChannelID;
     }
 
-    /**
-     * @return The Channel ID which the bot will listen to email addresses to.
-     */
-    public String getListeningChannel() {
-        return listeningChannel;
+    public String getVerifiedRoleID() {
+        return verifiedRoleID;
     }
 
-    /**
-     * @return The MongoURI used to connect to the MongoDB Server
-     * */
-    public String getMongoUri() {
-        return mongoUri;
+    public String getModmailInputChannelID() {
+        return modmailInputChannelID;
     }
 
-    /**
-     * @return The SMTP Username
-     * */
+    public String getModmailOutputChannelID() {
+        return modmailOutputChannelID;
+    }
+
+    public String getMongoConnectionUri() {
+        return mongoConnectionUri;
+    }
+
     public String getSmtpUser() {
         return smtpUser;
     }
 
-    /**
-     * @return The SMTP Password
-     * */
     public String getSmtpPass() {
         return smtpPass;
     }
 
-    /**
-     * @return The SMTP FQDN.
-     * */
-    public String getSmtpServer() {
-        return smtpServer;
+    public String getSmtpHost() {
+        return smtpHost;
     }
 
-    /**
-     * @return The SMTP Server Port.
-     * */
     public String getSmtpPort() {
         return smtpPort;
     }
+    
+    /* 
+    * Builder-pattern Setters
+    * Mostly for easy mocking/unit testing
+    * */
 
-    /**
-     * @return The ID of the Computer Science Friendly Discord
-     * */
-    public String getGuild() {
-        return guild;
+    public ConfigurationCache setBotToken(String botToken) {
+        this.botToken = botToken;
+        return this;
+    }
+
+    public ConfigurationCache setCommandPrefix(String commandPrefix) {
+        this.commandPrefix = commandPrefix;
+        return this;
+    }
+
+    public ConfigurationCache setCsFriendlyGuildID(String csFriendlyGuildID) {
+        this.csFriendlyGuildID = csFriendlyGuildID;
+        return this;
+    }
+
+    public ConfigurationCache setVerificationChannelID(String verificationChannelID) {
+        this.verificationChannelID = verificationChannelID;
+        return this;
+    }
+
+    public ConfigurationCache setVerifiedRoleID(String verifiedRoleID) {
+        this.verifiedRoleID = verifiedRoleID;
+        return this;
+    }
+
+    public ConfigurationCache setModmailInputChannelID(String modmailInputChannelID) {
+        this.modmailInputChannelID = modmailInputChannelID;
+        return this;
+    }
+
+    public ConfigurationCache setModmailOutputChannelID(String modmailOutputChannelID) {
+        this.modmailOutputChannelID = modmailOutputChannelID;
+        return this;
+    }
+
+    public ConfigurationCache setMongoConnectionUri(String mongoConnectionUri) {
+        this.mongoConnectionUri = mongoConnectionUri;
+        return this;
+    }
+
+    public ConfigurationCache setSmtpUser(String smtpUser) {
+        this.smtpUser = smtpUser;
+        return this;
+    }
+
+    public ConfigurationCache setSmtpPass(String smtpPass) {
+        this.smtpPass = smtpPass;
+        return this;
+    }
+
+    public ConfigurationCache setSmtpHost(String smtpHost) {
+        this.smtpHost = smtpHost;
+        return this;
+    }
+
+    public ConfigurationCache setSmtpPort(String smtpPort) {
+        this.smtpPort = smtpPort;
+        return this;
     }
 }

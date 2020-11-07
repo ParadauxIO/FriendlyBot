@@ -23,26 +23,41 @@
 
 package io.paradaux.csbot.listeners.message;
 
-import io.paradaux.csbot.api.ModerationAction;
+import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.controllers.ConfigurationController;
+import io.paradaux.csbot.controllers.FileController;
+import io.paradaux.csbot.controllers.LogController;
+import io.paradaux.csbot.controllers.ModerationActionController;
+import io.paradaux.csbot.models.ChatFilterEntry;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 
 public class ChatFilterListener extends ListenerAdapter {
 
-    // List of words which are completely unacceptable / inappropriate
-    final public String[] kickList = new String[]{"nigger, nigga, niglet, kike, fag, faggot, fanny, kike", "retard", "retarded", "incest", "incest",
-            "incestuous", "tranny", "transvestite", "coon", "uncle tom", "sissy", "nancy", "girlie", "sodomite", "nelly", "poofter", "quean", "batty boy",
-            "nellie", "dyke", "lesbo", "fauxbians", "trannie", "heshe", "troon", "cuntboy", "hefemale", "shemale", "dickgirl", "chicks with dicls", "femboy",
-            "incel", "muzzie", "osama", "inbred"};
+    // Dependencies
+    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Logger logger = LogController.getLogger();
 
-    // List of words which go against the ethos of the server.
-    final public String[] warnList = new String[]{"newb, noob", "nub", "asshole", "you're stupid", "nazi", "nazism", "commie", "libtard", "tanker",
-            "anarchist", "anarcho", "neo", "bolshevik", "communism", "jreg", "centard", "alibaba", "ali baba", "isis", "terrorist", "knacker", "nacker",
-            "bog trotter", "bog-trotter", "bog irish", "prod", "proddie", "tinker", "gypsy", "horse-fucker", "jaffa", "snout", "fascist"};
+    private String[] warnable, kickable;
+    private ChatFilterEntry chatFilterEntry;
+
+    public ChatFilterListener() {
+        try {
+            chatFilterEntry = FileController.INSTANCE.readChatFilter();
+        } catch (FileNotFoundException exception) {
+            logger.error("Failed to create ChatFilter Listener", exception);
+            return;
+        }
+
+        this.warnable = chatFilterEntry.getWarnable();
+        this.kickable = chatFilterEntry.getKickable();
+    }
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -56,22 +71,24 @@ public class ChatFilterListener extends ListenerAdapter {
 
         if (containsWarnableWord(messageContent)) {
             message.delete().queue();
-            event.getChannel().sendMessage(ModerationAction.warnUser(guildID, discordID, "Illicit word use", messageContent)).queue();
+            ModerationActionController.INSTANCE.warnUser(guildID, discordID, "Illicit word use", messageContent, true);
+            event.getChannel().sendMessage().queue();
         }
 
         if (containsKickableWord(messageContent)) {
             message.delete().queue();
-            event.getChannel().sendMessage(ModerationAction.kickUser(guildID, discordID, "Illicit word use", messageContent)).queue();
+            ModerationActionController.INSTANCE.kickUser(guildID, discordID, "Illicit word use", messageContent);
+
+            event.getChannel().sendMessage().queue();
         }
 
     }
 
-    public boolean containsKickableWord(String input) {
-        return Arrays.stream(kickList).anyMatch(input::contains);
-    }
-
     public boolean containsWarnableWord(String input) {
-        return Arrays.stream(warnList).anyMatch(input::contains);
+        return Arrays.stream(warnable).anyMatch(input::contains);
+    }
+    public boolean containsKickableWord(String input) {
+        return Arrays.stream(kickable).anyMatch(input::contains);
     }
 
 }

@@ -23,15 +23,17 @@
 
 package io.paradaux.csbot.embeds;
 
+import io.paradaux.csbot.IEmbedMessage;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class ChatFilterEmbed implements IEmbedMessage {
 
     EmbedBuilder builder;
+    String
 
     public ChatFilterEmbed(String discordID, String reason, String message) {
-        this.builder = builder;
+        this.builder = new EmbedBuilder();
     }
 
     @Override

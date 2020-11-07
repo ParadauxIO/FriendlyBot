@@ -30,6 +30,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import io.paradaux.csbot.IController;
 import io.paradaux.csbot.api.ConfigurationCache;
 import io.paradaux.csbot.models.*;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -44,9 +45,14 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
 public class DatabaseController implements IController {
 
-    final private static ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
-    final private static Logger logger = LogController.getLogger();
-    public static DatabaseController INSTANCE;
+    // Singleton Instance
+    public  static DatabaseController INSTANCE;
+
+    // Dependencies
+    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Logger logger = LogController.getLogger();
+
+    // Singleton Fields
     private static MongoClient client;
     private static MongoDatabase dataBase;
 
@@ -60,7 +66,7 @@ public class DatabaseController implements IController {
 
     @Override
     public void initialise() {
-        ConnectionString connectionString = new ConnectionString(configurationCache.getMongoUri());
+        ConnectionString connectionString = new ConnectionString(configurationCache.getMongoConnectionUri());
         CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
         CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
 
@@ -134,6 +140,10 @@ public class DatabaseController implements IController {
                 .setDateIssued(new Date());
 
         warnings.insertOne(warningEntry);
+    }
+
+    public void addAuditLog(AuditLogEntry auditLogEntry) {
+        auditLog.insertOne(auditLogEntry);
     }
 
 

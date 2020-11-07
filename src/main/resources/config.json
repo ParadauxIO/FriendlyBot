@@ -1,13 +1,15 @@
 {
-  "token": "TOKEN GOES HERE",
-  "prefix": ";",
-  "guild": "757903425311604786",
-  "listeningChannel": "772589960384741396",
-  "admins": ["150993042558418944"],
-  "verifiedRole": "772574090291970048",
-  "mongoUri": "",
-  "smtpUser": "verification@paradaux.io",
-  "smtpPass": "SMTPPASSWORD",
-  "smtpServer": "srv2.paradaux.io",
-  "smtpPort": "587"
+  "botToken": "BOT-TOKEN",
+  "commandPrefix": ";",
+  "csFriendlyGuildID": "GUILD-ID",
+  "verificationChannelID": "VERIFICATION-CHANNEL-ID",
+  "verifiedRoleID": "VERIFIED-ROLE-ID",
+  "auditLogChannelID": "AUDIT-LOG-CHANNEL-ID",
+  "modmailInputChannelID": "MODMAIL-INPUT-CHANNEL-ID",
+  "modmailOutputChannelID": "MODMAIL-OUTPUT-CHANNEL-ID",
+  "mongoConnectionUri": "MONGODB-CONNECTION-URI",
+  "smtpUser": "SMTP-USERNAME",
+  "smtpPass": "SMTP-PASSWORD",
+  "smtpHost": "SMTP-SERVER",
+  "smtpPort": "SMTP-PORT"
 }
