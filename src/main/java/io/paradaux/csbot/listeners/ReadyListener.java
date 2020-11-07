@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.listeners;
 
-import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.ConfigurationCache;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.LogController;
 import net.dv8tion.jda.api.entities.Guild;

@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.controllers;
 
-import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.ConfigurationCache;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -31,15 +31,15 @@ class DatabaseControllerTest {
 
     static LogController logController = new LogController();
 
-    static ConfigurationCache configurationCache = new ConfigurationCache("", "", "", "", null, "",
-            "CONNECTION STRING GOES HERE",
-            "", "", "", "");
+    static ConfigurationCache configurationCache;
+    static ConfigurationController configurationController;
 
-    static ConfigurationController configurationController = new ConfigurationController(configurationCache);
     static DatabaseController databaseController = new DatabaseController();
 
     @BeforeAll
     static void setup() {
+        configurationCache.setMongoConnectionUri("MONGO-URI-HERE");
+        configurationController = new ConfigurationController(configurationCache);
         logController.initialise();
         databaseController.initialise();
     }

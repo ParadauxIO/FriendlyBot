@@ -23,12 +23,64 @@
 
 package io.paradaux.csbot.controllers;
 
+import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.IController;
+import io.paradaux.csbot.embeds.AuditLogEmbed;
+import io.paradaux.csbot.models.AuditLogEntry;
+import net.dv8tion.jda.api.entities.TextChannel;
+import org.slf4j.Logger;
+
 public class AuditLogController implements IController {
 
-    public static AuditLogController INSTANCE;
+    // Singleton Instance
+    public  static AuditLogController INSTANCE;
+
+    // Dependencies
+    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Logger logger = LogController.getLogger();
 
     @Override
     public void initialise() {
+        logger.info("Initialising: AuditLogController");
         INSTANCE = this;
+    }
+
+    public void log(String cause, String target, String action) {
+        AuditLogEmbed embed = new AuditLogEmbed()
+                .setCause(cause)
+                .setTarget(target)
+                .setAction(action);
+
+        AuditLogEntry auditLogEntry = new AuditLogEntry()
+                .setCause(cause)
+                .setTarget(target)
+                .setAction(action);
+
+        TextChannel channel = BotController.getClient()
+                .getGuildById(configurationCache.getCsFriendlyGuildID())
+                .getTextChannelById(configurationCache.getAuditLogChannelID());
+
+        DatabaseController.INSTANCE.addAuditLog(auditLogEntry);
+        embed.create();
+        embed.sendEmbed(channel, null);
+
+    }
+
+    public void log(String cause, String action) {
+        AuditLogEmbed embed = new AuditLogEmbed()
+                .setCause(cause)
+                .setAction(action);
+
+        AuditLogEntry auditLogEntry = new AuditLogEntry()
+                .setCause(cause)
+                .setAction(action);
+
+        TextChannel channel = BotController.getClient()
+                .getGuildById(configurationCache.getCsFriendlyGuildID())
+                .getTextChannelById(configurationCache.getAuditLogChannelID());
+
+        DatabaseController.INSTANCE.addAuditLog(auditLogEntry);
+        embed.create();
+        embed.sendEmbed(channel, null);
     }
 }
