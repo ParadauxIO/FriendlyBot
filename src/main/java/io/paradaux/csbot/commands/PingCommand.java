@@ -40,6 +40,7 @@ public class PingCommand extends Command {
 
     public PingCommand() {
         this.name = "ping";
+        this.aliases = new String[]{"p", "png"};
         this.help = "Latency Test Command.";
     }
 

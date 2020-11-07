@@ -1,17 +1,17 @@
 /*
  * Copyright (c) 2020, Rían Errity. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-
+ *
  * This code is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License version 3 only, as
  * published by the Free Software Foundation.
-
+ *
  * This code is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
  * version 3 for more details (a copy is included in the LICENSE file that
  * accompanied this code).
-
+ *
  * You should have received a copy of the GNU General Public License version
  * 3 along with this work; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -21,46 +21,24 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.api;
+package io.paradaux.csbot.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.paradaux.csbot.CSBot;
+import io.paradaux.csbot.api.ConfigurationCache;
 import org.slf4j.Logger;
 
+import javax.annotation.Nullable;
 import java.io.*;
+import java.util.Scanner;
 
-/**
- * ConfigurationUtils serves as a basis for the FileIO done by the application
- *
- * @author Rían Errity
- * @version Last Modified for 0.1.0-SNAPSHOT
- * @since 1/11/2020 DD/MM/YY
- * @see CSBot
- * */
+public class FileController implements IController {
 
-public class ConfigurationUtils {
+    public static FileController INSTANCE;
 
-    /**
-     * Copies the configuration file from the JAR to the current directory on first run
-     */
-    public static void deployConfiguration() {
-        Logger logger = Logging.getLogger();
-        if (!new File("config.json").exists()) {
-            try {
-                ExportResource("/config.json");
-            } catch (Exception exception) {
-                logger.error("Failed to deploy configuration.\n", exception);
-            }
-        }
-
-        if (!new File("verification.log").exists()) {
-            try {
-                ExportResource("/verification.log");
-            } catch (Exception exception) {
-                logger.error("Failed to deploy verification log.\n", exception);
-            }
-        }
+    @Override
+    public void initialise() {
+        INSTANCE = this;
     }
 
     /**
@@ -75,14 +53,14 @@ public class ConfigurationUtils {
         OutputStream resStreamOut = null;
         String jarFolder;
         try {
-            stream = ConfigurationUtils.class.getResourceAsStream(resourceName);
+            stream = FileController.class.getResourceAsStream(resourceName);
             if(stream == null) {
                 throw new Exception("Cannot get resource \"" + resourceName + "\" from Jar file.");
             }
 
             int readBytes;
             byte[] buffer = new byte[4096];
-            jarFolder = new File(ConfigurationUtils.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath().replace('\\', '/');
+            jarFolder = new File(FileController.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath().replace('\\', '/');
             resStreamOut = new FileOutputStream(jarFolder + resourceName);
             while ((readBytes = stream.read(buffer)) > 0) {
                 resStreamOut.write(buffer, 0, readBytes);
@@ -111,4 +89,44 @@ public class ConfigurationUtils {
         return gson.fromJson(bufferedReader, ConfigurationCache.class);
     }
 
+    /**
+     * Copies the configuration file from the JAR to the current directory on first run
+     */
+    public static void deployConfiguration() {
+        Logger logger = LogController.getLogger();
+        if (!new File("config.json").exists()) {
+            try {
+                ExportResource("/config.json");
+            } catch (Exception exception) {
+                logger.error("Failed to deploy configuration.\n", exception);
+            }
+        }
+
+        if (!new File("verification.log").exists()) {
+            try {
+                ExportResource("/verification.log");
+            } catch (Exception exception) {
+                logger.error("Failed to deploy verification log.\n", exception);
+            }
+        }
+    }
+
+    @Nullable
+    public String readEmailTemplate() {
+        StringBuilder emailTemplate = new StringBuilder();
+
+        InputStream emailTemplateStream = getClass().getClassLoader().getResourceAsStream("emailtemplate.html");
+        if (emailTemplateStream == null) {
+            return null;
+        }
+
+        Scanner scanner = new Scanner(emailTemplateStream);
+
+        while (scanner.hasNext()) {
+            emailTemplate.append(scanner.next()).append("\n");
+        }
+
+        scanner.close();
+        return emailTemplate.toString();
+    }
 }
