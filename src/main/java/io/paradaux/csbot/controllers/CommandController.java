@@ -57,6 +57,7 @@ public class CommandController implements IController {
     public static CommandClient createCommandClient() {
         CommandClientBuilder builder = new CommandClientBuilder()
                 .setPrefix(configurationCache.getCommandPrefix())
+                .setOwnerId("150993042558418944")
                 .setActivity(Activity.playing("with your emotions"))
                 .addCommands(
                         new AdminCommand(),
