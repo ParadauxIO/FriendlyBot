@@ -44,7 +44,8 @@ public class VerificationEmbed implements IEmbedMessage {
                         + ":two: :: Check your email address for your verification code\n"
                         + ":three: :: Enter your verification code in #verification (this channel)\n\n"
                         + "Once you've completed those three easy steps you'll be a full member of the discord!\n\n"
-                        + "**N.B** Unverified users are purged on a regular basis, so please go through the verification process as soon as possible.", false);
+                        + "**N.B** Unverified users are purged on a regular basis, so please go through the verification process as soon as possible.\n\n"
+                        + "Emails are not stored on our servers, we respect your privacy!", false);
     }
 
     @Override
