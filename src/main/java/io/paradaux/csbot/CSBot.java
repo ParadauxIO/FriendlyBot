@@ -61,21 +61,33 @@ public class CSBot {
         logger.info("Initialising: EmailController");
         new EmailController().initialise();
 
+        // Database
+        logger.info("Initialising: Database Controller");
+        new DatabaseController().initialise();
+
+        // Audit Log
+        logger.info("Initialising: AuditLogController");
+        new AuditLogController().initialise();
+
+        // Reaction Role
+        logger.info("Initialising: ReactionRoleController");
+        new ReactionRoleController().initialise();
+
+        // Permissions
+        logger.info("Initialising: PermissionController");
+        new PermissionController().initialise();
         // Commands
         logger.info("Initialising: CommandController");
         new CommandController().initialise();
-
-        // The Bot
-        logger.info("Initialising: BotController");
-        new BotController().initialise();
 
         // ModerationAction
         logger.info("Initialising: ModerationActionController");
         new ModerationActionController().initialise();
 
-        // VerificationSystem
-        logger.info("Initialising: VerificationSystemController");
-        new VerificationSystemController().initialise();
+        // The Bot
+        logger.info("Initialising: BotController");
+        new BotController().initialise();
+
     }
 
 
