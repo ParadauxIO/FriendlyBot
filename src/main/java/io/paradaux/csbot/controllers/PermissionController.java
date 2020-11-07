@@ -23,10 +23,18 @@
 
 package io.paradaux.csbot.controllers;
 
+import io.paradaux.csbot.IController;
+import io.paradaux.csbot.ConfigurationCache;
+import org.slf4j.Logger;
+
 public class PermissionController implements IController {
 
+    // Singleton Instance
     public static PermissionController INSTANCE;
 
+    // Dependencies
+    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Logger logger = LogController.getLogger();
 
     @Override
     public void initialise() {

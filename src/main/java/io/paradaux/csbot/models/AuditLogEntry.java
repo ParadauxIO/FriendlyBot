@@ -23,8 +23,46 @@
 
 package io.paradaux.csbot.models;
 
+import javax.annotation.Nullable;
+
 public class AuditLogEntry {
 
+    String cause;
+    String target;
+    String action;
 
+    public AuditLogEntry() { }
 
+    public AuditLogEntry(String cause, @Nullable String target, String action) {
+        this.cause = cause;
+        this.target = target;
+        this.action = action;
+    }
+
+    public String getCause() {
+        return cause;
+    }
+
+    public AuditLogEntry setCause(String cause) {
+        this.cause = cause;
+        return this;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public AuditLogEntry setTarget(String target) {
+        this.target = target;
+        return this;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public AuditLogEntry setAction(String action) {
+        this.action = action;
+        return this;
+    }
 }

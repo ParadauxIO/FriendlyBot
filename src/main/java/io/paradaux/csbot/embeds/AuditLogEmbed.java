@@ -23,24 +23,60 @@
 
 package io.paradaux.csbot.embeds;
 
+import io.paradaux.csbot.EmbedColour;
 import io.paradaux.csbot.IEmbedMessage;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
-public class PickYourInterestsEmbed implements IEmbedMessage {
+public class AuditLogEmbed implements IEmbedMessage {
 
-    EmbedBuilder builder;
+    EmbedBuilder builder = new EmbedBuilder();
+    Integer color;
+    String cause, target, action;
 
-    public PickYourInterestsEmbed() {
-        this.builder = new EmbedBuilder();
+    public AuditLogEmbed() { }
+
+    public AuditLogEmbed(Integer color, String cause, String target, String action) {
+        this.color = color;
+        this.cause = cause;
+        this.target = target;
+        this.action = action;
         create();
     }
 
     @Override
-    public void create() {}
+    public void create() {
+        builder.setColor(color==null ? EmbedColour.MODERATION.getColour() : color);
+        builder.setDescription(cause);
+
+        builder.addField("Action: ", action, true);
+
+        if (target != null)
+            builder.addField("Target: ", target, true);
+    }
 
     @Override
     public MessageEmbed build() {
         return builder.build();
+    }
+
+    public AuditLogEmbed setColor(Integer color) {
+        this.color = color;
+        return this;
+    }
+
+    public AuditLogEmbed setCause(String cause) {
+        this.cause = cause;
+        return this;
+    }
+
+    public AuditLogEmbed setTarget(String target) {
+        this.target = target;
+        return this;
+    }
+
+    public AuditLogEmbed setAction(String action) {
+        this.action = action;
+        return this;
     }
 }

@@ -24,12 +24,12 @@
 package io.paradaux.csbot.controllers;
 
 import com.jagrosh.jdautilities.command.CommandClient;
-import io.paradaux.csbot.api.ConfigurationCache;
-import io.paradaux.csbot.api.SMTPConnection;
+import io.paradaux.csbot.IController;
+import io.paradaux.csbot.ConfigurationCache;
 import io.paradaux.csbot.listeners.ReactionRoleListener;
 import io.paradaux.csbot.listeners.ReadyListener;
 import io.paradaux.csbot.listeners.message.ChatFilterListener;
-import io.paradaux.csbot.listeners.message.DMListener;
+import io.paradaux.csbot.listeners.message.ModMailDMListener;
 import io.paradaux.csbot.listeners.message.VerificationCodeReceivedListener;
 import io.paradaux.csbot.listeners.message.VerificationEmailReceivedListener;
 import net.dv8tion.jda.api.JDA;
@@ -39,21 +39,24 @@ import org.slf4j.Logger;
 
 import javax.security.auth.login.LoginException;
 
-public class BotController implements  IController {
+public class BotController implements IController {
 
-    public static BotController INSTANCE;
+    // Singleton Instance
+    public  static BotController INSTANCE;
 
-    private static JDA client;
-    public static JDA getClient() { return client; }
-
+    // Dependencies
     private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
     private static final Logger logger = LogController.getLogger();
+
+    // Singleton Fields
+    private static JDA client;
+    public  static JDA getClient() { return client; }
 
     @Override
     public void initialise() {
         logger.info("Attempting to login");
         try {
-            client = login(configurationCache.getToken());
+            client = login(configurationCache.getBotToken());
         } catch (LoginException e) {
             logger.error("Failed to login", e);
             return;
@@ -72,7 +75,6 @@ public class BotController implements  IController {
     public static JDA login (String token) throws LoginException {
 
         CommandClient commandClient = CommandController.getCommandClient();
-        SMTPConnection smtpConnection = EmailController.getSmtpConnection();
 
         JDABuilder builder = JDABuilder.createDefault(token)
                 .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
@@ -82,7 +84,7 @@ public class BotController implements  IController {
                         new ReadyListener(),
                         new ReactionRoleListener(),
                         new ChatFilterListener(),
-                        new DMListener(),
+                        new ModMailDMListener(),
                         new VerificationCodeReceivedListener(),
                         new VerificationEmailReceivedListener()
                 );

@@ -21,26 +21,23 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.embeds;
+package io.paradaux.csbot;
 
-import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
-public class ChatFilterEmbed implements IEmbedMessage {
+import javax.annotation.Nullable;
 
-    EmbedBuilder builder;
+public interface IEmbedMessage {
 
-    public ChatFilterEmbed(String discordID, String reason, String message) {
-        this.builder = builder;
+    void create();
+    MessageEmbed build();
+
+    default void sendEmbed(MessageChannel channel, @Nullable MessageEmbed embed) {
+        if (embed == null) {
+            embed = this.build();
+        }
+        channel.sendMessage(embed).queue();
+
     }
-
-    @Override
-    public void create() {}
-
-    @Override
-    public MessageEmbed build() {
-        return builder.build();
-    }
-
-
 }

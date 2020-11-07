@@ -25,7 +25,9 @@ package io.paradaux.csbot.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.paradaux.csbot.api.ConfigurationCache;
+import io.paradaux.csbot.IController;
+import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.models.ChatFilterEntry;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -34,7 +36,12 @@ import java.util.Scanner;
 
 public class FileController implements IController {
 
+    // Singleton Instance
     public static FileController INSTANCE;
+
+    // Dependencies
+    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Logger logger = LogController.getLogger();
 
     @Override
     public void initialise() {
@@ -92,21 +99,29 @@ public class FileController implements IController {
     /**
      * Copies the configuration file from the JAR to the current directory on first run
      */
-    public static void deployConfiguration() {
+    public static void deployFiles() {
         Logger logger = LogController.getLogger();
         if (!new File("config.json").exists()) {
             try {
                 ExportResource("/config.json");
             } catch (Exception exception) {
-                logger.error("Failed to deploy configuration.\n", exception);
+                logger.error("Failed to deploy config.json\n", exception);
             }
         }
 
-        if (!new File("verification.log").exists()) {
+        if (!new File("chat-filter.json").exists()) {
             try {
-                ExportResource("/verification.log");
+                ExportResource("/chat-filter.json");
             } catch (Exception exception) {
-                logger.error("Failed to deploy verification log.\n", exception);
+                logger.error("Failed to deploy chat-filter.json\n", exception);
+            }
+        }
+
+        if (!new File("reaction-roles.json").exists()) {
+            try {
+                ExportResource("/reaction-roles.json");
+            } catch (Exception exception) {
+                logger.error("Failed to deploy reaction-roles.json\n", exception);
             }
         }
     }
@@ -129,4 +144,13 @@ public class FileController implements IController {
         scanner.close();
         return emailTemplate.toString();
     }
+
+    public ChatFilterEntry readChatFilter() throws FileNotFoundException {
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("chat-filter.json"));
+        return gson.fromJson(bufferedReader, ChatFilterEntry.class);
+    }
+
 }

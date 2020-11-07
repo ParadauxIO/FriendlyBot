@@ -23,13 +23,16 @@
 
 package io.paradaux.csbot.controllers;
 
+import io.paradaux.csbot.IController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LogController implements IController {
 
+    // Singleton Instance
     public static LogController INSTANCE;
 
+    // Singleton Fields
     private static Logger logger;
     public static Logger getLogger() { return logger; }
 

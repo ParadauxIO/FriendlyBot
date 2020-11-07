@@ -27,24 +27,38 @@ import io.paradaux.csbot.EmbedColour;
 import io.paradaux.csbot.IEmbedMessage;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 
-public class ModMailEmbed implements IEmbedMessage {
+import javax.annotation.Nullable;
 
-    EmbedBuilder builder;
+public class ChatFilterWarnEmbed implements IEmbedMessage {
 
-    public ModMailEmbed() {
-        this.builder = new EmbedBuilder();
+    EmbedBuilder builder = new EmbedBuilder();
+    String discordID, message;
+    User user;
+
+    public ChatFilterWarnEmbed(User user, @Nullable String message) {
+        this.discordID = user.getId();
+        this.message = message;
+        this.user = user;
         create();
     }
 
+    @Override
     public void create() {
-        builder.setAuthor("The Computer Science Friendly Discord.");
-        builder.setColor(EmbedColour.INFO.getColour());
+        if (message == null) {
+            builder.setAuthor(user.getAsTag() + " has triggered the chat filter", null, user.getAvatarUrl());
+            builder.setColor(EmbedColour.AUTOMATIC.getColour());
+            builder.setDescription("The offending chat message has been removed, and this put in its place. The User has been given an automatic warning point.\n" +
+                    "Contact the moderators via mod-mail if you believe this to be a mistake.");
+            return;
+        }
 
-        builder.addField("Mod Mail System", "If you are having issues with verification, with another user or have any general questions, please send them into this channel" +
-                "your message will be automatically deleted and forwarded on to the moderators. Otherwise, DM the bot. It will also go to the moderators.", false);
-
-        builder.setFooter("Computer Science Friendly Bot | v0.1");
+        builder.setAuthor("You triggered the chat filter.", null, user.getAvatarUrl());
+        builder.setColor(EmbedColour.MODERATION.getColour());
+        builder.setDescription("The offending chat message has been removed, and this put in its place. You have been given an automatic warning point.\n" +
+                "Contact the moderators via mod-mail if you believe this to be a mistake.");
+        builder.addField("Removed Message:", message, false);
     }
 
     @Override

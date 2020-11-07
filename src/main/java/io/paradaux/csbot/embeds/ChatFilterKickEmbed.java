@@ -27,30 +27,41 @@ import io.paradaux.csbot.EmbedColour;
 import io.paradaux.csbot.IEmbedMessage;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 
-public class ModerationActionEmbed implements IEmbedMessage {
+import javax.annotation.Nullable;
+
+public class ChatFilterKickEmbed implements IEmbedMessage {
 
     EmbedBuilder builder = new EmbedBuilder();
+    String discordID, message;
+    User user;
 
-    EmbedColour embedColour;
-    String discordId;
-    String guildID;
-    String reason;
-
-    public ModerationActionEmbed(EmbedColour embedColour, String discordId, String guildID, String reason) {
-        this.embedColour = embedColour;
-        this.discordId = discordId;
-        this.guildID = guildID;
-        this.reason = reason;
+    public ChatFilterKickEmbed(User user, @Nullable String message) {
+        this.discordID = user.getId();
+        this.message = message;
+        this.user = user;
+        create();
     }
 
     @Override
-    public void create() {}
+    public void create() {
+        if (message == null) {
+            builder.setAuthor(user.getAsTag() + " has triggered the chat filter", null, user.getAvatarUrl());
+            builder.setColor(EmbedColour.AUTOMATIC.getColour());
+            builder.setDescription("The offending chat message has been removed, and this put in its place. The User has been kicked for this action.");
+            return;
+        }
+
+        builder.setAuthor("You have triggered the chat filter", null, user.getAvatarUrl());
+        builder.setColor(EmbedColour.MODERATION.getColour());
+        builder.setDescription("The offending chat message has been removed, and this put in its place. You have been kicked for this action.\n" +
+                "Contact the moderators via moderation-csfc@paradaux.io to appeal this, or use the mod-mail feature once you rejoin.");
+        builder.addField("Removed Message: ", message, false);
+    }
 
     @Override
     public MessageEmbed build() {
         return builder.build();
     }
-
-
 }

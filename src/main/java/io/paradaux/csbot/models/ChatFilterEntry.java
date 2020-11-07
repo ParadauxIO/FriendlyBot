@@ -21,35 +21,34 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.listeners.message;
+package io.paradaux.csbot.models;
 
-import io.paradaux.csbot.api.ConfigurationCache;
-import io.paradaux.csbot.controllers.ConfigurationController;
-import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.jetbrains.annotations.NotNull;
+public class ChatFilterEntry {
 
-/**
- * PrivateMessageReceivedListener listens to the VerificationCodes sent to the bot privately, parses them and sets the user as verified if approrpriate.
- *
- * @author Rían Errity
- * @version Last Modified for 0.1.0-SNAPSHOT
- * @since 1/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
- * */
+    public  String[] kickable, warnable;
 
+    public ChatFilterEntry() { }
 
-public class DMListener extends ListenerAdapter {
-
-    ConfigurationCache configurationCache;
-
-    public DMListener() {
-        this.configurationCache = ConfigurationController.getConfigurationCache();
+    public ChatFilterEntry(String[] kickable, String[] warnable) {
+        this.kickable = kickable;
+        this.warnable = warnable;
     }
 
-    @Override
-    public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
-
+    public String[] getKickable() {
+        return kickable;
     }
 
+    public String[] getWarnable() {
+        return warnable;
+    }
+
+    public ChatFilterEntry setKickable(String[] kickable) {
+        this.kickable = kickable;
+        return this;
+    }
+
+    public ChatFilterEntry setWarnable(String[] warnable) {
+        this.warnable = warnable;
+        return this;
+    }
 }

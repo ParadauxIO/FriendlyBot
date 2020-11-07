@@ -23,6 +23,8 @@
 
 package io.paradaux.csbot.embeds;
 
+import io.paradaux.csbot.EmbedColour;
+import io.paradaux.csbot.IEmbedMessage;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 

@@ -21,44 +21,35 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.listeners.message;
 
-import io.paradaux.csbot.IController;
 import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.controllers.ConfigurationController;
+import io.paradaux.csbot.controllers.LogController;
+import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-import java.io.FileNotFoundException;
+/**
+ * PrivateMessageReceivedListener listens to the VerificationCodes sent to the bot privately, parses them and sets the user as verified if approrpriate.
+ *
+ * @author Rían Errity
+ * @version Last Modified for 0.1.0-SNAPSHOT
+ * @since 1/11/2020 DD/MM/YY
+ * @see io.paradaux.csbot.CSBot
+ * */
 
-public class ConfigurationController implements IController {
 
-    // Singleton Instance
-    public static ConfigurationController INSTANCE;
+public class ModMailDMListener extends ListenerAdapter {
 
     // Dependencies
+    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
     private static final Logger logger = LogController.getLogger();
 
-    // Singleton Fields
-    public static ConfigurationCache configurationCache;
-    public static ConfigurationCache getConfigurationCache() { return configurationCache; }
-
-    public ConfigurationController() {}
-
-    public ConfigurationController(ConfigurationCache suppliedConfigurationCache) {
-        configurationCache = suppliedConfigurationCache;
-    }
-
     @Override
-    public void initialise() {
-        Logger logger = LogController.getLogger();
+    public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
 
-        FileController.deployFiles();
-        try {
-            configurationCache = FileController.readConfigurationFile();
-        } catch (FileNotFoundException exception) {
-            logger.error("Could not find the configuration file!", exception);
-        }
-
-        INSTANCE = this;
     }
 
 }
