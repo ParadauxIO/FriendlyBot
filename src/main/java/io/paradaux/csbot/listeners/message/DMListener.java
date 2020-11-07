@@ -24,15 +24,10 @@
 package io.paradaux.csbot.listeners.message;
 
 import io.paradaux.csbot.api.ConfigurationCache;
-import io.paradaux.csbot.api.VerificationSystem;
 import io.paradaux.csbot.controllers.ConfigurationController;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 /**
  * PrivateMessageReceivedListener listens to the VerificationCodes sent to the bot privately, parses them and sets the user as verified if approrpriate.
@@ -54,25 +49,6 @@ public class DMListener extends ListenerAdapter {
 
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
-        if (event.getAuthor().isBot()) return;
-
-        if (!VerificationSystem.isPending(event.getAuthor().getId())) {
-            event.getChannel().sendMessage("You are not currently pending verification.").queue();
-        }
-
-        Message message = event.getMessage();
-        String verificationCode = VerificationSystem.getVerificationCode(event.getAuthor().getId());
-
-        if (verificationCode != null && verificationCode.equals(message.getContentRaw())) {
-
-            Guild guild = message.getJDA().getGuildById(configurationCache.getGuild());
-
-            message.getChannel().sendMessage("You have been successfully verified.").queue();
-            guild.addRoleToMember(Objects.requireNonNull(message.getAuthor()).getId(), Objects.requireNonNull(guild.getRoleById(configurationCache.getVerifiedRole()))).queue();
-            VerificationSystem.setVerified(message.getAuthor());
-        } else {
-            message.getChannel().sendMessage("Invalid Verification Code provided. Please check the email and try again.").queue();
-        }
 
     }
 
