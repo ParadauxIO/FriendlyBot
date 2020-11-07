@@ -112,12 +112,12 @@ public class DatabaseController implements IController {
 
     public boolean isPendingVerification(String discordID) {
         PendingVerificationEntry pendingVerificationEntry = pendingVerification.find(Filters.eq("discord_id", discordID)).first();
-        return pendingVerification != null;
+        return pendingVerificationEntry != null;
     }
 
     public boolean isVerified(String discordID) {
         VerificationEntry verificationEntry = verification.find(Filters.eq("discord_id", discordID)).first();
-        return pendingVerification != null;
+        return verificationEntry != null;
     }
 
     @Nullable
