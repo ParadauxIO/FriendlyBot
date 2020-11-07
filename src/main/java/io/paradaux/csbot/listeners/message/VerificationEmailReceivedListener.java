@@ -44,7 +44,6 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-
         Message message = event.getMessage();
         String discordID = event.getAuthor().getId(), guildID = event.getGuild().getId();
         String email = message.getContentRaw();
