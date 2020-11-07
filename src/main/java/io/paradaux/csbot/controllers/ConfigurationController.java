@@ -51,7 +51,7 @@ public class ConfigurationController implements IController {
     public void initialise() {
         Logger logger = LogController.getLogger();
 
-        FileController.deployConfiguration();
+        FileController.deployFiles();
         try {
             configurationCache = FileController.readConfigurationFile();
         } catch (FileNotFoundException exception) {
