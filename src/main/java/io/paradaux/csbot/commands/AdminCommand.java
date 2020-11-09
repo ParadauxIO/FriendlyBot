@@ -25,12 +25,11 @@ package io.paradaux.csbot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.csbot.controllers.EmailController;
-import io.paradaux.csbot.embeds.ModMailEmbed;
-import io.paradaux.csbot.embeds.PickYourCourseEmbed;
-import io.paradaux.csbot.embeds.RulesEmbed;
-import io.paradaux.csbot.embeds.VerificationEmbed;
+import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.controllers.*;
+import io.paradaux.csbot.embeds.*;
 import net.dv8tion.jda.api.entities.Message;
+import org.slf4j.Logger;
 
 import javax.mail.MessagingException;
 
@@ -45,6 +44,11 @@ import javax.mail.MessagingException;
 
 public class AdminCommand extends Command {
 
+    // Dependencies
+    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Logger logger = LogController.getLogger();
+    private static final PermissionController permissionController = PermissionController.INSTANCE;
+
     public AdminCommand() {
         this.name = "admin";
         this.aliases = new String[]{"a", "adm", "administrator"};
@@ -53,20 +57,70 @@ public class AdminCommand extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
+        String authorID = event.getAuthor().getId();
+        if (!(permissionController.isAdmin(authorID) || permissionController.isTechnician(authorID))) return;
+
         Message message = event.getMessage();
         String[] args = event.getArgs().split(" "); // Space
+
+        boolean a = true;
+        message.delete().queue();
         switch (args[0]) {
 
             case "sendembed": {
-                if (args[1].equalsIgnoreCase("rules")) {
-                    new RulesEmbed().sendEmbed(event.getChannel(), null);
-                } else if (args[1].equalsIgnoreCase("modmail")) {
-                    new ModMailEmbed().sendEmbed(event.getChannel(), null);
-                } else if (args[1].equalsIgnoreCase("pickcourse")) {
-                    new PickYourCourseEmbed().sendEmbed(event.getChannel(), null);
-                } else if (args[1].equalsIgnoreCase("verification")) {
-                    new VerificationEmbed().sendEmbed(event.getChannel(), null);
+
+                switch (args[1]) {
+
+                    case "rules": {
+                        new RulesEmbed().sendEmbed(event.getChannel(), null);
+                        break;
+                    }
+
+                    case "modmail": {
+                        new ModMailEmbed().sendEmbed(event.getChannel(), null);
+                        break;
+                    }
+
+                    case "pickcourse": {
+                        new PickYourCourseEmbed().sendEmbed(event.getChannel(), null);
+                        break;
+                    }
+
+                    case "verification": {
+                        new VerificationEmbed().sendEmbed(event.getChannel(), null);
+                        break;
+                    }
+
+                    case "pickpronouns": {
+                        new PickYourPronounsEmbed().sendEmbed(event.getChannel(), null);
+                        break;
+                    }
+
+                    case "pickyear": {
+                        new PickYourYearEmbed().sendEmbed(event.getChannel(), null);
+                        break;
+                    }
+
+                    case "pickclass": {
+                        new PickYourClassEmbed().sendEmbed(event.getChannel(), null);
+                        break;
+                    }
+
+                    case "pickinterests": {
+                        new PickYourInterestsEmbed().sendEmbed(event.getChannel(), null);
+                        break;
+                    }
+
+                    case "roleselection": {
+                        new PickYourCourseEmbed().sendEmbed(event.getChannel(), null);
+                        new PickYourYearEmbed().sendEmbed(event.getChannel(), null);
+                        new PickYourPronounsEmbed().sendEmbed(event.getChannel(), null);
+                        new PickYourClassEmbed().sendEmbed(event.getChannel(), null);
+                        new PickYourInterestsEmbed().sendEmbed(event.getChannel(), null);
+                        break;
+                    }
                 }
+
             }
 
             case "sendemail": {
@@ -80,6 +134,96 @@ public class AdminCommand extends Command {
                     e.printStackTrace();
                 }
 
+            }
+
+            case "permissions": {
+                if(!permissionController.isTechnician(authorID)) return;
+                switch (args[1]) {
+                    case "give": {
+                        switch (args[2]) {
+                            case "admin": {
+                                String discordID;
+                                if (message.getMentionedMembers().size() >= 1) {
+                                    discordID = message.getMentionedMembers().get(0).getId();
+                                } else {
+                                    discordID = args[3];
+                                }
+
+                                permissionController.addAdmin(discordID);
+                                message.getChannel().sendMessage(String.format("Given `%s` `Admin` permissions.", discordID)).queue();
+
+                            }
+
+                            case "mod": {
+                                String discordID;
+                                if (message.getMentionedMembers().size() >= 1) {
+                                    discordID = message.getMentionedMembers().get(0).getId();
+                                } else {
+                                    discordID = args[3];
+                                }
+
+                                permissionController.addMod(discordID);
+                                message.getChannel().sendMessage(String.format("Given `%s` `Mod` permissions.", discordID)).queue();
+                            }
+
+                            case "technician": {
+                                String discordID;
+                                if (message.getMentionedMembers().size() >= 1) {
+                                    discordID = message.getMentionedMembers().get(0).getId();
+                                } else {
+                                    discordID = args[3];
+                                }
+
+                                permissionController.addTechnician(discordID);
+                                message.getChannel().sendMessage(String.format("Given `%s` `Technician` permissions.", discordID)).queue();
+                                break;
+                            }
+                        }
+
+                        return;
+                    }
+
+                    case "remove": {
+                        switch (args[2]) {
+                            case "admin": {
+                                String discordID;
+                                if (message.getMentionedMembers().size() >= 1) {
+                                    discordID = message.getMentionedMembers().get(0).getId();
+                                } else {
+                                    discordID = args[3];
+                                }
+
+                                permissionController.removeAdmin(discordID);
+                                message.getChannel().sendMessage(String.format("Removed `%s`'s `Admin` permissions.", discordID)).queue();
+                            }
+
+                            case "mod": {
+                                String discordID;
+                                if (message.getMentionedMembers().size() >= 1) {
+                                    discordID = message.getMentionedMembers().get(0).getId();
+                                } else {
+                                    discordID = args[3];
+                                }
+
+                                permissionController.removeMod(discordID);
+                                message.getChannel().sendMessage(String.format("Removed `%s`'s `Mod` permissions.", discordID)).queue();
+                            }
+
+                            case "technician": {
+                                String discordID;
+                                if (message.getMentionedMembers().size() >= 1) {
+                                    discordID = message.getMentionedMembers().get(0).getId();
+                                } else {
+                                    discordID = args[3];
+                                }
+
+                                permissionController.removeTechnician(discordID);
+                                message.getChannel().sendMessage(String.format("Removed `%s`'s `Technician` permissions.", discordID)).queue();
+                            }
+                        }
+
+                    }
+                }
             }
 
         }

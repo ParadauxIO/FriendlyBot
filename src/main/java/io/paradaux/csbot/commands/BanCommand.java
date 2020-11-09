@@ -25,7 +25,12 @@ package io.paradaux.csbot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.controllers.ConfigurationController;
+import io.paradaux.csbot.controllers.LogController;
+import io.paradaux.csbot.controllers.PermissionController;
 import net.dv8tion.jda.api.entities.Message;
+import org.slf4j.Logger;
 
 /**
  * This is a command which
@@ -38,6 +43,11 @@ import net.dv8tion.jda.api.entities.Message;
 
 public class BanCommand  extends Command {
 
+    // Dependencies
+    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Logger logger = LogController.getLogger();
+    private static final PermissionController permissionController = PermissionController.INSTANCE;
+
     public BanCommand() {
         this.name = "ban";
         this.help = "Bans the specified user";
@@ -45,6 +55,7 @@ public class BanCommand  extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
+        if (!(PermissionController.INSTANCE.isAdmin(event.getAuthor().getId()) || PermissionController.INSTANCE.isTechnician(event.getAuthor().getId()))) return;
         Message message = event.getMessage();
     }
 }
