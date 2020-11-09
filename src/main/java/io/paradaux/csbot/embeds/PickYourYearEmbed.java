@@ -37,7 +37,14 @@ public class PickYourYearEmbed implements IEmbedMessage {
     }
 
     @Override
-    public void create() {}
+    public void create() {
+        builder.setDescription("**What year are you in?**");
+        builder.addField("Junior Fresh", ":one:", true);
+        builder.addField("Senior Fresh", ":two:",true);
+        builder.addField("Junior Sophister", ":three:", true);
+        builder.addField("Senior Sophister", ":four:",true);
+        builder.addField("Masters / Ph.D", ":five:",true);
+    }
 
     @Override
     public MessageEmbed build() {

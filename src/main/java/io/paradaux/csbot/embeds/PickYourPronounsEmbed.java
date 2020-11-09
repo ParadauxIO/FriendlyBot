@@ -27,24 +27,23 @@ import io.paradaux.csbot.IEmbedMessage;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
-public class PickYourInterestsEmbed implements IEmbedMessage {
+public class PickYourPronounsEmbed implements IEmbedMessage {
 
     EmbedBuilder builder;
 
-    public PickYourInterestsEmbed() {
-        this.builder = new EmbedBuilder();
+    public PickYourPronounsEmbed() {
+        builder = new EmbedBuilder();
         create();
     }
 
     @Override
     public void create() {
-        builder.setDescription("**What are you interested in?**");
-        builder.addField("Anime / Manga", "<:ayaya:758450629764186152>", true);
-        builder.addField("Film / TV", "\uD83C\uDF9E", true);
-        builder.addField("Cooking", "\uD83D\uDC69\u200D\uD83C\uDF73", true);
-        builder.addField("Gaming", "<:steve:758451458042888213>", true);
-        builder.addField("Music", "\uD83C\uDFB5", true);
-        builder.addField("Sports", "\uD83C\uDFC9", true);
+        // Zero width space
+        builder.setDescription("**What pronouns would you like people to use for you?**\n\nIf you selected other, please feel free to use your nickname or your status to provide additional information.");
+        builder.addField("He/Him", "\uD83C\uDDE6", true);
+        builder.addField("She/Her", "\uD83C\uDDE7", true);
+        builder.addField("They/Them", "\uD83C\uDDE8", true);
+        builder.addField("Other", "\uD83C\uDDE9", true);
     }
 
     @Override
