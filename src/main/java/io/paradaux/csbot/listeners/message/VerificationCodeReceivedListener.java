@@ -65,16 +65,12 @@ public class VerificationCodeReceivedListener extends ListenerAdapter {
             Role verificationRole = message.getGuild().getRoleById(configurationCache.getVerifiedRoleID());
             message.getGuild().addRoleToMember(message.getMember(), verificationRole).queue();
 
-            event.getAuthor().openPrivateChannel().queue((channel) -> {
-                channel.sendMessage("You have successfully verified your friendly corner discord account.").queue();
-            });
+            event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("You have successfully verified your friendly corner discord account.").queue());
             return;
         }
 
-        event.getAuthor().openPrivateChannel().queue((channel) -> {
-            channel.sendMessage("You have entered an invalid verification code. Please check your email and try again." +
-                    "\nPlease message the bot if you run into issues with this, a moderator/technician will be with you shortly.").queue();
-        });
+        event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("You have entered an invalid verification code. Please check your email and try again." +
+                "\nPlease message the bot if you run into issues with this, a moderator/technician will be with you shortly.").queue());
     }
 
 }

@@ -61,19 +61,15 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
         message.delete().queue();
 
         if (!EmailController.isValidEmail(email)) {
-            event.getAuthor().openPrivateChannel().queue((channel) -> {
-                channel.sendMessage("Your message did contain a valid email address.").queue();
-            });
+            event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("Your message did contain a valid email address.").queue());
             return;
         }
 
         // If it isn't an @tcd.ie email
         if (!EmailController.getEmailDomain(email).equals("tcd.ie")) {
-            event.getAuthor().openPrivateChannel().queue((channel) -> {
-                channel.sendMessage("You must use a valid @tcd.ie email address to go through automatic verification." +
-                        "\nIf you are not a trinity student please respond to the bot in this channel and a moderator will be with you shortly." +
-                        "\nPlease message the bot if you run into issues with this, a moderator/technician will be with you shortly.").queue();
-            });
+            event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("You must use a valid @tcd.ie email address to go through automatic verification." +
+                    "\nIf you are not a trinity student please respond to the bot in this channel and a moderator will be with you shortly." +
+                    "\nPlease message the bot if you run into issues with this, a moderator/technician will be with you shortly.").queue());
 
         }
 
@@ -90,9 +86,7 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
         databaseController.addPendingVerificationUser(discordID, guildID, verificationCode);
 
         // Notify the user that there's an email waiting for them.
-        event.getAuthor().openPrivateChannel().queue((channel) -> {
-            channel.sendMessage("Please check your email for a verification token. Once you have it, please paste it back into #verification." +
-                    "\nPlease message the bot if you run into issues with this, a moderator/technician will be with you shortly.").queue();
-        });
+        event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("Please check your email for a verification token. Once you have it, please paste it back into #verification." +
+                "\nPlease message the bot if you run into issues with this, a moderator/technician will be with you shortly.").queue());
     }
 }

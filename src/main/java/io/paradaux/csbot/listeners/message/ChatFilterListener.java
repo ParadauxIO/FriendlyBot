@@ -72,9 +72,7 @@ public class ChatFilterListener extends ListenerAdapter {
         if (containsWarnableWord(messageContent)) {
             new ChatFilterWarnEmbed(message.getAuthor(), null).sendEmbed(event.getChannel(), null);
 
-            event.getAuthor().openPrivateChannel().queue((channel) -> {
-                new ChatFilterWarnEmbed(message.getAuthor(), messageContent).sendEmbed(channel, null);
-            });
+            event.getAuthor().openPrivateChannel().queue((channel) -> new ChatFilterWarnEmbed(message.getAuthor(), messageContent).sendEmbed(channel, null));
 
             ModerationActionController.INSTANCE.warnUser(guildID, discordID, "Illicit word use", messageContent, true);
 
@@ -86,9 +84,7 @@ public class ChatFilterListener extends ListenerAdapter {
         if (containsKickableWord(messageContent)) {
             new ChatFilterKickEmbed(message.getAuthor(), null).sendEmbed(event.getChannel(), null);
 
-            event.getAuthor().openPrivateChannel().queue((channel) -> {
-                new ChatFilterKickEmbed(message.getAuthor(), messageContent).sendEmbed(channel, null);
-            });
+            event.getAuthor().openPrivateChannel().queue((channel) -> new ChatFilterKickEmbed(message.getAuthor(), messageContent).sendEmbed(channel, null));
 
             ModerationActionController.INSTANCE.kickUser(guildID, discordID, "Illicit word use", messageContent);
 

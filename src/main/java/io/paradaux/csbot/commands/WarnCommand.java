@@ -59,12 +59,7 @@ public class WarnCommand extends Command {
         String authorID = event.getAuthor().getId();
         if (!(permissionController.isStaff(authorID))) return;
 
-        User target
-
-
-
-
-
+        User target;
 
     }
 }
