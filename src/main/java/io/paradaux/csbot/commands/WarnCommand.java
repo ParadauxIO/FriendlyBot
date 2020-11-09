@@ -25,7 +25,12 @@ package io.paradaux.csbot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import net.dv8tion.jda.api.entities.Message;
+import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.controllers.ConfigurationController;
+import io.paradaux.csbot.controllers.LogController;
+import io.paradaux.csbot.controllers.PermissionController;
+import net.dv8tion.jda.api.entities.User;
+import org.slf4j.Logger;
 
 /**
  * This is a command which
@@ -38,6 +43,11 @@ import net.dv8tion.jda.api.entities.Message;
 
 public class WarnCommand extends Command {
 
+    // Dependencies
+    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final Logger logger = LogController.getLogger();
+    private static final PermissionController permissionController = PermissionController.INSTANCE;
+
     public WarnCommand() {
         this.name = "warn";
         this.aliases = new String[]{"w"};
@@ -46,8 +56,10 @@ public class WarnCommand extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
-        Message message = event.getMessage();
-        String[] args = event.getArgs().split(" ");
+        String authorID = event.getAuthor().getId();
+        if (!(permissionController.isStaff(authorID))) return;
+
+        User target
 
 
 

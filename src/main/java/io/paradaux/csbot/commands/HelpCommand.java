@@ -29,37 +29,22 @@ import io.paradaux.csbot.ConfigurationCache;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.LogController;
 import io.paradaux.csbot.controllers.PermissionController;
-import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
-/**
- * This is a command which
- *
- * @author Rían Errity
- * @version Last modified for 0.1.0-SNAPSHOT
- * @since 4/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
- * */
-
-public class KickCommand extends Command {
+public class HelpCommand extends Command {
 
     // Dependencies
     private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 
-    public KickCommand() {
-        this.name = "kick";
-        this.help = "Kicks the specified user";
+    public HelpCommand() {
+        this.name = "help";
+        this.aliases = new String[]{"h"};
+        this.help = "Provides various administrator utilities";
     }
 
     @Override
-    protected void execute(CommandEvent event) {
-        String authorID = event.getAuthor().getId();
-        if (!(permissionController.isStaff(authorID) || permissionController.isTechnician(authorID))) return;
-
-
-
-        Message message = event.getMessage();
-    }
+    protected void execute(CommandEvent event) {}
 }
+
