@@ -25,9 +25,10 @@ package io.paradaux.csbot.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.paradaux.csbot.IController;
 import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.IController;
 import io.paradaux.csbot.models.ChatFilterEntry;
+import io.paradaux.csbot.models.PermissionEntry;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -124,6 +125,14 @@ public class FileController implements IController {
                 logger.error("Failed to deploy reaction-roles.json\n", exception);
             }
         }
+
+        if (!new File("permissions.json").exists()) {
+            try {
+                ExportResource("/permissions.json");
+            } catch (Exception exception) {
+                logger.error("Failed to deploy permissions.json\n", exception);
+            }
+        }
     }
 
     @Nullable
@@ -151,6 +160,27 @@ public class FileController implements IController {
 
         BufferedReader bufferedReader = new BufferedReader(new FileReader("chat-filter.json"));
         return gson.fromJson(bufferedReader, ChatFilterEntry.class);
+    }
+
+    public PermissionEntry readPermissionFile() throws FileNotFoundException {
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("permissions.json"));
+        return gson.fromJson(bufferedReader, PermissionEntry.class);
+    }
+
+    public void updatePermissionFile(PermissionEntry entry) throws IOException {
+        File permissionsFile = new File("permissions.json");
+
+        GsonBuilder builder = new GsonBuilder().setPrettyPrinting();
+        Gson gson = builder.create();
+
+        String prettyJsonString = gson.toJson(entry);
+
+        FileWriter fw = new FileWriter(permissionsFile, false);
+        fw.write(prettyJsonString);
+        fw.close();
     }
 
 }
