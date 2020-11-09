@@ -24,14 +24,10 @@
 package io.paradaux.csbot.controllers;
 
 import com.jagrosh.jdautilities.command.CommandClient;
-import io.paradaux.csbot.IController;
 import io.paradaux.csbot.ConfigurationCache;
-import io.paradaux.csbot.listeners.ReactionRoleListener;
+import io.paradaux.csbot.IController;
 import io.paradaux.csbot.listeners.ReadyListener;
-import io.paradaux.csbot.listeners.message.ChatFilterListener;
-import io.paradaux.csbot.listeners.message.ModMailDMListener;
-import io.paradaux.csbot.listeners.message.VerificationCodeReceivedListener;
-import io.paradaux.csbot.listeners.message.VerificationEmailReceivedListener;
+import io.paradaux.csbot.listeners.message.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
@@ -81,12 +77,12 @@ public class BotController implements IController {
                 .setBulkDeleteSplittingEnabled(false)
                 .addEventListeners (
                         commandClient,
-                        new ReadyListener(),
-                        new ReactionRoleListener(),
                         new ChatFilterListener(),
+                        new ModMailChannelListener(),
                         new ModMailDMListener(),
                         new VerificationCodeReceivedListener(),
-                        new VerificationEmailReceivedListener()
+                        new VerificationEmailReceivedListener(),
+                        new ReadyListener()
                 );
 
         if (token == null) {
