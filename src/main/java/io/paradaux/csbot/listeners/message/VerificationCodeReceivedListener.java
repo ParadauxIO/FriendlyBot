@@ -26,7 +26,9 @@ package io.paradaux.csbot.listeners.message;
 import io.paradaux.csbot.ConfigurationCache;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.DatabaseController;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +41,9 @@ public class VerificationCodeReceivedListener extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Message message = event.getMessage();
+
+        if (message.getChannelType() == ChannelType.PRIVATE) return;
+
         String discordID = event.getAuthor().getId(), guildID = event.getGuild().getId();
         String verificationCode = message.getContentRaw();
 
@@ -56,6 +61,10 @@ public class VerificationCodeReceivedListener extends ListenerAdapter {
 
         if (verificationCode.equals(databaseController.getVerificationCode(discordID))) {
             databaseController.setVerifiedUser(discordID, guildID);
+
+            Role verificationRole = message.getGuild().getRoleById(configurationCache.getVerifiedRoleID());
+            message.getGuild().addRoleToMember(message.getMember(), verificationRole).queue();
+
             event.getAuthor().openPrivateChannel().queue((channel) -> {
                 channel.sendMessage("You have successfully verified your friendly corner discord account.").queue();
             });
