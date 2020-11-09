@@ -40,8 +40,8 @@ public class PickYourCourseEmbed implements IEmbedMessage {
     public void create() {
         builder.setDescription("**What course are you doing?**");
         builder.addField("\uD83D\uDDA5", "Integrated Computer Science", true);
-        builder.addField("\uD83D\uDCC8", "Computer Science & Language", true);
-        builder.addField("\uD83D\uDCAC", "Computer Science & Business", true);
+        builder.addField("\uD83D\uDCAC", "Computer Science & Language", true);
+        builder.addField("\uD83D\uDCC8", "Computer Science & Business", true);
     }
 
     @Override
