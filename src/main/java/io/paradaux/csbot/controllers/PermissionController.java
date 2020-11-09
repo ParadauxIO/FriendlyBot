@@ -25,7 +25,11 @@ package io.paradaux.csbot.controllers;
 
 import io.paradaux.csbot.IController;
 import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.models.PermissionEntry;
 import org.slf4j.Logger;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class PermissionController implements IController {
 
@@ -36,9 +40,73 @@ public class PermissionController implements IController {
     private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
     private static final Logger logger = LogController.getLogger();
 
+    // Singleton Fields
+    private static PermissionEntry permissionEntry;
+    public static PermissionEntry getPermissionEntry() { return permissionEntry; }
+
     @Override
     public void initialise() {
+        try {
+            permissionEntry = FileController.INSTANCE.readPermissionFile();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         INSTANCE = this;
 
     }
+
+    public void save() {
+        try {
+            FileController.INSTANCE.updatePermissionFile(permissionEntry);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addAdmin(String discordID) {
+        permissionEntry.getAdministrators().add(discordID);
+        save();
+    }
+
+    public void removeAdmin(String discordID) {
+        permissionEntry.getAdministrators().remove(discordID);
+        save();
+    }
+
+    public boolean isAdmin(String discordID) {
+        return permissionEntry.getAdministrators().contains(discordID);
+    }
+
+    public void addMod(String discordID) {
+        permissionEntry.getModerators().add(discordID);
+        save();
+    }
+
+    public void removeMod(String discordID) {
+        permissionEntry.getModerators().remove(discordID);
+        save();
+    }
+
+    public boolean isMod(String discordID) {
+        return permissionEntry.getModerators().contains(discordID);
+    }
+
+    public void addTechnician(String discordID) {
+        permissionEntry.getTechnicians().add(discordID);
+        save();
+    }
+
+    public void removeTechnician(String discordID) {
+        permissionEntry.getTechnicians().add(discordID);
+        save();
+    }
+
+    public boolean isTechnician(String discordID) {
+        return permissionEntry.getTechnicians().contains(discordID);
+    }
+
+    public boolean isStaff(String discordID) {
+        return isMod(discordID) || isAdmin(discordID);
+    }
+
 }
