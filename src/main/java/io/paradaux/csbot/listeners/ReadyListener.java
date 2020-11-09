@@ -61,5 +61,6 @@ public class ReadyListener extends ListenerAdapter {
         }
 
         logger.info("Currently serving {} user(s) in {} guild(s)", userCount, guildCount);
+
     }
 }
