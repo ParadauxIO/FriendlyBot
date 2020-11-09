@@ -82,5 +82,6 @@ public class AuditLogController implements IController {
         DatabaseController.INSTANCE.addAuditLog(auditLogEntry);
         embed.create();
         embed.sendEmbed(channel, null);
+
     }
 }
