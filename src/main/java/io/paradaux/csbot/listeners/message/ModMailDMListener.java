@@ -24,8 +24,12 @@
 package io.paradaux.csbot.listeners.message;
 
 import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.controllers.BotController;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.LogController;
+import io.paradaux.csbot.embeds.ModMailEntryEmbed;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -49,6 +53,23 @@ public class ModMailDMListener extends ListenerAdapter {
 
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
+        Message message = event.getMessage();
+
+        if (message.getAuthor().isBot()) return;
+
+        TextChannel channel = BotController.getClient()
+                .getGuildById(configurationCache.getCsFriendlyGuildID())
+                .getTextChannelById(configurationCache.getModmailOutputChannelID());
+
+        ModMailEntryEmbed embed = new ModMailEntryEmbed(event.getAuthor().getAsTag(), event.getAuthor().getId(), message.getContentRaw());
+        embed.create();
+
+        embed.sendEmbed(channel, null);
+
+        event.getAuthor().openPrivateChannel().queue((privateChannel) -> {
+            privateChannel.sendMessage("**Your message has been sent to the moderators.**" +
+                    "\nThe Moderation Team will get back to you as soon as possible.").queue();
+        });
 
     }
 
