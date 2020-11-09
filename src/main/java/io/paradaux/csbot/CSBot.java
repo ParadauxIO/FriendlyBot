@@ -76,6 +76,7 @@ public class CSBot {
         // Permissions
         logger.info("Initialising: PermissionController");
         new PermissionController().initialise();
+
         // Commands
         logger.info("Initialising: CommandController");
         new CommandController().initialise();
@@ -89,9 +90,5 @@ public class CSBot {
         new BotController().initialise();
 
     }
-
-
-
-
 
 }
