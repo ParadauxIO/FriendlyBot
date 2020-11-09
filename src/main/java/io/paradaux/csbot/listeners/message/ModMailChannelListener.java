@@ -36,6 +36,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
+import java.util.Objects;
+
 public class ModMailChannelListener extends ListenerAdapter {
 
     // Dependencies
@@ -52,18 +54,16 @@ public class ModMailChannelListener extends ListenerAdapter {
 
         message.delete().queue();
 
-        TextChannel channel = BotController.getClient()
-                .getGuildById(configurationCache.getCsFriendlyGuildID())
+        TextChannel channel = Objects.requireNonNull(BotController.getClient()
+                .getGuildById(configurationCache.getCsFriendlyGuildID()))
                 .getTextChannelById(configurationCache.getModmailOutputChannelID());
 
         ModMailEntryEmbed embed = new ModMailEntryEmbed(event.getAuthor().getAsTag(), event.getAuthor().getId(), message.getContentRaw());
         embed.create();
         embed.sendEmbed(channel, null);
 
-        event.getAuthor().openPrivateChannel().queue((privateChannel) -> {
-            privateChannel.sendMessage("**Your message has been sent to the moderators.**" +
-                    "\nThe Moderation Team will get back to you as soon as possible.").queue();
-        });
+        event.getAuthor().openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage("**Your message has been sent to the moderators.**" +
+                "\nThe Moderation Team will get back to you as soon as possible.").queue());
     }
 
 

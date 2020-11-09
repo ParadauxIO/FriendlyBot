@@ -66,10 +66,8 @@ public class ModMailDMListener extends ListenerAdapter {
 
         embed.sendEmbed(channel, null);
 
-        event.getAuthor().openPrivateChannel().queue((privateChannel) -> {
-            privateChannel.sendMessage("**Your message has been sent to the moderators.**" +
-                    "\nThe Moderation Team will get back to you as soon as possible.").queue();
-        });
+        event.getAuthor().openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage("**Your message has been sent to the moderators.**" +
+                "\nThe Moderation Team will get back to you as soon as possible.").queue());
 
     }
 
