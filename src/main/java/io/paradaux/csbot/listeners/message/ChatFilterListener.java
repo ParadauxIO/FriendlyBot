@@ -28,6 +28,7 @@ import io.paradaux.csbot.controllers.*;
 import io.paradaux.csbot.embeds.ChatFilterKickEmbed;
 import io.paradaux.csbot.embeds.ChatFilterWarnEmbed;
 import io.paradaux.csbot.models.ChatFilterEntry;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -35,7 +36,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 
 public class ChatFilterListener extends ListenerAdapter {
 
@@ -62,6 +62,7 @@ public class ChatFilterListener extends ListenerAdapter {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Message message = event.getMessage();
 
+        if (message.getChannelType() == ChannelType.PRIVATE) return;
         if (message.getAuthor().isBot()) return;
 
         String messageContent = message.getContentRaw();
@@ -100,10 +101,31 @@ public class ChatFilterListener extends ListenerAdapter {
     }
 
     public boolean containsWarnableWord(String input) {
-        return Arrays.stream(warnable).anyMatch(input::contains);
+        return false;
+//        input = input.toLowerCase();
+//        if (Arrays.asList(warnable).contains(input)) {
+//            return true;
+//        }
+//
+//        if (Arrays.stream(warnable).anyMatch(String.format(" %s", input)::contains)) {
+//            return true;
+//        }
+//
+//        return Arrays.stream(warnable).anyMatch(String.format(" %s ", input)::contains);
     }
+
     public boolean containsKickableWord(String input) {
-        return Arrays.stream(kickable).anyMatch(input::contains);
+        return false;
+//        input = input.toLowerCase();
+//        if (Arrays.asList(kickable).contains(input)) {
+//            return true;
+//        }
+//
+//        if (Arrays.stream(kickable).anyMatch(String.format(" %s", input)::contains)) {
+//            return true;
+//        }
+//
+//        return Arrays.stream(kickable).anyMatch(String.format(" %s ", input)::contains);
     }
 
 }
