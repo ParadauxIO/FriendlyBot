@@ -62,9 +62,12 @@ public class CommandController implements IController {
                 .addCommands(
                         new AdminCommand(),
                         new BanCommand(),
+                        new CiteCommand(),
+                        new HelpCommand(),
                         new InviteCommand(),
                         new KickCommand(),
                         new PingCommand(),
+                        new TimeOutCommand(),
                         new VerifyCommand(),
                         new WarnCommand()
                 );
