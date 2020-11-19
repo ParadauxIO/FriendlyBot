@@ -21,10 +21,31 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot;
+package io.paradaux.csbot.interfaces;
 
-public interface IController {
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 
-    void initialise();
+import javax.annotation.Nullable;
 
+public interface IEmbedMessage {
+
+    void create();
+    MessageEmbed build();
+
+    default void sendEmbed(MessageChannel channel, @Nullable MessageEmbed embed) {
+        if (embed == null) {
+
+            embed = this.build();
+        }
+        channel.sendMessage(embed).queue();
+    }
+
+    default void sendEmbed(TextChannel channel, @Nullable MessageEmbed embed) {
+        if (embed == null) {
+            embed = this.build();
+        }
+        channel.sendMessage(embed).queue();
+    }
 }
