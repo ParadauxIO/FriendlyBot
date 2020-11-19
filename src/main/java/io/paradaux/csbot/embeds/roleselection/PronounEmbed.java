@@ -21,24 +21,17 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.embeds;
+package io.paradaux.csbot.embeds.roleselection;
 
-import io.paradaux.csbot.IEmbedMessage;
+import io.paradaux.csbot.embeds.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 
-public class PickYourPronounsEmbed implements IEmbedMessage {
+public class PronounEmbed implements Embed {
 
-    EmbedBuilder builder;
+    EmbedBuilder builder = new EmbedBuilder();
 
-    public PickYourPronounsEmbed() {
-        builder = new EmbedBuilder();
-        create();
-    }
-
-    @Override
-    public void create() {
-        // Zero width space
+    public PronounEmbed() {
         builder.setDescription("**What pronouns would you like people to use for you?**\n\nIf you selected other, please feel free to use your nickname or your status to provide additional information.");
         builder.addField("He/Him", "\uD83C\uDDE6", true);
         builder.addField("She/Her", "\uD83C\uDDE7", true);
@@ -47,7 +40,8 @@ public class PickYourPronounsEmbed implements IEmbedMessage {
     }
 
     @Override
-    public MessageEmbed build() {
-        return builder.build();
+    public void sendEmbed(TextChannel channel) {
+        channel.sendMessage(builder.build()).queue();
     }
+
 }

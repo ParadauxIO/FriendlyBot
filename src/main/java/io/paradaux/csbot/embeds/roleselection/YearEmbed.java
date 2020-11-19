@@ -21,10 +21,28 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.embeds;
+package io.paradaux.csbot.embeds.roleselection;
 
-public class VerificationRulesNoticeEmbed {
+import io.paradaux.csbot.embeds.Embed;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
 
+public class YearEmbed implements Embed {
 
+    EmbedBuilder builder = new EmbedBuilder();
+
+    public YearEmbed() {
+        builder.setDescription("**What year are you in?**");
+        builder.addField("Junior Fresh", ":one:", true);
+        builder.addField("Senior Fresh", ":two:",true);
+        builder.addField("Junior Sophister", ":three:", true);
+        builder.addField("Senior Sophister", ":four:",true);
+        builder.addField("Masters / Ph.D", ":five:",true);
+    }
+
+    @Override
+    public void sendEmbed(TextChannel channel) {
+        channel.sendMessage(builder.build()).queue();
+    }
 
 }

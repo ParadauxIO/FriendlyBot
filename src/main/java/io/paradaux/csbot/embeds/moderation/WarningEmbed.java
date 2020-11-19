@@ -21,36 +21,29 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.embeds;
+package io.paradaux.csbot.embeds.moderation;
 
-import io.paradaux.csbot.EmbedColour;
-import io.paradaux.csbot.IEmbedMessage;
+import io.paradaux.csbot.embeds.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 
-public class ModerationActionEmbed implements IEmbedMessage {
+public class WarningEmbed implements Embed {
 
     EmbedBuilder builder = new EmbedBuilder();
 
-    EmbedColour embedColour;
-    String discordId;
-    String guildID;
-    String reason;
+    public WarningEmbed(String reason, String incidentID) {
+        builder.setAuthor("The Computer Science Friendly Discord | Warned", null, "https://cdn.discordapp.com/icons/757903425311604786/ac7d6af0fc3cf43e3709257d7d25c06f.png");
 
-    public ModerationActionEmbed(EmbedColour embedColour, String discordId, String guildID, String reason) {
-        this.embedColour = embedColour;
-        this.discordId = discordId;
-        this.guildID = guildID;
-        this.reason = reason;
+        builder.setFooter("User Warned: Incident ID " + incidentID + " | CS Friendly Bot" );
     }
 
     @Override
-    public void create() {}
+    public void sendEmbed(TextChannel channel) {
+        channel.sendMessage(builder.build()).queue();
+    }
 
-    @Override
-    public MessageEmbed build() {
+    public MessageEmbed getEmbed() {
         return builder.build();
     }
-
-
 }

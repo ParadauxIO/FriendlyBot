@@ -23,31 +23,18 @@
 
 package io.paradaux.csbot.embeds;
 
-import io.paradaux.csbot.IEmbedMessage;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 
-public class PickYourYearEmbed implements IEmbedMessage {
+public class AnnouncementEmbed implements Embed {
 
-    EmbedBuilder builder;
+    EmbedBuilder builder = new EmbedBuilder();
 
-    public PickYourYearEmbed() {
-        this.builder = new EmbedBuilder();
-        create();
+    public AnnouncementEmbed() {
     }
 
     @Override
-    public void create() {
-        builder.setDescription("**What year are you in?**");
-        builder.addField("Junior Fresh", ":one:", true);
-        builder.addField("Senior Fresh", ":two:",true);
-        builder.addField("Junior Sophister", ":three:", true);
-        builder.addField("Senior Sophister", ":four:",true);
-        builder.addField("Masters / Ph.D", ":five:",true);
-    }
-
-    @Override
-    public MessageEmbed build() {
-        return builder.build();
+    public void sendEmbed(TextChannel channel) {
+        channel.sendMessage(builder.build()).queue();
     }
 }
