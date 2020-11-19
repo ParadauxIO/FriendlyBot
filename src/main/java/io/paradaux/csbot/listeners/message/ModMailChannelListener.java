@@ -23,11 +23,14 @@
 
 package io.paradaux.csbot.listeners.message;
 
-import io.paradaux.csbot.ConfigurationCache;
 import io.paradaux.csbot.controllers.BotController;
 import io.paradaux.csbot.controllers.ConfigurationController;
+import io.paradaux.csbot.controllers.DatabaseController;
 import io.paradaux.csbot.controllers.LogController;
-import io.paradaux.csbot.embeds.ModMailEntryEmbed;
+import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.embeds.modmail.ModMailReceivedEmbed;
+import io.paradaux.csbot.embeds.modmail.ModMailSentEmbed;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -41,7 +44,7 @@ import java.util.Objects;
 public class ModMailChannelListener extends ListenerAdapter {
 
     // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
     @Override
@@ -49,21 +52,23 @@ public class ModMailChannelListener extends ListenerAdapter {
         Message message = event.getMessage();
 
         if (message.getChannelType() == ChannelType.PRIVATE) return;
-
-        if (!message.getChannel().getId().equals(configurationCache.getModmailInputChannelID())) return;
-
+        if (!message.getChannel().getId().equals(configurationEntry.getModmailInputChannelID())) return;
         message.delete().queue();
 
         TextChannel channel = Objects.requireNonNull(BotController.getClient()
-                .getGuildById(configurationCache.getCsFriendlyGuildID()))
-                .getTextChannelById(configurationCache.getModmailOutputChannelID());
+                .getGuildById(configurationEntry.getCsFriendlyGuildID()))
+                .getTextChannelById(configurationEntry.getModmailOutputChannelID());
 
-        ModMailEntryEmbed embed = new ModMailEntryEmbed(event.getAuthor().getAsTag(), event.getAuthor().getId(), message.getContentRaw());
-        embed.create();
-        embed.sendEmbed(channel, null);
 
-        event.getAuthor().openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage("**Your message has been sent to the moderators.**" +
-                "\nThe Moderation Team will get back to you as soon as possible.").queue());
+        String messageContent = message.getContentRaw();
+        String ticketNumber = DatabaseController.INSTANCE.getNextTicketNumber();
+        String incidentID = DatabaseController.INSTANCE.getNextIncidentID();
+
+        Embed receivedEmbed = new ModMailReceivedEmbed(event.getMessage().getAuthor(), message.getContentRaw(), ticketNumber, incidentID);
+        ModMailSentEmbed sentEmbed = new ModMailSentEmbed(ticketNumber, messageContent);
+
+        receivedEmbed.sendEmbed(channel);
+        event.getAuthor().openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage(sentEmbed.getEmbed()).queue());
     }
 
 
