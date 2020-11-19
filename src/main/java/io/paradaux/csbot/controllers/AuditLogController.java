@@ -23,12 +23,15 @@
 
 package io.paradaux.csbot.controllers;
 
-import io.paradaux.csbot.ConfigurationCache;
-import io.paradaux.csbot.IController;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.embeds.AuditLogEmbed;
-import io.paradaux.csbot.models.AuditLogEntry;
+import io.paradaux.csbot.interfaces.IController;
+import io.paradaux.csbot.models.automatic.AuditLogEntry;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
+
+import java.util.Date;
 
 public class AuditLogController implements IController {
 
@@ -36,52 +39,72 @@ public class AuditLogController implements IController {
     public  static AuditLogController INSTANCE;
 
     // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
+
+    private static TextChannel channel;
 
     @Override
     public void initialise() {
-        logger.info("Initialising: AuditLogController");
         INSTANCE = this;
     }
 
-    public void log(String cause, String target, String action) {
-        AuditLogEmbed embed = new AuditLogEmbed()
-                .setCause(cause)
-                .setTarget(target)
-                .setAction(action);
+    public void log(AuditLogEmbed.Action action, User target, String reason, String incidentID) {
+        AuditLogEmbed embed = new AuditLogEmbed(action, target, reason, incidentID);
 
         AuditLogEntry auditLogEntry = new AuditLogEntry()
-                .setCause(cause)
-                .setTarget(target)
-                .setAction(action);
-
-        TextChannel channel = BotController.getClient()
-                .getGuildById(configurationCache.getCsFriendlyGuildID())
-                .getTextChannelById(configurationCache.getAuditLogChannelID());
+                .setAction(action)
+                .setIncidentID(incidentID)
+                .setUserTag(target.getAsTag())
+                .setUserID(target.getId())
+                .setReason(reason)
+                .setTimestamp(new Date());
 
         DatabaseController.INSTANCE.addAuditLog(auditLogEntry);
-        embed.create();
-        embed.sendEmbed(channel, null);
+
+        channel = BotController.getClient()
+                .getGuildById(configurationEntry.getCsFriendlyGuildID())
+                .getTextChannelById(configurationEntry.getAuditLogChannelID());
+
+        embed.sendEmbed(channel);
 
     }
 
-    public void log(String cause, String action) {
-        AuditLogEmbed embed = new AuditLogEmbed()
-                .setCause(cause)
-                .setAction(action);
+    public void log(AuditLogEmbed.Action action, User target, User staff, String reason, String incidentID) {
+        AuditLogEmbed embed = new AuditLogEmbed(action, target, staff, reason, incidentID);
 
         AuditLogEntry auditLogEntry = new AuditLogEntry()
-                .setCause(cause)
-                .setAction(action);
-
-        TextChannel channel = BotController.getClient()
-                .getGuildById(configurationCache.getCsFriendlyGuildID())
-                .getTextChannelById(configurationCache.getAuditLogChannelID());
+                .setAction(action)
+                .setIncidentID(incidentID)
+                .setUserTag(target.getAsTag())
+                .setUserID(target.getId())
+                .setReason(reason)
+                .setTimestamp(new Date());
 
         DatabaseController.INSTANCE.addAuditLog(auditLogEntry);
-        embed.create();
-        embed.sendEmbed(channel, null);
+
+        channel = BotController.getClient()
+                .getGuildById(configurationEntry.getCsFriendlyGuildID())
+                .getTextChannelById(configurationEntry.getAuditLogChannelID());
+
+        embed.sendEmbed(channel);
+
+    }
+
+    public void log(AuditLogEmbed.Action action, String reason, String incidentID) {
+        AuditLogEmbed embed = new AuditLogEmbed(action, reason, incidentID);
+
+        AuditLogEntry auditLogEntry = new AuditLogEntry()
+                .setAction(action)
+                .setReason(reason);
+
+        DatabaseController.INSTANCE.addAuditLog(auditLogEntry);
+
+        channel = BotController.getClient()
+                .getGuildById(configurationEntry.getCsFriendlyGuildID())
+                .getTextChannelById(configurationEntry.getAuditLogChannelID());
+
+        embed.sendEmbed(channel);
 
     }
 }
