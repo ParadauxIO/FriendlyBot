@@ -21,48 +21,34 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.models;
+package io.paradaux.csbot.models.interal;
 
-import javax.annotation.Nullable;
+public class ChatFilterEntry {
 
-public class AuditLogEntry {
+    public  String[] kickable, warnable;
 
-    String cause;
-    String target;
-    String action;
+    public ChatFilterEntry() { }
 
-    public AuditLogEntry() { }
-
-    public AuditLogEntry(String cause, @Nullable String target, String action) {
-        this.cause = cause;
-        this.target = target;
-        this.action = action;
+    public ChatFilterEntry(String[] kickable, String[] warnable) {
+        this.kickable = kickable;
+        this.warnable = warnable;
     }
 
-    public String getCause() {
-        return cause;
+    public String[] getKickable() {
+        return kickable;
     }
 
-    public AuditLogEntry setCause(String cause) {
-        this.cause = cause;
+    public String[] getWarnable() {
+        return warnable;
+    }
+
+    public ChatFilterEntry setKickable(String[] kickable) {
+        this.kickable = kickable;
         return this;
     }
 
-    public String getTarget() {
-        return target;
-    }
-
-    public AuditLogEntry setTarget(String target) {
-        this.target = target;
-        return this;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public AuditLogEntry setAction(String action) {
-        this.action = action;
+    public ChatFilterEntry setWarnable(String[] warnable) {
+        this.warnable = warnable;
         return this;
     }
 }

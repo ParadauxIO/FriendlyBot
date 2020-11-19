@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.controllers;
 
-import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -31,16 +31,18 @@ class DatabaseControllerTest {
 
     static LogController logController = new LogController();
 
-    static ConfigurationCache configurationCache;
+    static ConfigurationEntry configurationEntry = new ConfigurationEntry();
     static ConfigurationController configurationController;
 
-    static DatabaseController databaseController = new DatabaseController();
+    static DatabaseController databaseController;
 
     @BeforeAll
     static void setup() {
-        configurationCache.setMongoConnectionUri("MONGO-URI-HERE");
-        configurationController = new ConfigurationController(configurationCache);
+        configurationEntry.setMongoConnectionUri("mongodb://admin:erZ3M7w5JsujKqvUMT88TM2b@mc.paradaux.io:27017/?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+
+        configurationController = new ConfigurationController(configurationEntry);
         logController.initialise();
+        databaseController = new DatabaseController();
         databaseController.initialise();
     }
 
@@ -54,4 +56,20 @@ class DatabaseControllerTest {
         databaseController.setVerifiedUser("150993042558418944", "757903425311604786");
     }
 
+    @Test
+    public void getNextIncidentIDTest() {
+
+//        AuditLogEntry testEntry = new AuditLogEntry()
+//                .setAction(AuditLogEmbed.Action.WARN)
+//                .setIncidentID("1")
+//                .setReason("Smelliness")
+//                .setTimestamp(new Date())
+//                .setUserID("12121212")
+//                .setUserTag("Rían#6500");
+//
+//        databaseController.addAuditLog(testEntry);
+
+
+        System.out.println(databaseController.getNextIncidentID());
+    }
 }

@@ -21,34 +21,55 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.models;
+package io.paradaux.csbot.models.automatic;
 
-public class ChatFilterEntry {
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
-    public  String[] kickable, warnable;
+import java.util.Date;
 
-    public ChatFilterEntry() { }
+public class VerificationEntry {
 
-    public ChatFilterEntry(String[] kickable, String[] warnable) {
-        this.kickable = kickable;
-        this.warnable = warnable;
+    @BsonProperty(value = "discord_id")
+    String discordID;
+
+    @BsonProperty(value = "guild_id")
+    String guildID;
+
+    @BsonProperty(value = "date_verified")
+    Date dateVerified;
+
+    public VerificationEntry() { }
+
+    public VerificationEntry(String discordID, String guildID, Date dateVerified) {
+        this.discordID = discordID;
+        this.guildID = guildID;
+        this.dateVerified = dateVerified;
     }
 
-    public String[] getKickable() {
-        return kickable;
+    public String getDiscordID() {
+        return discordID;
     }
 
-    public String[] getWarnable() {
-        return warnable;
-    }
-
-    public ChatFilterEntry setKickable(String[] kickable) {
-        this.kickable = kickable;
+    public VerificationEntry setDiscordID(String discordID) {
+        this.discordID = discordID;
         return this;
     }
 
-    public ChatFilterEntry setWarnable(String[] warnable) {
-        this.warnable = warnable;
+    public String getGuildID() {
+        return guildID;
+    }
+
+    public VerificationEntry setGuildID(String guildID) {
+        this.guildID = guildID;
+        return this;
+    }
+
+    public Date getDateVerified() {
+        return dateVerified;
+    }
+
+    public VerificationEntry setDateVerified(Date dateVerified) {
+        this.dateVerified = dateVerified;
         return this;
     }
 }

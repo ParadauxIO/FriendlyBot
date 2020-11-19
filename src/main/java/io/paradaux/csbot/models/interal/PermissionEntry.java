@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.models;
+package io.paradaux.csbot.models.interal;
 
 import java.util.ArrayList;
 

@@ -21,53 +21,40 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.models;
+package io.paradaux.csbot.models.interal;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
-public class PendingVerificationEntry {
+public class CounterEntry {
 
-    @BsonProperty(value = "discord_id")
-    String discordID;
+    @BsonProperty(value = "last_incident_id")
+    Long lastIncidentID;
 
-    @BsonProperty(value = "guild_id")
-    String guildID;
+    @BsonProperty(value = "last_ticket_number")
+    Long lastTickerNumber;
 
-    @BsonProperty(value = "verification_id")
-    String verificationCode;
-
-    public PendingVerificationEntry() { }
-
-    public PendingVerificationEntry(String discordID, String guildID, String verificationCode) {
-        this.discordID = discordID;
-        this.guildID = guildID;
-        this.verificationCode = verificationCode;
+    public CounterEntry(Long lastIncidentID, Long lastTickerNumber) {
+        this.lastIncidentID = lastIncidentID;
+        this.lastTickerNumber = lastTickerNumber;
     }
 
-    public String getDiscordID() {
-        return discordID;
+    public CounterEntry() { }
+
+    public Long getLastIncidentID() {
+        return lastIncidentID;
     }
 
-    public PendingVerificationEntry setDiscordID(String discordID) {
-        this.discordID = discordID;
+    public Long getLastTickerNumber() {
+        return lastTickerNumber;
+    }
+
+    public CounterEntry setLastIncidentID(Long lastIncidentID) {
+        this.lastIncidentID = lastIncidentID;
         return this;
     }
 
-    public String getGuildID() {
-        return guildID;
-    }
-
-    public PendingVerificationEntry setGuildID(String guildID) {
-        this.guildID = guildID;
-        return this;
-    }
-
-    public String getVerificationCode() {
-        return verificationCode;
-    }
-
-    public PendingVerificationEntry setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
+    public CounterEntry setLastTickerNumber(Long lastTickerNumber) {
+        this.lastTickerNumber = lastTickerNumber;
         return this;
     }
 }
