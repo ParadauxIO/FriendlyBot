@@ -24,8 +24,8 @@
 package io.paradaux.csbot.controllers;
 
 import io.paradaux.csbot.CSBot;
-import io.paradaux.csbot.IController;
-import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
+import io.paradaux.csbot.interfaces.IController;
 import org.slf4j.Logger;
 
 import javax.activation.DataHandler;
@@ -46,7 +46,7 @@ public class EmailController implements IController {
     public static EmailController INSTANCE;
 
     // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
     private static final Properties properties = new Properties();
@@ -66,13 +66,13 @@ public class EmailController implements IController {
     }
 
     public Session login() {
-        properties.put("mail.smtp.host", configurationCache.getSmtpHost());
-        properties.put("mail.smtp.port", configurationCache.getSmtpPort());
+        properties.put("mail.smtp.host", configurationEntry.getSmtpHost());
+        properties.put("mail.smtp.port", configurationEntry.getSmtpPort());
 
         return Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(configurationCache.getSmtpUser(), configurationCache.getSmtpPass());
+                return new PasswordAuthentication(configurationEntry.getSmtpUser(), configurationEntry.getSmtpPass());
             }
         });
     }

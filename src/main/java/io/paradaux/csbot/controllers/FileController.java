@@ -25,10 +25,10 @@ package io.paradaux.csbot.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.paradaux.csbot.ConfigurationCache;
-import io.paradaux.csbot.IController;
-import io.paradaux.csbot.models.ChatFilterEntry;
-import io.paradaux.csbot.models.PermissionEntry;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
+import io.paradaux.csbot.interfaces.IController;
+import io.paradaux.csbot.models.interal.ChatFilterEntry;
+import io.paradaux.csbot.models.interal.PermissionEntry;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -41,7 +41,7 @@ public class FileController implements IController {
     public static FileController INSTANCE;
 
     // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
     @Override
@@ -87,14 +87,14 @@ public class FileController implements IController {
      * Reads the configuration file and maps it to the ConfigurationCache object
      * @return An Instance of ConfigurationCache
      * @throws FileNotFoundException When the configuration file does not exist.
-     * @see ConfigurationCache
+     * @see ConfigurationEntry
      * */
-    public static ConfigurationCache readConfigurationFile() throws FileNotFoundException {
+    public static ConfigurationEntry readConfigurationFile() throws FileNotFoundException {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
         BufferedReader bufferedReader = new BufferedReader(new FileReader("config.json"));
-        return gson.fromJson(bufferedReader, ConfigurationCache.class);
+        return gson.fromJson(bufferedReader, ConfigurationEntry.class);
     }
 
     /**

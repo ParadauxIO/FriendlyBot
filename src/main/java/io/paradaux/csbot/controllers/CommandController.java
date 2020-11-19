@@ -25,9 +25,15 @@ package io.paradaux.csbot.controllers;
 
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
-import io.paradaux.csbot.IController;
-import io.paradaux.csbot.ConfigurationCache;
-import io.paradaux.csbot.commands.*;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
+import io.paradaux.csbot.commands.HelpCommand;
+import io.paradaux.csbot.commands.InviteCommand;
+import io.paradaux.csbot.commands.PingCommand;
+import io.paradaux.csbot.commands.staff.moderation.*;
+import io.paradaux.csbot.commands.staff.technician.PermissionsCommand;
+import io.paradaux.csbot.commands.staff.technician.SendEmailCommand;
+import io.paradaux.csbot.commands.staff.technician.SendEmbedCommand;
+import io.paradaux.csbot.interfaces.IController;
 import net.dv8tion.jda.api.entities.Activity;
 import org.slf4j.Logger;
 
@@ -37,7 +43,7 @@ public class CommandController implements IController {
     public  static CommandController INSTANCE;
 
     // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
     // Singleton Fields
@@ -56,20 +62,28 @@ public class CommandController implements IController {
      * */
     public static CommandClient createCommandClient() {
         CommandClientBuilder builder = new CommandClientBuilder()
-                .setPrefix(configurationCache.getCommandPrefix())
+                .setPrefix(configurationEntry.getCommandPrefix())
                 .setOwnerId("150993042558418944")
                 .setActivity(Activity.playing("with your emotions"))
                 .addCommands(
-                        new AdminCommand(),
+                        // Moderator Commands.
                         new BanCommand(),
                         new CiteCommand(),
+                        new KickCommand(),
+                        new TimeOutCommand(),
+                        new WarnCommand(),
+                        new LookupCommand(),
+                        new RespondCommand(),
+
+                        // Technician Commands.
+                        new PermissionsCommand(),
+                        new SendEmailCommand(),
+                        new SendEmbedCommand(),
+
+                        // Regular User Commands.
                         new HelpCommand(),
                         new InviteCommand(),
-                        new KickCommand(),
-                        new PingCommand(),
-                        new TimeOutCommand(),
-                        new VerifyCommand(),
-                        new WarnCommand()
+                        new PingCommand()
                 );
 
         return builder.build();
