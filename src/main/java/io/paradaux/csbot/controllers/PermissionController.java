@@ -23,9 +23,9 @@
 
 package io.paradaux.csbot.controllers;
 
-import io.paradaux.csbot.IController;
-import io.paradaux.csbot.ConfigurationCache;
-import io.paradaux.csbot.models.PermissionEntry;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
+import io.paradaux.csbot.interfaces.IController;
+import io.paradaux.csbot.models.interal.PermissionEntry;
 import org.slf4j.Logger;
 
 import java.io.FileNotFoundException;
@@ -37,7 +37,7 @@ public class PermissionController implements IController {
     public static PermissionController INSTANCE;
 
     // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
     // Singleton Fields

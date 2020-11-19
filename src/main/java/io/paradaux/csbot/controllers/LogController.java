@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.controllers;
 
-import io.paradaux.csbot.IController;
+import io.paradaux.csbot.interfaces.IController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

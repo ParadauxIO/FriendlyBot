@@ -24,8 +24,8 @@
 package io.paradaux.csbot.controllers;
 
 import com.jagrosh.jdautilities.command.CommandClient;
-import io.paradaux.csbot.ConfigurationCache;
-import io.paradaux.csbot.IController;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
+import io.paradaux.csbot.interfaces.IController;
 import io.paradaux.csbot.listeners.ReadyListener;
 import io.paradaux.csbot.listeners.message.*;
 import net.dv8tion.jda.api.JDA;
@@ -41,7 +41,7 @@ public class BotController implements IController {
     public  static BotController INSTANCE;
 
     // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
     // Singleton Fields
@@ -52,7 +52,7 @@ public class BotController implements IController {
     public void initialise() {
         logger.info("Attempting to login");
         try {
-            client = login(configurationCache.getBotToken());
+            client = login(configurationEntry.getBotToken());
         } catch (LoginException e) {
             logger.error("Failed to login", e);
             return;
