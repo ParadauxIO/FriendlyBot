@@ -23,8 +23,8 @@
 
 package io.paradaux.csbot.controllers;
 
-import io.paradaux.csbot.IController;
-import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
+import io.paradaux.csbot.interfaces.IController;
 import org.slf4j.Logger;
 
 import java.io.FileNotFoundException;
@@ -38,13 +38,14 @@ public class ConfigurationController implements IController {
     private static final Logger logger = LogController.getLogger();
 
     // Singleton Fields
-    public static ConfigurationCache configurationCache;
-    public static ConfigurationCache getConfigurationCache() { return configurationCache; }
+    public static ConfigurationEntry configurationEntry;
+    public static ConfigurationEntry getConfigurationEntry() { return configurationEntry; }
 
     public ConfigurationController() {}
 
-    public ConfigurationController(ConfigurationCache suppliedConfigurationCache) {
-        configurationCache = suppliedConfigurationCache;
+    public ConfigurationController(ConfigurationEntry suppliedConfigurationCache) {
+        System.out.println("test");
+        configurationEntry = suppliedConfigurationCache;
     }
 
     @Override
@@ -53,7 +54,7 @@ public class ConfigurationController implements IController {
 
         FileController.deployFiles();
         try {
-            configurationCache = FileController.readConfigurationFile();
+            configurationEntry = FileController.readConfigurationFile();
         } catch (FileNotFoundException exception) {
             logger.error("Could not find the configuration file!", exception);
         }
