@@ -25,7 +25,7 @@ package io.paradaux.csbot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.LogController;
 import io.paradaux.csbot.controllers.PermissionController;
@@ -44,7 +44,7 @@ import org.slf4j.Logger;
 public class InviteCommand extends Command {
 
     // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 
@@ -57,5 +57,9 @@ public class InviteCommand extends Command {
     @Override
     protected void execute(CommandEvent event) {
         Message message = event.getMessage();
+        message.getChannel().sendMessage("You can invite this discord bot by messaging the maintainer, or by running your own instance.\n" +
+                "The verification system requires an SMTP Login, you can use the likes of GMX for this, as well as a mongodb database.\n" +
+                "If you wish to use the current edition of the bot, please message Rían#6500 or open an issue at " +
+                "https://github.com/ParadauxIO/ComputerScienceFriendlyBot").queue();
     }
 }

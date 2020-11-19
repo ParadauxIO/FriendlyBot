@@ -21,45 +21,38 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands;
+package io.paradaux.csbot.commands.staff.technician;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.csbot.ConfigurationCache;
-import io.paradaux.csbot.controllers.ConfigurationController;
-import io.paradaux.csbot.controllers.LogController;
-import io.paradaux.csbot.controllers.PermissionController;
-import net.dv8tion.jda.api.entities.User;
-import org.slf4j.Logger;
+import io.paradaux.csbot.commands.staff.PrivilegedCommand;
+import io.paradaux.csbot.controllers.EmailController;
 
-/**
- * This is a command which
- *
- * @author Rían Errity
- * @version Last modified for 0.1.0-SNAPSHOT
- * @since 4/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
- * */
+import javax.mail.MessagingException;
 
-public class WarnCommand extends Command {
+public class SendEmailCommand extends PrivilegedCommand {
 
-    // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
-    private static final Logger logger = LogController.getLogger();
-    private static final PermissionController permissionController = PermissionController.INSTANCE;
-
-    public WarnCommand() {
-        this.name = "warn";
-        this.aliases = new String[]{"w"};
-        this.help = "Warns the specified user";
+    public SendEmailCommand() {
+        this.name = "sendemail";
+        this.aliases = new String[]{"sem"};
+        this.help = "Administrator utility to send email.";
     }
 
     @Override
     protected void execute(CommandEvent event) {
         String authorID = event.getAuthor().getId();
-        if (!(permissionController.isStaff(authorID))) return;
+        if (!isManagement(authorID)) return;
 
-        User target;
+        String[] args = getArgs(this.getArguments());
 
+
+        if (args.length > 4) {
+            event.reply("Syntax Error: ;admin sendemail <email> <code> <username>");
+        }
+
+        try {
+            EmailController.INSTANCE.sendVerificationEmail(args[1], args[2], args[3]);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 }
