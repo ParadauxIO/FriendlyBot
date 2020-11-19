@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.listeners.message;
 
-import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.DatabaseController;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class VerificationCodeReceivedListener extends ListenerAdapter {
 
-    ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     DatabaseController databaseController = DatabaseController.INSTANCE;
 
     @Override
@@ -48,7 +48,7 @@ public class VerificationCodeReceivedListener extends ListenerAdapter {
         String verificationCode = message.getContentRaw();
 
         if (event.getAuthor().isBot()) return;
-        if (!event.getChannel().getId().equals(configurationCache.getVerificationChannelID())) return;
+        if (!event.getChannel().getId().equals(configurationEntry.getVerificationChannelID())) return;
 
         // If they aren't expected to input a verification code
         if (!databaseController.isPendingVerification(event.getAuthor().getId())) return;
@@ -62,7 +62,7 @@ public class VerificationCodeReceivedListener extends ListenerAdapter {
         if (verificationCode.equals(databaseController.getVerificationCode(discordID))) {
             databaseController.setVerifiedUser(discordID, guildID);
 
-            Role verificationRole = message.getGuild().getRoleById(configurationCache.getVerifiedRoleID());
+            Role verificationRole = message.getGuild().getRoleById(configurationEntry.getVerifiedRoleID());
             message.getGuild().addRoleToMember(message.getMember(), verificationRole).queue();
 
             event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("You have successfully verified your friendly corner discord account.").queue());

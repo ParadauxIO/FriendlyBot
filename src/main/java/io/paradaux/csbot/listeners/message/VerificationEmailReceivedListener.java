@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.listeners.message;
 
-import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.DatabaseController;
 import io.paradaux.csbot.controllers.EmailController;
@@ -39,7 +39,7 @@ import javax.mail.MessagingException;
 
 public class VerificationEmailReceivedListener extends ListenerAdapter {
 
-    ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     DatabaseController databaseController = DatabaseController.INSTANCE;
     Logger logger = LogController.getLogger();
 
@@ -53,7 +53,7 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
         String email = message.getContentRaw();
 
         if (event.getAuthor().isBot()) return;
-        if (!event.getChannel().getId().equals(configurationCache.getVerificationChannelID())) return;
+        if (!event.getChannel().getId().equals(configurationEntry.getVerificationChannelID())) return;
         if (databaseController.isVerified(discordID)) return;
         if (databaseController.isPendingVerification(discordID)) return;
 

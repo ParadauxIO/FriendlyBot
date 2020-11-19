@@ -23,11 +23,9 @@
 
 package io.paradaux.csbot.listeners.message;
 
-import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.controllers.*;
-import io.paradaux.csbot.embeds.ChatFilterKickEmbed;
-import io.paradaux.csbot.embeds.ChatFilterWarnEmbed;
-import io.paradaux.csbot.models.ChatFilterEntry;
+import io.paradaux.csbot.models.interal.ChatFilterEntry;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -40,7 +38,7 @@ import java.io.FileNotFoundException;
 public class ChatFilterListener extends ListenerAdapter {
 
     // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
     private String[] warnable, kickable;
@@ -70,27 +68,27 @@ public class ChatFilterListener extends ListenerAdapter {
         String discordID = message.getAuthor().getId();
 
         if (containsWarnableWord(messageContent)) {
-            new ChatFilterWarnEmbed(message.getAuthor(), null).sendEmbed(event.getChannel(), null);
+//            new ChatFilterWarnEmbed(message.getAuthor(), null).sendEmbed(event.getChannel(), null);
 
-            event.getAuthor().openPrivateChannel().queue((channel) -> new ChatFilterWarnEmbed(message.getAuthor(), messageContent).sendEmbed(channel, null));
+//            event.getAuthor().openPrivateChannel().queue((channel) -> new ChatFilterWarnEmbed(message.getAuthor(), messageContent).sendEmbed(channel, null));
 
             ModerationActionController.INSTANCE.warnUser(guildID, discordID, "Illicit word use", messageContent, true);
 
             message.delete().queue();
 
-            AuditLogController.INSTANCE.log("Warn Chat Filter Trigger\n**Message**: " + messageContent, message.getAuthor().getAsTag(), "Removed Message | Warned User" );
+//            AuditLogController.INSTANCE.log("Warn Chat Filter Trigger\n**Message**: " + messageContent, message.getAuthor().getAsTag(), "Removed Message | Warned User" );
         }
 
         if (containsKickableWord(messageContent)) {
-            new ChatFilterKickEmbed(message.getAuthor(), null).sendEmbed(event.getChannel(), null);
+//            new ChatFilterKickEmbed(message.getAuthor(), null).sendEmbed(event.getChannel(), null);
 
-            event.getAuthor().openPrivateChannel().queue((channel) -> new ChatFilterKickEmbed(message.getAuthor(), messageContent).sendEmbed(channel, null));
+//            event.getAuthor().openPrivateChannel().queue((channel) -> new ChatFilterKickEmbed(message.getAuthor(), messageContent).sendEmbed(channel, null));
 
             ModerationActionController.INSTANCE.kickUser(guildID, discordID, "Illicit word use", messageContent);
 
             message.delete().queue();
 
-            AuditLogController.INSTANCE.log("Kick Chat Filter Trigger\n**Message**: " + messageContent, message.getAuthor().getAsTag(), "Removed Message | Kicked User");
+//            AuditLogController.INSTANCE.log("Kick Chat Filter Trigger\n**Message**: " + messageContent, message.getAuthor().getAsTag(), "Removed Message | Kicked User");
 
         }
 

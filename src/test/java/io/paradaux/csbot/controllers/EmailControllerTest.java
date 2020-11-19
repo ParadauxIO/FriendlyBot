@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.controllers;
 
-import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -34,18 +34,18 @@ class EmailControllerTest {
 
     static LogController logController = new LogController();
 
-    static ConfigurationCache configurationCache = new ConfigurationCache();
+    static ConfigurationEntry ConfigurationEntry = new ConfigurationEntry();
     static ConfigurationController configurationController = new ConfigurationController();
 
     @BeforeAll
     static void setup() {
-        configurationCache
+        ConfigurationEntry
                 .setSmtpUser("verification@paradaux.io")
                 .setSmtpPass("SMTP-PASS-HERE")
                 .setSmtpHost("srv2.paradaux.io")
                 .setSmtpPort("587");
 
-        configurationController = new ConfigurationController(configurationCache);
+        configurationController = new ConfigurationController(ConfigurationEntry);
         logController.initialise();
     }
 
