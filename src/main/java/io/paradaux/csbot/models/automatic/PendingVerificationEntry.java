@@ -21,68 +21,53 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.models;
+package io.paradaux.csbot.models.automatic;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
-import java.util.Date;
-
-public class WarningEntry {
+public class PendingVerificationEntry {
 
     @BsonProperty(value = "discord_id")
     String discordID;
 
-    @BsonProperty(value = "issuer_id")
-    String issuerID;
+    @BsonProperty(value = "guild_id")
+    String guildID;
 
-    @BsonProperty(value = "reason")
-    String reason;
+    @BsonProperty(value = "verification_id")
+    String verificationCode;
 
-    @BsonProperty(value = "date_issued")
-    Date dateIssued;
+    public PendingVerificationEntry() { }
 
-    public WarningEntry() { }
-
-    public WarningEntry(String discordID, String issuerID, String reason, Date dateIssued) {
+    public PendingVerificationEntry(String discordID, String guildID, String verificationCode) {
         this.discordID = discordID;
-        this.issuerID = issuerID;
-        this.reason = reason;
-        this.dateIssued = dateIssued;
+        this.guildID = guildID;
+        this.verificationCode = verificationCode;
     }
 
     public String getDiscordID() {
         return discordID;
     }
 
-    public WarningEntry setDiscordID(String discordID) {
+    public PendingVerificationEntry setDiscordID(String discordID) {
         this.discordID = discordID;
         return this;
     }
 
-    public String getIssuerID() {
-        return issuerID;
+    public String getGuildID() {
+        return guildID;
     }
 
-    public WarningEntry  setIssuerID(String issuerID) {
-        this.issuerID = issuerID;
+    public PendingVerificationEntry setGuildID(String guildID) {
+        this.guildID = guildID;
         return this;
     }
 
-    public String getReason() {
-        return reason;
+    public String getVerificationCode() {
+        return verificationCode;
     }
 
-    public WarningEntry setReason(String reason) {
-        this.reason = reason;
-        return this;
-    }
-
-    public Date getDateIssued() {
-        return dateIssued;
-    }
-
-    public WarningEntry setDateIssued(Date dateIssued) {
-        this.dateIssued = dateIssued;
+    public PendingVerificationEntry setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
         return this;
     }
 }

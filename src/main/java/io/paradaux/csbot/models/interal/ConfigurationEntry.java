@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot;
+package io.paradaux.csbot.models.interal;
 
 import io.paradaux.csbot.controllers.ConfigurationController;
 
@@ -34,7 +34,7 @@ import io.paradaux.csbot.controllers.ConfigurationController;
  * @see ConfigurationController
  * */
 
-public class ConfigurationCache {
+public class ConfigurationEntry {
 
     // Required to have a discord bot
     String botToken;
@@ -64,10 +64,10 @@ public class ConfigurationCache {
     String smtpPort;
 
     // Constructor for builder-pattern generation
-    public ConfigurationCache() { }
+    public ConfigurationEntry() { }
 
     // General constructor.
-    public ConfigurationCache(String botToken, String commandPrefix, String csFriendlyGuildID, String auditLogChannelID, String verificationChannelID, String verifiedRoleID, String modmailInputChannelID, String modmailOutputChannelID, String mongoConnectionUri, String smtpUser, String smtpPass, String smtpHost, String smtpPort) {
+    public ConfigurationEntry(String botToken, String commandPrefix, String csFriendlyGuildID, String auditLogChannelID, String verificationChannelID, String verifiedRoleID, String modmailInputChannelID, String modmailOutputChannelID, String mongoConnectionUri, String smtpUser, String smtpPass, String smtpHost, String smtpPort) {
         this.botToken = botToken;
         this.commandPrefix = commandPrefix;
         this.csFriendlyGuildID = csFriendlyGuildID;
@@ -83,10 +83,10 @@ public class ConfigurationCache {
         this.smtpPort = smtpPort;
     }
 
-    /* 
-    * Standard Getters
-    * */
-    
+    /*
+     * Standard Getters
+     * */
+
     public String getBotToken() {
         return botToken;
     }
@@ -138,73 +138,73 @@ public class ConfigurationCache {
     public String getSmtpPort() {
         return smtpPort;
     }
-    
-    /* 
-    * Builder-pattern Setters
-    * Mostly for easy mocking/unit testing
-    * */
 
-    public ConfigurationCache setBotToken(String botToken) {
+    /*
+     * Builder-pattern Setters
+     * Mostly for easy mocking/unit testing
+     * */
+
+    public ConfigurationEntry setBotToken(String botToken) {
         this.botToken = botToken;
         return this;
     }
 
-    public ConfigurationCache setCommandPrefix(String commandPrefix) {
+    public ConfigurationEntry setCommandPrefix(String commandPrefix) {
         this.commandPrefix = commandPrefix;
         return this;
     }
 
-    public ConfigurationCache setCsFriendlyGuildID(String csFriendlyGuildID) {
+    public ConfigurationEntry setCsFriendlyGuildID(String csFriendlyGuildID) {
         this.csFriendlyGuildID = csFriendlyGuildID;
         return this;
     }
 
-    public ConfigurationCache setVerificationChannelID(String verificationChannelID) {
+    public ConfigurationEntry setVerificationChannelID(String verificationChannelID) {
         this.verificationChannelID = verificationChannelID;
         return this;
     }
 
-    public ConfigurationCache setAuditLogChannelID(String auditLogChannelID) {
+    public ConfigurationEntry setAuditLogChannelID(String auditLogChannelID) {
         this.auditLogChannelID = auditLogChannelID;
         return this;
     }
 
-    public ConfigurationCache setVerifiedRoleID(String verifiedRoleID) {
+    public ConfigurationEntry setVerifiedRoleID(String verifiedRoleID) {
         this.verifiedRoleID = verifiedRoleID;
         return this;
     }
 
-    public ConfigurationCache setModmailInputChannelID(String modmailInputChannelID) {
+    public ConfigurationEntry setModmailInputChannelID(String modmailInputChannelID) {
         this.modmailInputChannelID = modmailInputChannelID;
         return this;
     }
 
-    public ConfigurationCache setModmailOutputChannelID(String modmailOutputChannelID) {
+    public ConfigurationEntry setModmailOutputChannelID(String modmailOutputChannelID) {
         this.modmailOutputChannelID = modmailOutputChannelID;
         return this;
     }
 
-    public ConfigurationCache setMongoConnectionUri(String mongoConnectionUri) {
+    public ConfigurationEntry setMongoConnectionUri(String mongoConnectionUri) {
         this.mongoConnectionUri = mongoConnectionUri;
         return this;
     }
 
-    public ConfigurationCache setSmtpUser(String smtpUser) {
+    public ConfigurationEntry setSmtpUser(String smtpUser) {
         this.smtpUser = smtpUser;
         return this;
     }
 
-    public ConfigurationCache setSmtpPass(String smtpPass) {
+    public ConfigurationEntry setSmtpPass(String smtpPass) {
         this.smtpPass = smtpPass;
         return this;
     }
 
-    public ConfigurationCache setSmtpHost(String smtpHost) {
+    public ConfigurationEntry setSmtpHost(String smtpHost) {
         this.smtpHost = smtpHost;
         return this;
     }
 
-    public ConfigurationCache setSmtpPort(String smtpPort) {
+    public ConfigurationEntry setSmtpPort(String smtpPort) {
         this.smtpPort = smtpPort;
         return this;
     }
