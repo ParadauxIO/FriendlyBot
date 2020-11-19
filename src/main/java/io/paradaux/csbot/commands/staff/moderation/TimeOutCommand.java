@@ -21,41 +21,33 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands;
+package io.paradaux.csbot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.LogController;
 import io.paradaux.csbot.controllers.PermissionController;
-import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
-/**
- * This is a command which
- *
- * @author Rían Errity
- * @version Last modified for 0.1.0-SNAPSHOT
- * @since 4/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
- * */
-
-public class VerifyCommand extends Command {
+public class TimeOutCommand extends Command {
 
     // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 
-    public VerifyCommand() {
-        this.name = "verify";
-        this.aliases = new String[]{"v"};
-        this.help = "Verifies the executing user using the provided verification code";
+    public TimeOutCommand() {
+        this.name = "timeout";
+        this.aliases = new String[]{"to", "quarantine"};
+        this.help = "Prevents a user from sending messages for a period of time.";
     }
 
     @Override
     protected void execute(CommandEvent event) {
-        Message message = event.getMessage();
+
+        event.getChannel().sendMessage("TimeOut is not implemented yet. Coming soon").queue();
+
     }
 }

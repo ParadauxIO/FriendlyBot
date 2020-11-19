@@ -21,45 +21,42 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands;
+package io.paradaux.csbot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.LogController;
 import io.paradaux.csbot.controllers.PermissionController;
+import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.embeds.moderation.CiteRuleEmbed;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;
 
-/**
- * This is a command which
- *
- * @author Rían Errity
- * @version Last modified for 0.1.0-SNAPSHOT
- * @since 4/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
- * */
-
-public class KickCommand extends Command {
+public class CiteCommand extends Command {
 
     // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 
-    public KickCommand() {
-        this.name = "kick";
-        this.help = "Kicks the specified user";
+    public CiteCommand() {
+        this.name = "cite";
+        this.help = "Cites a certain rule to remind users of the rules which we have in place.";
     }
 
     @Override
     protected void execute(CommandEvent event) {
-        String authorID = event.getAuthor().getId();
-        if (!(permissionController.isStaff(authorID) || permissionController.isTechnician(authorID))) return;
-
-
-
         Message message = event.getMessage();
+        String[] args = event.getArgs().split(" ");
+
+        TextChannel channel = message.getMentionedChannels().get(0);
+
+        Embed CiteRuleEmbed = new CiteRuleEmbed(args[0]);
+
+        message.getChannel().sendMessage("Citation sent.").queue();
+        CiteRuleEmbed.sendEmbed(channel);
     }
 }

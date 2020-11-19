@@ -21,29 +21,39 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands;
+package io.paradaux.csbot.commands.staff.moderation;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.csbot.ConfigurationCache;
+import io.paradaux.csbot.commands.staff.PrivilegedCommand;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.LogController;
 import io.paradaux.csbot.controllers.PermissionController;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
+import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
-public class TimeOutCommand extends Command {
+public class RespondCommand extends PrivilegedCommand {
 
     // Dependencies
-    private static final ConfigurationCache configurationCache = ConfigurationController.getConfigurationCache();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 
-    public TimeOutCommand() {
-        this.name = "timeout";
-        this.aliases = new String[]{"to", "quarantine"};
-        this.help = "Provides various administrator utilities";
+    public RespondCommand() {
+        this.name = "respond";
+        this.help = "Responds to a modmail message.";
     }
 
     @Override
-    protected void execute(CommandEvent event) {}
+    protected void execute(CommandEvent event) {
+        Message message = event.getMessage();
+
+        String[] args = getArgs(event.getArgs());
+        String authorID = event.getAuthor().getId();
+
+        if (!isStaff(authorID)) { respondNoPermission(message, "[Moderator, Administrator]"); return; }
+        if (args.length < 2) { respondSyntaxError(message, ";respond <ticketnumber> <message>"); return; }
+
+
+    }
 }
