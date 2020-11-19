@@ -65,10 +65,6 @@ public class CSBot {
         logger.info("Initialising: Database Controller");
         new DatabaseController().initialise();
 
-        // Audit Log
-        logger.info("Initialising: AuditLogController");
-        new AuditLogController().initialise();
-
         // Reaction Role
         logger.info("Initialising: ReactionRoleController");
         new ReactionRoleController().initialise();
@@ -89,6 +85,9 @@ public class CSBot {
         logger.info("Initialising: BotController");
         new BotController().initialise();
 
+        // Audit Log
+        logger.info("Initialising: AuditLogController");
+        new AuditLogController().initialise();
     }
 
 }
