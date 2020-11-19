@@ -21,7 +21,28 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.embeds;
+package io.paradaux.csbot.embeds.command;
 
-public class ModMailPromptEmbed {
+import io.paradaux.csbot.EmbedColour;
+import io.paradaux.csbot.embeds.Embed;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+
+public class NoPermissionEmbed implements Embed {
+
+    EmbedBuilder builder = new EmbedBuilder();
+
+    public NoPermissionEmbed(User author, String command, String requiredRoles) {
+        builder.setColor(EmbedColour.ISSUE.getColour());
+        builder.setAuthor(author.getAsTag(), null, author.getAvatarUrl());
+        builder.setDescription("You do not have permission to run `" + command + "`" +
+                "\nThis is restricted to: `" + requiredRoles + "`");
+        builder.setFooter("No Permission Error | CS Friendly Bot" );
+    }
+
+    @Override
+    public void sendEmbed(TextChannel channel) {
+        channel.sendMessage(builder.build()).queue();
+    }
 }

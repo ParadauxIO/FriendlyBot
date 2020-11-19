@@ -21,31 +21,32 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.embeds;
+package io.paradaux.csbot.embeds.moderation;
 
-import io.paradaux.csbot.IEmbedMessage;
+import io.paradaux.csbot.EmbedColour;
+import io.paradaux.csbot.embeds.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 
-public class PickYourCourseEmbed implements IEmbedMessage {
+public class KickedEmbed implements Embed {
 
-    EmbedBuilder builder;
+    EmbedBuilder builder = new EmbedBuilder();
 
-    public PickYourCourseEmbed() {
-        this.builder = new EmbedBuilder();
-        create();
+    public KickedEmbed(String reason, String incidentID) {
+        builder.setColor(EmbedColour.ISSUE.getColour());
+        builder.setAuthor("The Computer Science Friendly Discord | Kicked", null, "https://cdn.discordapp.com/icons/757903425311604786/ac7d6af0fc3cf43e3709257d7d25c06f.png");
+        builder.setDescription("You have been kicked from The Computer Science Friendly Discord. The Specified Reason was `" + reason + "`\n" +
+                "You may re-join immediately, provided an invite link. Be warned, however. If you continue as you are now, you could be banned.");
+        builder.setFooter("User Banned: Incident ID " + incidentID + " | CS Friendly Bot" );
     }
 
     @Override
-    public void create() {
-        builder.setDescription("**What course are you doing?**");
-        builder.addField("\uD83D\uDDA5", "Integrated Computer Science", true);
-        builder.addField("\uD83D\uDCAC", "Computer Science & Language", true);
-        builder.addField("\uD83D\uDCC8", "Computer Science & Business", true);
+    public void sendEmbed(TextChannel channel) {
+        channel.sendMessage(builder.build()).queue();
     }
 
-    @Override
-    public MessageEmbed build() {
+    public MessageEmbed getEmbed() {
         return builder.build();
     }
 }

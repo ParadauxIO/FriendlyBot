@@ -23,29 +23,9 @@
 
 package io.paradaux.csbot.embeds;
 
-import io.paradaux.csbot.IEmbedMessage;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 
-public class PickYourClassEmbed implements IEmbedMessage {
+public interface Embed {
 
-    EmbedBuilder builder;
-
-    public PickYourClassEmbed() {
-        this.builder = new EmbedBuilder();
-        create();
-    }
-
-    @Override
-    public void create() {
-        builder.setDescription("**What Face-Face Class are you in?**\n\nYou can find this on your my.tcd.ie timetable.\n\n**N.B**: This only applies to ICS Students.");
-        builder.addField("ICS-1-A", ":one:", true);
-        builder.addField("ICS-1-B", ":two:",true);
-        builder.addField("ICS-1-C", ":three:", true);
-    }
-
-    @Override
-    public MessageEmbed build() {
-        return builder.build();
-    }
+    void sendEmbed(TextChannel channel);
 }

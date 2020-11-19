@@ -24,48 +24,40 @@
 package io.paradaux.csbot.embeds;
 
 import io.paradaux.csbot.EmbedColour;
-import io.paradaux.csbot.IEmbedMessage;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 
-public class RulesEmbed implements IEmbedMessage {
+public class RulesEmbed implements Embed {
 
-    EmbedBuilder builder;
+    EmbedBuilder builder = new EmbedBuilder();
 
     public RulesEmbed() {
-        this.builder = new EmbedBuilder();
-        create();
-    }
 
-    public void create() {
         builder.setAuthor("The Computer Science Friendly Discord.");
         builder.setColor(EmbedColour.INFO.getColour());
 
-        builder.addField("Discord Rules / Code of Conduct", "**As a member of this discord server, you are expected to have read these rules in their " +
-                "entirety, and by continuing to make use of the discord server you agree to follow these at all times.**", false);
+        builder.addField("Discord Rules / Code of Conduct", "", false);
 
-        builder.addField("1.", "**You are always expected to show respect to all fellow students and Trinity Staff. **Any " +
+        builder.addField("Rule 1. ::", "**You are always expected to show respect to all fellow students and Trinity Staff. **Any " +
                 "form of name-calling, drama-stirring and spreading of rumours will not be tolerated. Harassment and repeated targeted abuse " +
                 "of discord members is unacceptable and will be met with a permanent ban. ", true);
 
-        builder.addField("2. ", "**Any issues regarding the server or its members must be brought up in private." +
-                "** If you have an issue with the server or one of its members report it to your class representative or by using" +
-                " the [#mod-mail](https://discord.com/channels/757903425311604786/773541543164117013/774420036920016916) channel. ", true);
+        builder.addField("Rule 2. :: ", "**Any issues regarding the server or its members must be brought up in private.** If you have an issue with the server or one of its members report it to your class representative or by using the #mod-mail channel.\n", true);
 
-        builder.addField("3. ", "**Political and religious discussion is prohibited.** It goes outside of the scope of this discord server," +
+        builder.addField("Rule 3. ::", "**Political and religious discussion is prohibited.** It goes outside of the scope of this discord server," +
                 " which aims to provide academic support to our fellow students and to facilitate intercommunication in" +
                 " computer science generally. These topics only cause division and discourage new people from joining in the" +
                 " conversation.", true);
 
-        builder.addField("4. ", "**Members may not use the discord to share pornography, gore and otherwise illicit content.**" +
+        builder.addField("Rule 4. ::", "**Members may not use the discord to share pornography, gore and otherwise illicit content.**" +
                 " Furthermore, any discussion of related material is prohibited. This includes topics such as" +
                 " piracy/copyright infringement.", true);
 
-        builder.addField("5. ", "**Discord members are expected to conduct themselves as if they were using an official Trinity " +
+        builder.addField("Rule 5. ::", "**Discord members are expected to conduct themselves as if they were using an official Trinity " +
                 "College social medium.** As such, all rules and regulations subject to those apply here. ** Please see the footnote for" +
                 " more information. This includes condoning plagiarism.", true);
 
-        builder.addField("6. ", "**This platform is hosted on discord, as such, the discord terms of service must always be followed.**", true);
+        builder.addField("Rule 6. ::", "**This platform is hosted on discord, as such, the discord terms of service must always be followed.**", true);
 
         builder.addField("Please note:", "The Rules set is subject to change at any time. Staff members may act upon something which is not" +
                 " explicitly listed, moderators are trusted to act on their own discretion. If you have an issue with this, please use" +
@@ -79,8 +71,7 @@ public class RulesEmbed implements IEmbedMessage {
     }
 
     @Override
-    public MessageEmbed build() {
-        return builder.build();
+    public void sendEmbed(TextChannel channel) {
+        channel.sendMessage(builder.build()).queue();
     }
-
 }

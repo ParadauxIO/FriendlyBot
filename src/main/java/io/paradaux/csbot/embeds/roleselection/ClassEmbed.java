@@ -21,39 +21,25 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.embeds;
+package io.paradaux.csbot.embeds.roleselection;
 
-import io.paradaux.csbot.EmbedColour;
-import io.paradaux.csbot.IEmbedMessage;
+import io.paradaux.csbot.embeds.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 
-public class ModMailEntryEmbed implements IEmbedMessage {
+public class ClassEmbed implements Embed {
 
-    EmbedBuilder builder;
-    String user;
-    String userID;
-    String query;
-    boolean isDM;
+    EmbedBuilder builder = new EmbedBuilder();
 
-    public ModMailEntryEmbed(String user, String userID, String query) {
-        builder = new EmbedBuilder();
-        this.user = user;
-        this.userID = userID;
-        this.query = query;
+    public ClassEmbed() {
+        builder.setDescription("**What Face-Face Class are you in?**\n\nYou can find this on your my.tcd.ie timetable.\n\n**N.B**: This only applies to ICS Students.");
+        builder.addField("ICS-1-A", ":one:", true);
+        builder.addField("ICS-1-B", ":two:",true);
+        builder.addField("ICS-1-C", ":three:", true);
     }
 
     @Override
-    public void create() {
-        builder.setColor(EmbedColour.AUTOMATIC.getColour());
-        builder.addField("User", user, true);
-        builder.addField("UserID", userID, true);
-        builder.addField("Channel", isDM ? "DM" : "#modmail", true);
-        builder.addField("Issue/Query", query, false);
-    }
-
-    @Override
-    public MessageEmbed build() {
-        return builder.build();
+    public void sendEmbed(TextChannel channel) {
+        channel.sendMessage(builder.build()).queue();
     }
 }

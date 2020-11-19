@@ -21,7 +21,27 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.models;
+package io.paradaux.csbot.embeds.notices;
 
-public class AutomaticWarningEntry {
+import io.paradaux.csbot.EmbedColour;
+import io.paradaux.csbot.embeds.Embed;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
+
+public class RulesAcceptanceNoticeEmbed implements Embed {
+
+    EmbedBuilder builder = new EmbedBuilder();
+
+    public RulesAcceptanceNoticeEmbed() {
+
+        builder.setColor(EmbedColour.INFO.getColour());
+        builder.addField("Please note ::", "By proceeding to verify yourself you agree to follow the rules listed in #rules at all times.", false);
+    }
+
+    @Override
+    public void sendEmbed(TextChannel channel) {
+        channel.sendMessage(builder.build()).queue();
+    }
+
+
 }

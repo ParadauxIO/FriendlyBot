@@ -21,34 +21,31 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.embeds;
+package io.paradaux.csbot.embeds.notices;
 
 import io.paradaux.csbot.EmbedColour;
-import io.paradaux.csbot.IEmbedMessage;
+import io.paradaux.csbot.embeds.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 
-public class ModMailEmbed implements IEmbedMessage {
+public class ModMailNoticeEmbed implements Embed {
 
-    EmbedBuilder builder;
+    EmbedBuilder builder = new EmbedBuilder();
 
-    public ModMailEmbed() {
-        this.builder = new EmbedBuilder();
-        create();
-    }
-
-    public void create() {
+    public ModMailNoticeEmbed() {
         builder.setAuthor("The Computer Science Friendly Discord.");
         builder.setColor(EmbedColour.INFO.getColour());
 
-        builder.addField("Mod Mail System", "If you are having issues with verification, with another user or have any general questions, please send them into this channel" +
-                "your message will be automatically deleted and forwarded on to the moderators. Otherwise, DM the bot. It will also go to the moderators.", false);
+        builder.addField("Mod Mail System", "If you are having issues with verification, with another user or have any general questions, please let us know!" +
+                "\n\nIf you send a message into this channel, it will be automatically deleted and forwarded to the moderators. Your inquiry " +
+                "will be logged and a copy of the message you sent as well as an automatically assigned ticket number will be sent to you via DMs.", false);
 
         builder.setFooter("Computer Science Friendly Bot | v0.1");
     }
 
     @Override
-    public MessageEmbed build() {
-        return builder.build();
+    public void sendEmbed(TextChannel channel) {
+        channel.sendMessage(builder.build()).queue();
     }
+
 }

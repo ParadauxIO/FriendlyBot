@@ -24,59 +24,57 @@
 package io.paradaux.csbot.embeds;
 
 import io.paradaux.csbot.EmbedColour;
-import io.paradaux.csbot.IEmbedMessage;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 
-public class AuditLogEmbed implements IEmbedMessage {
+import java.util.Date;
+
+public class AuditLogEmbed implements Embed {
 
     EmbedBuilder builder = new EmbedBuilder();
-    Integer color;
-    String cause, target, action;
 
-    public AuditLogEmbed() { }
+    public enum Action {
+        WARN, KICK, BAN, MODIFY_PERMISSIONS, CHAT_FILTER_TRIGGER, TIME_OUT, MOD_MAIL
+    }
 
-    public AuditLogEmbed(Integer color, String cause, String target, String action) {
-        this.color = color;
-        this.cause = cause;
-        this.target = target;
-        this.action = action;
-        create();
+    public AuditLogEmbed(Action action, User user, String reason, String incidentID) {
+        builder.setColor(EmbedColour.MODERATION.getColour());
+        builder.addField("Action: ", action.toString(), true);
+        builder.addField("Incident ID: ", incidentID, true);
+        builder.addBlankField(true);
+        builder.addField("User: ",user.getAsTag(), true);
+        builder.addField("User ID: ", user.getId(), true);
+        builder.addBlankField(true);
+        builder.addField("Message: ", reason, false);
+        builder.setTimestamp(new Date().toInstant());
+    }
+
+    public AuditLogEmbed(Action action, User user, User staffMember, String reason, String incidentID) {
+        builder.setColor(EmbedColour.MODERATION.getColour());
+        builder.addField("Action: ", action.toString(), true);
+        builder.addField("Incident ID: ", incidentID, true);
+        builder.addBlankField(true);
+        builder.addField("User: ", user.getAsTag(), true);
+        builder.addField("User ID: ", user.getId(),     true);
+        builder.addBlankField(true);
+        builder.addField("Staff: ", staffMember.getAsTag(), true);
+        builder.addField("Staff ID: ", staffMember.getId(), true);
+        builder.addBlankField(true);
+        builder.addField("Message: ", reason, false);
+        builder.setTimestamp(new Date().toInstant());
+    }
+
+
+    public AuditLogEmbed(Action action, String reason, String incidentID) {
+        builder.setColor(EmbedColour.MODERATION.getColour());
+        builder.addField("Action: ", action.toString(), true);
+        builder.addField("Incident ID: ", incidentID, true);
+        builder.setTimestamp(new Date().toInstant());
     }
 
     @Override
-    public void create() {
-        builder.setColor(color==null ? EmbedColour.MODERATION.getColour() : color);
-        builder.setDescription(cause);
-
-        builder.addField("Action: ", action, true);
-
-        if (target != null)
-            builder.addField("Target: ", target, true);
-    }
-
-    @Override
-    public MessageEmbed build() {
-        return builder.build();
-    }
-
-    public AuditLogEmbed setColor(Integer color) {
-        this.color = color;
-        return this;
-    }
-
-    public AuditLogEmbed setCause(String cause) {
-        this.cause = cause;
-        return this;
-    }
-
-    public AuditLogEmbed setTarget(String target) {
-        this.target = target;
-        return this;
-    }
-
-    public AuditLogEmbed setAction(String action) {
-        this.action = action;
-        return this;
+    public void sendEmbed(TextChannel channel) {
+        channel.sendMessage(builder.build()).queue();
     }
 }
