@@ -31,7 +31,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class KickedEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public KickedEmbed(String reason, String incidentID) {
         builder.setColor(EmbedColour.ISSUE.getColour());

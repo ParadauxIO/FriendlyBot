@@ -34,7 +34,7 @@ import java.util.Date;
 
 public class ModMailReceivedEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public ModMailReceivedEmbed(User user, String messageContent, String ticketID, String incidentID) {
         builder.setColor(EmbedColour.AUTOMATIC.getColour());

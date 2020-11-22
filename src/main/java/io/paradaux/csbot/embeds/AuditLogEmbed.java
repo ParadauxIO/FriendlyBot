@@ -32,7 +32,7 @@ import java.util.Date;
 
 public class AuditLogEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public enum Action {
         WARN, KICK, BAN, MODIFY_PERMISSIONS, CHAT_FILTER_TRIGGER, TIME_OUT, MOD_MAIL
@@ -62,14 +62,6 @@ public class AuditLogEmbed implements Embed {
         builder.addField("Staff ID: ", staffMember.getId(), true);
         builder.addBlankField(true);
         builder.addField("Message: ", reason, false);
-        builder.setTimestamp(new Date().toInstant());
-    }
-
-
-    public AuditLogEmbed(Action action, String reason, String incidentID) {
-        builder.setColor(EmbedColour.MODERATION.getColour());
-        builder.addField("Action: ", action.toString(), true);
-        builder.addField("Incident ID: ", incidentID, true);
         builder.setTimestamp(new Date().toInstant());
     }
 

@@ -21,30 +21,25 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.embeds.roleselection;
 
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
-import io.paradaux.csbot.interfaces.IController;
-import org.slf4j.Logger;
+import io.paradaux.csbot.embeds.Embed;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
 
-import javax.annotation.Nullable;
+public class PoliticsOptionEmbed implements Embed {
 
-public class ModerationActionController implements IController {
+    final EmbedBuilder builder = new EmbedBuilder();
 
-    // Singleton Instance
-    public static ModerationActionController INSTANCE;
-
-    // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
-
-    @Override
-    public void initialise() {
-        INSTANCE = this;
+    public PoliticsOptionEmbed() {
+        builder.setDescription("**If you would like access to the Politics Channel please react below**\n" +
+                "Please note that additional rules apply for this channel.");
+        builder.addField("\uD83D\uDC81\u200D♀️", "Politics Role", true);
     }
 
-    public void warnUser (String guildID, String discordID, String reason, String messageContent, @Nullable boolean automaticAction) {}
-    public void kickUser (String guildID, String discordID, String reason, String messageContent) { }
-    public void banUser  (String guildID, String discordID, String reason, String messageContent) { }
+    @Override
+    public void sendEmbed(TextChannel channel) {
+        channel.sendMessage(builder.build()).queue();
+    }
 
 }

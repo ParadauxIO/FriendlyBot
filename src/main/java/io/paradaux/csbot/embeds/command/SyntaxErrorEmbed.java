@@ -32,7 +32,7 @@ import net.dv8tion.jda.api.entities.User;
 
 public class SyntaxErrorEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public SyntaxErrorEmbed(User author, String command, String correctSyntax) {
         builder.setColor(EmbedColour.ISSUE.getColour());
