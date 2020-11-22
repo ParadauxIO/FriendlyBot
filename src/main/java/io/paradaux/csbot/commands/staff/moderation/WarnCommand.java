@@ -24,6 +24,7 @@
 package io.paradaux.csbot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.csbot.FriendlyBot;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
 import io.paradaux.csbot.controllers.*;
 import io.paradaux.csbot.embeds.AuditLogEmbed;
@@ -40,7 +41,7 @@ import org.slf4j.Logger;
  * @author Rían Errity
  * @version Last modified for 0.1.0-SNAPSHOT
  * @since 4/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
+ * @see FriendlyBot
  * */
 
 public class WarnCommand extends PrivilegedCommand {
@@ -92,10 +93,13 @@ public class WarnCommand extends PrivilegedCommand {
                 .setUserTag(target.getAsTag());
 
         DatabaseController.INSTANCE.addWarnEntry(entry);
-        AuditLogController.INSTANCE.log(AuditLogEmbed.Action.WARN, target, event.getAuthor(), reason, incidentID);
+        AuditLogController.INSTANCE.log(AuditLogEmbed.Action.WARN, target,
+                event.getAuthor(), reason, incidentID);
 
-        message.getChannel().sendMessage("Incident ID: " + incidentID + "\nReason: " + reason).queue();
-        target.openPrivateChannel().queue((channel) -> channel.sendMessage(embed.getEmbed()).queue());
+        message.getChannel().sendMessage("Incident ID: " + incidentID
+                + "\nReason: " + reason).queue();
+        target.openPrivateChannel().queue((channel) -> channel.sendMessage(embed.getEmbed())
+                .queue());
 
     }
 }

@@ -42,7 +42,8 @@ import java.util.concurrent.ExecutionException;
 
 public abstract class PrivilegedCommand extends Command {
 
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry
+            = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 
@@ -57,9 +58,9 @@ public abstract class PrivilegedCommand extends Command {
                 || permissionController.isAdmin(discordID);
     }
 
-    public boolean isManagement(String discordID) {
-        return permissionController.isAdmin(discordID)
-                || permissionController.isTechnician(discordID);
+    public boolean isNotManagement(String discordID) {
+        return !permissionController.isAdmin(discordID)
+                && !permissionController.isTechnician(discordID);
     }
 
     public String parseSentance(int startElement, String[] args) {
@@ -67,11 +68,13 @@ public abstract class PrivilegedCommand extends Command {
     }
 
     public void respondNoPermission(Message message, String requiredRole) {
-        new NoPermissionEmbed(message.getAuthor(), this.name, requiredRole).sendEmbed(message.getTextChannel());
+        new NoPermissionEmbed(message.getAuthor(), this.name, requiredRole)
+                .sendEmbed(message.getTextChannel());
     }
 
     public void respondSyntaxError(Message message, String correctSyntax) {
-        new SyntaxErrorEmbed(message.getAuthor(), this.name, correctSyntax).sendEmbed(message.getTextChannel());
+        new SyntaxErrorEmbed(message.getAuthor(), this.name, correctSyntax)
+                .sendEmbed(message.getTextChannel());
     }
 
     @Nullable

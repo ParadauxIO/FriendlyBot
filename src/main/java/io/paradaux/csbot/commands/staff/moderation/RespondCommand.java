@@ -35,7 +35,8 @@ import org.slf4j.Logger;
 public class RespondCommand extends PrivilegedCommand {
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry
+            = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 
@@ -51,8 +52,15 @@ public class RespondCommand extends PrivilegedCommand {
         String[] args = getArgs(event.getArgs());
         String authorID = event.getAuthor().getId();
 
-        if (!isStaff(authorID)) { respondNoPermission(message, "[Moderator, Administrator]"); return; }
-        if (args.length < 2) { respondSyntaxError(message, ";respond <ticketnumber> <message>"); return; }
+        if (!isStaff(authorID)) {
+            respondNoPermission(message, "[Moderator, Administrator]");
+            return;
+        }
+
+        if (args.length < 2) {
+            respondSyntaxError(message, ";respond <ticketnumber> <message>");
+            return;
+        }
 
 
     }

@@ -38,10 +38,10 @@ public class PermissionsCommand extends PrivilegedCommand {
     @Override
     protected void execute(CommandEvent event) {
         String authorID = event.getAuthor().getId();
-        if (!isManagement(authorID)) return;
+        if (isNotManagement(authorID)) return;
 
         Message message = event.getMessage();
-        String[] args = event.getArgs().split(" "); // Space
+        String[] args = event.getArgs().split(" ");
 
         if (!getPermissionController().isTechnician(authorID)) return;
 
