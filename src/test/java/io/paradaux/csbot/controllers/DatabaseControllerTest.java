@@ -29,9 +29,9 @@ import org.junit.jupiter.api.Test;
 
 class DatabaseControllerTest {
 
-    static LogController logController = new LogController();
+    static final LogController logController = new LogController();
 
-    static ConfigurationEntry configurationEntry = new ConfigurationEntry();
+    static final ConfigurationEntry configurationEntry = new ConfigurationEntry();
     static ConfigurationController configurationController;
 
     static DatabaseController databaseController;
