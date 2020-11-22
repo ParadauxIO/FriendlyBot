@@ -31,7 +31,7 @@ import net.dv8tion.jda.api.entities.User;
 
 public class NoPermissionEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public NoPermissionEmbed(User author, String command, String requiredRoles) {
         builder.setColor(EmbedColour.ISSUE.getColour());

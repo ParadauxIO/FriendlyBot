@@ -30,7 +30,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class ModMailNoticeEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public ModMailNoticeEmbed() {
         builder.setAuthor("The Computer Science Friendly Discord.");

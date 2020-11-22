@@ -29,19 +29,22 @@ import io.paradaux.csbot.controllers.*;
 import org.slf4j.Logger;
 
 /**
- * CSBot is the main (executable) class for the project. It provides a set of lazy dependency injection instances
+ * CSBot is the main (executable) class for the project.
+ * It provides a set of lazy dependency injection instances
  *
  * @author Rían Errity
  * @version Last Modified for 0.1.0-SNAPSHOT
  * @since 1/11/2020 DD/MM/YY
- * */
+ */
 
-public class CSBot {
+public class FriendlyBot {
 
     /**
-     * This is the main method for the application. It handles the instantiation of dependencies, and the discord bot as a whole
+     * This is the main method for the application. It handles the instantiation
+     * of dependencies, and the discord bot as a whole
+     *
      * @param args Command line arguments are not used in this application.
-     * */
+     */
     public static void main(String[] args) {
 
         // Instantiate Logger instance, so we can log the other controllers properly.
@@ -79,7 +82,6 @@ public class CSBot {
 
         // ModerationAction
         logger.info("Initialising: ModerationActionController");
-        new ModerationActionController().initialise();
 
         // The Bot
         logger.info("Initialising: BotController");
