@@ -23,6 +23,7 @@
 
 package io.paradaux.csbot.listeners.message;
 
+import io.paradaux.csbot.FriendlyBot;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.controllers.BotController;
 import io.paradaux.csbot.controllers.ConfigurationController;
@@ -40,7 +41,7 @@ import org.slf4j.Logger;
  * @author Rían Errity
  * @version Last Modified for 0.1.0-SNAPSHOT
  * @since 1/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
+ * @see FriendlyBot
  * */
 
 

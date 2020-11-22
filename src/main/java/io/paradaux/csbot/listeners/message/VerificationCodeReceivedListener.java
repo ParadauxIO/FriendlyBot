@@ -36,7 +36,7 @@ import org.jetbrains.annotations.NotNull;
 public class VerificationCodeReceivedListener extends ListenerAdapter {
 
     private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
-    DatabaseController databaseController = DatabaseController.INSTANCE;
+    final DatabaseController databaseController = DatabaseController.INSTANCE;
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
