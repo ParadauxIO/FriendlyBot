@@ -25,7 +25,6 @@ package io.paradaux.csbot.controllers;
 
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.commands.HelpCommand;
 import io.paradaux.csbot.commands.InviteCommand;
 import io.paradaux.csbot.commands.PingCommand;
@@ -34,8 +33,8 @@ import io.paradaux.csbot.commands.staff.technician.PermissionsCommand;
 import io.paradaux.csbot.commands.staff.technician.SendEmailCommand;
 import io.paradaux.csbot.commands.staff.technician.SendEmbedCommand;
 import io.paradaux.csbot.interfaces.IController;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Activity;
-import org.slf4j.Logger;
 
 public class CommandController implements IController {
 
@@ -45,11 +44,13 @@ public class CommandController implements IController {
     // Dependencies
     private static final ConfigurationEntry configurationEntry = ConfigurationController
             .getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
 
     // Singleton Fields
     public static CommandClient commandClient;
-    public static CommandClient getCommandClient() { return commandClient; }
+
+    public static CommandClient getCommandClient() {
+        return commandClient;
+    }
 
     @Override
     public void initialise() {

@@ -24,7 +24,7 @@
 package io.paradaux.csbot.embeds.modmail;
 
 import io.paradaux.csbot.EmbedColour;
-import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -37,12 +37,14 @@ public class ModMailSentEmbed implements Embed {
 
     public ModMailSentEmbed(String ticketNumber, String messageContent) {
         builder.setColor(EmbedColour.AUTOMATIC.getColour());
-        builder.setDescription("We have received your mod-mail message, here is a copy for your convenience.");
+        builder.setDescription("We have received your mod-mail message, here is a copy for "
+                + "your convenience.");
 
         builder.addField("Ticket Number: ", ticketNumber, true);
         builder.addField("Message Content: ", messageContent, true);
-        builder.setFooter("If this was made by mistake, please send another mod-mail citing the \"Ticket Number\" supplied above." +
-                " This is our internal reference to your enquiry");
+        builder.setFooter("If this was made by mistake, please send another mod-mail citing the "
+                + "\"Ticket Number\" supplied above. This is our internal reference to your"
+                + " enquiry");
         builder.setTimestamp(new Date().toInstant());
     }
 

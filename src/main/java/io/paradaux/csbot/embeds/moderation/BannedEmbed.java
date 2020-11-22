@@ -24,7 +24,7 @@
 package io.paradaux.csbot.embeds.moderation;
 
 import io.paradaux.csbot.EmbedColour;
-import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -35,10 +35,12 @@ public class BannedEmbed implements Embed {
 
     public BannedEmbed(String reason, String incidentID) {
         builder.setColor(EmbedColour.ISSUE.getColour());
-        builder.setAuthor("The Computer Science Friendly Discord | Banned", null, "https://cdn.discordapp.com/icons/757903425311604786/ac7d6af0fc3cf43e3709257d7d25c06f.png");
-        builder.setDescription("You have been banned from The Computer Science Friendly Discord. The Specified Reason was `" + reason + "`\n" +
-                "You may appeal this ban by contacting your class representative.");
-        builder.setFooter("User Banned: Incident ID " + incidentID + " | CS Friendly Bot" );
+        builder.setAuthor("The Computer Science Friendly Discord | Banned", null,
+                "https://cdn.discordapp.com/icons/757903425311604786/ac7d6af0fc3cf43e3709257d7d25c06f.png");
+        builder.setDescription("You have been banned from The Computer Science Friendly Discord. "
+                + "The Specified Reason was `" + reason + "`\n" + "You may appeal this ban by"
+                + " contacting your class representative.");
+        builder.setFooter("User Banned: Incident ID " + incidentID + " | CS Friendly Bot");
     }
 
     @Override

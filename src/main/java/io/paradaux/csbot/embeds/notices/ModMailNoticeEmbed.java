@@ -24,7 +24,7 @@
 package io.paradaux.csbot.embeds.notices;
 
 import io.paradaux.csbot.EmbedColour;
-import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -36,9 +36,12 @@ public class ModMailNoticeEmbed implements Embed {
         builder.setAuthor("The Computer Science Friendly Discord.");
         builder.setColor(EmbedColour.INFO.getColour());
 
-        builder.addField("Mod Mail System", "If you are having issues with verification, with another user or have any general questions, please let us know!" +
-                "\n\nIf you send a message into this channel, it will be automatically deleted and forwarded to the moderators. Your inquiry " +
-                "will be logged and a copy of the message you sent as well as an automatically assigned ticket number will be sent to you via DMs.", false);
+        builder.addField("Mod Mail System", "If you are having issues with verification, with"
+                + " another user or have any general questions, please let us know!" + "\n\nIf"
+                + " you send a message into this channel, it will be automatically deleted and "
+                + "forwarded to the moderators. Your inquiry " + "will be logged and a copy of "
+                + "the message you sent as well as an automatically assigned ticket number will be"
+                + " sent to you via DMs.", false);
 
         builder.setFooter("Computer Science Friendly Bot | v0.1");
     }

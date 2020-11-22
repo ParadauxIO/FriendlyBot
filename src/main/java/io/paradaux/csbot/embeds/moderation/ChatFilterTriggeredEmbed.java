@@ -25,7 +25,7 @@ package io.paradaux.csbot.embeds.moderation;
 
 import io.paradaux.csbot.EmbedColour;
 import io.paradaux.csbot.embeds.AuditLogEmbed;
-import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -37,14 +37,18 @@ public class ChatFilterTriggeredEmbed implements Embed {
 
     public ChatFilterTriggeredEmbed(AuditLogEmbed.Action action, String messageContent, String detectedWord, String incidentID) {
         builder.setColor(EmbedColour.AUTOMATIC.getColour());
-        builder.setDescription("You have triggered the chat filter. Please avoid using sensitive words, you can view the filter [here](https://github.com/ParadauxIO/ComputerScienceFriendlyBot/wiki/Chat-Filter).");
+        builder.setDescription("You have triggered the chat filter. Please avoid using sensitive "
+                + "words, you can view the filter [here](https://github.com/ParadauxIO/ComputerScience"
+                + "FriendlyBot/wiki/Chat-Filter).");
 
         builder.addField("Action Taken: ", action.toString(), true);
         builder.addField("Incident ID: ", incidentID, true);
         builder.addField("Detected Word: ", detectedWord, true);
 
         builder.addField("Message Content: ", messageContent, true);
-        builder.setFooter("It's very possible this detection was a mistake, if it was please explain how it was a mistake, and include the incident ID included above so we can remove this from your record.");
+        builder.setFooter("It's very possible this detection was a mistake, if it was please "
+                + "explain how it was a mistake, and include the incident ID included above so we "
+                + "can remove this from your record.");
         builder.setTimestamp(new Date().toInstant());
     }
 

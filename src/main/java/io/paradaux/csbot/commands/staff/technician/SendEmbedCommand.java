@@ -34,6 +34,7 @@ import io.paradaux.csbot.embeds.notices.ModMailNoticeEmbed;
 import io.paradaux.csbot.embeds.notices.RulesAcceptanceNoticeEmbed;
 import io.paradaux.csbot.embeds.notices.VerificationNoticeEmbed;
 import io.paradaux.csbot.embeds.roleselection.PoliticsOptionEmbed;
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
