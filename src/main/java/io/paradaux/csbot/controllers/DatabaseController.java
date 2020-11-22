@@ -63,16 +63,11 @@ public class DatabaseController implements IController {
     private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
-    // Singleton Fields
-    private static MongoClient client;
-    private static MongoDatabase dataBase;
-
     private static MongoCollection<PendingVerificationEntry> pendingVerification;
     private static MongoCollection<VerificationEntry> verification;
     private static MongoCollection<CounterEntry> counterCollection;
     private static MongoCollection<AuditLogEntry> auditLog;
     private static MongoCollection<WarningEntry> warnings;
-    private static MongoCollection<ModMailEntry> modmail;
     private static MongoCollection<BanEntry> bans;
     private static MongoCollection<KickEntry> kicks;
 
@@ -87,6 +82,8 @@ public class DatabaseController implements IController {
                 .codecRegistry(codecRegistry)
                 .build();
 
+        // Singleton Fields
+        MongoClient client;
         try {
             client = MongoClients.create(clientSettings);
         } catch (Exception exception) {
@@ -94,14 +91,14 @@ public class DatabaseController implements IController {
             return;
         }
 
-        dataBase = client.getDatabase("csfriendlybot");
+        MongoDatabase dataBase = client.getDatabase("csfriendlybot");
 
         pendingVerification = dataBase.getCollection("pendingVerification", PendingVerificationEntry.class);
         verification = dataBase.getCollection("verification", VerificationEntry.class);
         counterCollection = dataBase.getCollection("counter", CounterEntry.class);
         auditLog = dataBase.getCollection("auditlog", AuditLogEntry.class);
         warnings = dataBase.getCollection("warnings", WarningEntry.class);
-        modmail = dataBase.getCollection("modmail", ModMailEntry.class);
+        MongoCollection<ModMailEntry> modmail = dataBase.getCollection("modmail", ModMailEntry.class);
         bans = dataBase.getCollection("bans", BanEntry.class);
         kicks = dataBase.getCollection("kicks", KickEntry.class);
 
