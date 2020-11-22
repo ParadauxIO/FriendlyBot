@@ -24,6 +24,7 @@
 package io.paradaux.csbot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.csbot.FriendlyBot;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
 import io.paradaux.csbot.controllers.*;
 import io.paradaux.csbot.embeds.AuditLogEmbed;
@@ -36,18 +37,19 @@ import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 
 /**
- * This is a command which
+ * This is a command which kicks the specified user.
  *
  * @author Rían Errity
  * @version Last modified for 0.1.0-SNAPSHOT
  * @since 4/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
+ * @see FriendlyBot
  * */
 
 public class KickCommand extends PrivilegedCommand {
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry
+            = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 
@@ -63,8 +65,14 @@ public class KickCommand extends PrivilegedCommand {
         String[] args = getArgs(event.getArgs());
         String authorID = event.getAuthor().getId();
 
-        if (!isStaff(authorID)) { respondNoPermission(message, "[Moderator, Administrator]"); return; }
-        if (args.length < 2) { respondSyntaxError(message, ";ban <userid/@mention> <reason>"); return; }
+        if (!isStaff(authorID)) {
+            respondNoPermission(message, "[Moderator, Administrator]");
+            return;
+        }
+        if (args.length < 2) {
+            respondSyntaxError(message, ";ban <userid/@mention> <reason>");
+            return;
+        }
 
         User target = parseTarget(message, 0, args);
 
@@ -92,17 +100,22 @@ public class KickCommand extends PrivilegedCommand {
                 .setUserTag(target.getAsTag());
 
         DatabaseController.INSTANCE.addKickEntry(entry);
-        AuditLogController.INSTANCE.log(AuditLogEmbed.Action.KICK, target, event.getAuthor(), reason, incidentID);
+        AuditLogController.INSTANCE.log(AuditLogEmbed.Action.KICK, target,
+                event.getAuthor(), reason, incidentID);
 
-        message.getChannel().sendMessage("Incident ID: " + incidentID + "\nReason: " + reason).queue();
-        target.openPrivateChannel().queue((channel) -> channel.sendMessage(embed.getEmbed()).queue());
+        message.getChannel().sendMessage("Incident ID: " + incidentID
+                + "\nReason: " + reason).queue();
+        target.openPrivateChannel().queue((channel) -> channel.sendMessage(embed.getEmbed())
+                .queue());
 
         Member targetMember = retrieveMember(message.getGuild(), target);
 
         if (targetMember == null) {
-            message.getChannel().sendMessage("THe user specified is not a member of this discord").queue();
+            message.getChannel().sendMessage("THe user specified is not a member of this discord")
+                    .queue();
             return;
         }
+
         targetMember.kick(reason).queue();
     }
 }

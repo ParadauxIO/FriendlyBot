@@ -38,7 +38,8 @@ import org.slf4j.Logger;
 public class CiteCommand extends Command {
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry
+            = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 
@@ -54,9 +55,9 @@ public class CiteCommand extends Command {
 
         TextChannel channel = message.getMentionedChannels().get(0);
 
-        Embed CiteRuleEmbed = new CiteRuleEmbed(args[0]);
+        Embed citeRuleEmbed = new CiteRuleEmbed(args[0]);
 
         message.getChannel().sendMessage("Citation sent.").queue();
-        CiteRuleEmbed.sendEmbed(channel);
+        citeRuleEmbed.sendEmbed(channel);
     }
 }
