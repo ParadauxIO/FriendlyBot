@@ -77,7 +77,6 @@ public class BotController implements IController {
                 .setBulkDeleteSplittingEnabled(false)
                 .addEventListeners (
                         commandClient,
-                        new ChatFilterListener(),
                         new ModMailChannelListener(),
                         new ModMailDMListener(),
                         new VerificationCodeReceivedListener(),
