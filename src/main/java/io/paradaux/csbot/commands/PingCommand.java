@@ -26,11 +26,6 @@ package io.paradaux.csbot.commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.FriendlyBot;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
-import io.paradaux.csbot.controllers.ConfigurationController;
-import io.paradaux.csbot.controllers.LogController;
-import io.paradaux.csbot.controllers.PermissionController;
-import org.slf4j.Logger;
 
 /**
  * Ping Command is used to gauge DiscordAPI Latency.
@@ -43,12 +38,6 @@ import org.slf4j.Logger;
 
 
 public class PingCommand extends Command {
-
-    // Dependencies
-    private static final ConfigurationEntry configurationEntry
-            = ConfigurationController.getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
-    private static final PermissionController permissionController = PermissionController.INSTANCE;
 
     public PingCommand() {
         this.name = "ping";

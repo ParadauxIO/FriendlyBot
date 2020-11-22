@@ -41,7 +41,8 @@ public class FileController implements IController {
     public static FileController INSTANCE;
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController
+            .getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
     @Override
@@ -52,11 +53,12 @@ public class FileController implements IController {
     /**
      * Export a resource embedded into a Jar file to the local file path.
      *
-     * @param resourceName ie.: "/configuration.yml" N.B / is a directory down in the "jar tree" been the jar the root of the tree
+     * @param resourceName ie.: "/configuration.yml" N.B / is a directory down in the "jar tree"
+     *                     In this case; the jar the root of the tree
      * @return The path to the exported resource
      * @throws Exception a generic exception to signal something went wrong
      */
-    public static String ExportResource(String resourceName) throws Exception {
+    public static void ExportResource(String resourceName) throws Exception {
         InputStream stream = null;
         OutputStream resStreamOut = null;
         String jarFolder;
@@ -68,7 +70,15 @@ public class FileController implements IController {
 
             int readBytes;
             byte[] buffer = new byte[4096];
-            jarFolder = new File(FileController.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getParentFile().getPath().replace('\\', '/');
+            jarFolder = new File(FileController.class
+                    .getProtectionDomain()
+                    .getCodeSource()
+                    .getLocation()
+                    .toURI()
+                    .getPath())
+                    .getParentFile()
+                    .getPath()
+                    .replace('\\', '/');
             resStreamOut = new FileOutputStream(jarFolder + resourceName);
             while ((readBytes = stream.read(buffer)) > 0) {
                 resStreamOut.write(buffer, 0, readBytes);
@@ -79,8 +89,6 @@ public class FileController implements IController {
             stream.close();
             resStreamOut.close();
         }
-
-        return jarFolder + resourceName;
     }
 
     /**
@@ -139,7 +147,8 @@ public class FileController implements IController {
     public String readEmailTemplate() {
         StringBuilder emailTemplate = new StringBuilder();
 
-        InputStream emailTemplateStream = getClass().getClassLoader().getResourceAsStream("emailtemplate.html");
+        InputStream emailTemplateStream = getClass().getClassLoader()
+                .getResourceAsStream("emailtemplate.html");
         if (emailTemplateStream == null) {
             return null;
         }

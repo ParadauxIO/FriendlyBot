@@ -34,6 +34,7 @@ import io.paradaux.csbot.embeds.notices.ModMailNoticeEmbed;
 import io.paradaux.csbot.embeds.notices.RulesAcceptanceNoticeEmbed;
 import io.paradaux.csbot.embeds.notices.VerificationNoticeEmbed;
 import io.paradaux.csbot.embeds.roleselection.PoliticsOptionEmbed;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class SendEmbedCommand extends PrivilegedCommand {
@@ -46,11 +47,20 @@ public class SendEmbedCommand extends PrivilegedCommand {
 
     @Override
     protected void execute(CommandEvent event) {
-        String authorID = event.getAuthor().getId();
-        if (isNotManagement(authorID)) return;
+        Message message = event.getMessage();
 
-        System.out.println(this.getArguments());
-        String[] args = event.getArgs().split(" ");
+        String[] args = getArgs(event.getArgs());
+        String authorID = event.getAuthor().getId();
+
+        if (!getPermissionController().isTechnician(authorID)) {
+            respondNoPermission(message, "[Technician]");
+            return;
+        }
+
+        if (args.length < 3) {
+            respondSyntaxError(message, ";sendembed <embed>");
+            return;
+        }
 
         Embed embed;
 
@@ -122,7 +132,8 @@ public class SendEmbedCommand extends PrivilegedCommand {
             }
 
             case "auditlog": {
-                embed = new AuditLogEmbed(AuditLogEmbed.Action.valueOf(args[1]), event.getAuthor(), args[2], args[3]);
+                embed = new AuditLogEmbed(AuditLogEmbed.Action.valueOf(args[1]), event.getAuthor(),
+                        args[2], args[3]);
                 break;
             }
 
@@ -142,14 +153,11 @@ public class SendEmbedCommand extends PrivilegedCommand {
             }
 
             default: {
-                event.getMessage().getChannel().sendMessage("Incorrect Embed Specified").queue();
+                respondSyntaxError(message, ";sendembed <embed>");
                 return;
             }
         }
 
         embed.sendEmbed((TextChannel) event.getMessage().getChannel());
-
-
-
     }
 }
