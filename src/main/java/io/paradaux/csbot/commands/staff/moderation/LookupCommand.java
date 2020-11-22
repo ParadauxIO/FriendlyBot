@@ -43,7 +43,8 @@ import org.slf4j.Logger;
 public class LookupCommand extends PrivilegedCommand {
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry
+            = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 
@@ -59,16 +60,27 @@ public class LookupCommand extends PrivilegedCommand {
         String[] args = getArgs(event.getArgs());
         String authorID = event.getAuthor().getId();
 
-        if (!isStaff(authorID)) { respondNoPermission(message, "[Moderator, Administrator]"); return; }
-        if (args.length < 1) { respondSyntaxError(message, ";lookup <incidentid>"); return; }
+        if (!isStaff(authorID)) {
+            respondNoPermission(message, "[Moderator, Administrator]");
+            return;
+        }
+
+        if (args.length < 1) {
+            respondSyntaxError(message, ";lookup <incidentid>");
+            return;
+        }
 
         AuditLogEntry auditLogEntry = DatabaseController.INSTANCE.getAuditLogEntry(args[0]);
 
-        if (auditLogEntry == null) { respondSyntaxError(message, ";lookup <incidentid>"); return; }
+        if (auditLogEntry == null) {
+            respondSyntaxError(message, ";lookup <incidentid>");
+            return;
+        }
 
         AuditLogEmbed.Action action = auditLogEntry.getAction();
 
         EmbedBuilder builder = new EmbedBuilder();
+
         switch (action) {
             case BAN: {
                 BanEntry banEntry = DatabaseController.INSTANCE.getBanEntry(args[0]);
@@ -87,8 +99,10 @@ public class LookupCommand extends PrivilegedCommand {
                         .addField("Reason", banEntry.getReason(), false)
                         .setColor(0x000000)
                         .setAuthor("Lookup Request: BAN")
-                        .setFooter("A copy of the audit log entry for this event has been messaged to you.");
+                        .setFooter("A copy of the audit log entry for this event "
+                                + "has been messaged to you.");
 
+                break;
             }
             case KICK: {
                 KickEntry kickEntry = DatabaseController.INSTANCE.getKickEntry(args[0]);
@@ -107,14 +121,19 @@ public class LookupCommand extends PrivilegedCommand {
                         .addField("Reason", kickEntry.getReason(), false)
                         .setColor(0x000000)
                         .setAuthor("Lookup Request: KICK")
-                        .setFooter("A copy of the audit log entry for this event has been messaged to you.");
+                        .setFooter("A copy of the audit log entry for this event has "
+                                + "been messaged to you.");
+                break;
             }
 
             case WARN: {
-                WarningEntry warningEntry = DatabaseController.INSTANCE.getWarningEntry(args[0]);
+                WarningEntry warningEntry = DatabaseController.INSTANCE.
+                        getWarningEntry(args[0]);
 
                 if (warningEntry == null) {
-                    message.getChannel().sendMessage("Nothing was found.").queue();
+                    message.getChannel().sendMessage("Nothing was found.")
+                            .queue();
+
                     return;
                 }
 
@@ -127,9 +146,16 @@ public class LookupCommand extends PrivilegedCommand {
                         .addField("Reason", warningEntry.getReason(), false)
                         .setColor(0x000000)
                         .setAuthor("Lookup Request: KICK")
-                        .setFooter("A copy of the audit log entry for this event has been messaged to you.");
-
+                        .setFooter("A copy of the audit log entry for this event has "
+                                + "been messaged to you.");
+                break;
             }
+
+            default: {
+                logger.error("Audit Log lookup failed for {}.", event.getAuthor().getAsTag());
+                break;
+            }
+
         }
 
         message.getChannel().sendMessage(builder.build()).queue();
@@ -138,13 +164,12 @@ public class LookupCommand extends PrivilegedCommand {
         User staff = message.getJDA().getUserById(auditLogEntry.getStaffID());
 
         if (user == null || staff == null) {
-            message.getChannel().sendMessage("An unknown error occurred.");
+            message.getChannel().sendMessage("An unknown error occurred.").queue();
             return;
         }
 
-        AuditLogEmbed embed = new AuditLogEmbed(auditLogEntry.getAction(), user, staff, auditLogEntry.getReason(), auditLogEntry.getIncidentID());
-
-
+        AuditLogEmbed embed = new AuditLogEmbed(auditLogEntry.getAction(), user,
+                staff, auditLogEntry.getReason(), auditLogEntry.getIncidentID());
 
     }
 }

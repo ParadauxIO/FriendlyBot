@@ -47,7 +47,8 @@ public class TimeOutCommand extends Command {
     @Override
     protected void execute(CommandEvent event) {
 
-        event.getChannel().sendMessage("TimeOut is not implemented yet. Coming soon").queue();
+        event.getChannel().sendMessage("TimeOut is not implemented yet. "
+                + "Coming soon").queue();
 
     }
 }
