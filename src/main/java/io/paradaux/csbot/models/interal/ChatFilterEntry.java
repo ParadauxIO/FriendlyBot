@@ -27,28 +27,4 @@ public class ChatFilterEntry {
 
     public  String[] kickable, warnable;
 
-    public ChatFilterEntry() { }
-
-    public ChatFilterEntry(String[] kickable, String[] warnable) {
-        this.kickable = kickable;
-        this.warnable = warnable;
-    }
-
-    public String[] getKickable() {
-        return kickable;
-    }
-
-    public String[] getWarnable() {
-        return warnable;
-    }
-
-    public ChatFilterEntry setKickable(String[] kickable) {
-        this.kickable = kickable;
-        return this;
-    }
-
-    public ChatFilterEntry setWarnable(String[] warnable) {
-        this.warnable = warnable;
-        return this;
-    }
 }
