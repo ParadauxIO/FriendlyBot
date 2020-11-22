@@ -28,15 +28,14 @@ import io.paradaux.csbot.embeds.AuditLogEmbed;
 import io.paradaux.csbot.embeds.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
 
 import java.util.Date;
 
 public class ChatFilterTriggeredEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
-    public ChatFilterTriggeredEmbed(AuditLogEmbed.Action action, User user, String messageContent, String detectedWord, String incidentID) {
+    public ChatFilterTriggeredEmbed(AuditLogEmbed.Action action, String messageContent, String detectedWord, String incidentID) {
         builder.setColor(EmbedColour.AUTOMATIC.getColour());
         builder.setDescription("You have triggered the chat filter. Please avoid using sensitive words, you can view the filter [here](https://github.com/ParadauxIO/ComputerScienceFriendlyBot/wiki/Chat-Filter).");
 

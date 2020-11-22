@@ -29,7 +29,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class TimedOutEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public TimedOutEmbed(String reason, String incidentID) {
         builder.setAuthor("The Computer Science Friendly Discord | Timed Out", null, "https://cdn.discordapp.com/icons/757903425311604786/ac7d6af0fc3cf43e3709257d7d25c06f.png");

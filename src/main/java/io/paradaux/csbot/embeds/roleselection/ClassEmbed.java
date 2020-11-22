@@ -29,7 +29,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class ClassEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public ClassEmbed() {
         builder.setDescription("**What Face-Face Class are you in?**\n\nYou can find this on your my.tcd.ie timetable.\n\n**N.B**: This only applies to ICS Students.");
