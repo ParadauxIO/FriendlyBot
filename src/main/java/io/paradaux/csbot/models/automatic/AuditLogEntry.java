@@ -123,10 +123,6 @@ public class AuditLogEntry {
         return incidentID;
     }
 
-    public String getUserTag() {
-        return userTag;
-    }
-
     public String getUserID() {
         return userID;
     }
@@ -135,25 +131,8 @@ public class AuditLogEntry {
         return reason;
     }
 
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    public String getStaffTag() {
-        return staffTag;
-    }
-
     public String getStaffID() {
         return staffID;
     }
 
-    public AuditLogEntry setStaffTag(String staffTag) {
-        this.staffTag = staffTag;
-        return this;
-    }
-
-    public AuditLogEntry setStaffID(String staffID) {
-        this.staffID = staffID;
-        return this;
-    }
 }

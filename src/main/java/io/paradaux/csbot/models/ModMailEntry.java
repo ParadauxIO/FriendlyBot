@@ -30,7 +30,7 @@ import java.util.Date;
 public class ModMailEntry {
 
     public enum ModMailStatus {
-        OPEN, CLOSED, PENDING;
+        OPEN, CLOSED, PENDING
     }
 
     @BsonProperty(value = "ticket_number")
