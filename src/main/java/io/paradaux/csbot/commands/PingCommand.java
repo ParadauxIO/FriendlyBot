@@ -25,6 +25,7 @@ package io.paradaux.csbot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.csbot.FriendlyBot;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.LogController;
@@ -37,14 +38,15 @@ import org.slf4j.Logger;
  * @author Rían Errity
  * @version Last Modified for 0.1.0-SNAPSHOT
  * @since 2/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
+ * @see FriendlyBot
  * */
 
 
 public class PingCommand extends Command {
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry
+            = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 
