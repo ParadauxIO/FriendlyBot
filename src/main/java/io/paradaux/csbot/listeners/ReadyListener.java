@@ -23,6 +23,7 @@
 
 package io.paradaux.csbot.listeners;
 
+import io.paradaux.csbot.FriendlyBot;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.LogController;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
@@ -37,13 +38,13 @@ import org.slf4j.Logger;
  * @author Rían Errity
  * @version Last modified for 0.1.0-SNAPSHOT
  * @since 1/11/2020 DD/MM/YY
- * @see io.paradaux.csbot.CSBot
+ * @see FriendlyBot
  * */
 
 public class ReadyListener extends ListenerAdapter {
 
     private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
-    Logger logger;
+    final Logger logger;
 
     public ReadyListener() {
         logger = LogController.getLogger();

@@ -40,8 +40,8 @@ import javax.mail.MessagingException;
 public class VerificationEmailReceivedListener extends ListenerAdapter {
 
     private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
-    DatabaseController databaseController = DatabaseController.INSTANCE;
-    Logger logger = LogController.getLogger();
+    final DatabaseController databaseController = DatabaseController.INSTANCE;
+    final Logger logger = LogController.getLogger();
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
