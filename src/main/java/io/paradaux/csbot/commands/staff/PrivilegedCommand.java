@@ -53,16 +53,6 @@ public abstract class PrivilegedCommand extends Command {
                 || permissionController.isTechnician(discordID);
     }
 
-    public boolean isMod(String discordID) {
-        return permissionController.isMod(discordID)
-                || permissionController.isAdmin(discordID);
-    }
-
-    public boolean isNotManagement(String discordID) {
-        return !permissionController.isAdmin(discordID)
-                && !permissionController.isTechnician(discordID);
-    }
-
     public String parseSentance(int startElement, String[] args) {
         return String.join(" ", Arrays.copyOfRange(args, startElement, args.length));
     }

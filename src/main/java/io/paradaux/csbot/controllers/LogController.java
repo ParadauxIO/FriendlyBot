@@ -34,7 +34,10 @@ public class LogController implements IController {
 
     // Singleton Fields
     private static Logger logger;
-    public static Logger getLogger() { return logger; }
+
+    public static Logger getLogger() {
+        return logger;
+    }
 
     @Override
     public void initialise() {

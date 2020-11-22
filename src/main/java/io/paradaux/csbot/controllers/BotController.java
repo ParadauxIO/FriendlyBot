@@ -38,15 +38,19 @@ import javax.security.auth.login.LoginException;
 public class BotController implements IController {
 
     // Singleton Instance
-    public  static BotController INSTANCE;
+    public static BotController INSTANCE;
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController
+            .getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
     // Singleton Fields
     private static JDA client;
-    public  static JDA getClient() { return client; }
+
+    public static JDA getClient() {
+        return client;
+    }
 
     @Override
     public void initialise() {
@@ -68,16 +72,16 @@ public class BotController implements IController {
      * @return JDA An Instance of JDA
      * @throws LoginException When logging in proved unsuccessful.
      * */
-    public static JDA login (String token) throws LoginException {
+    public static JDA login(String token) throws LoginException {
 
         CommandClient commandClient = CommandController.getCommandClient();
 
         JDABuilder builder = JDABuilder.createDefault(token)
                 .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
                 .setBulkDeleteSplittingEnabled(false)
-                .addEventListeners (commandClient,
+                .addEventListeners(commandClient,
                         new ModMailChannelListener(),
-                        new ModMailDMListener(),
+                        new ModMailPrivateMessageListener(),
                         new VerificationCodeReceivedListener(),
                         new VerificationEmailReceivedListener(),
                         new ReadyListener());

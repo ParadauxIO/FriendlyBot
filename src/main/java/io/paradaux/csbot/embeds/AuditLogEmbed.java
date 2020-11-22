@@ -24,7 +24,9 @@
 package io.paradaux.csbot.embeds;
 
 import io.paradaux.csbot.EmbedColour;
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
@@ -50,7 +52,8 @@ public class AuditLogEmbed implements Embed {
         builder.setTimestamp(new Date().toInstant());
     }
 
-    public AuditLogEmbed(Action action, User user, User staffMember, String reason, String incidentID) {
+    public AuditLogEmbed(Action action, User user, User staffMember, String reason,
+                         String incidentID) {
         builder.setColor(EmbedColour.MODERATION.getColour());
         builder.addField("Action: ", action.toString(), true);
         builder.addField("Incident ID: ", incidentID, true);
@@ -68,5 +71,9 @@ public class AuditLogEmbed implements Embed {
     @Override
     public void sendEmbed(TextChannel channel) {
         channel.sendMessage(builder.build()).queue();
+    }
+
+    public MessageEmbed getEmbed() {
+        return builder.build();
     }
 }

@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.embeds.roleselection;
 
-import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -31,9 +31,10 @@ public class PoliticsOptionEmbed implements Embed {
 
     final EmbedBuilder builder = new EmbedBuilder();
 
+    @SuppressWarnings("checkstyle:AvoidEscapedUnicodeCharacters")
     public PoliticsOptionEmbed() {
-        builder.setDescription("**If you would like access to the Politics Channel please react below**\n" +
-                "Please note that additional rules apply for this channel.");
+        builder.setDescription("**If you would like access to the Politics Channel please react "
+                + "below**\nPlease note that additional rules apply for this channel.");
         builder.addField("\uD83D\uDC81\u200D♀️", "Politics Role", true);
     }
 
