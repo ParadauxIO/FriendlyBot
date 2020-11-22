@@ -32,9 +32,9 @@ import javax.mail.MessagingException;
 
 class EmailControllerTest {
 
-    static LogController logController = new LogController();
+    static final LogController logController = new LogController();
 
-    static ConfigurationEntry ConfigurationEntry = new ConfigurationEntry();
+    static final ConfigurationEntry ConfigurationEntry = new ConfigurationEntry();
     static ConfigurationController configurationController = new ConfigurationController();
 
     @BeforeAll
