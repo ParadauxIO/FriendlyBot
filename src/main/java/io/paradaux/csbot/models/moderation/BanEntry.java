@@ -62,10 +62,6 @@ public class BanEntry {
         this.timestamp = timestamp;
     }
 
-    public String getIncidentID() {
-        return incidentID;
-    }
-
     public String getUserTag() {
         return userTag;
     }
@@ -84,10 +80,6 @@ public class BanEntry {
 
     public String getReason() {
         return reason;
-    }
-
-    public Date getTimestamp() {
-        return timestamp;
     }
 
     public BanEntry setIncidentID(String incidentID) {
@@ -120,8 +112,4 @@ public class BanEntry {
         return this;
     }
 
-    public BanEntry setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-        return this;
-    }
 }
