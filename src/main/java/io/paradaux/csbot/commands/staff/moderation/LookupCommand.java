@@ -127,8 +127,8 @@ public class LookupCommand extends PrivilegedCommand {
             }
 
             case WARN: {
-                WarningEntry warningEntry = DatabaseController.INSTANCE.
-                        getWarningEntry(args[0]);
+                WarningEntry warningEntry = DatabaseController.INSTANCE
+                        .getWarningEntry(args[0]);
 
                 if (warningEntry == null) {
                     message.getChannel().sendMessage("Nothing was found.")

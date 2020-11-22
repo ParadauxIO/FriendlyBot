@@ -43,7 +43,8 @@ public class CommandController implements IController {
     public  static CommandController INSTANCE;
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController
+            .getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
     // Singleton Fields
@@ -57,7 +58,8 @@ public class CommandController implements IController {
     }
 
     /**
-     * Creates a CommanddClient instance which is provided by JDAUtilities. It handles a lot of the command listening, and acts as a clean command wrapper.
+     * Creates a CommanddClient instance which is provided by JDAUtilities.
+     * It handles a lot of the command listening, and acts as a clean command wrapper.
      * @return An instance of CommandClient.
      * */
     public static CommandClient createCommandClient() {
@@ -65,9 +67,7 @@ public class CommandController implements IController {
                 .setPrefix(configurationEntry.getCommandPrefix())
                 .setOwnerId("150993042558418944")
                 .setActivity(Activity.playing("with your emotions"))
-                .addCommands(
-                        // Moderator Commands.
-                        new BanCommand(),
+                .addCommands(new BanCommand(),
                         new CiteCommand(),
                         new KickCommand(),
                         new TimeOutCommand(),
@@ -83,8 +83,7 @@ public class CommandController implements IController {
                         // Regular User Commands.
                         new HelpCommand(),
                         new InviteCommand(),
-                        new PingCommand()
-                );
+                        new PingCommand());
 
         return builder.build();
     }

@@ -26,15 +26,14 @@ package io.paradaux.csbot.commands.staff.moderation;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.FriendlyBot;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.controllers.*;
+import io.paradaux.csbot.controllers.AuditLogController;
+import io.paradaux.csbot.controllers.DatabaseController;
 import io.paradaux.csbot.embeds.AuditLogEmbed;
 import io.paradaux.csbot.embeds.moderation.KickedEmbed;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.models.moderation.KickEntry;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
-import org.slf4j.Logger;
 
 /**
  * This is a command which kicks the specified user.
@@ -46,12 +45,6 @@ import org.slf4j.Logger;
  * */
 
 public class KickCommand extends PrivilegedCommand {
-
-    // Dependencies
-    private static final ConfigurationEntry configurationEntry
-            = ConfigurationController.getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
-    private static final PermissionController permissionController = PermissionController.INSTANCE;
 
     public KickCommand() {
         this.name = "kick";
@@ -89,7 +82,7 @@ public class KickCommand extends PrivilegedCommand {
         String incidentID = DatabaseController.INSTANCE.getNextIncidentID();
         String reason = parseSentance(1, args);
 
-        KickedEmbed embed = new KickedEmbed(reason, incidentID);
+
 
         KickEntry entry = new KickEntry()
                 .setIncidentID(incidentID)
@@ -105,6 +98,8 @@ public class KickCommand extends PrivilegedCommand {
 
         message.getChannel().sendMessage("Incident ID: " + incidentID
                 + "\nReason: " + reason).queue();
+
+        KickedEmbed embed = new KickedEmbed(reason, incidentID);
         target.openPrivateChannel().queue((channel) -> channel.sendMessage(embed.getEmbed())
                 .queue());
 
