@@ -42,6 +42,11 @@ public enum EmbedColour {
         return colour;
     }
 
+    /**
+     * Gets the constant equivalent of a given colour.
+     * @param value Integer color
+     * @return The Constant which equates to the provided colour, or null.
+     * */
     @Nullable
     public EmbedColour valueOf(int value) {
         for (EmbedColour color : values()) {
