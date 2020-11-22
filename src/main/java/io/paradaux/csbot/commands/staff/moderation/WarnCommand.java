@@ -36,7 +36,7 @@ import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 
 /**
- * This is a command which
+ * This is a command which warns the specified user.
  *
  * @author Rían Errity
  * @version Last modified for 0.1.0-SNAPSHOT
@@ -47,7 +47,8 @@ import org.slf4j.Logger;
 public class WarnCommand extends PrivilegedCommand {
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry
+            = ConfigurationController.getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 
@@ -64,8 +65,15 @@ public class WarnCommand extends PrivilegedCommand {
         String[] args = getArgs(event.getArgs());
         String authorID = event.getAuthor().getId();
 
-        if (!isStaff(authorID)) { respondNoPermission(message, "[Moderator, Administrator]"); return; }
-        if (args.length < 2) { respondSyntaxError(message, ";ban <userid/@mention> <reason>"); return; }
+        if (!isStaff(authorID)) {
+            respondNoPermission(message, "[Moderator, Administrator]");
+            return;
+        }
+
+        if (args.length < 2) {
+            respondSyntaxError(message, ";ban <userid/@mention> <reason>");
+            return;
+        }
 
         User target = parseTarget(message, 0, args);
 
@@ -82,8 +90,6 @@ public class WarnCommand extends PrivilegedCommand {
         String incidentID = DatabaseController.INSTANCE.getNextIncidentID();
         String reason = parseSentance(1, args);
 
-        WarningEmbed embed = new WarningEmbed(reason, incidentID);
-
         WarningEntry entry = new WarningEntry()
                 .setIncidentID(incidentID)
                 .setReason(reason)
@@ -98,6 +104,8 @@ public class WarnCommand extends PrivilegedCommand {
 
         message.getChannel().sendMessage("Incident ID: " + incidentID
                 + "\nReason: " + reason).queue();
+
+        WarningEmbed embed = new WarningEmbed(reason, incidentID);
         target.openPrivateChannel().queue((channel) -> channel.sendMessage(embed.getEmbed())
                 .queue());
 

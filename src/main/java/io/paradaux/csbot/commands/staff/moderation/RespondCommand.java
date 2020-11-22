@@ -25,20 +25,9 @@ package io.paradaux.csbot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.controllers.ConfigurationController;
-import io.paradaux.csbot.controllers.LogController;
-import io.paradaux.csbot.controllers.PermissionController;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Message;
-import org.slf4j.Logger;
 
 public class RespondCommand extends PrivilegedCommand {
-
-    // Dependencies
-    private static final ConfigurationEntry configurationEntry
-            = ConfigurationController.getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
-    private static final PermissionController permissionController = PermissionController.INSTANCE;
 
     public RespondCommand() {
         this.name = "respond";

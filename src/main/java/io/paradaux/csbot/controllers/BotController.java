@@ -75,14 +75,12 @@ public class BotController implements IController {
         JDABuilder builder = JDABuilder.createDefault(token)
                 .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
                 .setBulkDeleteSplittingEnabled(false)
-                .addEventListeners (
-                        commandClient,
+                .addEventListeners (commandClient,
                         new ModMailChannelListener(),
                         new ModMailDMListener(),
                         new VerificationCodeReceivedListener(),
                         new VerificationEmailReceivedListener(),
-                        new ReadyListener()
-                );
+                        new ReadyListener());
 
         if (token == null) {
             throw new LoginException("The Configuration File does not contain a token.");

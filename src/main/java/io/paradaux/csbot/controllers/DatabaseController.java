@@ -60,7 +60,8 @@ public class DatabaseController implements IController {
     public  static DatabaseController INSTANCE;
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController
+            .getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
     private static MongoCollection<PendingVerificationEntry> pendingVerification;
@@ -73,9 +74,14 @@ public class DatabaseController implements IController {
 
     @Override
     public void initialise() {
-        ConnectionString connectionString = new ConnectionString(configurationEntry.getMongoConnectionUri());
-        CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider.builder().automatic(true).build());
-        CodecRegistry codecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), pojoCodecRegistry);
+        ConnectionString connectionString = new ConnectionString(configurationEntry
+                .getMongoConnectionUri());
+        CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider
+                .builder()
+                .automatic(true)
+                .build());
+        CodecRegistry codecRegistry = fromRegistries(MongoClientSettings
+                .getDefaultCodecRegistry(), pojoCodecRegistry);
 
         MongoClientSettings clientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
@@ -93,12 +99,14 @@ public class DatabaseController implements IController {
 
         MongoDatabase dataBase = client.getDatabase("csfriendlybot");
 
-        pendingVerification = dataBase.getCollection("pendingVerification", PendingVerificationEntry.class);
+        pendingVerification = dataBase.getCollection("pendingVerification",
+                PendingVerificationEntry.class);
         verification = dataBase.getCollection("verification", VerificationEntry.class);
         counterCollection = dataBase.getCollection("counter", CounterEntry.class);
         auditLog = dataBase.getCollection("auditlog", AuditLogEntry.class);
         warnings = dataBase.getCollection("warnings", WarningEntry.class);
-        MongoCollection<ModMailEntry> modmail = dataBase.getCollection("modmail", ModMailEntry.class);
+        MongoCollection<ModMailEntry> modmail = dataBase.getCollection("modmail",
+                ModMailEntry.class);
         bans = dataBase.getCollection("bans", BanEntry.class);
         kicks = dataBase.getCollection("kicks", KickEntry.class);
 
@@ -137,7 +145,8 @@ public class DatabaseController implements IController {
         return result;
     }
 
-    public void addPendingVerificationUser(String discordID, String guildID, String verificationCode) {
+    public void addPendingVerificationUser(String discordID, String guildID,
+                                           String verificationCode) {
         PendingVerificationEntry pendingVerificationEntry = new PendingVerificationEntry()
                 .setDiscordID(discordID)
                 .setGuildID(guildID)
@@ -158,19 +167,23 @@ public class DatabaseController implements IController {
     }
 
     public boolean isPendingVerification(String discordID) {
-        PendingVerificationEntry pendingVerificationEntry = pendingVerification.find(Filters.eq("discord_id", discordID)).first();
+        PendingVerificationEntry pendingVerificationEntry = pendingVerification
+                .find(Filters.eq("discord_id", discordID)).first();
         return pendingVerificationEntry != null;
     }
 
     public boolean isVerified(String discordID) {
-        VerificationEntry verificationEntry = verification.find(Filters.eq("discord_id", discordID)).first();
+        VerificationEntry verificationEntry = verification
+                .find(Filters.eq("discord_id", discordID)).first();
         return verificationEntry != null;
     }
 
     @Nullable
     public String getVerificationCode(String discordID) {
-        PendingVerificationEntry pendingVerificationEntry = pendingVerification.find(Filters.eq("discord_id", discordID)).first();
-        return pendingVerificationEntry != null ? pendingVerificationEntry.getVerificationCode() : null;
+        PendingVerificationEntry pendingVerificationEntry = pendingVerification
+                .find(Filters.eq("discord_id", discordID)).first();
+        return pendingVerificationEntry != null ? pendingVerificationEntry
+                .getVerificationCode() : null;
     }
 
     public void addAuditLog(AuditLogEntry auditLogEntry) {

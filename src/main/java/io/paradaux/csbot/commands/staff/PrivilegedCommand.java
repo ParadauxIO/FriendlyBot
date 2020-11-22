@@ -42,8 +42,8 @@ import java.util.concurrent.ExecutionException;
 
 public abstract class PrivilegedCommand extends Command {
 
-    private static final ConfigurationEntry configurationEntry
-            = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController
+            .getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
     private static final PermissionController permissionController = PermissionController.INSTANCE;
 

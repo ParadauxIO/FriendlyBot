@@ -46,7 +46,8 @@ public class EmailController implements IController {
     public static EmailController INSTANCE;
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController
+            .getConfigurationEntry();
     private static final Logger logger = LogController.getLogger();
 
     private static final Properties properties = new Properties();
@@ -72,12 +73,15 @@ public class EmailController implements IController {
         return Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(configurationEntry.getSmtpUser(), configurationEntry.getSmtpPass());
+                return new PasswordAuthentication(configurationEntry.getSmtpUser(),
+                        configurationEntry.getSmtpPass());
             }
         });
     }
 
-    public void sendVerificationEmail(String email, String verificationCode, String discordUserName) throws MessagingException {
+    public void sendVerificationEmail(String email, String verificationCode,
+                                      String discordUserName) throws MessagingException {
+
         Message message = new MimeMessage(session);
 
         message.setFrom(new InternetAddress("verification@paradaux.io"));
@@ -98,14 +102,16 @@ public class EmailController implements IController {
         // Add the header image
         messageBodyPart = new MimeBodyPart();
         messageBodyPart.setDisposition(MimeBodyPart.INLINE);
-        messageBodyPart.setDataHandler(new DataHandler(FriendlyBot.class.getResource("/verification.png")));
+        messageBodyPart.setDataHandler(new DataHandler(FriendlyBot.class
+                .getResource("/verification.png")));
         messageBodyPart.setHeader("Content-ID", "<verification-header>");
         multipart.addBodyPart(messageBodyPart);
 
         // Add the forest image
         messageBodyPart = new MimeBodyPart();
         messageBodyPart.setDisposition(MimeBodyPart.INLINE);
-        messageBodyPart.setDataHandler(new DataHandler(FriendlyBot.class.getResource("/fir-forest.png")));
+        messageBodyPart.setDataHandler(new DataHandler(FriendlyBot.class
+                .getResource("/fir-forest.png")));
         messageBodyPart.setHeader("Content-ID", "<fir-forest>");
         multipart.addBodyPart(messageBodyPart);
 
@@ -114,7 +120,8 @@ public class EmailController implements IController {
         try {
             Transport.send(message);
         } catch (AuthenticationFailedException exception) {
-            LogController.getLogger().error("Failed to login to the SMTP Server, is the login information set?");
+            LogController.getLogger().error("Failed to login to the SMTP Server,"
+                    + " is the login information set?");
         }
 
     }
@@ -125,8 +132,13 @@ public class EmailController implements IController {
      * @return Whether or not the email is valid
      * */
     public static boolean isValidEmail(String email) {
-        Pattern emailValidator = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
-        if (email==null) return false;
+        Pattern emailValidator = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]"
+                + "+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
+
+        if (email == null) {
+            return false;
+        }
+
         return emailValidator.matcher(email).matches();
     }
 
@@ -137,7 +149,9 @@ public class EmailController implements IController {
      * */
     @Nullable
     public static String getEmailDomain(String email) {
-        if (!isValidEmail(email)) return null;
+        if (!isValidEmail(email)) {
+            return null;
+        }
         return email.substring(email.indexOf("@") + 1);
     }
 
