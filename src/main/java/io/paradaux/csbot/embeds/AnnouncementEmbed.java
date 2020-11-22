@@ -28,7 +28,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class AnnouncementEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public AnnouncementEmbed() {
     }

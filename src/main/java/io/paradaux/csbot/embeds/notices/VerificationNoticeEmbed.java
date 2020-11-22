@@ -29,7 +29,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class VerificationNoticeEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public VerificationNoticeEmbed() {
         builder.addField("Information", "The Computer Science Friendly Corner is configured so that everyone must verify their @tcd.ie email address to gain access.\n\n " +

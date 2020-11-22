@@ -29,7 +29,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class YearEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public YearEmbed() {
         builder.setDescription("**What year are you in?**");

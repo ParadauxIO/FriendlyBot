@@ -33,7 +33,7 @@ import java.util.Date;
 
 public class ModMailSentEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public ModMailSentEmbed(String ticketNumber, String messageContent) {
         builder.setColor(EmbedColour.AUTOMATIC.getColour());

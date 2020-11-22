@@ -29,7 +29,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class InterestsEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public InterestsEmbed() {
         builder.setDescription("**What are you interested in?**");

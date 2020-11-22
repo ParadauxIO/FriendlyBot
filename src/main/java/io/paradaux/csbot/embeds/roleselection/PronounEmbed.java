@@ -29,7 +29,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class PronounEmbed implements Embed {
 
-    EmbedBuilder builder = new EmbedBuilder();
+    final EmbedBuilder builder = new EmbedBuilder();
 
     public PronounEmbed() {
         builder.setDescription("**What pronouns would you like people to use for you?**\n\nIf you selected other, please feel free to use your nickname or your status to provide additional information.");

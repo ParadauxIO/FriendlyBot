@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.controllers;
 
-import io.paradaux.csbot.CSBot;
+import io.paradaux.csbot.FriendlyBot;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.interfaces.IController;
 import org.slf4j.Logger;
@@ -98,14 +98,14 @@ public class EmailController implements IController {
         // Add the header image
         messageBodyPart = new MimeBodyPart();
         messageBodyPart.setDisposition(MimeBodyPart.INLINE);
-        messageBodyPart.setDataHandler(new DataHandler(CSBot.class.getResource("/verification.png")));
+        messageBodyPart.setDataHandler(new DataHandler(FriendlyBot.class.getResource("/verification.png")));
         messageBodyPart.setHeader("Content-ID", "<verification-header>");
         multipart.addBodyPart(messageBodyPart);
 
         // Add the forest image
         messageBodyPart = new MimeBodyPart();
         messageBodyPart.setDisposition(MimeBodyPart.INLINE);
-        messageBodyPart.setDataHandler(new DataHandler(CSBot.class.getResource("/fir-forest.png")));
+        messageBodyPart.setDataHandler(new DataHandler(FriendlyBot.class.getResource("/fir-forest.png")));
         messageBodyPart.setHeader("Content-ID", "<fir-forest>");
         multipart.addBodyPart(messageBodyPart);
 
