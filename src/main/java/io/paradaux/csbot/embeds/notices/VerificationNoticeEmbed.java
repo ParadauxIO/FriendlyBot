@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.embeds.notices;
 
-import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -32,15 +32,20 @@ public class VerificationNoticeEmbed implements Embed {
     final EmbedBuilder builder = new EmbedBuilder();
 
     public VerificationNoticeEmbed() {
-        builder.addField("Information", "The Computer Science Friendly Corner is configured so that everyone must verify their @tcd.ie email address to gain access.\n\n " +
-                "If you are not a Trinity student you can also gain access, but you'll have to contact a moderator by messaging the discord bot or by typing in #mod-mail in order to do so.", false);
-        builder.addField("Verification Tutorial",
-                ":one: :: Enter your email address in #verification (this channel)\n"
-                        + ":two: :: Check your email address for your verification code\n"
-                        + ":three: :: Enter your verification code in #verification (this channel)\n\n"
-                        + "Once you've completed those three easy steps you'll be a full member of the discord!\n\n"
-                        + "**N.B** Unverified users are purged on a regular basis, so please go through the verification process as soon as possible.\n\n"
-                        + "Emails are not stored on our servers, we respect your privacy!", false);
+        builder.addField("Information", "The Computer Science Friendly Corner is "
+                + "configured so that everyone must verify their @tcd.ie email address to "
+                + "gain access.\n\n If you are not a Trinity student you can also gain "
+                + "access, but you'll have to contact a moderator by messaging the discord bot or "
+                + "by typing in #mod-mail in order to do so.", false);
+
+        builder.addField("Verification Tutorial", ":one: :: Enter your email address in "
+                + "#verification (this channel)\n:two: :: Check your email address for your "
+                + "verification code\n:three: :: Enter your verification code in "
+                + "#verification (this channel)\n\nOnce you've completed those three easy "
+                + "steps you'll be a full member of the discord!\n\n**N.B** Unverified"
+                + " users are purged on a regular basis, so please go through the verification "
+                + "process as soon as possible.\n\nEmails are not stored on our servers, we respect"
+                + " your privacy!",false);
     }
 
     @Override

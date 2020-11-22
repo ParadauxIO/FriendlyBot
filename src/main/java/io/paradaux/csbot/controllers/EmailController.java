@@ -127,7 +127,7 @@ public class EmailController implements IController {
     }
 
     /**
-     * Checks against a regex pattern whether or not the email provided is valid
+     * Checks against a regex pattern whether or not the email provided is valid.
      * @param email The Email you wish to verify is valid
      * @return Whether or not the email is valid
      * */

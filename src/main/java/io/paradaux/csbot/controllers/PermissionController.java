@@ -23,10 +23,8 @@
 
 package io.paradaux.csbot.controllers;
 
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.interfaces.IController;
 import io.paradaux.csbot.models.interal.PermissionEntry;
-import org.slf4j.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -36,14 +34,8 @@ public class PermissionController implements IController {
     // Singleton Instance
     public static PermissionController INSTANCE;
 
-    // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController
-            .getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
-
     // Singleton Fields
     private static PermissionEntry permissionEntry;
-    public static PermissionEntry getPermissionEntry() { return permissionEntry; }
 
     @Override
     public void initialise() {
@@ -104,10 +96,6 @@ public class PermissionController implements IController {
 
     public boolean isTechnician(String discordID) {
         return permissionEntry.getTechnicians().contains(discordID);
-    }
-
-    public boolean isStaff(String discordID) {
-        return isMod(discordID) || isAdmin(discordID);
     }
 
 }

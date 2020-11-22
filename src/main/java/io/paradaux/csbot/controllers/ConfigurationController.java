@@ -34,14 +34,16 @@ public class ConfigurationController implements IController {
     // Singleton Instance
     public static ConfigurationController INSTANCE;
 
-    // Dependencies
-    private static final Logger logger = LogController.getLogger();
-
     // Singleton Fields
     public static ConfigurationEntry configurationEntry;
-    public static ConfigurationEntry getConfigurationEntry() { return configurationEntry; }
 
-    public ConfigurationController() {}
+    public static ConfigurationEntry getConfigurationEntry() {
+        return configurationEntry;
+    }
+
+    public ConfigurationController() {
+
+    }
 
     public ConfigurationController(ConfigurationEntry suppliedConfigurationCache) {
         System.out.println("test");

@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.embeds.moderation;
 
-import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -32,9 +32,11 @@ public class TimedOutEmbed implements Embed {
     final EmbedBuilder builder = new EmbedBuilder();
 
     public TimedOutEmbed(String reason, String incidentID) {
-        builder.setAuthor("The Computer Science Friendly Discord | Timed Out", null, "https://cdn.discordapp.com/icons/757903425311604786/ac7d6af0fc3cf43e3709257d7d25c06f.png");
+        builder.setAuthor("The Computer Science Friendly Discord | Timed Out", null,
+                "https://cdn.discordapp.com/icons/757903425311604786/ac7d6af0fc3cf43e37"
+                        + "09257d7d25c06f.png");
 
-        builder.setFooter("User Timed Out: Incident ID " + incidentID + " | CS Friendly Bot" );
+        builder.setFooter("User Timed Out: Incident ID " + incidentID + " | CS Friendly Bot");
     }
 
     @Override
