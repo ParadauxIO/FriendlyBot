@@ -25,13 +25,9 @@ package io.paradaux.csbot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.DatabaseController;
-import io.paradaux.csbot.controllers.LogController;
-import io.paradaux.csbot.controllers.PermissionController;
 import io.paradaux.csbot.embeds.AuditLogEmbed;
 import io.paradaux.csbot.models.automatic.AuditLogEntry;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.models.moderation.BanEntry;
 import io.paradaux.csbot.models.moderation.KickEntry;
 import io.paradaux.csbot.models.moderation.WarningEntry;
@@ -42,11 +38,7 @@ import org.slf4j.Logger;
 
 public class LookupCommand extends PrivilegedCommand {
 
-    // Dependencies
-    private static final ConfigurationEntry configurationEntry
-            = ConfigurationController.getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
-    private static final PermissionController permissionController = PermissionController.INSTANCE;
+    private static final Logger logger = getLogger();
 
     public LookupCommand() {
         this.name = "lookup";
@@ -170,6 +162,12 @@ public class LookupCommand extends PrivilegedCommand {
 
         AuditLogEmbed embed = new AuditLogEmbed(auditLogEntry.getAction(), user,
                 staff, auditLogEntry.getReason(), auditLogEntry.getIncidentID());
+
+        message.getAuthor().openPrivateChannel().queue((channel) -> channel
+                .sendMessage(embed.getEmbed())
+                .queue());
+
+
 
     }
 }

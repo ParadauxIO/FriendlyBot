@@ -27,7 +27,7 @@ import io.paradaux.csbot.controllers.BotController;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.DatabaseController;
 import io.paradaux.csbot.controllers.LogController;
-import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.interfaces.Embed;
 import io.paradaux.csbot.embeds.modmail.ModMailReceivedEmbed;
 import io.paradaux.csbot.embeds.modmail.ModMailSentEmbed;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;

@@ -68,10 +68,6 @@ public class FriendlyBot {
         logger.info("Initialising: Database Controller");
         new DatabaseController().initialise();
 
-        // Reaction Role
-        logger.info("Initialising: ReactionRoleController");
-        new ReactionRoleController().initialise();
-
         // Permissions
         logger.info("Initialising: PermissionController");
         new PermissionController().initialise();

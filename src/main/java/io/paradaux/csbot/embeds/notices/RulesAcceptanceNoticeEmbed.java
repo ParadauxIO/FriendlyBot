@@ -24,7 +24,7 @@
 package io.paradaux.csbot.embeds.notices;
 
 import io.paradaux.csbot.EmbedColour;
-import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -35,7 +35,9 @@ public class RulesAcceptanceNoticeEmbed implements Embed {
     public RulesAcceptanceNoticeEmbed() {
 
         builder.setColor(EmbedColour.INFO.getColour());
-        builder.addField("Please note ::", "By proceeding to verify yourself you agree to follow the rules listed in #rules at all times.", false);
+        builder.addField("Please note ::",
+                "By proceeding to verify yourself you agree to follow the rules listed in "
+                        + "#rules at all times.", false);
     }
 
     @Override

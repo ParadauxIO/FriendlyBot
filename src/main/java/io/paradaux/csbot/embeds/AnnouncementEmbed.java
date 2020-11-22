@@ -23,6 +23,7 @@
 
 package io.paradaux.csbot.embeds;
 
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 

@@ -51,6 +51,7 @@ public class RespondCommand extends PrivilegedCommand {
             return;
         }
 
+        message.getChannel().sendMessage("Not yet implemented.").queue();
 
     }
 }

@@ -24,7 +24,7 @@
 package io.paradaux.csbot.embeds.modmail;
 
 import io.paradaux.csbot.EmbedColour;
-import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -36,7 +36,9 @@ public class ModMailReceivedEmbed implements Embed {
 
     final EmbedBuilder builder = new EmbedBuilder();
 
-    public ModMailReceivedEmbed(User user, String messageContent, String ticketID, String incidentID) {
+    public ModMailReceivedEmbed(User user, String messageContent, String ticketID,
+                                String incidentID) {
+
         builder.setColor(EmbedColour.AUTOMATIC.getColour());
         builder.setDescription("New ModMail Message.");
         builder.addField("User: ", user.getAsTag(), true);
@@ -50,8 +52,10 @@ public class ModMailReceivedEmbed implements Embed {
         builder.addBlankField(true);
 
         builder.addField("Message Content: ", messageContent, true);
-        builder.setFooter("Use ;respond <ticketNumber> <message> to respond. | Use ;close <ticketNumber> to close the ticket, " +
-                "This will delete the message in the mod-mail-output channel but retain the record in the database for future reference.");
+        builder.setFooter("Use ;respond <ticketNumber> <message> to respond. | Use ;close "
+                + "<ticketNumber> to close the ticket, This will delete the message in the mod-"
+                + "mail-output channel but retain the record in the database "
+                + "for future reference.");
         builder.setTimestamp(new Date().toInstant());
     }
 

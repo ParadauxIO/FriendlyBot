@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.embeds.roleselection;
 
-import io.paradaux.csbot.embeds.Embed;
+import io.paradaux.csbot.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -32,7 +32,10 @@ public class PronounEmbed implements Embed {
     final EmbedBuilder builder = new EmbedBuilder();
 
     public PronounEmbed() {
-        builder.setDescription("**What pronouns would you like people to use for you?**\n\nIf you selected other, please feel free to use your nickname or your status to provide additional information.");
+        builder.setDescription("**What pronouns would you like people to use for you?**\n\nIf you"
+                + " selected other, please feel free to use your nickname or your status in "
+                + "order to provide additional information.");
+
         builder.addField("He/Him", "\uD83C\uDDE6", true);
         builder.addField("She/Her", "\uD83C\uDDE7", true);
         builder.addField("They/Them", "\uD83C\uDDE8", true);

@@ -24,16 +24,10 @@
 package io.paradaux.csbot.listeners.message;
 
 import io.paradaux.csbot.FriendlyBot;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
-import io.paradaux.csbot.controllers.BotController;
-import io.paradaux.csbot.controllers.ConfigurationController;
-import io.paradaux.csbot.controllers.LogController;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
 
 /**
  * PrivateMessageReceivedListener listens to the VerificationCodes sent to the bot privately, parses them and sets the user as verified if approrpriate.
@@ -45,30 +39,11 @@ import org.slf4j.Logger;
  * */
 
 
-public class ModMailDMListener extends ListenerAdapter {
-
-    // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
+public class ModMailPrivateMessageListener extends ListenerAdapter {
 
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
         Message message = event.getMessage();
-
-        if (message.getAuthor().isBot()) return;
-
-        TextChannel channel = BotController.getClient()
-                .getGuildById(configurationEntry.getCsFriendlyGuildID())
-                .getTextChannelById(configurationEntry.getModmailOutputChannelID());
-
-//        ModMailEntryEmbed embed = new ModMailEntryEmbed(event.getAuthor().getAsTag(), event.getAuthor().getId(), message.getContentRaw());
-//        embed.create();
-//
-//        embed.sendEmbed(channel, null);
-
-        event.getAuthor().openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage("**Your message has been sent to the moderators.**" +
-                "\nThe Moderation Team will get back to you as soon as possible.").queue());
-
     }
 
 }

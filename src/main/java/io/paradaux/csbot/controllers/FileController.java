@@ -25,9 +25,8 @@ package io.paradaux.csbot.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.interfaces.IController;
-import io.paradaux.csbot.models.interal.ChatFilterEntry;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.models.interal.PermissionEntry;
 import org.slf4j.Logger;
 
@@ -40,10 +39,7 @@ public class FileController implements IController {
     // Singleton Instance
     public static FileController INSTANCE;
 
-    // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController
-            .getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
+    public static final Logger logger = LogController.getLogger();
 
     @Override
     public void initialise() {
@@ -55,16 +51,15 @@ public class FileController implements IController {
      *
      * @param resourceName ie.: "/configuration.yml" N.B / is a directory down in the "jar tree"
      *                     In this case; the jar the root of the tree
-     * @return The path to the exported resource
      * @throws Exception a generic exception to signal something went wrong
      */
-    public static void ExportResource(String resourceName) throws Exception {
+    public static void exportResource(String resourceName) throws Exception {
         InputStream stream = null;
         OutputStream resStreamOut = null;
         String jarFolder;
         try {
             stream = FileController.class.getResourceAsStream(resourceName);
-            if(stream == null) {
+            if (stream == null) {
                 throw new Exception("Cannot get resource \"" + resourceName + "\" from Jar file.");
             }
 
@@ -84,15 +79,25 @@ public class FileController implements IController {
                 resStreamOut.write(buffer, 0, readBytes);
             }
         } catch (Exception ex) {
-            throw ex;
-        } finally {
-            stream.close();
-            resStreamOut.close();
+            logger.error("Exception occurred whilst exporting a resource: ", ex);
         }
+
+        if (stream == null) {
+            return;
+        }
+
+        stream.close();
+
+        if (resStreamOut == null) {
+            return;
+        }
+
+        resStreamOut.close();
+
     }
 
     /**
-     * Reads the configuration file and maps it to the ConfigurationCache object
+     * Reads the configuration file and maps it to the ConfigurationCache object.
      * @return An Instance of ConfigurationCache
      * @throws FileNotFoundException When the configuration file does not exist.
      * @see ConfigurationEntry
@@ -106,13 +111,13 @@ public class FileController implements IController {
     }
 
     /**
-     * Copies the configuration file from the JAR to the current directory on first run
+     * Copies the configuration file from the JAR to the current directory on first run.
      */
     public static void deployFiles() {
         Logger logger = LogController.getLogger();
         if (!new File("config.json").exists()) {
             try {
-                ExportResource("/config.json");
+                exportResource("/config.json");
             } catch (Exception exception) {
                 logger.error("Failed to deploy config.json\n", exception);
             }
@@ -120,7 +125,7 @@ public class FileController implements IController {
 
         if (!new File("chat-filter.json").exists()) {
             try {
-                ExportResource("/chat-filter.json");
+                exportResource("/chat-filter.json");
             } catch (Exception exception) {
                 logger.error("Failed to deploy chat-filter.json\n", exception);
             }
@@ -128,7 +133,7 @@ public class FileController implements IController {
 
         if (!new File("reaction-roles.json").exists()) {
             try {
-                ExportResource("/reaction-roles.json");
+                exportResource("/reaction-roles.json");
             } catch (Exception exception) {
                 logger.error("Failed to deploy reaction-roles.json\n", exception);
             }
@@ -136,7 +141,7 @@ public class FileController implements IController {
 
         if (!new File("permissions.json").exists()) {
             try {
-                ExportResource("/permissions.json");
+                exportResource("/permissions.json");
             } catch (Exception exception) {
                 logger.error("Failed to deploy permissions.json\n", exception);
             }
@@ -163,13 +168,13 @@ public class FileController implements IController {
         return emailTemplate.toString();
     }
 
-    public ChatFilterEntry readChatFilter() throws FileNotFoundException {
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("chat-filter.json"));
-        return gson.fromJson(bufferedReader, ChatFilterEntry.class);
-    }
+    //public ChatFilterEntry readChatFilter() throws FileNotFoundException {
+    //    GsonBuilder builder = new GsonBuilder();
+    //    Gson gson = builder.create();
+    //
+    //    BufferedReader bufferedReader = new BufferedReader(new FileReader("chat-filter.json"));
+    //    return gson.fromJson(bufferedReader, ChatFilterEntry.class);
+    //}
 
     public PermissionEntry readPermissionFile() throws FileNotFoundException {
         GsonBuilder builder = new GsonBuilder();
