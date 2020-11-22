@@ -23,25 +23,14 @@
 
 package io.paradaux.csbot.commands.staff.moderation;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
-import io.paradaux.csbot.controllers.ConfigurationController;
-import io.paradaux.csbot.controllers.LogController;
-import io.paradaux.csbot.controllers.PermissionController;
+import io.paradaux.csbot.commands.staff.PrivilegedCommand;
 import io.paradaux.csbot.embeds.Embed;
 import io.paradaux.csbot.embeds.moderation.CiteRuleEmbed;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
-import org.slf4j.Logger;
 
-public class CiteCommand extends Command {
-
-    // Dependencies
-    private static final ConfigurationEntry configurationEntry
-            = ConfigurationController.getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
-    private static final PermissionController permissionController = PermissionController.INSTANCE;
+public class CiteCommand extends PrivilegedCommand {
 
     public CiteCommand() {
         this.name = "cite";
@@ -51,7 +40,19 @@ public class CiteCommand extends Command {
     @Override
     protected void execute(CommandEvent event) {
         Message message = event.getMessage();
-        String[] args = event.getArgs().split(" ");
+
+        String[] args = getArgs(event.getArgs());
+        String authorID = event.getAuthor().getId();
+
+        if (!isStaff(authorID)) {
+            respondNoPermission(message, "[Moderator, Administrator]");
+            return;
+        }
+
+        if (args.length < 2 || message.getMentionedChannels().size() == 0) {
+            respondSyntaxError(message, ";cite <channel> <section>");
+            return;
+        }
 
         TextChannel channel = message.getMentionedChannels().get(0);
 

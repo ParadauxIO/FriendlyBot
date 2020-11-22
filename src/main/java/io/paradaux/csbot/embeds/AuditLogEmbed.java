@@ -35,7 +35,7 @@ public class AuditLogEmbed implements Embed {
     final EmbedBuilder builder = new EmbedBuilder();
 
     public enum Action {
-        WARN, KICK, BAN, MODIFY_PERMISSIONS, CHAT_FILTER_TRIGGER, TIME_OUT, MOD_MAIL
+        WARN, KICK, BAN
     }
 
     public AuditLogEmbed(Action action, User user, String reason, String incidentID) {

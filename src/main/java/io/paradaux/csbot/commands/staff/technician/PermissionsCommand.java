@@ -25,6 +25,7 @@ package io.paradaux.csbot.commands.staff.technician;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 
 public class PermissionsCommand extends PrivilegedCommand {
@@ -37,102 +38,97 @@ public class PermissionsCommand extends PrivilegedCommand {
 
     @Override
     protected void execute(CommandEvent event) {
-        String authorID = event.getAuthor().getId();
-        if (isNotManagement(authorID)) return;
-
         Message message = event.getMessage();
-        String[] args = event.getArgs().split(" ");
 
-        if (!getPermissionController().isTechnician(authorID)) return;
+        String[] args = getArgs(event.getArgs());
+        String authorID = event.getAuthor().getId();
+
+        if (!getPermissionController().isTechnician(authorID)) {
+            respondNoPermission(message, "[Technician]");
+            return;
+        }
+
+        if (args.length < 3) {
+            respondSyntaxError(message, ";permissions <give/remove> <mod/admin/"
+                    + "technician> <@mention/discordID>");
+            return;
+        }
+
+        Member target = retrieveMember(message.getGuild(), parseTarget(message, 3, args));
+
+        if (target == null) {
+            message.getChannel().sendMessage("Invalid target specified.").queue();
+            return;
+        }
 
         switch (args[0]) {
             case "give": {
-                switch (args[2]) {
-                    case "admin": {
-                        String discordID;
-                        if (message.getMentionedMembers().size() >= 1) {
-                            discordID = message.getMentionedMembers().get(0).getId();
-                        } else {
-                            discordID = args[3];
-                        }
 
-                        getPermissionController().addAdmin(discordID);
-                        message.getChannel().sendMessage(String.format("Given `%s` `Admin` permissions.", discordID)).queue();
+                switch (args[1]) {
+                    case "mod": {
+                        getPermissionController().addMod(target.getId());
                         break;
                     }
 
-                    case "mod": {
-                        String discordID;
-                        if (message.getMentionedMembers().size() >= 1) {
-                            discordID = message.getMentionedMembers().get(0).getId();
-                        } else {
-                            discordID = args[3];
-                        }
-
-                        getPermissionController().addMod(discordID);
-                        message.getChannel().sendMessage(String.format("Given `%s` `Mod` permissions.", discordID)).queue();
+                    case "admin": {
+                        getPermissionController().addAdmin(authorID);
                         break;
                     }
 
                     case "technician": {
-                        String discordID;
-                        if (message.getMentionedMembers().size() >= 1) {
-                            discordID = message.getMentionedMembers().get(0).getId();
-                        } else {
-                            discordID = args[3];
-                        }
-
-                        getPermissionController().addTechnician(discordID);
-                        message.getChannel().sendMessage(String.format("Given `%s` `Technician` permissions.", discordID)).queue();
+                        getPermissionController().addTechnician(authorID);
                         break;
+                    }
+
+                    default: {
+                        respondSyntaxError(message, ";permissions <give/remove> <mod/admin/"
+                                + "technician> <@mention/discordID>");
+                        return;
                     }
                 }
 
-                return;
+                String responseMessage = String.format("Given `%s` `%s` permissions.",
+                        target.getUser().getAsTag(), args[1]);
+                message.getChannel().sendMessage(responseMessage).queue();
+                break;
             }
 
             case "remove": {
-                switch (args[2]) {
-                    case "admin": {
-                        String discordID;
-                        if (message.getMentionedMembers().size() >= 1) {
-                            discordID = message.getMentionedMembers().get(0).getId();
-                        } else {
-                            discordID = args[3];
-                        }
 
-                        getPermissionController().removeAdmin(discordID);
-                        message.getChannel().sendMessage(String.format("Removed `%s`'s `Admin` permissions.", discordID)).queue();
+                switch (args[1]) {
+
+                    case "mod": {
+                        getPermissionController().removeMod(authorID);
                         break;
                     }
 
-                    case "mod": {
-                        String discordID;
-                        if (message.getMentionedMembers().size() >= 1) {
-                            discordID = message.getMentionedMembers().get(0).getId();
-                        } else {
-                            discordID = args[3];
-                        }
-
-                        getPermissionController().removeMod(discordID);
-                        message.getChannel().sendMessage(String.format("Removed `%s`'s `Mod` permissions.", discordID)).queue();
+                    case "admin": {
+                        getPermissionController().removeAdmin(authorID);
                         break;
                     }
 
                     case "technician": {
-                        String discordID;
-                        if (message.getMentionedMembers().size() >= 1) {
-                            discordID = message.getMentionedMembers().get(0).getId();
-                        } else {
-                            discordID = args[3];
-                        }
-
-                        getPermissionController().removeTechnician(discordID);
-                        message.getChannel().sendMessage(String.format("Removed `%s`'s `Technician` permissions.", discordID)).queue();
+                        getPermissionController().removeTechnician(authorID);
                         break;
+                    }
+
+                    default: {
+                        respondSyntaxError(message, ";permissions <give/remove> <mod/admin/"
+                                + "technician> <@mention/discordID>");
+                        return;
                     }
                 }
 
+                String responseMessage = String.format("Taken `%s`'s `%s` permissions.",
+                        target.getUser().getAsTag(), args[1]);
+                message.getChannel().sendMessage(responseMessage).queue();
+                break;
+            }
+
+            default: {
+                respondSyntaxError(message, ";permissions <give/remove> <mod/admin/"
+                        + "technician> <@mention/discordID>");
+                break;
             }
         }
     }

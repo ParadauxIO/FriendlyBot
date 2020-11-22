@@ -38,14 +38,16 @@ public class AuditLogController implements IController {
     public  static AuditLogController INSTANCE;
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController
+            .getConfigurationEntry();
 
     @Override
     public void initialise() {
         INSTANCE = this;
     }
 
-    public void log(AuditLogEmbed.Action action, User target, User staff, String reason, String incidentID) {
+    public void log(AuditLogEmbed.Action action, User target, User staff, String reason,
+                    String incidentID) {
         AuditLogEmbed embed = new AuditLogEmbed(action, target, staff, reason, incidentID);
 
         AuditLogEntry auditLogEntry = new AuditLogEntry()

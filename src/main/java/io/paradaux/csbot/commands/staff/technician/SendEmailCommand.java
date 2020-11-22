@@ -26,6 +26,8 @@ package io.paradaux.csbot.commands.staff.technician;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
 import io.paradaux.csbot.controllers.EmailController;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 
 import javax.mail.MessagingException;
 
@@ -39,18 +41,31 @@ public class SendEmailCommand extends PrivilegedCommand {
 
     @Override
     protected void execute(CommandEvent event) {
+        Message message = event.getMessage();
+
+        String[] args = getArgs(event.getArgs());
         String authorID = event.getAuthor().getId();
-        if (isNotManagement(authorID)) return;
 
-        String[] args = event.getArgs().split(" ");
+        if (!getPermissionController().isTechnician(authorID)) {
+            respondNoPermission(message, "[Technician]");
+            return;
+        }
 
+        if (args.length < 3) {
+            respondSyntaxError(message, ";sendemail <email address> <verification code>"
+                    + " <@mention/userid>");
+            return;
+        }
 
-        if (args.length > 4) {
-            event.reply("Syntax Error: ;admin sendemail <email> <code> <username>");
+        Member target = retrieveMember(message.getGuild(), parseTarget(message, 3, args));
+
+        if (target == null) {
+            message.getChannel().sendMessage("Invalid target specified.").queue();
+            return;
         }
 
         try {
-            EmailController.INSTANCE.sendVerificationEmail(args[1], args[2], args[3]);
+            EmailController.INSTANCE.sendVerificationEmail(args[0], args[1], args[2]);
         } catch (MessagingException e) {
             e.printStackTrace();
         }

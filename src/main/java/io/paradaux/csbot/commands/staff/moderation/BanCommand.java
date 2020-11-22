@@ -81,8 +81,6 @@ public class BanCommand extends PrivilegedCommand {
         String incidentID = DatabaseController.INSTANCE.getNextIncidentID();
         String reason = parseSentance(1, args);
 
-        BannedEmbed embed = new BannedEmbed(reason, incidentID);
-
         BanEntry entry = new BanEntry()
                 .setIncidentID(incidentID)
                 .setReason(reason)
@@ -98,7 +96,9 @@ public class BanCommand extends PrivilegedCommand {
         message.getChannel().sendMessage("Incident ID: " + incidentID
                 + "\nReason: " + reason).queue();
 
-        target.openPrivateChannel().queue((channel) -> channel.sendMessage(embed.getEmbed()).queue());
+        BannedEmbed embed = new BannedEmbed(reason, incidentID);
+        target.openPrivateChannel().queue((channel) -> channel.sendMessage(embed.getEmbed())
+                .queue());
 
         // message.getGuild().ban(target, 0).queue();
 
