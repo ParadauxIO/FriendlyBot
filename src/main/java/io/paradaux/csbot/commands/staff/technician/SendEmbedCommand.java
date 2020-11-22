@@ -25,10 +25,7 @@ package io.paradaux.csbot.commands.staff.technician;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.embeds.AnnouncementEmbed;
-import io.paradaux.csbot.embeds.AuditLogEmbed;
-import io.paradaux.csbot.embeds.Embed;
-import io.paradaux.csbot.embeds.RulesEmbed;
+import io.paradaux.csbot.embeds.*;
 import io.paradaux.csbot.embeds.command.NoPermissionEmbed;
 import io.paradaux.csbot.embeds.command.SyntaxErrorEmbed;
 import io.paradaux.csbot.embeds.moderation.*;
@@ -36,6 +33,7 @@ import io.paradaux.csbot.embeds.modmail.ModMailSentEmbed;
 import io.paradaux.csbot.embeds.notices.ModMailNoticeEmbed;
 import io.paradaux.csbot.embeds.notices.RulesAcceptanceNoticeEmbed;
 import io.paradaux.csbot.embeds.notices.VerificationNoticeEmbed;
+import io.paradaux.csbot.embeds.roleselection.PoliticsOptionEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public class SendEmbedCommand extends PrivilegedCommand {
@@ -49,16 +47,14 @@ public class SendEmbedCommand extends PrivilegedCommand {
     @Override
     protected void execute(CommandEvent event) {
         String authorID = event.getAuthor().getId();
-        if (!isManagement(authorID)) return;
+        if (isNotManagement(authorID)) return;
 
-        String[] args = getArgs(this.getArguments());
+        System.out.println(this.getArguments());
+        String[] args = event.getArgs().split(" ");
 
         Embed embed;
 
         switch (args[0].toLowerCase()) {
-
-
-
             case "nopermission": {
                 embed = new NoPermissionEmbed(event.getAuthor(), args[2], args[3]);
                 break;
@@ -75,7 +71,7 @@ public class SendEmbedCommand extends PrivilegedCommand {
             }
 
             case "chatfiltertriggered": {
-                embed = new ChatFilterTriggeredEmbed(AuditLogEmbed.Action.valueOf(args[1]), event.getAuthor(),
+                embed = new ChatFilterTriggeredEmbed(AuditLogEmbed.Action.valueOf(args[1]),
                         args[3], args[4], args[5]);
                 break;
             }
@@ -132,6 +128,16 @@ public class SendEmbedCommand extends PrivilegedCommand {
 
             case "rules": {
                 embed = new RulesEmbed();
+                break;
+            }
+
+            case "politicsrules": {
+                embed = new PoliticsRulesEmbed();
+                break;
+            }
+
+            case "politicsoption": {
+                embed = new PoliticsOptionEmbed();
                 break;
             }
 
