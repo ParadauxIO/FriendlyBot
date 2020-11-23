@@ -50,9 +50,12 @@ public class WarningEntry {
     @BsonProperty(value = "timestamp")
     Date timestamp;
 
-    public WarningEntry() {}
+    public WarningEntry() {
 
-    public WarningEntry(String incidentID, String userTag, String userID, String staffTag, String staffID, String reason, Date timestamp) {
+    }
+
+    public WarningEntry(String incidentID, String userTag, String userID, String staffTag,
+                        String staffID, String reason, Date timestamp) {
         this.incidentID = incidentID;
         this.userTag = userTag;
         this.userID = userID;

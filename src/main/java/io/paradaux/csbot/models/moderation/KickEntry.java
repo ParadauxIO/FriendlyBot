@@ -50,9 +50,12 @@ public class KickEntry {
     @BsonProperty(value = "timestamp")
     Date timestamp;
 
-    public KickEntry() {}
+    public KickEntry() {
 
-    public KickEntry(String incidentID, String userTag, String userID, String staffTag, String staffID, String reason, Date timestamp) {
+    }
+
+    public KickEntry(String incidentID, String userTag, String userID, String staffTag,
+                     String staffID, String reason, Date timestamp) {
         this.incidentID = incidentID;
         this.userTag = userTag;
         this.userID = userID;

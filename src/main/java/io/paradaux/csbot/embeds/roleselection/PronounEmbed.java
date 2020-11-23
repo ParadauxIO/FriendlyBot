@@ -31,6 +31,7 @@ public class PronounEmbed implements Embed {
 
     final EmbedBuilder builder = new EmbedBuilder();
 
+    @SuppressWarnings("checkstyle:AvoidEscapedUnicodeCharacters")
     public PronounEmbed() {
         builder.setDescription("**What pronouns would you like people to use for you?**\n\nIf you"
                 + " selected other, please feel free to use your nickname or your status in "

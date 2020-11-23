@@ -35,11 +35,12 @@ public class ChatFilterTriggeredEmbed implements Embed {
 
     final EmbedBuilder builder = new EmbedBuilder();
 
-    public ChatFilterTriggeredEmbed(AuditLogEmbed.Action action, String messageContent, String detectedWord, String incidentID) {
+    public ChatFilterTriggeredEmbed(AuditLogEmbed.Action action, String messageContent,
+                                    String detectedWord, String incidentID) {
         builder.setColor(EmbedColour.AUTOMATIC.getColour());
         builder.setDescription("You have triggered the chat filter. Please avoid using sensitive "
-                + "words, you can view the filter [here](https://github.com/ParadauxIO/ComputerScience"
-                + "FriendlyBot/wiki/Chat-Filter).");
+                + "words, you can view the filter [here](https://github.com/ParadauxIO"
+                + "/ComputerScienceFriendlyBot/wiki/Chat-Filter).");
 
         builder.addField("Action Taken: ", action.toString(), true);
         builder.addField("Incident ID: ", incidentID, true);

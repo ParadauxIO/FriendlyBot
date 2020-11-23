@@ -31,6 +31,7 @@ public class InterestsEmbed implements Embed {
 
     final EmbedBuilder builder = new EmbedBuilder();
 
+    @SuppressWarnings("checkstyle:AvoidEscapedUnicodeCharacters")
     public InterestsEmbed() {
         builder.setDescription("**What are you interested in?**");
         builder.addField("Anime / Manga", "<:ayaya:758450629764186152>", true);

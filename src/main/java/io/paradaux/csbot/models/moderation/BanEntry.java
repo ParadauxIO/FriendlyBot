@@ -50,9 +50,12 @@ public class BanEntry {
     @BsonProperty(value = "timestamp")
     Date timestamp;
 
-    public BanEntry() {}
+    public BanEntry() {
 
-    public BanEntry(String incidentID, String userTag, String userID, String staffTag, String staffID, String reason, Date timestamp) {
+    }
+
+    public BanEntry(String incidentID, String userTag, String userID, String staffTag,
+                    String staffID, String reason, Date timestamp) {
         this.incidentID = incidentID;
         this.userTag = userTag;
         this.userID = userID;

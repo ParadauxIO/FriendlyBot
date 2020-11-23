@@ -36,7 +36,9 @@ public class PendingVerificationEntry {
     @BsonProperty(value = "verification_id")
     String verificationCode;
 
-    public PendingVerificationEntry() { }
+    public PendingVerificationEntry() {
+
+    }
 
     public PendingVerificationEntry(String discordID, String guildID, String verificationCode) {
         this.discordID = discordID;

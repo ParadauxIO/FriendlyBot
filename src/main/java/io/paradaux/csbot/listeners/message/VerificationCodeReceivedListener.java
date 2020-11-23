@@ -35,42 +35,59 @@ import org.jetbrains.annotations.NotNull;
 
 public class VerificationCodeReceivedListener extends ListenerAdapter {
 
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController
+            .getConfigurationEntry();
     final DatabaseController databaseController = DatabaseController.INSTANCE;
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Message message = event.getMessage();
 
-        if (message.getChannelType() == ChannelType.PRIVATE) return;
+        if (message.getChannelType() == ChannelType.PRIVATE) {
+            return;
+        }
 
-        String discordID = event.getAuthor().getId(), guildID = event.getGuild().getId();
-        String verificationCode = message.getContentRaw();
+        if (event.getAuthor().isBot()) {
+            return;
+        }
 
-        if (event.getAuthor().isBot()) return;
-        if (!event.getChannel().getId().equals(configurationEntry.getVerificationChannelID())) return;
+        if (!event.getChannel().getId().equals(configurationEntry.getVerificationChannelID())) {
+            return;
+        }
 
         // If they aren't expected to input a verification code
-        if (!databaseController.isPendingVerification(event.getAuthor().getId())) return;
+        if (!databaseController.isPendingVerification(event.getAuthor().getId())) {
+            return;
+        }
 
         // If the message isn't a six-digit number
-        if (!message.getContentRaw().matches("^[0-9]{1,6}")) return;
+        if (!message.getContentRaw().matches("^[0-9]{1,6}")) {
+            return;
+        }
 
         // We don't want the message
         message.delete().queue();
 
+        String verificationCode = message.getContentRaw();
+        String discordID = event.getAuthor().getId();
+        String guildID = event.getGuild().getId();
+
         if (verificationCode.equals(databaseController.getVerificationCode(discordID))) {
             databaseController.setVerifiedUser(discordID, guildID);
 
-            Role verificationRole = message.getGuild().getRoleById(configurationEntry.getVerifiedRoleID());
+            Role verificationRole = message.getGuild().getRoleById(configurationEntry
+                    .getVerifiedRoleID());
             message.getGuild().addRoleToMember(message.getMember(), verificationRole).queue();
 
-            event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("You have successfully verified your friendly corner discord account.").queue());
+            event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("You"
+                    + " have successfully verified your friendly corner discord account.").queue());
             return;
         }
 
-        event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("You have entered an invalid verification code. Please check your email and try again." +
-                "\nPlease message the bot if you run into issues with this, a moderator/technician will be with you shortly.").queue());
+        event.getAuthor().openPrivateChannel().queue((channel) -> channel
+                .sendMessage("You have entered an invalid verification code. Please check your"
+                        + " email and try again.\nPlease message the bot if you run into issues"
+                        + " with this, a moderator/technician will be with you shortly.").queue());
     }
 
 }
