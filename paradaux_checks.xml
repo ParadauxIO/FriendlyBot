@@ -81,12 +81,14 @@
             <property name="message"
                       value="Consider using special escape sequence instead of octal value or Unicode escaped value."/>
         </module>
-        <module name="AvoidEscapedUnicodeCharacters">
-            <property name="allowEscapesForControlCharacters" value="true"/>
-            <property name="allowByTailComment" value="true"/>
-            <property name="allowNonPrintableEscapes" value="true"/>
-        </module>
+<!--        <module name="AvoidEscapedUnicodeCharacters"> Removed due to use of emoji-->
+<!--            <property name="allowEscapesForControlCharacters" value="true"/>-->
+<!--            <property name="allowByTailComment" value="true"/>-->
+<!--            <property name="allowNonPrintableEscapes" value="true"/>-->
+<!--        </module>-->
 <!--        <module name="AvoidStarImport"/> Removed due to automatically optimizing imports. -->
+
+        <module name="SuppressWarningsHolder"/> <!-- Added for unicode -->
         <module name="OneTopLevelClass"/>
         <module name="NoLineWrap">
             <property name="tokens" value="PACKAGE_DEF, IMPORT, STATIC_IMPORT"/>
@@ -343,5 +345,15 @@
                       default="checkstyle-xpath-suppressions.xml" />
             <property name="optional" value="true"/>
         </module>
+
+        <!-- Disable checkstyle when justification provided -->
+        <module name="SuppressionCommentFilter">
+            <property name="offCommentFormat" value="CHECKSTYLE.OFF\: ([\w\|]+)"/>
+            <property name="onCommentFormat" value="CHECKSTYLE.ON\: ([\w\|]+)"/>
+            <property name="checkFormat" value="$1"/>
+        </module>
+
+
+
     </module>
 </module>
