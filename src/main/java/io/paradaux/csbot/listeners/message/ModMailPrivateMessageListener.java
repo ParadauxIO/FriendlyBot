@@ -30,7 +30,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * PrivateMessageReceivedListener listens to the VerificationCodes sent to the bot privately, parses them and sets the user as verified if approrpriate.
+ * PrivateMessageReceivedListener listens to the VerificationCodes sent to the bot privately,
+ * parses them and sets the user as verified if approrpriate.
  *
  * @author Rían Errity
  * @version Last Modified for 0.1.0-SNAPSHOT

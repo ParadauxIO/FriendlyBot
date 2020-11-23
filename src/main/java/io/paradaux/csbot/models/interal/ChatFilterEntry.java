@@ -25,6 +25,7 @@ package io.paradaux.csbot.models.interal;
 
 public class ChatFilterEntry {
 
-    public  String[] kickable, warnable;
+    public String[] kickable;
+    public String[] warnable;
 
 }

@@ -31,6 +31,7 @@ public class CourseEmbed implements Embed {
 
     final EmbedBuilder builder = new EmbedBuilder();
 
+    @SuppressWarnings("checkstyle:AvoidEscapedUnicodeCharacters")
     public CourseEmbed() {
         builder.setDescription("**What course are you doing?**");
         builder.addField("\uD83D\uDDA5", "Integrated Computer Science", true);

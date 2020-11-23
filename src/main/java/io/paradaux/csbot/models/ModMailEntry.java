@@ -57,9 +57,12 @@ public class ModMailEntry {
     @BsonProperty(value = "last_responded")
     Date lastResponded;
 
-    public ModMailEntry() { }
+    public ModMailEntry() {
 
-    public ModMailEntry(String ticketNumber, ModMailStatus status, String userTag, String userID, String modmailMethod, String issue, Date timeOpened, Date lastResponded) {
+    }
+
+    public ModMailEntry(String ticketNumber, ModMailStatus status, String userTag, String userID,
+                        String modmailMethod, String issue, Date timeOpened, Date lastResponded) {
         this.ticketNumber = ticketNumber;
         this.status = status;
         this.userTag = userTag;

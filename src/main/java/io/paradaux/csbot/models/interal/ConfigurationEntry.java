@@ -26,7 +26,8 @@ package io.paradaux.csbot.models.interal;
 import io.paradaux.csbot.controllers.ConfigurationController;
 
 /**
- * Contains a cached copy of the configuration file's contents, to allow easy access within the application
+ * Contains a cached copy of the configuration file's contents, to allow easy access within the
+ * application.
  *
  * @author Rían Errity
  * @version Last modified for 0.1.0-SNAPSHOT
@@ -64,10 +65,16 @@ public class ConfigurationEntry {
     String smtpPort;
 
     // Constructor for builder-pattern generation
-    public ConfigurationEntry() { }
+    public ConfigurationEntry() {
+
+    }
 
     // General constructor.
-    public ConfigurationEntry(String botToken, String commandPrefix, String csFriendlyGuildID, String auditLogChannelID, String verificationChannelID, String verifiedRoleID, String modmailInputChannelID, String modmailOutputChannelID, String mongoConnectionUri, String smtpUser, String smtpPass, String smtpHost, String smtpPort) {
+    public ConfigurationEntry(String botToken, String commandPrefix, String csFriendlyGuildID,
+                              String auditLogChannelID, String verificationChannelID,
+                              String verifiedRoleID, String modmailInputChannelID,
+                              String modmailOutputChannelID, String mongoConnectionUri,
+                              String smtpUser, String smtpPass, String smtpHost, String smtpPort) {
         this.botToken = botToken;
         this.commandPrefix = commandPrefix;
         this.csFriendlyGuildID = csFriendlyGuildID;

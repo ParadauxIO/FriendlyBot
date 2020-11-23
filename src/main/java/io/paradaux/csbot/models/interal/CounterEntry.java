@@ -38,7 +38,9 @@ public class CounterEntry {
         this.lastTickerNumber = lastTickerNumber;
     }
 
-    public CounterEntry() { }
+    public CounterEntry() {
+
+    }
 
     public Long getLastIncidentID() {
         return lastIncidentID;

@@ -38,7 +38,9 @@ public class VerificationEntry {
     @BsonProperty(value = "date_verified")
     Date dateVerified;
 
-    public VerificationEntry() { }
+    public VerificationEntry() {
+
+    }
 
     public VerificationEntry(String discordID, String guildID, Date dateVerified) {
         this.discordID = discordID;

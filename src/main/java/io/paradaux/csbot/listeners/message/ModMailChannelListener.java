@@ -26,10 +26,9 @@ package io.paradaux.csbot.listeners.message;
 import io.paradaux.csbot.controllers.BotController;
 import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.DatabaseController;
-import io.paradaux.csbot.controllers.LogController;
-import io.paradaux.csbot.interfaces.Embed;
 import io.paradaux.csbot.embeds.modmail.ModMailReceivedEmbed;
 import io.paradaux.csbot.embeds.modmail.ModMailSentEmbed;
+import io.paradaux.csbot.interfaces.Embed;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
@@ -37,22 +36,27 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
 
 import java.util.Objects;
 
 public class ModMailChannelListener extends ListenerAdapter {
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
+    private static final ConfigurationEntry configurationEntry = ConfigurationController
+            .getConfigurationEntry();
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Message message = event.getMessage();
 
-        if (message.getChannelType() == ChannelType.PRIVATE) return;
-        if (!message.getChannel().getId().equals(configurationEntry.getModmailInputChannelID())) return;
+        if (message.getChannelType() == ChannelType.PRIVATE) {
+            return;
+        }
+
+        if (!message.getChannel().getId().equals(configurationEntry.getModmailInputChannelID())) {
+            return;
+        }
+
         message.delete().queue();
 
         TextChannel channel = Objects.requireNonNull(BotController.getClient()
@@ -64,11 +68,13 @@ public class ModMailChannelListener extends ListenerAdapter {
         String ticketNumber = DatabaseController.INSTANCE.getNextTicketNumber();
         String incidentID = DatabaseController.INSTANCE.getNextIncidentID();
 
-        Embed receivedEmbed = new ModMailReceivedEmbed(event.getMessage().getAuthor(), message.getContentRaw(), ticketNumber, incidentID);
+        Embed receivedEmbed = new ModMailReceivedEmbed(event.getMessage().getAuthor(),
+                message.getContentRaw(), ticketNumber, incidentID);
         ModMailSentEmbed sentEmbed = new ModMailSentEmbed(ticketNumber, messageContent);
 
         receivedEmbed.sendEmbed(channel);
-        event.getAuthor().openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage(sentEmbed.getEmbed()).queue());
+        event.getAuthor().openPrivateChannel().queue((privateChannel) -> privateChannel
+                .sendMessage(sentEmbed.getEmbed()).queue());
     }
 
 

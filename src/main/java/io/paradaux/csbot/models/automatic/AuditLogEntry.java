@@ -54,9 +54,12 @@ public class AuditLogEntry {
     @BsonProperty(value = "timestamp")
     Date timestamp;
 
-    public AuditLogEntry() { }
+    public AuditLogEntry() {
 
-    public AuditLogEntry(AuditLogEmbed.Action action, String incidentID, String userTag, String userID, String reason, Date timestamp) {
+    }
+
+    public AuditLogEntry(AuditLogEmbed.Action action, String incidentID, String userTag,
+                         String userID, String reason, Date timestamp) {
         this.action = action;
         this.incidentID = incidentID;
         this.userTag = userTag;
@@ -65,7 +68,9 @@ public class AuditLogEntry {
         this.timestamp = timestamp;
     }
 
-    public AuditLogEntry(AuditLogEmbed.Action action, String incidentID, String userTag, String userID, String staffTag, String staffID, String reason, Date timestamp) {
+    public AuditLogEntry(AuditLogEmbed.Action action, String incidentID, String userTag,
+                         String userID, String staffTag, String staffID, String reason,
+                         Date timestamp) {
         this.action = action;
         this.incidentID = incidentID;
         this.userTag = userTag;
@@ -76,7 +81,8 @@ public class AuditLogEntry {
         this.timestamp = timestamp;
     }
 
-    public AuditLogEntry(AuditLogEmbed.Action action, String incidentID, String userTag, String userID, String reason) {
+    public AuditLogEntry(AuditLogEmbed.Action action, String incidentID, String userTag,
+                         String userID, String reason) {
         this.action = action;
         this.incidentID = incidentID;
         this.userTag = userTag;

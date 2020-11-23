@@ -31,9 +31,12 @@ public class PermissionEntry {
     private ArrayList<String> administrators;
     private ArrayList<String> technicians;
 
-    public PermissionEntry() { }
+    public PermissionEntry() {
 
-    public PermissionEntry(ArrayList<String> moderators, ArrayList<String> administrators, ArrayList<String> technicians) {
+    }
+
+    public PermissionEntry(ArrayList<String> moderators, ArrayList<String> administrators,
+                           ArrayList<String> technicians) {
         this.moderators = moderators;
         this.administrators = administrators;
         this.technicians = technicians;

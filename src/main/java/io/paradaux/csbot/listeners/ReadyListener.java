@@ -24,9 +24,7 @@
 package io.paradaux.csbot.listeners;
 
 import io.paradaux.csbot.FriendlyBot;
-import io.paradaux.csbot.controllers.ConfigurationController;
 import io.paradaux.csbot.controllers.LogController;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -43,7 +41,6 @@ import org.slf4j.Logger;
 
 public class ReadyListener extends ListenerAdapter {
 
-    private static final ConfigurationEntry configurationEntry = ConfigurationController.getConfigurationEntry();
     final Logger logger;
 
     public ReadyListener() {
