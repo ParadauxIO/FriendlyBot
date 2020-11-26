@@ -34,19 +34,18 @@ class EmailControllerTest {
 
     static final LogController logController = new LogController();
 
-    static final ConfigurationEntry ConfigurationEntry = new ConfigurationEntry();
-    static ConfigurationController configurationController = new ConfigurationController();
+    static ConfigurationEntry configurationEntry;
+    static ConfigurationController configurationController;
 
     @BeforeAll
     static void setup() {
-        ConfigurationEntry
+        configurationEntry = new ConfigurationEntry()
                 .setSmtpUser("verification@paradaux.io")
                 .setSmtpPass("SMTP-PASS-HERE")
                 .setSmtpHost("srv2.paradaux.io")
                 .setSmtpPort("587");
 
-        configurationController = new ConfigurationController(ConfigurationEntry);
-        logController.initialise();
+        configurationController = new ConfigurationController(configurationEntry);
     }
 
     @Test
@@ -70,7 +69,6 @@ class EmailControllerTest {
         LogController.getLogger().info("Testing EmailController#sendVerificationEmail");
 
         EmailController emailController = new EmailController();
-        emailController.initialise();
 
         emailController.sendVerificationEmail("rerrity@gmail.com", "69420", "Rían#6500");
     }
