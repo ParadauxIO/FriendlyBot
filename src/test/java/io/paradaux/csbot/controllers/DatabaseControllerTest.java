@@ -41,9 +41,7 @@ class DatabaseControllerTest {
         configurationEntry.setMongoConnectionUri("mongodb://admin:erZ3M7w5JsujKqvUMT88TM2b@mc.paradaux.io:27017/?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false");
 
         configurationController = new ConfigurationController(configurationEntry);
-        logController.initialise();
         databaseController = new DatabaseController();
-        databaseController.initialise();
     }
 
     @Test
