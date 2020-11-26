@@ -25,7 +25,6 @@ package io.paradaux.csbot.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.paradaux.csbot.interfaces.IController;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.models.interal.PermissionEntry;
 import org.slf4j.Logger;
@@ -34,15 +33,15 @@ import javax.annotation.Nullable;
 import java.io.*;
 import java.util.Scanner;
 
-public class FileController implements IController {
+public class FileController {
 
     // Singleton Instance
     public static FileController INSTANCE;
 
     public static final Logger logger = LogController.getLogger();
 
-    @Override
-    public void initialise() {
+    public FileController() {
+        logger.info("Initialising: FileController");
         INSTANCE = this;
     }
 

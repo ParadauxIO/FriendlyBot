@@ -24,25 +24,23 @@
 package io.paradaux.csbot.controllers;
 
 import io.paradaux.csbot.embeds.AuditLogEmbed;
-import io.paradaux.csbot.interfaces.IController;
 import io.paradaux.csbot.models.automatic.AuditLogEntry;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
+import org.slf4j.Logger;
 
 import java.util.Date;
 
-public class AuditLogController implements IController {
+public class AuditLogController {
 
-    // Singleton Instance
-    public  static AuditLogController INSTANCE;
-
-    // Dependencies
+    public static AuditLogController INSTANCE;
     private static final ConfigurationEntry configurationEntry = ConfigurationController
             .getConfigurationEntry();
+    private static final Logger logger = LogController.getLogger();
 
-    @Override
-    public void initialise() {
+    public AuditLogController() {
+        logger.info("Initialising: AuditLogController");
         INSTANCE = this;
     }
 

@@ -23,29 +23,29 @@
 
 package io.paradaux.csbot.controllers;
 
-import io.paradaux.csbot.interfaces.IController;
 import io.paradaux.csbot.models.interal.PermissionEntry;
+import org.slf4j.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class PermissionController implements IController {
+public class PermissionController {
 
     // Singleton Instance
     public static PermissionController INSTANCE;
 
     // Singleton Fields
     private static PermissionEntry permissionEntry;
+    private static final Logger logger = LogController.getLogger();
 
-    @Override
-    public void initialise() {
+    public PermissionController() {
+        logger.info("Initialising: PermissionController");
         try {
             permissionEntry = FileController.INSTANCE.readPermissionFile();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         INSTANCE = this;
-
     }
 
     public void save() {

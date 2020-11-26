@@ -49,43 +49,22 @@ public class FriendlyBot {
 
         // Instantiate Logger instance, so we can log the other controllers properly.
         System.out.println("Initialising Controllers. This may take some time...");
-        new LogController().initialise();
-        Logger logger = LogController.getLogger();
+        new LogController();
+        new FileController();
+        new ConfigurationController();
+        new EmailController();
+        new DatabaseController();
+        new PermissionController();
+        new CommandController();
 
-        // Prepare File Controller, which includes various utilities used by the below controllers.
-        logger.info("Initialising: FileController");
-        new FileController().initialise();
-
-        // Prepare Configuration File/Cache
-        logger.info("Initialising: ConfigurationController");
-        new ConfigurationController().initialise();
-
-        // Email
-        logger.info("Initialising: EmailController");
-        new EmailController().initialise();
-
-        // Database
-        logger.info("Initialising: Database Controller");
-        new DatabaseController().initialise();
-
-        // Permissions
-        logger.info("Initialising: PermissionController");
-        new PermissionController().initialise();
-
-        // Commands
-        logger.info("Initialising: CommandController");
-        new CommandController().initialise();
-
-        // ModerationAction
-        logger.info("Initialising: ModerationActionController");
 
         // The Bot
-        logger.info("Initialising: BotController");
-        new BotController().initialise();
+
+        new BotController();
 
         // Audit Log
-        logger.info("Initialising: AuditLogController");
-        new AuditLogController().initialise();
+
+        new AuditLogController();
     }
 
 }

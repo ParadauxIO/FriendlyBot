@@ -23,11 +23,10 @@
 
 package io.paradaux.csbot.controllers;
 
-import io.paradaux.csbot.interfaces.IController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class LogController implements IController {
+public class LogController  {
 
     // Singleton Instance
     public static LogController INSTANCE;
@@ -39,13 +38,11 @@ public class LogController implements IController {
         return logger;
     }
 
-    @Override
-    public void initialise() {
+    public LogController() {
         logger = LoggerFactory.getLogger("io.paradaux.csbot");
         logger.info("CSBot v0.1.0 - Maintained by Rían Errity <rian@paradaux.io>");
         logger.info("Initialising: LogController");
 
         INSTANCE = this;
     }
-
 }
