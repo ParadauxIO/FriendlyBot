@@ -25,7 +25,6 @@ package io.paradaux.csbot.controllers;
 
 import io.paradaux.csbot.FriendlyBot;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
-import io.paradaux.csbot.interfaces.IController;
 import org.slf4j.Logger;
 
 import javax.activation.DataHandler;
@@ -40,7 +39,7 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-public class EmailController implements IController {
+public class EmailController  {
 
     // Singleton Instance
     public static EmailController INSTANCE;
@@ -53,17 +52,13 @@ public class EmailController implements IController {
     private static final Properties properties = new Properties();
     private static Session session;
 
-
-    @Override
-    public void initialise() {
-        configure();
-        session = login();
-        INSTANCE = this;
-    }
-
-    public void configure() {
+    public EmailController() {
+        logger.info("Initialising: EmailController");
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
+
+        session = login();
+        INSTANCE = this;
     }
 
     public Session login() {
@@ -132,14 +127,21 @@ public class EmailController implements IController {
      * @return Whether or not the email is valid
      * */
     public static boolean isValidEmail(String email) {
-        Pattern emailValidator = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]"
-                + "+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
+        Pattern emailValidator = Pattern.compile("(?:[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\"
+                + ".[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\""
+                + "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01"
+                + "-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)"
+                + "+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:"
+                + "(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}"
+                + "(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:"
+                + "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09"
+                + "\\x0b\\x0c\\x0e-\\x7f])+)\\])");
 
         if (email == null) {
             return false;
         }
 
-        return emailValidator.matcher(email).matches();
+        return emailValidator.matcher(email.toLowerCase()).matches();
     }
 
     /**

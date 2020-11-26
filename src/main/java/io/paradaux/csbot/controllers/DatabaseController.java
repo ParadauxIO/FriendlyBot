@@ -32,7 +32,6 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
-import io.paradaux.csbot.interfaces.IController;
 import io.paradaux.csbot.models.ModMailEntry;
 import io.paradaux.csbot.models.automatic.AuditLogEntry;
 import io.paradaux.csbot.models.automatic.PendingVerificationEntry;
@@ -54,7 +53,7 @@ import java.util.Date;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-public class DatabaseController implements IController {
+public class DatabaseController {
 
     // Singleton Instance
     public  static DatabaseController INSTANCE;
@@ -72,8 +71,8 @@ public class DatabaseController implements IController {
     private static MongoCollection<BanEntry> bans;
     private static MongoCollection<KickEntry> kicks;
 
-    @Override
-    public void initialise() {
+    public DatabaseController() {
+        logger.info("Initialising: Database Controller");
         ConnectionString connectionString = new ConnectionString(configurationEntry
                 .getMongoConnectionUri());
         CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider
@@ -111,7 +110,6 @@ public class DatabaseController implements IController {
         kicks = dataBase.getCollection("kicks", KickEntry.class);
 
         INSTANCE = this;
-
     }
 
     public String getNextIncidentID() {

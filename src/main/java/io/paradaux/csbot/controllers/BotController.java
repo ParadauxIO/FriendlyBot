@@ -25,7 +25,6 @@ package io.paradaux.csbot.controllers;
 
 import com.jagrosh.jdautilities.command.CommandClient;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
-import io.paradaux.csbot.interfaces.IController;
 import io.paradaux.csbot.listeners.ReadyListener;
 import io.paradaux.csbot.listeners.message.*;
 import net.dv8tion.jda.api.JDA;
@@ -35,7 +34,7 @@ import org.slf4j.Logger;
 
 import javax.security.auth.login.LoginException;
 
-public class BotController implements IController {
+public class BotController {
 
     // Singleton Instance
     public static BotController INSTANCE;
@@ -52,8 +51,8 @@ public class BotController implements IController {
         return client;
     }
 
-    @Override
-    public void initialise() {
+    public BotController() {
+        logger.info("Initialising: BotController");
         logger.info("Attempting to login");
         try {
             client = login(configurationEntry.getBotToken());

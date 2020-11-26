@@ -32,18 +32,19 @@ import io.paradaux.csbot.commands.staff.moderation.*;
 import io.paradaux.csbot.commands.staff.technician.PermissionsCommand;
 import io.paradaux.csbot.commands.staff.technician.SendEmailCommand;
 import io.paradaux.csbot.commands.staff.technician.SendEmbedCommand;
-import io.paradaux.csbot.interfaces.IController;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Activity;
+import org.slf4j.Logger;
 
-public class CommandController implements IController {
+public class CommandController {
 
     // Singleton Instance
-    public  static CommandController INSTANCE;
+    public static CommandController INSTANCE;
 
     // Dependencies
     private static final ConfigurationEntry configurationEntry = ConfigurationController
             .getConfigurationEntry();
+    private static final Logger logger = LogController.getLogger();
 
     // Singleton Fields
     public static CommandClient commandClient;
@@ -52,8 +53,7 @@ public class CommandController implements IController {
         return commandClient;
     }
 
-    @Override
-    public void initialise() {
+    public CommandController() {
         commandClient = createCommandClient();
         INSTANCE = this;
     }
@@ -64,6 +64,7 @@ public class CommandController implements IController {
      * @return An instance of CommandClient.
      * */
     public static CommandClient createCommandClient() {
+        logger.info("Initialising: CommandController");
         CommandClientBuilder builder = new CommandClientBuilder()
                 .setPrefix(configurationEntry.getCommandPrefix())
                 .setOwnerId("150993042558418944")
