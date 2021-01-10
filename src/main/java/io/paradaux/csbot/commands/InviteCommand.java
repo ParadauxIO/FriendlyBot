@@ -48,12 +48,12 @@ public class InviteCommand extends Command {
     @Override
     protected void execute(CommandEvent event) {
         Message message = event.getMessage();
-        message.getChannel().sendMessage("You can invite this discord bot by "
-                + "messaging the maintainer, or by running your own instance The "
-                + "verification system requires an SMTP Login, you can use the likes "
-                + "of GMX for this, as well as a mongodb database.\nIf you wish to use "
-                + "the current edition of the bot, please message Rían#6500 or open "
-                + "an issue at https://github.com/ParadauxIO/ComputerScienceFriendlyBot")
-                .queue();
+
+        String inviteInfo = "This is a utility discord bot for moderating discord servers pertaining to computer science, with a "
+                + "markov chain-backed artificial intelligence. This particular instance of the bot is hosted by Rían#6500.\n\n" + "There "
+                + "is nothing stopping anyone from starting their own instance, but you will require an SMTP Login to make use " + "of the"
+                + " email verification, and a mongodb database for everything else.";
+
+        message.getChannel().sendMessage(inviteInfo).queue();
     }
 }
