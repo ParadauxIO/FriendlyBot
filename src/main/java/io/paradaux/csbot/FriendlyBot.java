@@ -25,8 +25,10 @@
 
 package io.paradaux.csbot;
 
-import io.paradaux.csbot.controllers.*;
+import io.paradaux.csbot.managers.*;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * CSBot is the main (executable) class for the project.
@@ -47,24 +49,25 @@ public class FriendlyBot {
      */
     public static void main(String[] args) {
 
-        // Instantiate Logger instance, so we can log the other controllers properly.
+        Logger logger = LoggerFactory.getLogger("io.paradaux.csbot");
+        logger.info("CSBot v0.1.0 - Maintained by Rían Errity <rian@paradaux.io>");
+
         System.out.println("Initialising Controllers. This may take some time...");
-        new LogController();
-        new FileController();
-        new ConfigurationController();
-        new EmailController();
-        new DatabaseController();
-        new PermissionController();
-        new CommandController();
 
+        IOManager ioManager = new IOManager(logger);
+        ConfigManager configManager = new ConfigManager(logger);
 
-        // The Bot
+        ConfigurationEntry config = configManager.getConfig();
 
-        new BotController();
+        // Configuration-dependant managers.
+        SMTPManager smtpManager = new SMTPManager(config, logger);
+        MongoManager mongoManager = new MongoManager(config, logger);
+        PermissionManager permissionManager = new PermissionManager(logger);
+        DiscordBotManager discordBotManager = new DiscordBotManager(config, logger);
+        AuditManager auditManager = new AuditManager(config, logger);
+        VerificationManager verificationManager = new VerificationManager(config, logger, mongoManager);
 
-        // Audit Log
-
-        new AuditLogController();
+        // TODO Add an API which exposes the above controllers.
     }
 
 }
