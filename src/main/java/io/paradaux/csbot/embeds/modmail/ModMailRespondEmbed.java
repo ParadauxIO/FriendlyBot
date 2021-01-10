@@ -21,24 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands;
+package io.paradaux.csbot.embeds.modmail;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
-import net.dv8tion.jda.api.entities.Message;
-
-public class HelpCommand extends Command {
-
-    public HelpCommand() {
-        this.name = "help";
-        this.aliases = new String[]{"h"};
-        this.help = "Provides various administrator utilities";
-    }
-
-    @Override
-    protected void execute(CommandEvent event) {
-        Message message = event.getMessage();
-        message.getChannel().sendMessage("Not yet implemented ;c").queue();
-    }
+public class ModMailRespondEmbed {
 }
-
