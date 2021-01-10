@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.interfaces;
+package io.paradaux.csbot.models.interfaces;
 
 import net.dv8tion.jda.api.entities.TextChannel;
 
