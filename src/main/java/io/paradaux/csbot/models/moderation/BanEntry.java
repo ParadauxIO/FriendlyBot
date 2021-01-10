@@ -54,8 +54,7 @@ public class BanEntry {
 
     }
 
-    public BanEntry(String incidentID, String userTag, String userID, String staffTag,
-                    String staffID, String reason, Date timestamp) {
+    public BanEntry(String incidentID, String userTag, String userID, String staffTag, String staffID, String reason, Date timestamp) {
         this.incidentID = incidentID;
         this.userTag = userTag;
         this.userID = userID;
@@ -83,6 +82,14 @@ public class BanEntry {
 
     public String getReason() {
         return reason;
+    }
+
+    public String getIncidentID() {
+        return incidentID;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
     }
 
     public BanEntry setIncidentID(String incidentID) {

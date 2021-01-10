@@ -23,7 +23,7 @@
 
 package io.paradaux.csbot.models.interal;
 
-import io.paradaux.csbot.controllers.ConfigurationController;
+import io.paradaux.csbot.managers.ConfigManager;
 
 /**
  * Contains a cached copy of the configuration file's contents, to allow easy access within the
@@ -32,7 +32,7 @@ import io.paradaux.csbot.controllers.ConfigurationController;
  * @author Rían Errity
  * @version Last modified for 0.1.0-SNAPSHOT
  * @since 1/11/2020 DD/MM/YY
- * @see ConfigurationController
+ * @see ConfigManager
  * */
 
 public class ConfigurationEntry {
