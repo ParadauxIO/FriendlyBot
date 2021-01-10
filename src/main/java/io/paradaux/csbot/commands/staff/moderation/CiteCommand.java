@@ -25,7 +25,7 @@ package io.paradaux.csbot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.interfaces.Embed;
+import io.paradaux.csbot.models.interfaces.Embed;
 import io.paradaux.csbot.embeds.moderation.CiteRuleEmbed;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -56,7 +56,7 @@ public class CiteCommand extends PrivilegedCommand {
 
         TextChannel channel = message.getMentionedChannels().get(0);
 
-        Embed citeRuleEmbed = new CiteRuleEmbed(args[0]);
+        Embed citeRuleEmbed = new CiteRuleEmbed(args[1]);
 
         message.getChannel().sendMessage("Citation sent.").queue();
         citeRuleEmbed.sendEmbed(channel);
