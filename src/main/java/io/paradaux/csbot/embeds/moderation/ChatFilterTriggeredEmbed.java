@@ -25,7 +25,7 @@ package io.paradaux.csbot.embeds.moderation;
 
 import io.paradaux.csbot.EmbedColour;
 import io.paradaux.csbot.embeds.AuditLogEmbed;
-import io.paradaux.csbot.interfaces.Embed;
+import io.paradaux.csbot.models.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
