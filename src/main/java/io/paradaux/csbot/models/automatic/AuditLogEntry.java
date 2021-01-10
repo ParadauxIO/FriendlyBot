@@ -121,6 +121,28 @@ public class AuditLogEntry {
         return this;
     }
 
+    public AuditLogEntry setStaffTag(String staffTag) {
+        this.staffTag = staffTag;
+        return this;
+    }
+
+    public AuditLogEntry setStaffID(String staffID) {
+        this.staffID = staffID;
+        return this;
+    }
+
+    public String getUserTag() {
+        return userTag;
+    }
+
+    public String getStaffTag() {
+        return staffTag;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
     public AuditLogEmbed.Action getAction() {
         return action;
     }
