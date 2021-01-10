@@ -21,9 +21,10 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.managers;
 
 import io.paradaux.csbot.embeds.AuditLogEmbed;
+import io.paradaux.csbot.models.exceptions.ManagerNotReadyException;
 import io.paradaux.csbot.models.automatic.AuditLogEntry;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -32,16 +33,28 @@ import org.slf4j.Logger;
 
 import java.util.Date;
 
-public class AuditLogController {
+public class AuditManager {
 
-    public static AuditLogController INSTANCE;
-    private static final ConfigurationEntry configurationEntry = ConfigurationController
-            .getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
+    // TODO tidy
 
-    public AuditLogController() {
+    private static AuditManager instance = null;
+    private final ConfigurationEntry config;
+    private final Logger logger;
+
+    public AuditManager(ConfigurationEntry config, Logger logger) {
+        this.config = config;
+        this.logger = logger;
+
         logger.info("Initialising: AuditLogController");
-        INSTANCE = this;
+        instance = this;
+    }
+
+    public static AuditManager getInstance() {
+        if (instance == null) {
+            throw new ManagerNotReadyException();
+        }
+
+        return instance;
     }
 
     public void log(AuditLogEmbed.Action action, User target, User staff, String reason,
@@ -56,12 +69,9 @@ public class AuditLogController {
                 .setReason(reason)
                 .setTimestamp(new Date());
 
-        DatabaseController.INSTANCE.addAuditLog(auditLogEntry);
+        MongoManager.getInstance().addAuditLog(auditLogEntry);
 
-        TextChannel channel = BotController.getClient()
-                .getGuildById(configurationEntry.getCsFriendlyGuildID())
-                .getTextChannelById(configurationEntry.getAuditLogChannelID());
-
+        TextChannel channel = DiscordBotManager.getInstance().getChannel(config.getAuditLogChannelID());
         embed.sendEmbed(channel);
 
     }

@@ -21,9 +21,10 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.managers;
 
 import io.paradaux.csbot.FriendlyBot;
+import io.paradaux.csbot.models.exceptions.ManagerNotReadyException;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import org.slf4j.Logger;
 
@@ -39,37 +40,43 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-public class EmailController  {
+public class SMTPManager {
 
-    // Singleton Instance
-    public static EmailController INSTANCE;
+    private final Properties properties = new Properties();
+    private final ConfigurationEntry config;
+    public static SMTPManager instance;
+    private final Logger logger;
+    private final Session session;
 
-    // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController
-            .getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
+    public SMTPManager(ConfigurationEntry config, Logger logger) {
+        this.config = config;
+        this.logger = logger;
 
-    private static final Properties properties = new Properties();
-    private static Session session;
-
-    public EmailController() {
         logger.info("Initialising: EmailController");
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
 
         session = login();
-        INSTANCE = this;
+
+        instance = this;
+    }
+
+    public static SMTPManager getInstance() {
+        if (instance == null) {
+            throw new ManagerNotReadyException();
+        }
+
+        return instance;
     }
 
     public Session login() {
-        properties.put("mail.smtp.host", configurationEntry.getSmtpHost());
-        properties.put("mail.smtp.port", configurationEntry.getSmtpPort());
+        properties.put("mail.smtp.host", config.getSmtpHost());
+        properties.put("mail.smtp.port", config.getSmtpPort());
 
         return Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(configurationEntry.getSmtpUser(),
-                        configurationEntry.getSmtpPass());
+                return new PasswordAuthentication(config.getSmtpUser(), config.getSmtpPass());
             }
         });
     }
@@ -88,7 +95,7 @@ public class EmailController  {
 
         // Add the html
         BodyPart messageBodyPart = new MimeBodyPart();
-        String htmlText = Objects.requireNonNull(FileController.INSTANCE.readEmailTemplate())
+        String htmlText = Objects.requireNonNull(IOManager.getInstance().readEmailTemplate())
                 .replace("%discord_username%", discordUserName)
                 .replace("%verification_code%", verificationCode);
         messageBodyPart.setContent(htmlText, "text/html");
@@ -115,7 +122,7 @@ public class EmailController  {
         try {
             Transport.send(message);
         } catch (AuthenticationFailedException exception) {
-            LogController.getLogger().error("Failed to login to the SMTP Server,"
+            logger.error("Failed to login to the SMTP Server,"
                     + " is the login information set?");
         }
 
