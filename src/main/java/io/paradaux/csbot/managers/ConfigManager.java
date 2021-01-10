@@ -21,44 +21,48 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.managers;
 
+import io.paradaux.csbot.models.exceptions.ManagerNotReadyException;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import org.slf4j.Logger;
 
 import java.io.FileNotFoundException;
 
-public class ConfigurationController {
+public class ConfigManager {
 
-    // Singleton Instance
-    public static ConfigurationController INSTANCE;
+    private static ConfigManager instance = null;
+    private ConfigurationEntry config;
 
-    // Singleton Fields
-    public static ConfigurationEntry configurationEntry;
-    private static final Logger logger = LogController.getLogger();
+    public ConfigManager(ConfigurationEntry config, Logger logger) {
+        this.config = config;
 
-    public static ConfigurationEntry getConfigurationEntry() {
-        return configurationEntry;
-    }
-
-    public ConfigurationController(ConfigurationEntry suppliedConfigurationCache) {
         logger.info("Initialising: ConfigurationController");
-        configurationEntry = suppliedConfigurationCache;
-        INSTANCE = this;
+        instance = this;
     }
 
-    public ConfigurationController() {
-        Logger logger = LogController.getLogger();
+    public ConfigManager(Logger logger) {
 
-        FileController.deployFiles();
+        IOManager.deployFiles(logger);
         try {
-            configurationEntry = FileController.readConfigurationFile();
+            config = IOManager.readConfigurationFile();
         } catch (FileNotFoundException exception) {
             logger.error("Could not find the configuration file!", exception);
         }
 
-        INSTANCE = this;
+        instance = this;
+    }
 
+    public ConfigurationEntry getConfig() {
+        return config;
+    }
+
+    public static ConfigManager getInstance() {
+        if (instance == null) {
+            throw new ManagerNotReadyException();
+        }
+
+        return instance;
     }
 
 }

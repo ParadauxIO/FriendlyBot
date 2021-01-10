@@ -21,81 +21,94 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.managers;
 
+import io.paradaux.csbot.models.exceptions.ManagerNotReadyException;
 import io.paradaux.csbot.models.interal.PermissionEntry;
 import org.slf4j.Logger;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class PermissionController {
+public class PermissionManager {
 
     // Singleton Instance
-    public static PermissionController INSTANCE;
+    public static PermissionManager instance;
 
     // Singleton Fields
-    private static PermissionEntry permissionEntry;
-    private static final Logger logger = LogController.getLogger();
+    private PermissionEntry permissions;
+    private final Logger logger;
 
-    public PermissionController() {
+    public PermissionManager(Logger logger) {
+        this.logger = logger;
+
         logger.info("Initialising: PermissionController");
+
         try {
-            permissionEntry = FileController.INSTANCE.readPermissionFile();
+            permissions = IOManager.getInstance().readPermissionFile();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        INSTANCE = this;
+
+        instance = this;
+    }
+
+    public static PermissionManager getInstance() {
+        if (instance == null) {
+            throw new ManagerNotReadyException();
+        }
+
+        return instance;
     }
 
     public void save() {
         try {
-            FileController.INSTANCE.updatePermissionFile(permissionEntry);
+            IOManager.getInstance().updatePermissionFile(permissions);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void addAdmin(String discordID) {
-        permissionEntry.getAdministrators().add(discordID);
+        permissions.getAdministrators().add(discordID);
         save();
     }
 
     public void removeAdmin(String discordID) {
-        permissionEntry.getAdministrators().remove(discordID);
+        permissions.getAdministrators().remove(discordID);
         save();
     }
 
     public boolean isAdmin(String discordID) {
-        return permissionEntry.getAdministrators().contains(discordID);
+        return permissions.getAdministrators().contains(discordID);
     }
 
     public void addMod(String discordID) {
-        permissionEntry.getModerators().add(discordID);
+        permissions.getModerators().add(discordID);
         save();
     }
 
     public void removeMod(String discordID) {
-        permissionEntry.getModerators().remove(discordID);
+        permissions.getModerators().remove(discordID);
         save();
     }
 
     public boolean isMod(String discordID) {
-        return permissionEntry.getModerators().contains(discordID);
+        return permissions.getModerators().contains(discordID);
     }
 
     public void addTechnician(String discordID) {
-        permissionEntry.getTechnicians().add(discordID);
+        permissions.getTechnicians().add(discordID);
         save();
     }
 
     public void removeTechnician(String discordID) {
-        permissionEntry.getTechnicians().add(discordID);
+        permissions.getTechnicians().add(discordID);
         save();
     }
 
     public boolean isTechnician(String discordID) {
-        return permissionEntry.getTechnicians().contains(discordID);
+        return permissions.getTechnicians().contains(discordID);
     }
 
 }

@@ -21,10 +21,12 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.managers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.paradaux.csbot.models.exceptions.ManagerNotReadyException;
+import io.paradaux.csbot.models.exceptions.NoSuchResourceException;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.models.interal.PermissionEntry;
 import org.slf4j.Logger;
@@ -33,66 +35,53 @@ import javax.annotation.Nullable;
 import java.io.*;
 import java.util.Scanner;
 
-public class FileController {
+public class IOManager {
 
-    // Singleton Instance
-    public static FileController INSTANCE;
+    public static IOManager instance = null;
+    private final Logger logger;
 
-    public static final Logger logger = LogController.getLogger();
-
-    public FileController() {
+    public IOManager(Logger logger) {
+        this.logger = logger;
         logger.info("Initialising: FileController");
-        INSTANCE = this;
+        instance = this;
+    }
+
+    public static IOManager getInstance() {
+        if (instance == null) {
+            throw new ManagerNotReadyException();
+        }
+
+        return instance;
     }
 
     /**
      * Export a resource embedded into a Jar file to the local file path.
      *
-     * @param resourceName ie.: "/configuration.yml" N.B / is a directory down in the "jar tree"
-     *                     In this case; the jar the root of the tree
-     * @throws Exception a generic exception to signal something went wrong
+     * @param inputPath ie.: "/configuration.yml" N.B / is a directory down in the "jar tree" been the jar the root of the tree
+     * @throws NoSuchResourceException a generic exception to signal something went wrong
      */
-    public static void exportResource(String resourceName) throws Exception {
-        InputStream stream = null;
-        OutputStream resStreamOut = null;
-        String jarFolder;
-        try {
-            stream = FileController.class.getResourceAsStream(resourceName);
-            if (stream == null) {
-                throw new Exception("Cannot get resource \"" + resourceName + "\" from Jar file.");
+    public static void exportResource(String inputPath, @Nullable String outputPath) throws NoSuchResourceException {
+
+        OutputStream resourceOutputStream;
+
+        try (InputStream resourceStream = IOManager.class.getResourceAsStream(inputPath)) {
+            resourceOutputStream = new FileOutputStream(outputPath);
+
+            if (resourceStream == null) {
+                throw new FileNotFoundException("Cannot get resource \"" + inputPath + "\" from Jar file.");
             }
 
             int readBytes;
             byte[] buffer = new byte[4096];
-            jarFolder = new File(FileController.class
-                    .getProtectionDomain()
-                    .getCodeSource()
-                    .getLocation()
-                    .toURI()
-                    .getPath())
-                    .getParentFile()
-                    .getPath()
-                    .replace('\\', '/');
-            resStreamOut = new FileOutputStream(jarFolder + resourceName);
-            while ((readBytes = stream.read(buffer)) > 0) {
-                resStreamOut.write(buffer, 0, readBytes);
+
+            while ((readBytes = resourceStream.read(buffer)) > 0) {
+                resourceOutputStream.write(buffer, 0, readBytes);
             }
-        } catch (Exception ex) {
-            logger.error("Exception occurred whilst exporting a resource: ", ex);
+
+            resourceOutputStream.close();
+        } catch (IOException exception) {
+            throw new NoSuchResourceException("Failed to deploy resource : " + exception.getMessage());
         }
-
-        if (stream == null) {
-            return;
-        }
-
-        stream.close();
-
-        if (resStreamOut == null) {
-            return;
-        }
-
-        resStreamOut.close();
-
     }
 
     /**
@@ -112,41 +101,29 @@ public class FileController {
     /**
      * Copies the configuration file from the JAR to the current directory on first run.
      */
-    public static void deployFiles() {
-        Logger logger = LogController.getLogger();
+    public static void deployFiles(Logger logger) {
+        String jarLocation = System.getProperty("user.dir");
+
         if (!new File("config.json").exists()) {
             try {
-                exportResource("/config.json");
+                exportResource("/config.json", jarLocation + "/config.json");
             } catch (Exception exception) {
                 logger.error("Failed to deploy config.json\n", exception);
             }
         }
 
-        if (!new File("chat-filter.json").exists()) {
-            try {
-                exportResource("/chat-filter.json");
-            } catch (Exception exception) {
-                logger.error("Failed to deploy chat-filter.json\n", exception);
-            }
-        }
-
-        if (!new File("reaction-roles.json").exists()) {
-            try {
-                exportResource("/reaction-roles.json");
-            } catch (Exception exception) {
-                logger.error("Failed to deploy reaction-roles.json\n", exception);
-            }
-        }
-
         if (!new File("permissions.json").exists()) {
             try {
-                exportResource("/permissions.json");
+                exportResource("/permissions.json", jarLocation + "/permissions.json");
             } catch (Exception exception) {
                 logger.error("Failed to deploy permissions.json\n", exception);
             }
         }
     }
 
+    /**
+     * Reads the email template.
+     * */
     @Nullable
     public String readEmailTemplate() {
         StringBuilder emailTemplate = new StringBuilder();
@@ -167,14 +144,9 @@ public class FileController {
         return emailTemplate.toString();
     }
 
-    //public ChatFilterEntry readChatFilter() throws FileNotFoundException {
-    //    GsonBuilder builder = new GsonBuilder();
-    //    Gson gson = builder.create();
-    //
-    //    BufferedReader bufferedReader = new BufferedReader(new FileReader("chat-filter.json"));
-    //    return gson.fromJson(bufferedReader, ChatFilterEntry.class);
-    //}
-
+    /**
+     * Reads the permission file.
+     * */
     public PermissionEntry readPermissionFile() throws FileNotFoundException {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
@@ -183,6 +155,9 @@ public class FileController {
         return gson.fromJson(bufferedReader, PermissionEntry.class);
     }
 
+    /**
+     * Updates the permission file.
+     * */
     public void updatePermissionFile(PermissionEntry entry) throws IOException {
         File permissionsFile = new File("permissions.json");
 

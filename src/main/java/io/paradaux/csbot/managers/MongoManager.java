@@ -21,17 +21,15 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.managers;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
+import io.paradaux.csbot.models.exceptions.ManagerNotReadyException;
 import io.paradaux.csbot.models.ModMailEntry;
 import io.paradaux.csbot.models.automatic.AuditLogEntry;
 import io.paradaux.csbot.models.automatic.PendingVerificationEntry;
@@ -47,38 +45,44 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 import java.util.Date;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
-public class DatabaseController {
+public class MongoManager {
 
     // Singleton Instance
-    public  static DatabaseController INSTANCE;
+    public static MongoManager instance;
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController
-            .getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
+    private final ConfigurationEntry config;
+    private final Logger logger;
+    private MongoClient client;
 
-    private static MongoCollection<PendingVerificationEntry> pendingVerification;
-    private static MongoCollection<VerificationEntry> verification;
-    private static MongoCollection<CounterEntry> counterCollection;
-    private static MongoCollection<AuditLogEntry> auditLog;
-    private static MongoCollection<WarningEntry> warnings;
-    private static MongoCollection<BanEntry> bans;
-    private static MongoCollection<KickEntry> kicks;
+    private MongoCollection<PendingVerificationEntry> pendingVerification;
+    private MongoCollection<VerificationEntry> verification;
+    private MongoCollection<CounterEntry> counterCollection;
+    private MongoCollection<AuditLogEntry> auditLog;
+    private MongoCollection<WarningEntry> warnings;
+    private MongoCollection<ModMailEntry> modmail;
+    private MongoCollection<BanEntry> bans;
+    private MongoCollection<KickEntry> kicks;
 
-    public DatabaseController() {
+    public MongoManager(ConfigurationEntry config, Logger logger) {
+        this.config = config;
+        this.logger = logger;
+
         logger.info("Initialising: Database Controller");
-        ConnectionString connectionString = new ConnectionString(configurationEntry
-                .getMongoConnectionUri());
+        ConnectionString connectionString = new ConnectionString(config.getMongoConnectionUri());
+
         CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider
                 .builder()
                 .automatic(true)
                 .build());
+
         CodecRegistry codecRegistry = fromRegistries(MongoClientSettings
                 .getDefaultCodecRegistry(), pojoCodecRegistry);
 
@@ -87,8 +91,6 @@ public class DatabaseController {
                 .codecRegistry(codecRegistry)
                 .build();
 
-        // Singleton Fields
-        MongoClient client;
         try {
             client = MongoClients.create(clientSettings);
         } catch (Exception exception) {
@@ -98,19 +100,26 @@ public class DatabaseController {
 
         MongoDatabase dataBase = client.getDatabase("csfriendlybot");
 
-        pendingVerification = dataBase.getCollection("pendingVerification",
-                PendingVerificationEntry.class);
+        pendingVerification = dataBase.getCollection("pendingVerification", PendingVerificationEntry.class);
         verification = dataBase.getCollection("verification", VerificationEntry.class);
         counterCollection = dataBase.getCollection("counter", CounterEntry.class);
         auditLog = dataBase.getCollection("auditlog", AuditLogEntry.class);
         warnings = dataBase.getCollection("warnings", WarningEntry.class);
-        MongoCollection<ModMailEntry> modmail = dataBase.getCollection("modmail",
-                ModMailEntry.class);
+        modmail = dataBase.getCollection("modmail", ModMailEntry.class);
         bans = dataBase.getCollection("bans", BanEntry.class);
         kicks = dataBase.getCollection("kicks", KickEntry.class);
 
-        INSTANCE = this;
+        instance = this;
     }
+
+    public static MongoManager getInstance() {
+        if (instance == null) {
+            throw new ManagerNotReadyException();
+        }
+
+        return instance;
+    }
+
 
     public String getNextIncidentID() {
         CounterEntry result = incrementCounter("last_incident_id");
@@ -122,6 +131,8 @@ public class DatabaseController {
         return Long.toString(result.getLastIncidentID() + 1);
     }
 
+    @CheckReturnValue
+    @Nullable
     public CounterEntry incrementCounter(String field) {
         Document query = new Document("_id", new ObjectId("5fb6895ba9dc2abc3eec8c4a"));
 
@@ -164,18 +175,21 @@ public class DatabaseController {
         verification.insertOne(verificationEntry);
     }
 
+    @CheckReturnValue
     public boolean isPendingVerification(String discordID) {
         PendingVerificationEntry pendingVerificationEntry = pendingVerification
                 .find(Filters.eq("discord_id", discordID)).first();
         return pendingVerificationEntry != null;
     }
 
+    @CheckReturnValue
     public boolean isVerified(String discordID) {
         VerificationEntry verificationEntry = verification
                 .find(Filters.eq("discord_id", discordID)).first();
         return verificationEntry != null;
     }
 
+    @CheckReturnValue
     @Nullable
     public String getVerificationCode(String discordID) {
         PendingVerificationEntry pendingVerificationEntry = pendingVerification
@@ -200,24 +214,34 @@ public class DatabaseController {
         warnings.insertOne(entry);
     }
 
+    @CheckReturnValue
     @Nullable
     public AuditLogEntry getAuditLogEntry(String incidentID) {
         return auditLog.find(Filters.eq("incident_id", incidentID)).first();
     }
 
+    @CheckReturnValue
     @Nullable
     public BanEntry getBanEntry(String incidentID) {
         return bans.find(Filters.eq("incident_id", incidentID)).first();
     }
 
+    @CheckReturnValue
     @Nullable
     public KickEntry getKickEntry(String incidentID) {
         return kicks.find(Filters.eq("incident_id", incidentID)).first();
     }
 
+    @CheckReturnValue
     @Nullable
     public WarningEntry getWarningEntry(String incidentID) {
         return warnings.find(Filters.eq("incident_id", incidentID)).first();
+    }
+
+    @CheckReturnValue
+    @Nullable
+    public FindIterable<PendingVerificationEntry> getPendingUsers() {
+        return pendingVerification.find();
     }
 
 }
