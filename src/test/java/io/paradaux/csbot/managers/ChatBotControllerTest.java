@@ -25,6 +25,8 @@ package io.paradaux.csbot.managers;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
@@ -34,12 +36,13 @@ class ChatBotControllerTest {
 
     private static final String[] TRAINING_DATA = {"cswikipedia", "navysealcopypasta", "to-publiceducation", "to-trumpleavingwhitehouse",
             "ww-useventilator"};
-    static final LogManager logController = new LogManager();
+    static Logger logger;
     static AIController controller;
 
     @BeforeAll
     static void setUp() {
-        controller = new AIController();
+        logger = LoggerFactory.getLogger(ChatBotControllerTest.class);
+        controller = new AIController(logger);
 
         for (String str : TRAINING_DATA) {
             controller.loadTrainingData(new File(RESOURCES_FOLDER + str));

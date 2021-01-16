@@ -23,9 +23,11 @@
 
 package io.paradaux.csbot.listeners.message;
 
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 import java.util.List;
 
@@ -41,6 +43,14 @@ public class BotTrainingMaterialListener extends ListenerAdapter {
             "twat", "vagina", "wank", "whore", "wtf"};
 
     private static final List<String> FILTER_LIST = List.of(FILTER);
+
+    private final ConfigurationEntry config;
+    private final Logger logger;
+
+    public BotTrainingMaterialListener(ConfigurationEntry config, Logger logger) {
+        this.config = config;
+        this.logger = logger;
+    }
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {

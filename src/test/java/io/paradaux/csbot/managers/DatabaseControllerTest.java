@@ -26,20 +26,23 @@ package io.paradaux.csbot.managers;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class DatabaseControllerTest {
 
     static final ConfigurationEntry configurationEntry = new ConfigurationEntry();
     static ConfigManager configurationController;
-
+    static Logger logger;
     static MongoManager databaseController;
 
     @BeforeAll
     static void setup() {
+        Logger logger = LoggerFactory.getLogger(DatabaseControllerTest.class);
         configurationEntry.setMongoConnectionUri("mongodb://admin:ethETHergergERGERhehTHRHe@mc.paradaux.io:27017/?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false");
 
-        configurationController = new ConfigManager(configurationEntry);
-        databaseController = new MongoManager();
+        configurationController = new ConfigManager(configurationEntry, logger);
+        databaseController = new MongoManager(configurationEntry, logger);
     }
 
     @Test

@@ -23,7 +23,10 @@
 
 package io.paradaux.csbot.managers;
 
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import org.junit.jupiter.api.BeforeAll;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class BotControllerTest {
 
@@ -31,10 +34,11 @@ class BotControllerTest {
     @BeforeAll
     static void setUp() {
 
-        LogManager logController;
-        ConfigManager configurationController;
-        DiscordBotManager controller = new DiscordBotManager();
+        Logger logger = LoggerFactory.getLogger(BotControllerTest.class);
 
+        ConfigManager configurationController;
+        ConfigurationEntry config = new ConfigurationEntry();
+        DiscordBotManager controller = new DiscordBotManager(config, logger, null);
 
     }
 }

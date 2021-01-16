@@ -25,12 +25,16 @@ package io.paradaux.csbot.commands.staff.technician;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
+import io.paradaux.csbot.managers.PermissionManager;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import org.slf4j.Logger;
 
 public class PermissionsCommand extends PrivilegedCommand {
 
-    public PermissionsCommand() {
+    public PermissionsCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+        super(config, logger, permissionManager);
         this.name = "permissions";
         this.aliases = new String[]{"perms", "perm"};
         this.help = "Modifies user permissions";
@@ -43,7 +47,9 @@ public class PermissionsCommand extends PrivilegedCommand {
         String[] args = getArgs(event.getArgs());
         String authorID = event.getAuthor().getId();
 
-        if (!getPermissionController().isTechnician(authorID)) {
+        PermissionManager manager = PermissionManager.getInstance();
+
+        if (!manager.isTechnician(authorID)) {
             respondNoPermission(message, "[Technician]");
             return;
         }
@@ -66,17 +72,17 @@ public class PermissionsCommand extends PrivilegedCommand {
 
                 switch (args[1]) {
                     case "mod": {
-                        getPermissionController().addMod(target.getId());
+                        manager.addMod(target.getId());
                         break;
                     }
 
                     case "admin": {
-                        getPermissionController().addAdmin(authorID);
+                        manager.addAdmin(authorID);
                         break;
                     }
 
                     case "technician": {
-                        getPermissionController().addTechnician(authorID);
+                        manager.addTechnician(authorID);
                         break;
                     }
 
@@ -98,17 +104,17 @@ public class PermissionsCommand extends PrivilegedCommand {
                 switch (args[1]) {
 
                     case "mod": {
-                        getPermissionController().removeMod(authorID);
+                        manager.removeMod(authorID);
                         break;
                     }
 
                     case "admin": {
-                        getPermissionController().removeAdmin(authorID);
+                        manager.removeAdmin(authorID);
                         break;
                     }
 
                     case "technician": {
-                        getPermissionController().removeTechnician(authorID);
+                        manager.removeTechnician(authorID);
                         break;
                     }
 

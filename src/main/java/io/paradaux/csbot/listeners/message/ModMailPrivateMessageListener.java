@@ -24,10 +24,12 @@
 package io.paradaux.csbot.listeners.message;
 
 import io.paradaux.csbot.FriendlyBot;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 /**
  * PrivateMessageReceivedListener listens to the VerificationCodes sent to the bot privately,
@@ -41,6 +43,14 @@ import org.jetbrains.annotations.NotNull;
 
 
 public class ModMailPrivateMessageListener extends ListenerAdapter {
+
+    private final ConfigurationEntry config;
+    private final Logger logger;
+
+    public ModMailPrivateMessageListener(ConfigurationEntry config, Logger logger) {
+        this.config = config;
+        this.logger = logger;
+    }
 
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {

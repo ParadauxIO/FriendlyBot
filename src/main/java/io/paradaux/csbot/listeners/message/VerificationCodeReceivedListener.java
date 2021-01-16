@@ -23,21 +23,27 @@
 
 package io.paradaux.csbot.listeners.message;
 
-import io.paradaux.csbot.managers.ConfigManager;
 import io.paradaux.csbot.managers.MongoManager;
 import io.paradaux.csbot.managers.VerificationManager;
+import io.paradaux.csbot.models.exceptions.VerificationException;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 public class VerificationCodeReceivedListener extends ListenerAdapter {
 
-    private static final ConfigurationEntry configurationEntry =
-            ConfigManager.getConfigurationEntry();
-    final MongoManager databaseController = MongoManager.INSTANCE;
+    private final ConfigurationEntry config;
+    private final Logger logger;
+
+    public VerificationCodeReceivedListener(ConfigurationEntry config, Logger logger) {
+        this.config = config;
+        this.logger = logger;
+    }
+
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -51,12 +57,14 @@ public class VerificationCodeReceivedListener extends ListenerAdapter {
             return;
         }
 
-        if (!event.getChannel().getId().equals(configurationEntry.getVerificationChannelID())) {
+        if (!event.getChannel().getId().equals(config.getVerificationChannelID())) {
             return;
         }
 
+        MongoManager mongo = MongoManager.getInstance();
+
         // If they aren't expected to input a verification code
-        if (!databaseController.isPendingVerification(event.getAuthor().getId())) {
+        if (!mongo.isPendingVerification(event.getAuthor().getId())) {
             return;
         }
 
@@ -72,11 +80,10 @@ public class VerificationCodeReceivedListener extends ListenerAdapter {
         String discordID = event.getAuthor().getId();
         String guildID = event.getGuild().getId();
 
-        VerificationManager verificationSystemController =
-                VerificationManager.INSTANCE;
+        VerificationManager verification = VerificationManager.getInstance();
 
         try {
-            if (verificationSystemController.setVerified(discordID, guildID, verificationCode)) {
+            if (verification.setVerified(discordID, guildID, verificationCode)) {
                 event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage(
                         "You" + " have successfully verified your friendly corner discord account"
                                 + ".").queue());
@@ -85,7 +92,7 @@ public class VerificationCodeReceivedListener extends ListenerAdapter {
                         "The Verification code you provided was incorrect. If this issue "
                                 + "persists please contact staff.").queue());
             }
-        } catch (VerificationManager.VerificationException exception) {
+        } catch (VerificationException exception) {
             event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("An "
                     + "unknown error occurred during verification. Please contact staff. \nError "
                     + "Details: " + exception.getMessage()).queue());

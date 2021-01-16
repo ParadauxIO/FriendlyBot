@@ -100,7 +100,7 @@ public class DiscordBotManager {
                         new RespondCommand(config, logger, permissionManager),
 
                         // Technician Commands.
-                        new PermissionsCommand(),
+                        new PermissionsCommand(config, logger, permissionManager),
                         new SendEmailCommand(config, logger, permissionManager),
                         new SendEmbedCommand(config, logger, permissionManager),
                         new VerificationCommand(config, logger, permissionManager),
@@ -127,11 +127,11 @@ public class DiscordBotManager {
                 .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
                 .setBulkDeleteSplittingEnabled(false)
                 .addEventListeners(commandClient,
-                        new ModMailChannelListener(),
-                        new ModMailPrivateMessageListener(),
-                        new VerificationCodeReceivedListener(),
-                        new VerificationEmailReceivedListener(),
-                        new ReadyListener()
+                        new ModMailChannelListener(config, logger),
+                        new ModMailPrivateMessageListener(config, logger),
+                        new VerificationCodeReceivedListener(config, logger),
+                        new VerificationEmailReceivedListener(config, logger),
+                        new ReadyListener(logger)
                 );
 
         if (token == null) {
