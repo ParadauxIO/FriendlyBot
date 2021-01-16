@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.managers;
 
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,19 +29,17 @@ import org.junit.jupiter.api.Test;
 
 class DatabaseControllerTest {
 
-    static final LogController logController = new LogController();
-
     static final ConfigurationEntry configurationEntry = new ConfigurationEntry();
-    static ConfigurationController configurationController;
+    static ConfigManager configurationController;
 
-    static DatabaseController databaseController;
+    static MongoManager databaseController;
 
     @BeforeAll
     static void setup() {
-        configurationEntry.setMongoConnectionUri("mongodb://admin:erZ3M7w5JsujKqvUMT88TM2b@mc.paradaux.io:27017/?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false");
+        configurationEntry.setMongoConnectionUri("mongodb://admin:ethETHergergERGERhehTHRHe@mc.paradaux.io:27017/?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false");
 
-        configurationController = new ConfigurationController(configurationEntry);
-        databaseController = new DatabaseController();
+        configurationController = new ConfigManager(configurationEntry);
+        databaseController = new MongoManager();
     }
 
     @Test
@@ -54,20 +52,4 @@ class DatabaseControllerTest {
         databaseController.setVerifiedUser("150993042558418944", "757903425311604786");
     }
 
-    @Test
-    public void getNextIncidentIDTest() {
-
-//        AuditLogEntry testEntry = new AuditLogEntry()
-//                .setAction(AuditLogEmbed.Action.WARN)
-//                .setIncidentID("1")
-//                .setReason("Smelliness")
-//                .setTimestamp(new Date())
-//                .setUserID("12121212")
-//                .setUserTag("Rían#6500");
-//
-//        databaseController.addAuditLog(testEntry);
-
-
-        System.out.println(databaseController.getNextIncidentID());
-    }
 }

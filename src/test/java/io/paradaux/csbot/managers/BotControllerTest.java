@@ -21,28 +21,20 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.controllers;
+package io.paradaux.csbot.managers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.junit.jupiter.api.BeforeAll;
 
-public class LogController  {
+class BotControllerTest {
 
-    // Singleton Instance
-    public static LogController INSTANCE;
 
-    // Singleton Fields
-    private static Logger logger;
+    @BeforeAll
+    static void setUp() {
 
-    public static Logger getLogger() {
-        return logger;
-    }
+        LogManager logController;
+        ConfigManager configurationController;
+        DiscordBotManager controller = new DiscordBotManager();
 
-    public LogController() {
-        logger = LoggerFactory.getLogger("io.paradaux.csbot");
-        logger.info("CSBot v0.1.0 - Maintained by Rían Errity <rian@paradaux.io>");
-        logger.info("Initialising: LogController");
 
-        INSTANCE = this;
     }
 }
