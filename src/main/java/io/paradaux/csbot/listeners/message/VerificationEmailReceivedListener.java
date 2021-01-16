@@ -23,11 +23,8 @@
 
 package io.paradaux.csbot.listeners.message;
 
+import io.paradaux.csbot.managers.*;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
-import io.paradaux.csbot.controllers.ConfigurationController;
-import io.paradaux.csbot.controllers.DatabaseController;
-import io.paradaux.csbot.controllers.EmailController;
-import io.paradaux.csbot.controllers.LogController;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -35,14 +32,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-import javax.mail.MessagingException;
-
 public class VerificationEmailReceivedListener extends ListenerAdapter {
 
-    private static final ConfigurationEntry configurationEntry = ConfigurationController
+    private static final ConfigurationEntry configurationEntry = ConfigManager
             .getConfigurationEntry();
-    final DatabaseController databaseController = DatabaseController.INSTANCE;
-    final Logger logger = LogController.getLogger();
+    final MongoManager databaseController = MongoManager.INSTANCE;
+    final Logger logger = LogManager.getLogger();
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -60,55 +55,64 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
             return;
         }
 
+        // We need to handle the message deletion.
+        message.delete().queue();
+
+        String email = message.getContentRaw();
+
+        // If the message is a verification code.
+        if (email.matches("^[0-9]{1,6}")) {
+            return;
+        }
+
         String discordID = event.getAuthor().getId();
+        String guildID = event.getGuild().getId();
 
         if (databaseController.isVerified(discordID)) {
+            event.getAuthor().openPrivateChannel().queue((channel) -> channel
+                    .sendMessage("Error: You are already verified.").queue());
             return;
         }
 
         if (databaseController.isPendingVerification(discordID)) {
+            event.getAuthor().openPrivateChannel().queue((channel) -> channel
+                    .sendMessage("Error: You are already pending verification.").queue());
             return;
         }
 
-
-        // We need to handle the message deletion.
-        message.delete().queue();
-
-
-        String email = message.getContentRaw();
-
-        if (!EmailController.isValidEmail(email)) {
+        if (!SMTPManager.isValidEmail(email)) {
             event.getAuthor().openPrivateChannel().queue((channel) -> channel
                     .sendMessage("Your message did contain a valid email address.").queue());
             return;
         }
 
         // If it isn't an @tcd.ie email
-        if (!EmailController.getEmailDomain(email).equals("tcd.ie")) {
+
+        String emailDomain = SMTPManager.getEmailDomain(email);
+
+        if (emailDomain == null) {
+            event.getAuthor().openPrivateChannel().queue((channel) -> channel
+                    .sendMessage("An unknown error occurred: Email Address was Null").queue());
+            return;
+        }
+
+        if (!emailDomain.equals("tcd.ie")) {
             event.getAuthor().openPrivateChannel().queue((channel) -> channel
                     .sendMessage("You must use a valid @tcd.ie email address to go through "
                             + "automatic verification.\nIf you are not a trinity student please "
                             + "respond to the bot in this channel and a moderator will be with you"
                             + " shortly.\nPlease message the bot if you run into issues with this,"
                             + " a moderator/technician will be with you shortly.").queue());
-
-        }
-
-        // Send a verification code to the user
-        String verificationCode = EmailController.generateVerificationCode();
-        try {
-            EmailController.INSTANCE.sendVerificationEmail(email, verificationCode, event
-                    .getAuthor().getAsTag());
-        } catch (MessagingException exception) {
-            logger.error("Error sending email to {} with email address {}", event.getAuthor()
-                    .getAsTag(), email, exception);
             return;
         }
 
-        String guildID = event.getGuild().getId();
-
-        // Add the user pending verification to the database.
-        databaseController.addPendingVerificationUser(discordID, guildID, verificationCode);
+        try {
+            VerificationManager.INSTANCE.setPendingVerification(email, guildID, discordID);
+        } catch (VerificationManager.VerificationException exception) {
+            event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("An "
+                    + "unknown error occurred during verification. Please contact staff. \nError "
+                    + "Details: " + exception.getMessage()).queue());
+        }
 
         // Notify the user that there's an email waiting for them.
         event.getAuthor().openPrivateChannel().queue((channel) -> channel

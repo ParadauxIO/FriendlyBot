@@ -24,7 +24,6 @@
 package io.paradaux.csbot.listeners;
 
 import io.paradaux.csbot.FriendlyBot;
-import io.paradaux.csbot.controllers.LogController;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -44,7 +43,7 @@ public class ReadyListener extends ListenerAdapter {
     final Logger logger;
 
     public ReadyListener() {
-        logger = LogController.getLogger();
+        logger = LogManager.getLogger();
     }
 
     @Override

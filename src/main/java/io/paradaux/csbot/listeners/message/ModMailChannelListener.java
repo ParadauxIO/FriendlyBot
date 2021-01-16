@@ -23,12 +23,12 @@
 
 package io.paradaux.csbot.listeners.message;
 
-import io.paradaux.csbot.controllers.BotController;
-import io.paradaux.csbot.controllers.ConfigurationController;
-import io.paradaux.csbot.controllers.DatabaseController;
+import io.paradaux.csbot.managers.DiscordBotManager;
+import io.paradaux.csbot.managers.ConfigManager;
+import io.paradaux.csbot.managers.MongoManager;
 import io.paradaux.csbot.embeds.modmail.ModMailReceivedEmbed;
 import io.paradaux.csbot.embeds.modmail.ModMailSentEmbed;
-import io.paradaux.csbot.interfaces.Embed;
+import io.paradaux.csbot.models.interfaces.Embed;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
@@ -42,7 +42,7 @@ import java.util.Objects;
 public class ModMailChannelListener extends ListenerAdapter {
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigurationController
+    private static final ConfigurationEntry configurationEntry = ConfigManager
             .getConfigurationEntry();
 
     @Override
@@ -59,14 +59,14 @@ public class ModMailChannelListener extends ListenerAdapter {
 
         message.delete().queue();
 
-        TextChannel channel = Objects.requireNonNull(BotController.getClient()
+        TextChannel channel = Objects.requireNonNull(DiscordBotManager.getClient()
                 .getGuildById(configurationEntry.getCsFriendlyGuildID()))
                 .getTextChannelById(configurationEntry.getModmailOutputChannelID());
 
 
         String messageContent = message.getContentRaw();
-        String ticketNumber = DatabaseController.INSTANCE.getNextTicketNumber();
-        String incidentID = DatabaseController.INSTANCE.getNextIncidentID();
+        String ticketNumber = MongoManager.INSTANCE.getNextTicketNumber();
+        String incidentID = MongoManager.INSTANCE.getNextIncidentID();
 
         Embed receivedEmbed = new ModMailReceivedEmbed(event.getMessage().getAuthor(),
                 message.getContentRaw(), ticketNumber, incidentID);
@@ -75,6 +75,8 @@ public class ModMailChannelListener extends ListenerAdapter {
         receivedEmbed.sendEmbed(channel);
         event.getAuthor().openPrivateChannel().queue((privateChannel) -> privateChannel
                 .sendMessage(sentEmbed.getEmbed()).queue());
+
+        // TODO tidy
     }
 
 

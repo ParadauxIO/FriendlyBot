@@ -23,21 +23,21 @@
 
 package io.paradaux.csbot.listeners.message;
 
+import io.paradaux.csbot.managers.ConfigManager;
+import io.paradaux.csbot.managers.MongoManager;
+import io.paradaux.csbot.managers.VerificationManager;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
-import io.paradaux.csbot.controllers.ConfigurationController;
-import io.paradaux.csbot.controllers.DatabaseController;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 public class VerificationCodeReceivedListener extends ListenerAdapter {
 
-    private static final ConfigurationEntry configurationEntry = ConfigurationController
-            .getConfigurationEntry();
-    final DatabaseController databaseController = DatabaseController.INSTANCE;
+    private static final ConfigurationEntry configurationEntry =
+            ConfigManager.getConfigurationEntry();
+    final MongoManager databaseController = MongoManager.INSTANCE;
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -60,34 +60,36 @@ public class VerificationCodeReceivedListener extends ListenerAdapter {
             return;
         }
 
+        // We don't want the message
+        message.delete().queue();
+
         // If the message isn't a six-digit number
         if (!message.getContentRaw().matches("^[0-9]{1,6}")) {
             return;
         }
 
-        // We don't want the message
-        message.delete().queue();
-
         String verificationCode = message.getContentRaw();
         String discordID = event.getAuthor().getId();
         String guildID = event.getGuild().getId();
 
-        if (verificationCode.equals(databaseController.getVerificationCode(discordID))) {
-            databaseController.setVerifiedUser(discordID, guildID);
+        VerificationManager verificationSystemController =
+                VerificationManager.INSTANCE;
 
-            Role verificationRole = message.getGuild().getRoleById(configurationEntry
-                    .getVerifiedRoleID());
-            message.getGuild().addRoleToMember(message.getMember(), verificationRole).queue();
-
-            event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("You"
-                    + " have successfully verified your friendly corner discord account.").queue());
-            return;
+        try {
+            if (verificationSystemController.setVerified(discordID, guildID, verificationCode)) {
+                event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage(
+                        "You" + " have successfully verified your friendly corner discord account"
+                                + ".").queue());
+            } else {
+                event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage(
+                        "The Verification code you provided was incorrect. If this issue "
+                                + "persists please contact staff.").queue());
+            }
+        } catch (VerificationManager.VerificationException exception) {
+            event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("An "
+                    + "unknown error occurred during verification. Please contact staff. \nError "
+                    + "Details: " + exception.getMessage()).queue());
         }
-
-        event.getAuthor().openPrivateChannel().queue((channel) -> channel
-                .sendMessage("You have entered an invalid verification code. Please check your"
-                        + " email and try again.\nPlease message the bot if you run into issues"
-                        + " with this, a moderator/technician will be with you shortly.").queue());
     }
 
 }

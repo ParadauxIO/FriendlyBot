@@ -45,6 +45,7 @@ public class ModMailPrivateMessageListener extends ListenerAdapter {
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent event) {
         Message message = event.getMessage();
+        // TODO implement
     }
 
 }
