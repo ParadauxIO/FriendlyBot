@@ -23,27 +23,29 @@
 
 package io.paradaux.csbot.listeners.message;
 
-import io.paradaux.csbot.managers.DiscordBotManager;
-import io.paradaux.csbot.managers.ConfigManager;
-import io.paradaux.csbot.managers.MongoManager;
 import io.paradaux.csbot.embeds.modmail.ModMailReceivedEmbed;
 import io.paradaux.csbot.embeds.modmail.ModMailSentEmbed;
-import io.paradaux.csbot.models.interfaces.Embed;
+import io.paradaux.csbot.managers.DiscordBotManager;
+import io.paradaux.csbot.managers.MongoManager;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
+import io.paradaux.csbot.models.interfaces.Embed;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
+import org.slf4j.Logger;
 
 public class ModMailChannelListener extends ListenerAdapter {
 
-    // Dependencies
-    private static final ConfigurationEntry configurationEntry = ConfigManager
-            .getConfigurationEntry();
+    private final ConfigurationEntry config;
+    private final Logger logger;
+
+    public ModMailChannelListener(ConfigurationEntry config, Logger logger) {
+        this.config = config;
+        this.logger = logger;
+    }
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -53,20 +55,18 @@ public class ModMailChannelListener extends ListenerAdapter {
             return;
         }
 
-        if (!message.getChannel().getId().equals(configurationEntry.getModmailInputChannelID())) {
+        if (!message.getChannel().getId().equals(config.getModmailInputChannelID())) {
             return;
         }
 
         message.delete().queue();
 
-        TextChannel channel = Objects.requireNonNull(DiscordBotManager.getClient()
-                .getGuildById(configurationEntry.getCsFriendlyGuildID()))
-                .getTextChannelById(configurationEntry.getModmailOutputChannelID());
-
+        MongoManager mongo = MongoManager.getInstance();
+        TextChannel channel = DiscordBotManager.getInstance().getChannel(config.getModmailOutputChannelID());
 
         String messageContent = message.getContentRaw();
-        String ticketNumber = MongoManager.INSTANCE.getNextTicketNumber();
-        String incidentID = MongoManager.INSTANCE.getNextIncidentID();
+        String ticketNumber = mongo.getNextTicketNumber();
+        String incidentID = mongo.getNextIncidentID();
 
         Embed receivedEmbed = new ModMailReceivedEmbed(event.getMessage().getAuthor(),
                 message.getContentRaw(), ticketNumber, incidentID);

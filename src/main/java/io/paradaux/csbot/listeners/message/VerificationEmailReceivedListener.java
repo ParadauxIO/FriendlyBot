@@ -23,7 +23,10 @@
 
 package io.paradaux.csbot.listeners.message;
 
-import io.paradaux.csbot.managers.*;
+import io.paradaux.csbot.managers.MongoManager;
+import io.paradaux.csbot.managers.SMTPManager;
+import io.paradaux.csbot.managers.VerificationManager;
+import io.paradaux.csbot.models.exceptions.VerificationException;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
@@ -34,10 +37,14 @@ import org.slf4j.Logger;
 
 public class VerificationEmailReceivedListener extends ListenerAdapter {
 
-    private static final ConfigurationEntry configurationEntry = ConfigManager
-            .getConfigurationEntry();
-    final MongoManager databaseController = MongoManager.INSTANCE;
-    final Logger logger = LogManager.getLogger();
+    private final ConfigurationEntry config;
+    private final Logger logger;
+
+    public VerificationEmailReceivedListener(ConfigurationEntry config, Logger logger) {
+        this.config = config;
+        this.logger = logger;
+    }
+
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
@@ -51,7 +58,7 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
             return;
         }
 
-        if (!event.getChannel().getId().equals(configurationEntry.getVerificationChannelID())) {
+        if (!event.getChannel().getId().equals(config.getVerificationChannelID())) {
             return;
         }
 
@@ -68,13 +75,15 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
         String discordID = event.getAuthor().getId();
         String guildID = event.getGuild().getId();
 
-        if (databaseController.isVerified(discordID)) {
+        MongoManager mongo = MongoManager.getInstance();
+
+        if (mongo.isVerified(discordID)) {
             event.getAuthor().openPrivateChannel().queue((channel) -> channel
                     .sendMessage("Error: You are already verified.").queue());
             return;
         }
 
-        if (databaseController.isPendingVerification(discordID)) {
+        if (mongo.isPendingVerification(discordID)) {
             event.getAuthor().openPrivateChannel().queue((channel) -> channel
                     .sendMessage("Error: You are already pending verification.").queue());
             return;
@@ -106,9 +115,11 @@ public class VerificationEmailReceivedListener extends ListenerAdapter {
             return;
         }
 
+        VerificationManager verification = VerificationManager.getInstance();
+
         try {
-            VerificationManager.INSTANCE.setPendingVerification(email, guildID, discordID);
-        } catch (VerificationManager.VerificationException exception) {
+            verification.setPendingVerification(email, guildID, discordID);
+        } catch (VerificationException exception) {
             event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage("An "
                     + "unknown error occurred during verification. Please contact staff. \nError "
                     + "Details: " + exception.getMessage()).queue());

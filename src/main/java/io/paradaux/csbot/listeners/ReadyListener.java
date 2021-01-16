@@ -40,10 +40,10 @@ import org.slf4j.Logger;
 
 public class ReadyListener extends ListenerAdapter {
 
-    final Logger logger;
+    private final Logger logger;
 
-    public ReadyListener() {
-        logger = LogManager.getLogger();
+    public ReadyListener(Logger logger) {
+        this.logger = logger;
     }
 
     @Override
