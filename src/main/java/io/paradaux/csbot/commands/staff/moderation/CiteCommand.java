@@ -25,14 +25,18 @@ package io.paradaux.csbot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
+import io.paradaux.csbot.managers.PermissionManager;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.models.interfaces.Embed;
 import io.paradaux.csbot.embeds.moderation.CiteRuleEmbed;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.slf4j.Logger;
 
 public class CiteCommand extends PrivilegedCommand {
 
-    public CiteCommand() {
+    public CiteCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+        super(config, logger, permissionManager);
         this.name = "cite";
         this.help = "Cites a certain rule to remind users of the rules which we have in place.";
     }

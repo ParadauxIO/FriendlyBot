@@ -25,15 +25,19 @@ package io.paradaux.csbot.commands.staff.technician;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.controllers.EmailController;
+import io.paradaux.csbot.managers.PermissionManager;
+import io.paradaux.csbot.managers.SMTPManager;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import org.slf4j.Logger;
 
 import javax.mail.MessagingException;
 
 public class SendEmailCommand extends PrivilegedCommand {
 
-    public SendEmailCommand() {
+    public SendEmailCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+        super(config, logger, permissionManager);
         this.name = "sendemail";
         this.aliases = new String[]{"sem"};
         this.help = "Administrator utility to send email.";
@@ -46,7 +50,7 @@ public class SendEmailCommand extends PrivilegedCommand {
         String[] args = getArgs(event.getArgs());
         String authorID = event.getAuthor().getId();
 
-        if (!getPermissionController().isTechnician(authorID)) {
+        if (!getPermissionManager().isTechnician(authorID)) {
             respondNoPermission(message, "[Technician]");
             return;
         }
@@ -65,7 +69,7 @@ public class SendEmailCommand extends PrivilegedCommand {
         }
 
         try {
-            EmailController.INSTANCE.sendVerificationEmail(args[0], args[1], args[2]);
+            SMTPManager.getInstance().sendVerificationEmail(args[0], args[1], args[2]);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
