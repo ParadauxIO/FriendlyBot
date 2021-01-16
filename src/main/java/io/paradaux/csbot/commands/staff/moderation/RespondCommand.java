@@ -25,11 +25,15 @@ package io.paradaux.csbot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
+import io.paradaux.csbot.managers.PermissionManager;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Message;
+import org.slf4j.Logger;
 
 public class RespondCommand extends PrivilegedCommand {
 
-    public RespondCommand() {
+    public RespondCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+        super(config, logger, permissionManager);
         this.name = "respond";
         this.help = "Responds to a modmail message.";
     }

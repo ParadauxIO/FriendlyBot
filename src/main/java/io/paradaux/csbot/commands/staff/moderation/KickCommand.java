@@ -26,14 +26,17 @@ package io.paradaux.csbot.commands.staff.moderation;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.FriendlyBot;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.controllers.AuditLogController;
-import io.paradaux.csbot.controllers.DatabaseController;
+import io.paradaux.csbot.managers.AuditManager;
+import io.paradaux.csbot.managers.MongoManager;
 import io.paradaux.csbot.embeds.AuditLogEmbed;
 import io.paradaux.csbot.embeds.moderation.KickedEmbed;
+import io.paradaux.csbot.managers.PermissionManager;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.models.moderation.KickEntry;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
+import org.slf4j.Logger;
 
 /**
  * This is a command which kicks the specified user.
@@ -46,7 +49,8 @@ import net.dv8tion.jda.api.entities.User;
 
 public class KickCommand extends PrivilegedCommand {
 
-    public KickCommand() {
+    public KickCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+        super(config, logger, permissionManager);
         this.name = "kick";
         this.help = "Kicks the specified user";
     }
@@ -79,7 +83,9 @@ public class KickCommand extends PrivilegedCommand {
             return;
         }
 
-        String incidentID = DatabaseController.INSTANCE.getNextIncidentID();
+        MongoManager mongo = MongoManager.getInstance();
+
+        String incidentID = mongo.getNextIncidentID();
         String reason = parseSentance(1, args);
 
 
@@ -92,8 +98,8 @@ public class KickCommand extends PrivilegedCommand {
                 .setUserID(target.getId())
                 .setUserTag(target.getAsTag());
 
-        DatabaseController.INSTANCE.addKickEntry(entry);
-        AuditLogController.INSTANCE.log(AuditLogEmbed.Action.KICK, target,
+        mongo.addKickEntry(entry);
+        AuditManager.getInstance().log(AuditLogEmbed.Action.KICK, target,
                 event.getAuthor(), reason, incidentID);
 
         message.getChannel().sendMessage("Incident ID: " + incidentID
@@ -111,6 +117,6 @@ public class KickCommand extends PrivilegedCommand {
             return;
         }
 
-        targetMember.kick(reason).queue();
+//        targetMember.kick(reason).queue();
     }
 }

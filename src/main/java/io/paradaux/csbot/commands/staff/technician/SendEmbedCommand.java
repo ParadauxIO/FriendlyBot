@@ -34,13 +34,17 @@ import io.paradaux.csbot.embeds.notices.ModMailNoticeEmbed;
 import io.paradaux.csbot.embeds.notices.RulesAcceptanceNoticeEmbed;
 import io.paradaux.csbot.embeds.notices.VerificationNoticeEmbed;
 import io.paradaux.csbot.embeds.roleselection.PoliticsOptionEmbed;
-import io.paradaux.csbot.interfaces.Embed;
+import io.paradaux.csbot.managers.PermissionManager;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
+import io.paradaux.csbot.models.interfaces.Embed;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
+import org.slf4j.Logger;
 
 public class SendEmbedCommand extends PrivilegedCommand {
 
-    public SendEmbedCommand() {
+    public SendEmbedCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+        super(config, logger, permissionManager);
         this.name = "sendembed";
         this.aliases = new String[]{"se"};
         this.help = "Sends the specified embed.";
@@ -53,7 +57,7 @@ public class SendEmbedCommand extends PrivilegedCommand {
         String[] args = getArgs(event.getArgs());
         String authorID = event.getAuthor().getId();
 
-        if (!getPermissionController().isTechnician(authorID)) {
+        if (!getPermissionManager().isTechnician(authorID)) {
             respondNoPermission(message, "[Technician]");
             return;
         }

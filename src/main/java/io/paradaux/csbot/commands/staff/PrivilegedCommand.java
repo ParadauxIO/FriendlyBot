@@ -24,11 +24,10 @@
 package io.paradaux.csbot.commands.staff;
 
 import com.jagrosh.jdautilities.command.Command;
-import io.paradaux.csbot.controllers.ConfigurationController;
-import io.paradaux.csbot.controllers.LogController;
-import io.paradaux.csbot.controllers.PermissionController;
 import io.paradaux.csbot.embeds.command.NoPermissionEmbed;
 import io.paradaux.csbot.embeds.command.SyntaxErrorEmbed;
+import io.paradaux.csbot.managers.PermissionManager;
+import io.paradaux.csbot.models.exceptions.NoSuchUserException;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -42,15 +41,22 @@ import java.util.concurrent.ExecutionException;
 
 public abstract class PrivilegedCommand extends Command {
 
-    private static final ConfigurationEntry configurationEntry = ConfigurationController
-            .getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
-    private static final PermissionController permissionController = PermissionController.INSTANCE;
+    private final ConfigurationEntry config;
+    private final Logger logger;
+    private final PermissionManager permissionManager;
+
+
+    public PrivilegedCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+        this.config = config;
+        this.logger = logger;
+        this.permissionManager = permissionManager;
+    }
+
 
     public boolean isStaff(String discordID) {
-        return permissionController.isAdmin(discordID)
-                || permissionController.isMod(discordID)
-                || permissionController.isTechnician(discordID);
+        return permissionManager.isAdmin(discordID)
+                || permissionManager.isMod(discordID)
+                || permissionManager.isTechnician(discordID);
     }
 
     public String parseSentance(int startElement, String[] args) {
@@ -68,23 +74,21 @@ public abstract class PrivilegedCommand extends Command {
     }
 
     @Nullable
-    public User parseTarget(Message message, int targetPlacement, String[] args) {
-        if (message.getMentionedMembers().size() == 1) {
-            return message.getMentionedMembers().get(0).getUser();
-        }
-
+    public User parseTarget(Message message, int targetPlacement, String[] args) throws NoSuchUserException {
         try {
+            if (message.getMentionedMembers().size() == 1) {
+                return message.getMentionedMembers().get(0).getUser();
+            }
+
             return message.getGuild().retrieveMemberById(args[targetPlacement])
                     .submit()
                     .get()
                     .getUser();
-        } catch (InterruptedException e) {
-            logger.error("Interrupted Exception", e);
-        } catch (ExecutionException e) {
-            logger.error("Execution Exception", e);
+
+        } catch (InterruptedException | ExecutionException | NumberFormatException exception) {
+            throw new NoSuchUserException(exception.getMessage());
         }
 
-        return null;
     }
 
     @Nullable
@@ -109,16 +113,16 @@ public abstract class PrivilegedCommand extends Command {
         message.delete().queue();
     }
 
-    public static ConfigurationEntry getConfigurationEntry() {
-        return configurationEntry;
+    public ConfigurationEntry getConfigurationEntry() {
+        return config;
     }
 
-    public static Logger getLogger() {
+    public Logger getLogger() {
         return logger;
     }
 
-    public static PermissionController getPermissionController() {
-        return permissionController;
+    public PermissionManager getPermissionManager() {
+        return permissionManager;
     }
 
 }

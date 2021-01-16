@@ -26,13 +26,16 @@ package io.paradaux.csbot.commands.staff.moderation;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.FriendlyBot;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.controllers.AuditLogController;
-import io.paradaux.csbot.controllers.DatabaseController;
+import io.paradaux.csbot.managers.AuditManager;
+import io.paradaux.csbot.managers.MongoManager;
 import io.paradaux.csbot.embeds.AuditLogEmbed;
 import io.paradaux.csbot.embeds.moderation.BannedEmbed;
+import io.paradaux.csbot.managers.PermissionManager;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.models.moderation.BanEntry;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
+import org.slf4j.Logger;
 
 /**
  * This is a command which bans the specified user.
@@ -45,13 +48,15 @@ import net.dv8tion.jda.api.entities.User;
 
 public class BanCommand extends PrivilegedCommand {
 
-    public BanCommand() {
+    public BanCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+        super(config, logger, permissionManager);
         this.name = "ban";
         this.help = "Bans the specified user";
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        MongoManager mongo = MongoManager.getInstance();
         Message message = event.getMessage();
 
         String[] args = getArgs(event.getArgs());
@@ -78,7 +83,7 @@ public class BanCommand extends PrivilegedCommand {
             return;
         }
 
-        String incidentID = DatabaseController.INSTANCE.getNextIncidentID();
+        String incidentID = mongo.getNextIncidentID();
         String reason = parseSentance(1, args);
 
         BanEntry entry = new BanEntry()
@@ -89,8 +94,8 @@ public class BanCommand extends PrivilegedCommand {
                 .setUserID(target.getId())
                 .setUserTag(target.getAsTag());
 
-        DatabaseController.INSTANCE.addBanEntry(entry);
-        AuditLogController.INSTANCE.log(AuditLogEmbed.Action.BAN, target,
+        mongo.addBanEntry(entry);
+        AuditManager.getInstance().log(AuditLogEmbed.Action.BAN, target,
                 event.getAuthor(), reason, incidentID);
 
         message.getChannel().sendMessage("Incident ID: " + incidentID
@@ -100,7 +105,7 @@ public class BanCommand extends PrivilegedCommand {
         target.openPrivateChannel().queue((channel) -> channel.sendMessage(embed.getEmbed())
                 .queue());
 
-        // message.getGuild().ban(target, 0).queue();
+         message.getGuild().ban(target, 0).queue();
 
     }
 }

@@ -25,9 +25,11 @@ package io.paradaux.csbot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.controllers.DatabaseController;
+import io.paradaux.csbot.managers.MongoManager;
 import io.paradaux.csbot.embeds.AuditLogEmbed;
+import io.paradaux.csbot.managers.PermissionManager;
 import io.paradaux.csbot.models.automatic.AuditLogEntry;
+import io.paradaux.csbot.models.interal.ConfigurationEntry;
 import io.paradaux.csbot.models.moderation.BanEntry;
 import io.paradaux.csbot.models.moderation.KickEntry;
 import io.paradaux.csbot.models.moderation.WarningEntry;
@@ -38,9 +40,8 @@ import org.slf4j.Logger;
 
 public class LookupCommand extends PrivilegedCommand {
 
-    private static final Logger logger = getLogger();
-
-    public LookupCommand() {
+    public LookupCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+        super(config, logger, permissionManager);
         this.name = "lookup";
         this.help = "Retrieves a moderation file from the database.";
     }
@@ -62,7 +63,9 @@ public class LookupCommand extends PrivilegedCommand {
             return;
         }
 
-        AuditLogEntry auditLogEntry = DatabaseController.INSTANCE.getAuditLogEntry(args[0]);
+        MongoManager mongo = MongoManager.getInstance();
+
+        AuditLogEntry auditLogEntry = mongo.getAuditLogEntry(args[0]);
 
         if (auditLogEntry == null) {
             respondSyntaxError(message, ";lookup <incidentid>");
@@ -75,7 +78,7 @@ public class LookupCommand extends PrivilegedCommand {
 
         switch (action) {
             case BAN: {
-                BanEntry banEntry = DatabaseController.INSTANCE.getBanEntry(args[0]);
+                BanEntry banEntry = mongo.getBanEntry(args[0]);
 
                 if (banEntry == null) {
                     message.getChannel().sendMessage("Nothing was found.").queue();
@@ -97,7 +100,7 @@ public class LookupCommand extends PrivilegedCommand {
                 break;
             }
             case KICK: {
-                KickEntry kickEntry = DatabaseController.INSTANCE.getKickEntry(args[0]);
+                KickEntry kickEntry = mongo.getKickEntry(args[0]);
 
                 if (kickEntry == null) {
                     message.getChannel().sendMessage("Nothing was found.").queue();
@@ -119,8 +122,7 @@ public class LookupCommand extends PrivilegedCommand {
             }
 
             case WARN: {
-                WarningEntry warningEntry = DatabaseController.INSTANCE
-                        .getWarningEntry(args[0]);
+                WarningEntry warningEntry = mongo.getWarningEntry(args[0]);
 
                 if (warningEntry == null) {
                     message.getChannel().sendMessage("Nothing was found.")
@@ -144,7 +146,7 @@ public class LookupCommand extends PrivilegedCommand {
             }
 
             default: {
-                logger.error("Audit Log lookup failed for {}.", event.getAuthor().getAsTag());
+                getLogger().error("Audit Log lookup failed for {}.", event.getAuthor().getAsTag());
                 break;
             }
 

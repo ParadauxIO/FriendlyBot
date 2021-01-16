@@ -26,7 +26,7 @@ package io.paradaux.csbot.commands.staff.moderation;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.csbot.FriendlyBot;
 import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.controllers.*;
+import io.paradaux.csbot.managers.*;
 import io.paradaux.csbot.embeds.AuditLogEmbed;
 import io.paradaux.csbot.embeds.moderation.WarningEmbed;
 import io.paradaux.csbot.models.interal.ConfigurationEntry;
@@ -47,12 +47,9 @@ import org.slf4j.Logger;
 public class WarnCommand extends PrivilegedCommand {
 
     // Dependencies
-    private static final ConfigurationEntry configurationEntry
-            = ConfigurationController.getConfigurationEntry();
-    private static final Logger logger = LogController.getLogger();
-    private static final PermissionController permissionController = PermissionController.INSTANCE;
 
-    public WarnCommand() {
+    public WarnCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+        super(config, logger, permissionManager);
         this.name = "warn";
         this.aliases = new String[]{"w"};
         this.help = "Warns the specified user";
@@ -87,7 +84,9 @@ public class WarnCommand extends PrivilegedCommand {
             return;
         }
 
-        String incidentID = DatabaseController.INSTANCE.getNextIncidentID();
+        MongoManager mongo = MongoManager.getInstance();
+
+        String incidentID = mongo.getNextIncidentID();
         String reason = parseSentance(1, args);
 
         WarningEntry entry = new WarningEntry()
@@ -98,8 +97,8 @@ public class WarnCommand extends PrivilegedCommand {
                 .setUserID(target.getId())
                 .setUserTag(target.getAsTag());
 
-        DatabaseController.INSTANCE.addWarnEntry(entry);
-        AuditLogController.INSTANCE.log(AuditLogEmbed.Action.WARN, target,
+        mongo.addWarnEntry(entry);
+        AuditManager.getInstance().log(AuditLogEmbed.Action.WARN, target,
                 event.getAuthor(), reason, incidentID);
 
         message.getChannel().sendMessage("Incident ID: " + incidentID
