@@ -55,11 +55,13 @@ public class DiscordBotManager {
     private static DiscordBotManager instance = null;
     private final ConfigurationEntry config;
     private final Logger logger;
+    private final PermissionManager permissionManager;
     private JDA client;
 
-    public DiscordBotManager(ConfigurationEntry config, Logger logger) {
+    public DiscordBotManager(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
         this.config = config;
         this.logger = logger;
+        this.permissionManager = permissionManager;
 
         logger.info("Initialising: BotController");
         logger.info("Attempting to login");
@@ -89,19 +91,19 @@ public class DiscordBotManager {
                 .setPrefix(config.getCommandPrefix())
                 .setOwnerId("150993042558418944")
                 .setActivity(Activity.playing("with with DCEVM"))
-                .addCommands(new BanCommand(),
-                        new CiteCommand(),
-                        new KickCommand(),
+                .addCommands(new BanCommand(config, logger, permissionManager),
+                        new CiteCommand(config, logger, permissionManager),
+                        new KickCommand(config, logger, permissionManager),
                         new TimeOutCommand(),
-                        new WarnCommand(),
-                        new LookupCommand(),
-                        new RespondCommand(),
+                        new WarnCommand(config, logger, permissionManager),
+                        new LookupCommand(config, logger, permissionManager),
+                        new RespondCommand(config, logger, permissionManager),
 
                         // Technician Commands.
                         new PermissionsCommand(),
-                        new SendEmailCommand(),
-                        new SendEmbedCommand(),
-                        new VerificationCommand(),
+                        new SendEmailCommand(config, logger, permissionManager),
+                        new SendEmbedCommand(config, logger, permissionManager),
+                        new VerificationCommand(config, logger, permissionManager),
 
                         // Regular User Commands.
                         new InviteCommand(),

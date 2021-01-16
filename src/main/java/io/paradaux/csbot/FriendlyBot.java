@@ -63,7 +63,7 @@ public class FriendlyBot {
         SMTPManager smtpManager = new SMTPManager(config, logger);
         MongoManager mongoManager = new MongoManager(config, logger);
         PermissionManager permissionManager = new PermissionManager(logger);
-        DiscordBotManager discordBotManager = new DiscordBotManager(config, logger);
+        DiscordBotManager discordBotManager = new DiscordBotManager(config, logger, permissionManager);
         AuditManager auditManager = new AuditManager(config, logger);
         VerificationManager verificationManager = new VerificationManager(config, logger, mongoManager);
 
