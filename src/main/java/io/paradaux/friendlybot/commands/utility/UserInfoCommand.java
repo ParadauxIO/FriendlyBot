@@ -24,14 +24,23 @@
 package io.paradaux.friendlybot.commands.utility;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.managers.PermissionManager;
+import io.paradaux.friendlybot.utils.embeds.command.UserInfoEmbed;
+import io.paradaux.friendlybot.utils.models.StringUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.objects.BaseCommand;
+import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
+import net.dv8tion.jda.api.entities.Member;
 import org.slf4j.Logger;
 
-public class UserInfoCommand extends BaseCommand {
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
-    public UserInfoCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
+public class UserInfoCommand extends PrivilegedCommand {
+
+
+    public UserInfoCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+        super(config, logger, permissionManager);
         this.name = "userinfo";
         this.aliases = new String[]{"info", "ui"};
         this.help = "Shows information about yourself or the specified user.";
@@ -39,6 +48,33 @@ public class UserInfoCommand extends BaseCommand {
 
     @Override
     protected void execute(CommandEvent event) {
+        Member member;
+        String argument = getArguments();
 
+        if (argument != null && isStaff(event.getAuthor().getId())) {
+            member = retrieveMember(event.getGuild(), parseTarget(event.getMessage(), getArgs(argument)[0]));
+
+            if (member == null) {
+                respondSyntaxError(event.getMessage(), ";userinfo <user>");
+                return;
+            }
+        } else {
+            member = event.getMember();
+        }
+
+        String tag = member.getUser().getAsTag();
+        String avatarUrl = member.getUser().getAvatarUrl();
+
+        String status = StringUtils.toTitleCase(member.getOnlineStatus().toString());
+
+        String accountCreated = StringUtils.formatLocalDateTime.from(member.getUser().getTimeCreated()));
+        String joinedServer = DATE_FORMAT.format(LocalDateTime.from(member.getTimeJoined()));
+        String nickname = member.getNickname() != null ? member.getNickname() : "No Nickname.";
+        String roles = member.getRoles().toString();
+
+        UserInfoEmbed embed = new UserInfoEmbed(tag, avatarUrl, status, accountCreated, joinedServer, roles, nickname);
+        embed.sendEmbed(event.getTextChannel());
+
+        // TODO add a staff version which shows infractions.
     }
 }
