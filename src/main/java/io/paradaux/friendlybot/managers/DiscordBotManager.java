@@ -117,7 +117,7 @@ public class DiscordBotManager {
                         new GithubCommand(config, logger),
                         new InviteCommand(logger),
                         new JavadocSearchCommand(config, logger),
-                        new UserInfoCommand(config, logger),
+                        new UserInfoCommand(config, logger, permissionManager),
                         new WolframAlphaCommand(config, logger)
                 );
 
