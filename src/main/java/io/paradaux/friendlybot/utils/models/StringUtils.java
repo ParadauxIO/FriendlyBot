@@ -23,15 +23,14 @@
 
 package io.paradaux.friendlybot.utils.models;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 public class StringUtils {
 
-    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("MMMM yyyy HH:mm:ss");
     /**
      * Converts the specified string to Title Case
      * <br>
@@ -65,13 +64,41 @@ public class StringUtils {
         return converted.toString();
     }
 
-    public static String formatTime(LocalDateTime date) {
-        return ""; // TODO finish
+    public static String formatTime(OffsetDateTime time) {
+        return formatTime(LocalDateTime.from(time));
     }
 
-    public static String formatTime(Date date) {
-        return DATE_FORMAT.format(date);
+    public static String formatTime(LocalDateTime dateTime) {
+        LocalDateTime time = LocalDateTime.from(dateTime.atOffset(ZoneOffset.UTC));
+        return time.getDayOfMonth() + getDayOfMonthSuffix(time.getDayOfMonth()) + " " + time
+                .format(TIME_FORMATTER) + " UTC";
     }
 
 
+    /**
+     * Gets the suffix for the a day in a month
+     * Example: 1st
+     *
+     * @param n The day in the month to get a suffix.
+     * @return The suffix for the day.
+     */
+    public static String getDayOfMonthSuffix(final int n) {
+        if (n < 1 || n > 31) {
+            throw new IllegalArgumentException("illegal day of month: " + n);
+        }
+
+        if (n >= 11 && n <= 13) {
+            return "th";
+        }
+        switch (n % 10) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
+        }
+    }
 }
