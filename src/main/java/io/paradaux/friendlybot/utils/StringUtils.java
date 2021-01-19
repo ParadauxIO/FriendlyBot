@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.utils.models;
+package io.paradaux.friendlybot.utils;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
