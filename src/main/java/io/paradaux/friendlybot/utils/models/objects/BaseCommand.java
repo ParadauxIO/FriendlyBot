@@ -116,7 +116,7 @@ public abstract class BaseCommand extends Command {
             } catch (IllegalArgumentException ex) {
                 user = message.getJDA().retrieveUserById(userInput).submit().get();
             }
-            
+
             return user;
         } catch (InterruptedException | ExecutionException | NumberFormatException exception) {
             throw new NoSuchUserException(exception.getMessage());
