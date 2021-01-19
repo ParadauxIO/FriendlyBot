@@ -32,10 +32,6 @@ import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
 import net.dv8tion.jda.api.entities.Member;
 import org.slf4j.Logger;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-
 public class UserInfoCommand extends PrivilegedCommand {
 
 
@@ -49,9 +45,10 @@ public class UserInfoCommand extends PrivilegedCommand {
     @Override
     protected void execute(CommandEvent event) {
         Member member;
-        String argument = getArguments();
-
+        String argument = event.getArgs();
+        System.out.println(argument);
         if (argument != null && isStaff(event.getAuthor().getId())) {
+            System.out.println("Attempting to get other member...");
             member = retrieveMember(event.getGuild(), parseTarget(event.getMessage(), getArgs(argument)[0]));
 
             if (member == null) {
@@ -67,8 +64,8 @@ public class UserInfoCommand extends PrivilegedCommand {
 
         String status = StringUtils.toTitleCase(member.getOnlineStatus().toString());
 
-        String accountCreated = StringUtils.formatLocalDateTime.from(member.getUser().getTimeCreated()));
-        String joinedServer = DATE_FORMAT.format(LocalDateTime.from(member.getTimeJoined()));
+        String accountCreated = StringUtils.formatTime(member.getUser().getTimeCreated());
+        String joinedServer = StringUtils.formatTime(member.getTimeJoined());
         String nickname = member.getNickname() != null ? member.getNickname() : "No Nickname.";
         String roles = member.getRoles().toString();
 

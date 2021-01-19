@@ -41,17 +41,9 @@ public class UserInfoEmbed implements Embed {
 
         builder.addField("Account Created:", accountCreated, true);
         builder.addField("Joined Server:", joinedServer, true);
-        builder.addField("Roles", roles, false);
+        builder.addField("Roles", roles.equals("[]") ? "No roles found." : roles, false);
         builder.addField("Status", status, true);
         builder.addField("Nickname", nickname, true);
-
-
-//        builder.setAuthor(tag, null,
-//                "https://cdn.discordapp.com/icons/757903425311604786/ac7d6af0fc3cf43e3709257d7d25c06f.png");
-//        builder.setDescription("You have been banned from The Computer Science Friendly Discord. "
-//                + "The Specified Reason was `" + reason + "`\n" + "You may appeal this ban by"
-//                + " contacting your class representative.");
-//        builder.setFooter("User Banned: Incident ID " + incidentID + " | CS Friendly Bot");
     }
 
     @Override
