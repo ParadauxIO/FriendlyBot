@@ -26,7 +26,7 @@ package io.paradaux.friendlybot.commands.utility;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.embeds.command.UserInfoEmbed;
-import io.paradaux.friendlybot.utils.models.StringUtils;
+import io.paradaux.friendlybot.utils.StringUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
 import net.dv8tion.jda.api.entities.Member;
