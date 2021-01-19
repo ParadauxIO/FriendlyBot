@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -37,12 +37,12 @@ class ChatBotControllerTest {
     private static final String[] TRAINING_DATA = {"cswikipedia", "navysealcopypasta", "to-publiceducation", "to-trumpleavingwhitehouse",
             "ww-useventilator"};
     static Logger logger;
-    static AIController controller;
+    static AIManager controller;
 
     @BeforeAll
     static void setUp() {
         logger = LoggerFactory.getLogger(ChatBotControllerTest.class);
-        controller = new AIController(logger);
+        controller = new AIManager(logger);
 
         for (String str : TRAINING_DATA) {
             controller.loadTrainingData(new File(RESOURCES_FOLDER + str));

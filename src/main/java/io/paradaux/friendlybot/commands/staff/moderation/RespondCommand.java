@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -21,12 +21,12 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands.staff.moderation;
+package io.paradaux.friendlybot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.managers.PermissionManager;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
+import io.paradaux.friendlybot.managers.PermissionManager;
+import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 

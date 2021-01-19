@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -21,7 +21,23 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands.fun;
+package io.paradaux.friendlybot.commands.fun;
 
-public class XKCDCommand {
+import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.objects.BaseCommand;
+import org.slf4j.Logger;
+
+public class XKCDCommand extends BaseCommand {
+
+    public XKCDCommand(ConfigurationEntry config, Logger logger) {
+        super(config, logger);
+        this.name = "xkcd";
+        this.help = "Links to the specified xkcd";
+    }
+
+    @Override
+    protected void execute(CommandEvent event) {
+
+    }
 }

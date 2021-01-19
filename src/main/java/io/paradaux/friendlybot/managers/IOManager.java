@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -27,8 +27,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import io.paradaux.friendlybot.utils.models.exceptions.NoSuchResourceException;
-import io.paradaux.friendlybot.utils.models.interal.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.interal.PermissionEntry;
+import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.configuration.PermissionEntry;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
@@ -85,18 +85,33 @@ public class IOManager {
     }
 
     /**
-     * Reads the configuration file and maps it to the ConfigurationCache object.
-     * @return An Instance of ConfigurationCache
+     * Reads the configuration file and maps it to the ConfigurationEntry object.
+     * @return An Instance of ConfigurationEntry
      * @throws FileNotFoundException When the configuration file does not exist.
      * @see ConfigurationEntry
      * */
-    public static ConfigurationEntry readConfigurationFile() throws FileNotFoundException {
+    public ConfigurationEntry readConfigurationFile() throws FileNotFoundException {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
         BufferedReader bufferedReader = new BufferedReader(new FileReader("config.json"));
         return gson.fromJson(bufferedReader, ConfigurationEntry.class);
     }
+
+    /**
+     * Reads the permission file and maps it to the PermissionEntry object.
+     * @return An Instance of PermissionEntry
+     * @throws FileNotFoundException When the configuration file does not exist.
+     * @see PermissionEntry
+     * */
+    public PermissionEntry readPermissionFile() throws FileNotFoundException {
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("permissions.json"));
+        return gson.fromJson(bufferedReader, PermissionEntry.class);
+    }
+
 
     /**
      * Copies the configuration file from the JAR to the current directory on first run.

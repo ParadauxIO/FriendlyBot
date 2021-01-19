@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -21,12 +21,13 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands.utility;
+package io.paradaux.friendlybot.commands.utility;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.csbot.FriendlyBot;
+import io.paradaux.friendlybot.FriendlyBot;
+import io.paradaux.friendlybot.utils.models.objects.BaseCommand;
 import net.dv8tion.jda.api.entities.Message;
+import org.slf4j.Logger;
 
 /**
  * This is a command which provides the user with an invite link to the current discord server.
@@ -37,9 +38,10 @@ import net.dv8tion.jda.api.entities.Message;
  * @see FriendlyBot
  * */
 
-public class InviteCommand extends Command {
+public class InviteCommand extends BaseCommand {
 
-    public InviteCommand() {
+    public InviteCommand(Logger logger) {
+        super(logger);
         this.name = "invite";
         this.aliases = new String[]{"inv", "i"};
         this.help = "Provides the user with an invite link to invite the bot.";

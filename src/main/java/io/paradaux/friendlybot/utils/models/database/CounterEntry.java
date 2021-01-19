@@ -21,49 +21,42 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.managers;
+package io.paradaux.friendlybot.utils.models.interal;
 
-import io.paradaux.friendlybot.utils.ai.MarkovMegaHal;
-import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
-import org.slf4j.Logger;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 
-import java.io.File;
-import java.io.IOException;
+public class CounterEntry {
 
-public class AIController {
+    @BsonProperty(value = "last_incident_id")
+    Long lastIncidentID;
 
-    // TODO complete
+    @BsonProperty(value = "last_ticket_number")
+    Long lastTickerNumber;
 
-    private static AIController instance = null;
-    private final MarkovMegaHal chatterbot;
-    private final Logger logger;
-
-    public AIController(Logger logger) {
-        this.logger = logger;
-
-        chatterbot = new MarkovMegaHal();
-        instance = this;
+    public CounterEntry(Long lastIncidentID, Long lastTickerNumber) {
+        this.lastIncidentID = lastIncidentID;
+        this.lastTickerNumber = lastTickerNumber;
     }
 
-    public static AIController getInstance() {
-        if (instance == null) {
-            throw new ManagerNotReadyException();
-        }
-
-        return instance;
-    }
-
-    public void loadTrainingData(File file)  {
-        try {
-            chatterbot.addDocument(file.toURI().toASCIIString());
-        } catch (IOException ok) {
-            // TODO do something with this
-        }
+    public CounterEntry() {
 
     }
 
-    public String generateMessage() {
-        return chatterbot.getSentence();
+    public Long getLastIncidentID() {
+        return lastIncidentID;
     }
 
+    public Long getLastTickerNumber() {
+        return lastTickerNumber;
+    }
+
+    public CounterEntry setLastIncidentID(Long lastIncidentID) {
+        this.lastIncidentID = lastIncidentID;
+        return this;
+    }
+
+    public CounterEntry setLastTickerNumber(Long lastTickerNumber) {
+        this.lastTickerNumber = lastTickerNumber;
+        return this;
+    }
 }

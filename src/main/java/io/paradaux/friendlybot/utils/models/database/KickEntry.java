@@ -21,13 +21,13 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.models.moderation;
+package io.paradaux.friendlybot.utils.models.moderation;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.Date;
 
-public class WarningEntry {
+public class KickEntry {
 
     @BsonProperty(value = "incident_id")
     String incidentID;
@@ -50,12 +50,12 @@ public class WarningEntry {
     @BsonProperty(value = "timestamp")
     Date timestamp;
 
-    public WarningEntry() {
+    public KickEntry() {
 
     }
 
-    public WarningEntry(String incidentID, String userTag, String userID, String staffTag,
-                        String staffID, String reason, Date timestamp) {
+    public KickEntry(String incidentID, String userTag, String userID, String staffTag,
+                     String staffID, String reason, Date timestamp) {
         this.incidentID = incidentID;
         this.userTag = userTag;
         this.userID = userID;
@@ -93,38 +93,39 @@ public class WarningEntry {
         return timestamp;
     }
 
-    public WarningEntry setIncidentID(String incidentID) {
+    public KickEntry setIncidentID(String incidentID) {
         this.incidentID = incidentID;
         return this;
     }
 
-    public WarningEntry setUserTag(String userTag) {
+    public KickEntry setUserTag(String userTag) {
         this.userTag = userTag;
         return this;
     }
 
-    public WarningEntry setUserID(String userID) {
+    public KickEntry setUserID(String userID) {
         this.userID = userID;
         return this;
     }
 
-    public WarningEntry setStaffTag(String staffTag) {
+    public KickEntry setStaffTag(String staffTag) {
         this.staffTag = staffTag;
         return this;
     }
 
-    public WarningEntry setStaffID(String staffID) {
+    public KickEntry setStaffID(String staffID) {
         this.staffID = staffID;
         return this;
     }
 
-    public WarningEntry setReason(String reason) {
+    public KickEntry setReason(String reason) {
         this.reason = reason;
         return this;
     }
 
-    public WarningEntry setTimestamp(Date timestamp) {
+    public KickEntry setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
         return this;
     }
+
 }

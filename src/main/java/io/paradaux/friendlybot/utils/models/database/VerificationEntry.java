@@ -21,11 +21,13 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.models.automatic;
+package io.paradaux.friendlybot.utils.models.automatic;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
-public class PendingVerificationEntry {
+import java.util.Date;
+
+public class VerificationEntry {
 
     @BsonProperty(value = "discord_id")
     String discordID;
@@ -33,24 +35,24 @@ public class PendingVerificationEntry {
     @BsonProperty(value = "guild_id")
     String guildID;
 
-    @BsonProperty(value = "verification_id")
-    String verificationCode;
+    @BsonProperty(value = "date_verified")
+    Date dateVerified;
 
-    public PendingVerificationEntry() {
+    public VerificationEntry() {
 
     }
 
-    public PendingVerificationEntry(String discordID, String guildID, String verificationCode) {
+    public VerificationEntry(String discordID, String guildID, Date dateVerified) {
         this.discordID = discordID;
         this.guildID = guildID;
-        this.verificationCode = verificationCode;
+        this.dateVerified = dateVerified;
     }
 
     public String getDiscordID() {
         return discordID;
     }
 
-    public PendingVerificationEntry setDiscordID(String discordID) {
+    public VerificationEntry setDiscordID(String discordID) {
         this.discordID = discordID;
         return this;
     }
@@ -59,17 +61,17 @@ public class PendingVerificationEntry {
         return guildID;
     }
 
-    public PendingVerificationEntry setGuildID(String guildID) {
+    public VerificationEntry setGuildID(String guildID) {
         this.guildID = guildID;
         return this;
     }
 
-    public String getVerificationCode() {
-        return verificationCode;
+    public Date getDateVerified() {
+        return dateVerified;
     }
 
-    public PendingVerificationEntry setVerificationCode(String verificationCode) {
-        this.verificationCode = verificationCode;
+    public VerificationEntry setDateVerified(Date dateVerified) {
+        this.dateVerified = dateVerified;
         return this;
     }
 }

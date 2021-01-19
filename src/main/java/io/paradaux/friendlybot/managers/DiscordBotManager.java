@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -26,19 +26,17 @@ package io.paradaux.friendlybot.managers;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import io.paradaux.friendlybot.commands.fun.PingCommand;
+import io.paradaux.friendlybot.commands.fun.XKCDCommand;
 import io.paradaux.friendlybot.commands.staff.moderation.*;
-import io.paradaux.friendlybot.commands.staff.technician.PermissionsCommand;
-import io.paradaux.friendlybot.commands.staff.technician.SendEmailCommand;
-import io.paradaux.friendlybot.commands.staff.technician.SendEmbedCommand;
-import io.paradaux.friendlybot.commands.staff.technician.VerificationCommand;
-import io.paradaux.friendlybot.commands.utility.InviteCommand;
+import io.paradaux.friendlybot.commands.staff.technician.*;
+import io.paradaux.friendlybot.commands.utility.*;
 import io.paradaux.friendlybot.listeners.ReadyListener;
 import io.paradaux.friendlybot.listeners.message.ModMailChannelListener;
 import io.paradaux.friendlybot.listeners.message.ModMailPrivateMessageListener;
 import io.paradaux.friendlybot.listeners.message.VerificationCodeReceivedListener;
 import io.paradaux.friendlybot.listeners.message.VerificationEmailReceivedListener;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
-import io.paradaux.friendlybot.utils.models.interal.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -91,23 +89,36 @@ public class DiscordBotManager {
                 .setPrefix(config.getCommandPrefix())
                 .setOwnerId("150993042558418944")
                 .setActivity(Activity.playing("with with DCEVM"))
-                .addCommands(new BanCommand(config, logger, permissionManager),
+                .addCommands(
+                        // Fun Commands
+                        new PingCommand(logger),
+                        new XKCDCommand(config, logger),
+
+                        // Moderation Commands
+                        new BanCommand(config, logger, permissionManager),
                         new CiteCommand(config, logger, permissionManager),
                         new KickCommand(config, logger, permissionManager),
-                        new TimeOutCommand(),
-                        new WarnCommand(config, logger, permissionManager),
                         new LookupCommand(config, logger, permissionManager),
+                        new PruneCommand(config, logger, permissionManager),
                         new RespondCommand(config, logger, permissionManager),
+                        new TimeOutCommand(config, logger, permissionManager),
+                        new WarnCommand(config, logger, permissionManager),
 
                         // Technician Commands.
+                        new DmCommand(config, logger, permissionManager),
                         new PermissionsCommand(config, logger, permissionManager),
+                        new SayCommand(config, logger, permissionManager),
                         new SendEmailCommand(config, logger, permissionManager),
                         new SendEmbedCommand(config, logger, permissionManager),
+                        new TagSetCommand(config, logger, permissionManager),
                         new VerificationCommand(config, logger, permissionManager),
 
-                        // Regular User Commands.
-                        new InviteCommand(),
-                        new PingCommand()
+                        // Utility Commands
+                        new GithubCommand(config, logger),
+                        new InviteCommand(logger),
+                        new JavadocSearchCommand(config, logger),
+                        new UserInfoCommand(config, logger),
+                        new WolframAlphaCommand(config, logger)
                 );
 
         return builder.build();
@@ -128,7 +139,7 @@ public class DiscordBotManager {
                 .setBulkDeleteSplittingEnabled(false)
                 .addEventListeners(commandClient,
                         new ModMailChannelListener(config, logger),
-                        new ModMailPrivateMessageListener(config, logger),
+                        new ModMailPrivateMessageListener(logger),
                         new VerificationCodeReceivedListener(config, logger),
                         new VerificationEmailReceivedListener(config, logger),
                         new ReadyListener(logger)

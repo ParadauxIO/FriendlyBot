@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.models.interal;
+package io.paradaux.friendlybot.utils.models.interal;
 
 import java.util.ArrayList;
 

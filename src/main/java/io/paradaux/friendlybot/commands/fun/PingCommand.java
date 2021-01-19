@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -21,11 +21,12 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands.fun;
+package io.paradaux.friendlybot.commands.fun;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.csbot.FriendlyBot;
+import io.paradaux.friendlybot.FriendlyBot;
+import io.paradaux.friendlybot.utils.models.objects.BaseCommand;
+import org.slf4j.Logger;
 
 /**
  * Ping Command is used to gauge DiscordAPI Latency.
@@ -37,9 +38,10 @@ import io.paradaux.csbot.FriendlyBot;
  * */
 
 
-public class PingCommand extends Command {
+public class PingCommand extends BaseCommand {
 
-    public PingCommand() {
+    public PingCommand(Logger logger) {
+        super(logger);
         this.name = "ping";
         this.help = "Latency Test Command.";
     }

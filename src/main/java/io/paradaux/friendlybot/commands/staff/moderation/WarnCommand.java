@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -21,16 +21,16 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands.staff.moderation;
+package io.paradaux.friendlybot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.csbot.FriendlyBot;
-import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.managers.*;
-import io.paradaux.csbot.embeds.AuditLogEmbed;
-import io.paradaux.csbot.embeds.moderation.WarningEmbed;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
-import io.paradaux.csbot.models.moderation.WarningEntry;
+import io.paradaux.friendlybot.FriendlyBot;
+import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
+import io.paradaux.friendlybot.managers.*;
+import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
+import io.paradaux.friendlybot.utils.embeds.moderation.WarningEmbed;
+import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.database.WarningEntry;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
@@ -72,7 +72,7 @@ public class WarnCommand extends PrivilegedCommand {
             return;
         }
 
-        User target = parseTarget(message, 0, args);
+        User target = parseTarget(message, args[0]);
 
         if (target == null) {
             message.getChannel().sendMessage("You did not specify a (valid) target.").queue();
