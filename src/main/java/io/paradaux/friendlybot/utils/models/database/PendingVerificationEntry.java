@@ -21,13 +21,11 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.models.automatic;
+package io.paradaux.friendlybot.utils.models.automatic;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
-import java.util.Date;
-
-public class VerificationEntry {
+public class PendingVerificationEntry {
 
     @BsonProperty(value = "discord_id")
     String discordID;
@@ -35,24 +33,24 @@ public class VerificationEntry {
     @BsonProperty(value = "guild_id")
     String guildID;
 
-    @BsonProperty(value = "date_verified")
-    Date dateVerified;
+    @BsonProperty(value = "verification_id")
+    String verificationCode;
 
-    public VerificationEntry() {
+    public PendingVerificationEntry() {
 
     }
 
-    public VerificationEntry(String discordID, String guildID, Date dateVerified) {
+    public PendingVerificationEntry(String discordID, String guildID, String verificationCode) {
         this.discordID = discordID;
         this.guildID = guildID;
-        this.dateVerified = dateVerified;
+        this.verificationCode = verificationCode;
     }
 
     public String getDiscordID() {
         return discordID;
     }
 
-    public VerificationEntry setDiscordID(String discordID) {
+    public PendingVerificationEntry setDiscordID(String discordID) {
         this.discordID = discordID;
         return this;
     }
@@ -61,17 +59,17 @@ public class VerificationEntry {
         return guildID;
     }
 
-    public VerificationEntry setGuildID(String guildID) {
+    public PendingVerificationEntry setGuildID(String guildID) {
         this.guildID = guildID;
         return this;
     }
 
-    public Date getDateVerified() {
-        return dateVerified;
+    public String getVerificationCode() {
+        return verificationCode;
     }
 
-    public VerificationEntry setDateVerified(Date dateVerified) {
-        this.dateVerified = dateVerified;
+    public PendingVerificationEntry setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
         return this;
     }
 }

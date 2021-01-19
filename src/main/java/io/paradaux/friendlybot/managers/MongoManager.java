@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -30,15 +30,15 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
-import io.paradaux.friendlybot.utils.models.ModMailEntry;
-import io.paradaux.friendlybot.utils.models.automatic.AuditLogEntry;
-import io.paradaux.friendlybot.utils.models.automatic.PendingVerificationEntry;
-import io.paradaux.friendlybot.utils.models.automatic.VerificationEntry;
-import io.paradaux.friendlybot.utils.models.interal.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.interal.CounterEntry;
-import io.paradaux.friendlybot.utils.models.moderation.BanEntry;
-import io.paradaux.friendlybot.utils.models.moderation.KickEntry;
-import io.paradaux.friendlybot.utils.models.moderation.WarningEntry;
+import io.paradaux.friendlybot.utils.models.database.ModMailEntry;
+import io.paradaux.friendlybot.utils.models.database.AuditLogEntry;
+import io.paradaux.friendlybot.utils.models.database.PendingVerificationEntry;
+import io.paradaux.friendlybot.utils.models.database.VerificationEntry;
+import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.database.CounterEntry;
+import io.paradaux.friendlybot.utils.models.database.BanEntry;
+import io.paradaux.friendlybot.utils.models.database.KickEntry;
+import io.paradaux.friendlybot.utils.models.database.WarningEntry;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -98,7 +98,7 @@ public class MongoManager {
             return;
         }
 
-        MongoDatabase dataBase = client.getDatabase("csfriendlybot");
+        MongoDatabase dataBase = client.getDatabase("friendlybot");
 
         pendingVerification = dataBase.getCollection("pendingVerification", PendingVerificationEntry.class);
         verification = dataBase.getCollection("verification", VerificationEntry.class);

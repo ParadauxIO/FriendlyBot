@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -21,22 +21,22 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands.staff.technician;
+package io.paradaux.friendlybot.commands.staff.technician;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.csbot.commands.staff.PrivilegedCommand;
-import io.paradaux.csbot.embeds.*;
-import io.paradaux.csbot.embeds.command.NoPermissionEmbed;
-import io.paradaux.csbot.embeds.command.SyntaxErrorEmbed;
-import io.paradaux.csbot.embeds.moderation.*;
-import io.paradaux.csbot.embeds.modmail.ModMailSentEmbed;
-import io.paradaux.csbot.embeds.notices.ModMailNoticeEmbed;
-import io.paradaux.csbot.embeds.notices.RulesAcceptanceNoticeEmbed;
-import io.paradaux.csbot.embeds.notices.VerificationNoticeEmbed;
-import io.paradaux.csbot.embeds.roleselection.PoliticsOptionEmbed;
-import io.paradaux.csbot.managers.PermissionManager;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
-import io.paradaux.csbot.models.interfaces.Embed;
+import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
+import io.paradaux.friendlybot.utils.embeds.*;
+import io.paradaux.friendlybot.utils.embeds.command.NoPermissionEmbed;
+import io.paradaux.friendlybot.utils.embeds.command.SyntaxErrorEmbed;
+import io.paradaux.friendlybot.utils.embeds.moderation.*;
+import io.paradaux.friendlybot.utils.embeds.modmail.ModMailSentEmbed;
+import io.paradaux.friendlybot.utils.embeds.notices.ModMailNoticeEmbed;
+import io.paradaux.friendlybot.utils.embeds.notices.RulesAcceptanceNoticeEmbed;
+import io.paradaux.friendlybot.utils.embeds.notices.VerificationNoticeEmbed;
+import io.paradaux.friendlybot.utils.embeds.roleselection.PoliticsOptionEmbed;
+import io.paradaux.friendlybot.managers.PermissionManager;
+import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.interfaces.Embed;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;

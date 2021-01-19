@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -24,10 +24,10 @@
 package io.paradaux.friendlybot.managers;
 
 import com.mongodb.client.FindIterable;
-import io.paradaux.friendlybot.utils.models.automatic.PendingVerificationEntry;
+import io.paradaux.friendlybot.utils.models.database.PendingVerificationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
-import io.paradaux.friendlybot.utils.models.interal.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;

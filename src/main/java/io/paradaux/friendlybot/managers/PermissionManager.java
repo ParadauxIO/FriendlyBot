@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,10 +23,11 @@
 
 package io.paradaux.friendlybot.managers;
 
+import io.paradaux.friendlybot.utils.models.configuration.PermissionEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
-import io.paradaux.friendlybot.utils.models.interal.PermissionEntry;
 import org.slf4j.Logger;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class PermissionManager {
@@ -43,11 +44,11 @@ public class PermissionManager {
 
         logger.info("Initialising: PermissionController");
 
-//        try {
-////            permissions = IOManager.getInstance().readPermissionFile();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            permissions = IOManager.getInstance().readPermissionFile();
+        } catch (FileNotFoundException e) {
+            logger.info("Permissions file was not found.");
+        }
 
         instance = this;
     }

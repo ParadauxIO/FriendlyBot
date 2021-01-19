@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,7 +23,7 @@
 
 package io.paradaux.friendlybot.utils.embeds;
 
-import io.paradaux.friendlybot.utils.EmbedColour;
+import io.paradaux.friendlybot.utils.models.enums.EmbedColour;
 import io.paradaux.friendlybot.utils.models.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;

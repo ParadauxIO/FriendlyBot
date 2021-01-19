@@ -21,42 +21,11 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.models.interal;
+package io.paradaux.friendlybot.utils.models.interal;
 
-import org.bson.codecs.pojo.annotations.BsonProperty;
+public class ChatFilterEntry {
 
-public class CounterEntry {
+    public String[] kickable;
+    public String[] warnable;
 
-    @BsonProperty(value = "last_incident_id")
-    Long lastIncidentID;
-
-    @BsonProperty(value = "last_ticket_number")
-    Long lastTickerNumber;
-
-    public CounterEntry(Long lastIncidentID, Long lastTickerNumber) {
-        this.lastIncidentID = lastIncidentID;
-        this.lastTickerNumber = lastTickerNumber;
-    }
-
-    public CounterEntry() {
-
-    }
-
-    public Long getLastIncidentID() {
-        return lastIncidentID;
-    }
-
-    public Long getLastTickerNumber() {
-        return lastTickerNumber;
-    }
-
-    public CounterEntry setLastIncidentID(Long lastIncidentID) {
-        this.lastIncidentID = lastIncidentID;
-        return this;
-    }
-
-    public CounterEntry setLastTickerNumber(Long lastTickerNumber) {
-        this.lastTickerNumber = lastTickerNumber;
-        return this;
-    }
 }

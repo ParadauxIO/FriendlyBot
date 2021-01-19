@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.ai;
+package io.paradaux.friendlybot.utils.ai;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,18 +29,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
 
-/**
- * Modifications Copyright Rían Errity, 2021, https://paradaux.io
- * Copyright Paul James Mutton, 2001-2004, http://www.jibble.org/
- *
- * @author pjm2
- *
- * This software is dual-licensed, allowing you to choose between the GNU
- * General Public License (GPL) and the www.jibble.org Commercial License.
- * Since the GPL may be too restrictive for use in a proprietary application,
- * a commercial license is also provided. Full license information can be found at http://www.jibble.org/licenses/
- *
- * */
 public class MarkovMegaHal {
 
     // These are valid chars for words. Anything else is treated as punctuation.

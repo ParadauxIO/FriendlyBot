@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.models.moderation;
+package io.paradaux.friendlybot.utils.models.moderation;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 

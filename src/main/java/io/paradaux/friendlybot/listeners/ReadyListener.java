@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -24,9 +24,9 @@
 package io.paradaux.friendlybot.listeners;
 
 import io.paradaux.friendlybot.FriendlyBot;
+import io.paradaux.friendlybot.utils.models.objects.DiscordEventListener;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 
 /**
@@ -38,12 +38,10 @@ import org.slf4j.Logger;
  * @see FriendlyBot
  * */
 
-public class ReadyListener extends ListenerAdapter {
-
-    private final Logger logger;
+public class ReadyListener extends DiscordEventListener {
 
     public ReadyListener(Logger logger) {
-        this.logger = logger;
+        super(logger);
     }
 
     @Override
@@ -56,7 +54,7 @@ public class ReadyListener extends ListenerAdapter {
             userCount += guild.getMemberCount();
         }
 
-        logger.info("Currently serving {} user(s) in {} guild(s)", userCount, guildCount);
+        getLogger().info("Currently serving {} user(s) in {} guild(s)", userCount, guildCount);
 
     }
 }

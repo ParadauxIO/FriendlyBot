@@ -21,30 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.utils.embeds.command;
+package io.paradaux.friendlybot.utils;
 
-import io.paradaux.friendlybot.utils.models.enums.EmbedColour;
-import io.paradaux.friendlybot.utils.models.interfaces.Embed;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.entities.User;
-
-
-public class SyntaxErrorEmbed implements Embed {
-
-    final EmbedBuilder builder = new EmbedBuilder();
-
-    public SyntaxErrorEmbed(User author, String command, String correctSyntax) {
-        builder.setColor(EmbedColour.ISSUE.getColour());
-        builder.setAuthor(author.getAsTag(), null, author.getAvatarUrl());
-        builder.setDescription("There was an error in your syntax. The command `" + command
-                + "` is used as follows: ");
-        builder.addField(command + " usage:", correctSyntax, false);
-        builder.setFooter("Syntax Error | CS Friendly Bot");
-    }
-
-    @Override
-    public void sendEmbed(TextChannel channel) {
-        channel.sendMessage(builder.build()).queue();
-    }
+public class WebApiUtil {
 }

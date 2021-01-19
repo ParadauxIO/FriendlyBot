@@ -21,9 +21,9 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.models.automatic;
+package io.paradaux.friendlybot.utils.models.automatic;
 
-import io.paradaux.friendlybot.embeds.AuditLogEmbed;
+import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.Date;

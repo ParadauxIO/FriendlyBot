@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -21,13 +21,12 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.listeners.message;
+package io.paradaux.friendlybot.listeners.message;
 
-import io.paradaux.csbot.FriendlyBot;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
+import io.paradaux.friendlybot.FriendlyBot;
+import io.paradaux.friendlybot.utils.models.objects.DiscordEventListener;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -42,14 +41,10 @@ import org.slf4j.Logger;
  * */
 
 
-public class ModMailPrivateMessageListener extends ListenerAdapter {
+public class ModMailPrivateMessageListener extends DiscordEventListener {
 
-    private final ConfigurationEntry config;
-    private final Logger logger;
-
-    public ModMailPrivateMessageListener(ConfigurationEntry config, Logger logger) {
-        this.config = config;
-        this.logger = logger;
+    public ModMailPrivateMessageListener(Logger logger) {
+        super(logger);
     }
 
     @Override

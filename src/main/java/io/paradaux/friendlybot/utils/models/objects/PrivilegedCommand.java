@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Rían Errity. All rights reserved.
+ * Copyright (c) 2021 |  Rían Errity. GPLv3
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -21,14 +21,14 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.csbot.commands.staff;
+package io.paradaux.friendlybot.commands.staff;
 
 import com.jagrosh.jdautilities.command.Command;
-import io.paradaux.csbot.embeds.command.NoPermissionEmbed;
-import io.paradaux.csbot.embeds.command.SyntaxErrorEmbed;
-import io.paradaux.csbot.managers.PermissionManager;
-import io.paradaux.csbot.models.exceptions.NoSuchUserException;
-import io.paradaux.csbot.models.interal.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.embeds.command.NoPermissionEmbed;
+import io.paradaux.friendlybot.utils.embeds.command.SyntaxErrorEmbed;
+import io.paradaux.friendlybot.managers.PermissionManager;
+import io.paradaux.friendlybot.utils.models.exceptions.NoSuchUserException;
+import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
