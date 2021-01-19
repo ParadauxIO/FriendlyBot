@@ -25,7 +25,7 @@ package io.paradaux.friendlybot.utils.models.objects;
 
 import com.jagrosh.jdautilities.command.Command;
 import io.paradaux.friendlybot.managers.PermissionManager;
-import io.paradaux.friendlybot.utils.embeds.command.SyntaxErrorEmbed;
+import io.paradaux.friendlybot.utils.embeds.notices.SyntaxErrorEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.NoSuchUserException;
 import net.dv8tion.jda.api.entities.Guild;

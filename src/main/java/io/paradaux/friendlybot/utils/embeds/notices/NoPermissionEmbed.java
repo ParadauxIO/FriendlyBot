@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.utils.embeds.command;
+package io.paradaux.friendlybot.utils.embeds.notices;
 
 import io.paradaux.friendlybot.utils.models.enums.EmbedColour;
 import io.paradaux.friendlybot.utils.models.interfaces.Embed;
