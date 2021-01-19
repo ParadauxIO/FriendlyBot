@@ -25,6 +25,7 @@ package io.paradaux.friendlybot.managers;
 
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
+import io.paradaux.friendlybot.commands.fun.InspireCommand;
 import io.paradaux.friendlybot.commands.fun.PingCommand;
 import io.paradaux.friendlybot.commands.fun.XKCDCommand;
 import io.paradaux.friendlybot.commands.staff.moderation.*;
@@ -91,6 +92,7 @@ public class DiscordBotManager {
                 .setActivity(Activity.playing("with with DCEVM"))
                 .addCommands(
                         // Fun Commands
+                        new InspireCommand(config, logger),
                         new PingCommand(logger),
                         new XKCDCommand(config, logger),
 
