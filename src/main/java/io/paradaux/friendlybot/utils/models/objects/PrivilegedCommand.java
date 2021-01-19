@@ -24,7 +24,7 @@
 package io.paradaux.friendlybot.utils.models.objects;
 
 import io.paradaux.friendlybot.managers.PermissionManager;
-import io.paradaux.friendlybot.utils.embeds.command.NoPermissionEmbed;
+import io.paradaux.friendlybot.utils.embeds.notices.NoPermissionEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
