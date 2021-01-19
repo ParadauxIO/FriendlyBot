@@ -21,108 +21,54 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.commands.staff;
+package io.paradaux.friendlybot.utils.models.objects;
 
-import com.jagrosh.jdautilities.command.Command;
-import io.paradaux.friendlybot.utils.embeds.command.NoPermissionEmbed;
-import io.paradaux.friendlybot.utils.embeds.command.SyntaxErrorEmbed;
 import io.paradaux.friendlybot.managers.PermissionManager;
-import io.paradaux.friendlybot.utils.models.exceptions.NoSuchUserException;
+import io.paradaux.friendlybot.utils.embeds.command.NoPermissionEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 
-import javax.annotation.Nullable;
-import java.util.Arrays;
-import java.util.concurrent.ExecutionException;
-
-public abstract class PrivilegedCommand extends Command {
-
-    private final ConfigurationEntry config;
-    private final Logger logger;
-    private final PermissionManager permissionManager;
-
+public abstract class PrivilegedCommand extends BaseCommand {
 
     public PrivilegedCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
-        this.config = config;
-        this.logger = logger;
-        this.permissionManager = permissionManager;
+        super(config, logger, permissionManager);
     }
 
+    public PrivilegedCommand(ConfigurationEntry config, Logger logger) {
+        super(config, logger);
+    }
 
+    public PrivilegedCommand(Logger logger) {
+        super(logger);
+    }
+
+    public PrivilegedCommand(Logger logger, PermissionManager permissionManager) {
+        super(logger, permissionManager);
+    }
+
+    /**
+     * Returns true if the provided user is a member of staff.
+     * */
     public boolean isStaff(String discordID) {
-        return permissionManager.isAdmin(discordID)
+        PermissionManager permissionManager = getPermissionManager();
+
+        if (permissionManager == null) {
+            throw new RuntimeException("This command is not setup to be used with permission-based checks.");
+        }
+
+        return getPermissionManager().isAdmin(discordID)
                 || permissionManager.isMod(discordID)
                 || permissionManager.isTechnician(discordID);
     }
 
-    public String parseSentance(int startElement, String[] args) {
-        return String.join(" ", Arrays.copyOfRange(args, startElement, args.length));
-    }
-
+    /**
+     * Fills in the canned no permission embed.
+     * */
     public void respondNoPermission(Message message, String requiredRole) {
+        message.addReaction("\uD83D\uDEAB").queue();
         new NoPermissionEmbed(message.getAuthor(), this.name, requiredRole)
                 .sendEmbed(message.getTextChannel());
-    }
-
-    public void respondSyntaxError(Message message, String correctSyntax) {
-        new SyntaxErrorEmbed(message.getAuthor(), this.name, correctSyntax)
-                .sendEmbed(message.getTextChannel());
-    }
-
-    @Nullable
-    public User parseTarget(Message message, int targetPlacement, String[] args) throws NoSuchUserException {
-        try {
-            if (message.getMentionedMembers().size() == 1) {
-                return message.getMentionedMembers().get(0).getUser();
-            }
-
-            return message.getGuild().retrieveMemberById(args[targetPlacement])
-                    .submit()
-                    .get()
-                    .getUser();
-
-        } catch (InterruptedException | ExecutionException | NumberFormatException exception) {
-            throw new NoSuchUserException(exception.getMessage());
-        }
-
-    }
-
-    @Nullable
-    public Member retrieveMember(Guild guild, User user) {
-        try {
-            return guild.retrieveMember(user)
-                    .submit()
-                    .get();
-        } catch (InterruptedException e) {
-            logger.error("Interrupted Exception", e);
-        } catch (ExecutionException e) {
-            logger.error("Execution Exception", e);
-        }
-        return null;
-    }
-
-    public String[] getArgs(String args) {
-        return args.split(" ");
-    }
-
-    public void delete(Message message) {
-        message.delete().queue();
-    }
-
-    public ConfigurationEntry getConfigurationEntry() {
-        return config;
-    }
-
-    public Logger getLogger() {
-        return logger;
-    }
-
-    public PermissionManager getPermissionManager() {
-        return permissionManager;
     }
 
 }

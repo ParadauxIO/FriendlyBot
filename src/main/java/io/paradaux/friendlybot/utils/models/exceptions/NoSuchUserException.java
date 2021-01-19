@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.utils.exceptions;
+package io.paradaux.friendlybot.utils.models.exceptions;
 
 public class NoSuchUserException extends RuntimeException {
 
