@@ -23,6 +23,7 @@
 
 package io.paradaux.friendlybot.utils.models;
 
+import io.paradaux.friendlybot.utils.StringUtils;
 import net.dv8tion.jda.api.OnlineStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
