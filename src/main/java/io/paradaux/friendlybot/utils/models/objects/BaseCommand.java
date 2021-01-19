@@ -110,12 +110,13 @@ public abstract class BaseCommand extends Command {
                 return message.getMentionedMembers().get(0).getUser();
             }
 
-            User user = message.getGuild().getJDA().getUserByTag(userInput);
-
-            if (user == null) {
+            User user;
+            try {
+                user = message.getGuild().getJDA().getUserByTag(userInput);
+            } catch (IllegalArgumentException ex) {
                 user = message.getJDA().retrieveUserById(userInput).submit().get();
             }
-
+            
             return user;
         } catch (InterruptedException | ExecutionException | NumberFormatException exception) {
             throw new NoSuchUserException(exception.getMessage());
