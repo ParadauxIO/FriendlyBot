@@ -29,16 +29,9 @@ import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
-import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
-import io.paradaux.friendlybot.utils.models.database.ModMailEntry;
-import io.paradaux.friendlybot.utils.models.database.AuditLogEntry;
-import io.paradaux.friendlybot.utils.models.database.PendingVerificationEntry;
-import io.paradaux.friendlybot.utils.models.database.VerificationEntry;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.database.CounterEntry;
-import io.paradaux.friendlybot.utils.models.database.BanEntry;
-import io.paradaux.friendlybot.utils.models.database.KickEntry;
-import io.paradaux.friendlybot.utils.models.database.WarningEntry;
+import io.paradaux.friendlybot.utils.models.database.*;
+import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
@@ -48,6 +41,7 @@ import org.slf4j.Logger;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 import java.util.Date;
+import java.util.List;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -242,6 +236,36 @@ public class MongoManager {
     @Nullable
     public FindIterable<PendingVerificationEntry> getPendingUsers() {
         return pendingVerification.find();
+    }
+
+    public void addModMail(ModMailEntry entry) {
+        modmail.insertOne(entry);
+    }
+
+    public ModMailEntry getModMailEntry(String ticketNumber) {
+        return modmail.find(Filters.eq("ticket_number", ticketNumber)).first();
+    }
+
+    public void setModMailStatus(String ticketNumber, ModMailEntry.ModMailStatus status) {
+        ModMailEntry entry = getModMailEntry(ticketNumber);
+        entry.setStatus(status);
+        updateModMailEntry(ticketNumber, entry);
+    }
+
+    public void addModMailResponse(String ticketNumber, ModMailResponse response) {
+        ModMailEntry entry = getModMailEntry(ticketNumber);
+        List<ModMailResponse> responses = entry.getResponses();
+        responses.add(response);
+        entry.setResponses(responses);
+        updateModMailEntry(ticketNumber, entry);
+    }
+
+    public FindIterable<ModMailEntry> getModMailEntries(ModMailEntry.ModMailStatus status) {
+        return modmail.find(Filters.eq("status", status));
+    }
+
+    public void updateModMailEntry(String ticketNumber, ModMailEntry entry) {
+        modmail.findOneAndReplace(Filters.eq("ticket_number", ticketNumber), entry);
     }
 
 }
