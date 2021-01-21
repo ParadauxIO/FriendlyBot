@@ -26,6 +26,7 @@ package io.paradaux.friendlybot.utils.models.database;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.Date;
+import java.util.List;
 
 public class ModMailEntry {
 
@@ -57,12 +58,15 @@ public class ModMailEntry {
     @BsonProperty(value = "last_responded")
     Date lastResponded;
 
+    @BsonProperty(value = "responses")
+    List<ModMailResponse> responses;
+
     public ModMailEntry() {
 
     }
 
-    public ModMailEntry(String ticketNumber, ModMailStatus status, String userTag, String userID,
-                        String modmailMethod, String issue, Date timeOpened, Date lastResponded) {
+    public ModMailEntry(String ticketNumber, ModMailStatus status, String userTag, String userID, String modmailMethod, String issue,
+                        Date timeOpened, Date lastResponded, List<ModMailResponse> responses) {
         this.ticketNumber = ticketNumber;
         this.status = status;
         this.userTag = userTag;
@@ -71,6 +75,7 @@ public class ModMailEntry {
         this.issue = issue;
         this.timeOpened = timeOpened;
         this.lastResponded = lastResponded;
+        this.responses = responses;
     }
 
     public String getTicketNumber() {
@@ -103,6 +108,10 @@ public class ModMailEntry {
 
     public Date getLastResponded() {
         return lastResponded;
+    }
+
+    public List<ModMailResponse> getResponses() {
+        return responses;
     }
 
     public ModMailEntry setTicketNumber(String ticketNumber) {
@@ -142,6 +151,11 @@ public class ModMailEntry {
 
     public ModMailEntry setLastResponded(Date lastResponded) {
         this.lastResponded = lastResponded;
+        return this;
+    }
+
+    public ModMailEntry setResponses(List<ModMailResponse> responses) {
+        this.responses = responses;
         return this;
     }
 }
