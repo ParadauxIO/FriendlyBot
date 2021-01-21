@@ -124,7 +124,24 @@ public abstract class BaseCommand extends Command {
     }
 
     /**
-     * Gets a message by guild and ID.
+     * Gets a message by guild and user id.
+     * */
+    @CheckReturnValue
+    @Nullable
+    public Member retrieveMember(Guild guild, String userId) {
+        try {
+            return guild.retrieveMemberById(userId)
+                    .submit()
+                    .get();
+        } catch (InterruptedException | ExecutionException e) {
+            logger.error("Interrupted Exception", e);
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets a message by guild and User.
      * */
     @CheckReturnValue
     @Nullable
