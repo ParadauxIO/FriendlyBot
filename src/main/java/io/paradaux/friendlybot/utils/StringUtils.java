@@ -25,8 +25,10 @@ package io.paradaux.friendlybot.utils;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public class StringUtils {
 
@@ -64,6 +66,13 @@ public class StringUtils {
         return converted.toString();
     }
 
+    public static String formatTime(Date date) {
+        return formatTime(date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime());
+    }
+
+
     public static String formatTime(OffsetDateTime time) {
         return formatTime(LocalDateTime.from(time));
     }
@@ -73,7 +82,6 @@ public class StringUtils {
         return time.getDayOfMonth() + getDayOfMonthSuffix(time.getDayOfMonth()) + " " + time
                 .format(TIME_FORMATTER) + " UTC";
     }
-
 
     /**
      * Gets the suffix for the a day in a month
