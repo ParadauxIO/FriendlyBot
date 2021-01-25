@@ -25,11 +25,11 @@ package io.paradaux.friendlybot.utils.models.database;
 
 public class ModMailResponse {
     
-    String staffId;
+    String authorId;
     String message;
     
-    public ModMailResponse(String staffId, String message) {
-        this.staffId = staffId;
+    public ModMailResponse(String authorId, String message) {
+        this.authorId = authorId;
         this.message = message;
     }
 
@@ -37,16 +37,16 @@ public class ModMailResponse {
     
     }
 
-    public String getStaffId() {
-        return staffId;
+    public String getAuthorId() {
+        return authorId;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public ModMailResponse setStaffId(String staffId) {
-        this.staffId = staffId;
+    public ModMailResponse setAuthorId(String authorId) {
+        this.authorId = authorId;
         return this;
     }
 
