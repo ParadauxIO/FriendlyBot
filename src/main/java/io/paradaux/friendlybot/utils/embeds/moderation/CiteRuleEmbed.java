@@ -71,7 +71,6 @@ public class CiteRuleEmbed implements Embed {
     final EmbedBuilder builder = new EmbedBuilder();
 
     public CiteRuleEmbed(String section) {
-        builder.setDescription("Please revise the following: " + section);
         builder.setColor(EmbedColour.INFO.getColour());
 
         switch (section) {
