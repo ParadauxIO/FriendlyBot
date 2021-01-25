@@ -32,10 +32,10 @@ import io.paradaux.friendlybot.commands.staff.moderation.*;
 import io.paradaux.friendlybot.commands.staff.technician.*;
 import io.paradaux.friendlybot.commands.utility.*;
 import io.paradaux.friendlybot.listeners.ReadyListener;
-import io.paradaux.friendlybot.listeners.message.ModMailChannelListener;
-import io.paradaux.friendlybot.listeners.message.ModMailPrivateMessageListener;
-import io.paradaux.friendlybot.listeners.message.VerificationCodeReceivedListener;
-import io.paradaux.friendlybot.listeners.message.VerificationEmailReceivedListener;
+import io.paradaux.friendlybot.listeners.modmail.ModMailChannelListener;
+import io.paradaux.friendlybot.listeners.modmail.ModMailPrivateMessageListener;
+import io.paradaux.friendlybot.listeners.verification.VerificationCodeReceivedListener;
+import io.paradaux.friendlybot.listeners.verification.VerificationEmailReceivedListener;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import net.dv8tion.jda.api.JDA;
@@ -55,12 +55,14 @@ public class DiscordBotManager {
     private final ConfigurationEntry config;
     private final Logger logger;
     private final PermissionManager permissionManager;
+    private final MongoManager mongo;
     private final JDA client;
 
-    public DiscordBotManager(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+    public DiscordBotManager(ConfigurationEntry config, Logger logger, PermissionManager permissionManager, MongoManager mongo) {
         this.config = config;
         this.logger = logger;
         this.permissionManager = permissionManager;
+        this.mongo = mongo;
 
         logger.info("Initialising: BotController");
         logger.info("Attempting to login");
@@ -102,7 +104,8 @@ public class DiscordBotManager {
                         new KickCommand(config, logger, permissionManager),
                         new LookupCommand(config, logger, permissionManager),
                         new PruneCommand(config, logger, permissionManager),
-                        new RespondCommand(config, logger, permissionManager),
+                        new RespondCommand(config, logger, permissionManager, mongo),
+                        new TicketCommand(config, logger, permissionManager),
                         new TimeOutCommand(config, logger, permissionManager),
                         new WarnCommand(config, logger, permissionManager),
 
