@@ -24,16 +24,24 @@
 package io.paradaux.friendlybot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
+import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.database.ModMailEntry;
+import io.paradaux.friendlybot.utils.models.database.ModMailResponse;
+import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
+import java.util.Date;
+import java.util.List;
+
 public class RespondCommand extends PrivilegedCommand {
 
-    public RespondCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+    private final MongoManager mongo;
+    public RespondCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager, MongoManager mongo) {
         super(config, logger, permissionManager);
+        this.mongo = mongo;
         this.name = "respond";
         this.help = "Responds to a modmail message.";
     }
@@ -55,10 +63,39 @@ public class RespondCommand extends PrivilegedCommand {
             return;
         }
 
+        ModMailEntry entry = mongo.getModMailEntry(args[0]);
 
+        if (entry == null) {
+            message.addReaction("\uD83D\uDEAB").queue();
+            message.getChannel().sendMessage("That ticket was not found").queue();
+            return;
+        }
 
+        if (entry.getStatus() == ModMailEntry.ModMailStatus.CLOSED) {
+            message.addReaction("\uD83D\uDEAB").queue();
+            message.getChannel().sendMessage("You cannot respond to closed tickets.").queue();
+            return;
+        }
 
-        message.getChannel().sendMessage("Not yet implemented.").queue();
+        StringBuilder responseContent = new StringBuilder();
+
+        for (int i = 1; i < args.length; i++) {
+            responseContent.append(args[i]);
+        }
+
+        ModMailResponse response = new ModMailResponse()
+                .setMessage(responseContent.toString())
+                .setStaffId(event.getAuthor().getId());
+
+        List<ModMailResponse> existingResponses = entry.getResponses();
+        existingResponses.add(response);
+
+        entry.setLastResponded(new Date())
+                .setResponses(existingResponses);
+
+        mongo.updateModMailEntry(entry.getTicketNumber(), entry);
+
+        // Now that we've updated the record of the response, inform the ticket owner.
 
     }
 }
