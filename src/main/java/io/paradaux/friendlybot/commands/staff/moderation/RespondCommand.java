@@ -33,6 +33,7 @@ import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -80,14 +81,19 @@ public class RespondCommand extends PrivilegedCommand {
         StringBuilder responseContent = new StringBuilder();
 
         for (int i = 1; i < args.length; i++) {
-            responseContent.append(args[i]);
+            responseContent.append(args[i]).append(" ");
         }
 
         ModMailResponse response = new ModMailResponse()
                 .setMessage(responseContent.toString())
-                .setStaffId(event.getAuthor().getId());
+                .setAuthorId(event.getAuthor().getId());
 
         List<ModMailResponse> existingResponses = entry.getResponses();
+
+        if (existingResponses == null) {
+            existingResponses = new ArrayList<>();
+        }
+
         existingResponses.add(response);
 
         entry.setLastResponded(new Date())
@@ -96,6 +102,9 @@ public class RespondCommand extends PrivilegedCommand {
         mongo.updateModMailEntry(entry.getTicketNumber(), entry);
 
         // Now that we've updated the record of the response, inform the ticket owner.
+
+
+
 
     }
 }
