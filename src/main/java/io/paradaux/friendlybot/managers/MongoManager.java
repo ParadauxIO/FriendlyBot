@@ -208,6 +208,10 @@ public class MongoManager {
         warnings.insertOne(entry);
     }
 
+    public void addModMailEntry(ModMailEntry entry) {
+        modmail.insertOne(entry);
+    }
+
     @CheckReturnValue
     @Nullable
     public AuditLogEntry getAuditLogEntry(String incidentID) {
