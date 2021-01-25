@@ -36,8 +36,8 @@ import io.paradaux.friendlybot.listeners.modmail.ModMailChannelListener;
 import io.paradaux.friendlybot.listeners.modmail.ModMailPrivateMessageListener;
 import io.paradaux.friendlybot.listeners.verification.VerificationCodeReceivedListener;
 import io.paradaux.friendlybot.listeners.verification.VerificationEmailReceivedListener;
-import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
@@ -91,7 +91,7 @@ public class DiscordBotManager {
         CommandClientBuilder builder = new CommandClientBuilder()
                 .setPrefix(config.getCommandPrefix())
                 .setOwnerId("150993042558418944")
-                .setActivity(Activity.playing("with with DCEVM"))
+                .setActivity(Activity.listening("to modmail queries.."))
                 .addCommands(
                         // Fun Commands
                         new InspireCommand(config, logger),
