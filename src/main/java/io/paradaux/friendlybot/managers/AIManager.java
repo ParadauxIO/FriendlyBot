@@ -23,7 +23,7 @@
 
 package io.paradaux.friendlybot.managers;
 
-import io.paradaux.friendlybot.utils.ai.MarkovMegaHal;
+import io.paradaux.ai.MarkovMegaHal;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import org.slf4j.Logger;
 
