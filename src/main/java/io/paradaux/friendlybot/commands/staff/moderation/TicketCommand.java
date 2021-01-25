@@ -82,7 +82,7 @@ public class TicketCommand extends PrivilegedCommand {
                 }
 
                 member.getUser().openPrivateChannel().queue((privateChannel -> {
-                    message.getChannel().sendMessage("Your ticket involving: `" + entry.getIssue() + "` has been been marked as closed.").queue();
+                    privateChannel.sendMessage("Your ticket involving: `" + entry.getIssue() + "` has been been marked as closed.").queue();
                 }));
 
                 break;
@@ -130,7 +130,7 @@ public class TicketCommand extends PrivilegedCommand {
                 }
 
                 member.getUser().openPrivateChannel().queue((privateChannel -> {
-                    message.getChannel().sendMessage("Your ticket involving: `" + entry.getIssue() + "` has been been re-opened.").queue();
+                    privateChannel.sendMessage("Your ticket involving: `" + entry.getIssue() + "` has been been re-opened.").queue();
                 }));
 
                 break;
