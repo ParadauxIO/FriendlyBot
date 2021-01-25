@@ -24,17 +24,22 @@
 package io.paradaux.friendlybot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.StringUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailEntry;
+import io.paradaux.friendlybot.utils.models.database.ModMailResponse;
 import io.paradaux.friendlybot.utils.models.enums.EmbedColour;
 import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
+
+import java.util.List;
 
 public class TicketCommand extends PrivilegedCommand {
 
@@ -108,7 +113,23 @@ public class TicketCommand extends PrivilegedCommand {
                         .addField("Method", entry.getModmailMethod(), true)
                         .addField("Opened", StringUtils.formatTime(entry.getTimeOpened()), true)
                         .addField("Last Responded", StringUtils.formatTime(entry.getTimeOpened()), true)
-                        .addField("Issue", entry.getIssue(), false);
+                        .addField("Issue", entry.getIssue(), false)
+                        .addBlankField(true)
+                        .addBlankField(true);
+
+                List<ModMailResponse> responses = entry.getResponses();
+
+                if (responses == null) {
+                    event.getChannel().sendMessage(embedBuilder.build()).queue();
+                    break;
+                }
+
+                embedBuilder.addField("Responses:", "", false);
+
+                for (ModMailResponse response : responses) {
+                    User author = DiscordBotManager.getInstance().getUser(response.getAuthorId());
+                    embedBuilder.addField(author.getName(), response.getMessage(), false);
+                }
 
                 event.getChannel().sendMessage(embedBuilder.build()).queue();
                 break;
