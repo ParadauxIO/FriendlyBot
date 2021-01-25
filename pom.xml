@@ -154,6 +154,11 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+
+        <repository>
+            <id>paradaux</id>
+            <url>https://repo.paradaux.io/repository/maven-releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -245,6 +250,18 @@
             <artifactId>maven-jxr-plugin</artifactId>
             <version>3.0.0</version>
             <type>maven-plugin</type>
+        </dependency>
+
+        <dependency>
+            <groupId>io.paradaux.http</groupId>
+            <artifactId>HttpApi</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.paradaux.ai</groupId>
+            <artifactId>MarkovMegaHal</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
     </dependencies>
