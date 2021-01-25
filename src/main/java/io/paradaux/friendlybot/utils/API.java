@@ -48,9 +48,6 @@ public class API {
         return new Builder();
     }
 
-
-
-
     public static class Builder {
 
         private final API api;
@@ -113,8 +110,6 @@ public class API {
         public API build() {
             return api;
         }
-        
-        
 
     }
 
