@@ -76,4 +76,5 @@ public class AuditLogEmbed implements Embed {
     public MessageEmbed getEmbed() {
         return builder.build();
     }
+    public EmbedBuilder getBuilder() { return builder; }
 }

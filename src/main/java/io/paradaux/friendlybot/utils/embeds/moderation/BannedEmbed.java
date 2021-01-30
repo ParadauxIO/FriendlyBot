@@ -26,6 +26,7 @@ package io.paradaux.friendlybot.utils.embeds.moderation;
 import io.paradaux.friendlybot.utils.models.enums.EmbedColour;
 import io.paradaux.friendlybot.utils.models.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -51,5 +52,6 @@ public class BannedEmbed implements Embed {
     public MessageEmbed getEmbed() {
         return builder.build();
     }
+    public EmbedBuilder getBuilder() { return builder; }
 
 }

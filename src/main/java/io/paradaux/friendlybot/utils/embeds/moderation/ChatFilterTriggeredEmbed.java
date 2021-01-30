@@ -57,4 +57,5 @@ public class ChatFilterTriggeredEmbed implements Embed {
     public void sendEmbed(TextChannel channel) {
         channel.sendMessage(builder.build()).queue();
     }
+    public EmbedBuilder getBuilder() { return builder; }
 }
