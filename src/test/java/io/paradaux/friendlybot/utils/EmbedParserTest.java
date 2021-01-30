@@ -27,33 +27,52 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.paradaux.friendlybot.utils.embeds.command.UserInfoEmbed;
 import io.paradaux.friendlybot.utils.models.interfaces.Embed;
+import net.dv8tion.jda.api.EmbedBuilder;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 class EmbedParserTest {
 
-    @Test
-    public void gsonSerialisationTest() throws IOException {
-        Embed embed = new UserInfoEmbed("%s", "%s", "%s", "%s", "%s", "%s", "%s");
+    public static final String EMBED_DIRECTORY = "/embeds/";
+    private static Embed embed;
+    private static String embedName;
 
+    @BeforeAll
+    public static void setup() {
+        embedName = "useraccountinfo";
+        embed = new UserInfoEmbed("%user_tag%", "https://example.org", "%user_status%",
+                "%user_datecreated%", "%user_datejoined%", "%user_roles%", "%user_nickname%");
     }
 
-    public void saveFile(String fileName, Object src) {
+    @Test
+    void serialise() {
+        saveFile(EMBED_DIRECTORY + embedName + ".json", embed.getBuilder());
+    }
+
+    @Test
+    void deSerialise() throws FileNotFoundException {
+        Gson gson = new Gson();
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(EMBED_DIRECTORY + embedName + ".json"));
+        EmbedBuilder builder = gson.fromJson(bufferedReader, EmbedBuilder.class);
+
+        System.out.println(builder.toString());
+    }
+
+    public static void saveFile(String fileName, Object src) {
         GsonBuilder gBuilder = new GsonBuilder().setPrettyPrinting();
         Gson gson = gBuilder.create();
         String prettyJsonString = gson.toJson(src);
 
-        FileWriter fw = null;
+        FileWriter fw;
         try {
-            fw = new FileWriter("/pog.json", false);
+            fw = new FileWriter(fileName, false);
             fw.write(prettyJsonString);
             fw.close();
         } catch (IOException e) {
-           throw new RuntimeException("Error occured!");
+           throw new RuntimeException("Error occurred!");
         }
     }
-
 
 }
