@@ -42,90 +42,91 @@ import java.util.regex.Pattern;
 
 public class SMTPManager {
 
-    private final Properties properties = new Properties();
-    private final ConfigurationEntry config;
-    public static SMTPManager instance;
-    private final Logger logger;
-    private final Session session;
+//    private final Properties properties = new Properties();
+//    private final ConfigurationEntry config;
+//    public static SMTPManager instance;
+//    private final Logger logger;
+//    private final Session session;
 
     public SMTPManager(ConfigurationEntry config, Logger logger) {
-        this.config = config;
-        this.logger = logger;
-
-        logger.info("Initialising: EmailController");
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.starttls.enable", "true");
-
-        session = login();
-
-        instance = this;
+//        this.config = config;
+//        this.logger = logger;
+//
+//        logger.info("Initialising: EmailController");
+//        properties.put("mail.smtp.auth", "true");
+//        properties.put("mail.smtp.starttls.enable", "true");
+//
+//        session = login();
+//
+//        instance = this;
     }
 
     public static SMTPManager getInstance() {
-        if (instance == null) {
-            throw new ManagerNotReadyException();
-        }
-
-        return instance;
+//        if (instance == null) {
+//            throw new ManagerNotReadyException();
+//        }
+//
+//        return instance;
+        return null;
     }
 
-    public Session login() {
-        properties.put("mail.smtp.host", config.getSmtpHost());
-        properties.put("mail.smtp.port", config.getSmtpPort());
-
-        return Session.getInstance(properties, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(config.getSmtpUser(), config.getSmtpPass());
-            }
-        });
-    }
+//    public Session login() {
+//        properties.put("mail.smtp.host", config.getSmtpHost());
+//        properties.put("mail.smtp.port", config.getSmtpPort());
+//
+//        return Session.getInstance(properties, new Authenticator() {
+//            @Override
+//            protected PasswordAuthentication getPasswordAuthentication() {
+//                return new PasswordAuthentication(config.getSmtpUser(), config.getSmtpPass());
+//            }
+//        });
+//    }
 
     public void sendVerificationEmail(String email, String verificationCode,
                                       String discordUserName) throws MessagingException {
-
-        Message message = new MimeMessage(session);
-
-        message.setFrom(new InternetAddress("verification@paradaux.io"));
-        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-        message.setReplyTo(InternetAddress.parse("verification-support@paradaux.io"));
-
-        message.setSubject("Your CSFC Verification Code has arrived!");
-        MimeMultipart multipart = new MimeMultipart("related");
-
-        // Add the html
-        BodyPart messageBodyPart = new MimeBodyPart();
-        String htmlText = Objects.requireNonNull(IOManager.getInstance().readEmailTemplate())
-                .replace("%discord_username%", discordUserName)
-                .replace("%verification_code%", verificationCode);
-        messageBodyPart.setContent(htmlText, "text/html");
-        multipart.addBodyPart(messageBodyPart);
-
-        // Add the header image
-        messageBodyPart = new MimeBodyPart();
-        messageBodyPart.setDisposition(MimeBodyPart.INLINE);
-        messageBodyPart.setDataHandler(new DataHandler(FriendlyBot.class
-                .getResource("/verification.png")));
-        messageBodyPart.setHeader("Content-ID", "<verification-header>");
-        multipart.addBodyPart(messageBodyPart);
-
-        // Add the forest image
-        messageBodyPart = new MimeBodyPart();
-        messageBodyPart.setDisposition(MimeBodyPart.INLINE);
-        messageBodyPart.setDataHandler(new DataHandler(FriendlyBot.class
-                .getResource("/fir-forest.png")));
-        messageBodyPart.setHeader("Content-ID", "<fir-forest>");
-        multipart.addBodyPart(messageBodyPart);
-
-        message.setContent(multipart);
-
-        try {
-            Transport.send(message);
-        } catch (AuthenticationFailedException exception) {
-            logger.error("Failed to login to the SMTP Server,"
-                    + " is the login information set?");
-        }
-
+//
+//        Message message = new MimeMessage(session);
+//
+//        message.setFrom(new InternetAddress("verification@paradaux.io"));
+//        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+//        message.setReplyTo(InternetAddress.parse("verification-support@paradaux.io"));
+//
+//        message.setSubject("Your CSFC Verification Code has arrived!");
+//        MimeMultipart multipart = new MimeMultipart("related");
+//
+//        // Add the html
+//        BodyPart messageBodyPart = new MimeBodyPart();
+//        String htmlText = Objects.requireNonNull(IOManager.getInstance().readEmailTemplate())
+//                .replace("%discord_username%", discordUserName)
+//                .replace("%verification_code%", verificationCode);
+//        messageBodyPart.setContent(htmlText, "text/html");
+//        multipart.addBodyPart(messageBodyPart);
+//
+//        // Add the header image
+//        messageBodyPart = new MimeBodyPart();
+//        messageBodyPart.setDisposition(MimeBodyPart.INLINE);
+//        messageBodyPart.setDataHandler(new DataHandler(FriendlyBot.class
+//                .getResource("/verification.png")));
+//        messageBodyPart.setHeader("Content-ID", "<verification-header>");
+//        multipart.addBodyPart(messageBodyPart);
+//
+//        // Add the forest image
+//        messageBodyPart = new MimeBodyPart();
+//        messageBodyPart.setDisposition(MimeBodyPart.INLINE);
+//        messageBodyPart.setDataHandler(new DataHandler(FriendlyBot.class
+//                .getResource("/fir-forest.png")));
+//        messageBodyPart.setHeader("Content-ID", "<fir-forest>");
+//        multipart.addBodyPart(messageBodyPart);
+//
+//        message.setContent(multipart);
+//
+//        try {
+//            Transport.send(message);
+//        } catch (AuthenticationFailedException exception) {
+//            logger.error("Failed to login to the SMTP Server,"
+//                    + " is the login information set?");
+//        }
+//
     }
 
     /**
