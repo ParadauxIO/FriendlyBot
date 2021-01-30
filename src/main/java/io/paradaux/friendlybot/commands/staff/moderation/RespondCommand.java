@@ -29,7 +29,7 @@ import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailResponse;
-import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
+import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 

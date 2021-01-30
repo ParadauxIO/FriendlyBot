@@ -25,7 +25,7 @@ package io.paradaux.friendlybot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.FriendlyBot;
-import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
+import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import io.paradaux.friendlybot.managers.*;
 import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.embeds.moderation.WarningEmbed;

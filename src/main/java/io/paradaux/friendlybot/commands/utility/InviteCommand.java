@@ -25,7 +25,7 @@ package io.paradaux.friendlybot.commands.utility;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.FriendlyBot;
-import io.paradaux.friendlybot.utils.models.objects.BaseCommand;
+import io.paradaux.friendlybot.utils.models.types.BaseCommand;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 

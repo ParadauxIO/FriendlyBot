@@ -28,7 +28,7 @@ import io.paradaux.friendlybot.utils.WebApiUtil;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.enums.EmbedColour;
 import io.paradaux.friendlybot.utils.models.enums.WebSettings;
-import io.paradaux.friendlybot.utils.models.objects.BaseCommand;
+import io.paradaux.friendlybot.utils.models.types.BaseCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.slf4j.Logger;
 
