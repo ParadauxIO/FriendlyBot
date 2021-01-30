@@ -30,7 +30,7 @@ import io.paradaux.friendlybot.utils.embeds.modmail.ModMailSentEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailEntry;
 import io.paradaux.friendlybot.utils.models.interfaces.Embed;
-import io.paradaux.friendlybot.utils.models.objects.DiscordEventListener;
+import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

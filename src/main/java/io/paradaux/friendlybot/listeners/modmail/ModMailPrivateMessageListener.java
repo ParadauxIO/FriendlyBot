@@ -24,7 +24,7 @@
 package io.paradaux.friendlybot.listeners.modmail;
 
 import io.paradaux.friendlybot.FriendlyBot;
-import io.paradaux.friendlybot.utils.models.objects.DiscordEventListener;
+import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.priv.PrivateMessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
