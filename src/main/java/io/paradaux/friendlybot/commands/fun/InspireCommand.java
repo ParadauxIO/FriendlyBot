@@ -24,16 +24,15 @@
 package io.paradaux.friendlybot.commands.fun;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.utils.WebApiUtil;
+import io.paradaux.friendlybot.utils.NumberUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.enums.EmbedColour;
-import io.paradaux.friendlybot.utils.models.enums.WebSettings;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
+import io.paradaux.http.HttpApi;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.slf4j.Logger;
 
-import java.io.IOException;
-import java.net.URL;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class InspireCommand extends BaseCommand {
 
@@ -48,19 +47,18 @@ public class InspireCommand extends BaseCommand {
 
     @Override
     protected void execute(CommandEvent event) {
-        try {
-            String content = WebApiUtil.getStringWithThrows(new URL(INSPIRE_API), "GET",
-                    WebSettings.WEB_TIMEOUT, WebSettings.WEB_USER_AGENT, WebSettings.getTextWebHeaders());
 
-            EmbedBuilder embed = new EmbedBuilder();
-            embed.setImage(content);
-            embed.setColor(EmbedColour.NEUTRAL.getColour());
-            embed.setFooter("For " + event.getAuthor().getName());
+        HttpApi http = new HttpApi(getLogger());
+        HttpRequest request = http.plainRequest(INSPIRE_API);
 
-            event.getChannel().sendMessage(embed.build()).queue();
-        } catch (IOException e) {
-            event.getChannel().sendMessage("An error occurred.").queue();
-        }
+        http.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenAccept((response) -> {
+            EmbedBuilder builder = new EmbedBuilder()
+                    .setImage(response.body())
+                    .setColor(NumberUtils.randomColor())
+                    .setFooter("For " + event.getAuthor().getName());
+
+            event.getMessage().getChannel().sendMessage(builder.build()).queue();
+        }).join();
 
     }
 }
