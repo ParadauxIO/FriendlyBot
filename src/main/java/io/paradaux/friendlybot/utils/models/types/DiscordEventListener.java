@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.utils.models.objects;
+package io.paradaux.friendlybot.utils.models.types;
 
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

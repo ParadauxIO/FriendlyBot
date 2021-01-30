@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.utils.models.objects;
+package io.paradaux.friendlybot.utils.models.types;
 
 import com.jagrosh.jdautilities.command.Command;
 import io.paradaux.friendlybot.managers.PermissionManager;
