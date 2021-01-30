@@ -24,7 +24,7 @@
 package io.paradaux.friendlybot.commands.staff.technician;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.utils.models.objects.PrivilegedCommand;
+import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import io.paradaux.friendlybot.utils.embeds.*;
 import io.paradaux.friendlybot.utils.embeds.notices.NoPermissionEmbed;
 import io.paradaux.friendlybot.utils.embeds.notices.SyntaxErrorEmbed;

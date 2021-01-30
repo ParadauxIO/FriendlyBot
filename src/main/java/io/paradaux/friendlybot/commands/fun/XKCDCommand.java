@@ -25,7 +25,7 @@ package io.paradaux.friendlybot.commands.fun;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.objects.BaseCommand;
+import io.paradaux.friendlybot.utils.models.types.BaseCommand;
 import org.slf4j.Logger;
 
 public class XKCDCommand extends BaseCommand {
