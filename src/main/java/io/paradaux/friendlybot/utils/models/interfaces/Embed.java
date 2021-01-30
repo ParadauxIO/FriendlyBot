@@ -23,9 +23,12 @@
 
 package io.paradaux.friendlybot.utils.models.interfaces;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 public interface Embed {
 
     void sendEmbed(TextChannel channel);
+    EmbedBuilder getBuilder();
+
 }

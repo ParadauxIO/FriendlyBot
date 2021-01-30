@@ -55,4 +55,5 @@ public class UserInfoEmbed implements Embed {
         return builder.build();
     }
 
+    public EmbedBuilder getBuilder() { return builder; }
 }
