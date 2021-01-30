@@ -21,7 +21,7 @@
  * See LICENSE.md for more details.
  */
 
-package io.paradaux.friendlybot.utils.models.objects;
+package io.paradaux.friendlybot.utils.models.types;
 
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.embeds.notices.NoPermissionEmbed;
