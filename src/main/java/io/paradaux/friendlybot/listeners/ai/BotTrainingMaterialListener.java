@@ -24,7 +24,7 @@
 package io.paradaux.friendlybot.listeners.ai;
 
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.objects.DiscordEventListener;
+import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

@@ -23,7 +23,7 @@
 
 package io.paradaux.friendlybot.listeners;
 
-import io.paradaux.friendlybot.utils.models.objects.DiscordEventListener;
+import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import org.slf4j.Logger;
 
 public class OnJoinListener extends DiscordEventListener {

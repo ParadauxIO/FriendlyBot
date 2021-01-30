@@ -27,7 +27,7 @@ import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.VerificationManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
-import io.paradaux.friendlybot.utils.models.objects.DiscordEventListener;
+import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
