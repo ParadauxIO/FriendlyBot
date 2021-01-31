@@ -27,14 +27,14 @@ package io.paradaux.friendlybot.commands.staff.moderation;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.FriendlyBot;
-import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import io.paradaux.friendlybot.managers.AuditManager;
 import io.paradaux.friendlybot.managers.MongoManager;
+import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.embeds.moderation.KickedEmbed;
-import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.KickEntry;
+import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
