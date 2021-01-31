@@ -25,16 +25,30 @@
 
 package io.paradaux.friendlybot.utils;
 
+import javax.annotation.Nullable;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Random;
+import java.util.regex.Pattern;
 
 public class StringUtils {
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("MMMM yyyy HH:mm:ss");
+
+    private static final Pattern VALID_EMAIL = Pattern.compile("(?:[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\"
+            + ".[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\""
+            + "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01"
+            + "-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)"
+            + "+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:"
+            + "(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}"
+            + "(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:"
+            + "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09"
+            + "\\x0b\\x0c\\x0e-\\x7f])+)\\])");
+
     /**
      * Converts the specified string to Title Case
      * <br>
@@ -111,4 +125,16 @@ public class StringUtils {
                 return "th";
         }
     }
-}
+
+    /**
+     * Checks against a regex pattern whether or not the email provided is valid.
+     * @param email The Email you wish to verify is valid
+     * @return Whether or not the email is valid
+     * */
+    public static boolean isValidEmail(String email) {
+        if (email == null) {
+            return false;
+        }
+
+        return VALID_EMAIL.matcher(email.toLowerCase()).matches();
+    }
