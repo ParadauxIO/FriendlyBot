@@ -1,24 +1,26 @@
 /*
- * Copyright (c) 2021 |  Rían Errity. GPLv3
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * MIT License
  *
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 3 only, as
- * published by the Free Software Foundation.
+ * Copyright (c) 2021 Rían Errity
+ * io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry :  31/01/2021, 01:26
  *
- * This code is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * version 3 for more details (a copy is included in the LICENSE file that
- * accompanied this code).
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * You should have received a copy of the GNU General Public License version
- * 3 along with this work; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * Please contact Rían Errity <rian@paradaux.io> or visit https://paradaux.io
- * if you need additional information or have any questions.
- * See LICENSE.md for more details.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 package io.paradaux.friendlybot.utils.models.configuration;
@@ -58,11 +60,13 @@ public class ConfigurationEntry {
     // Database Controller Configuration
     String mongoConnectionUri;
 
-    // SMTP Login Information.
-    String smtpUser;
-    String smtpPass;
-    String smtpHost;
-    String smtpPort;
+    // Mailgun: Email Verification
+    String mailgunApi;
+    String mailgunUrl;
+
+    // Wolfram Alpha
+    String wolframApiKey;
+    String imgurClientId;
 
     // Constructor for builder-pattern generation
     public ConfigurationEntry() {
@@ -70,11 +74,11 @@ public class ConfigurationEntry {
     }
 
     // General constructor.
-    public ConfigurationEntry(String botToken, String commandPrefix, String csFriendlyGuildID,
-                              String auditLogChannelID, String verificationChannelID,
-                              String verifiedRoleID, String modmailInputChannelID,
-                              String modmailOutputChannelID, String mongoConnectionUri,
-                              String smtpUser, String smtpPass, String smtpHost, String smtpPort) {
+
+    public ConfigurationEntry(String botToken, String commandPrefix, String csFriendlyGuildID, String auditLogChannelID,
+                              String verificationChannelID, String verifiedRoleID, String modmailInputChannelID,
+                              String modmailOutputChannelID, String mongoConnectionUri, String mailgunApi, String mailgunUrl,
+                              String wolframApiKey, String imgurClientId) {
         this.botToken = botToken;
         this.commandPrefix = commandPrefix;
         this.csFriendlyGuildID = csFriendlyGuildID;
@@ -84,10 +88,10 @@ public class ConfigurationEntry {
         this.modmailInputChannelID = modmailInputChannelID;
         this.modmailOutputChannelID = modmailOutputChannelID;
         this.mongoConnectionUri = mongoConnectionUri;
-        this.smtpUser = smtpUser;
-        this.smtpPass = smtpPass;
-        this.smtpHost = smtpHost;
-        this.smtpPort = smtpPort;
+        this.mailgunApi = mailgunApi;
+        this.mailgunUrl = mailgunUrl;
+        this.wolframApiKey = wolframApiKey;
+        this.imgurClientId = imgurClientId;
     }
 
     /*
@@ -130,20 +134,20 @@ public class ConfigurationEntry {
         return mongoConnectionUri;
     }
 
-    public String getSmtpUser() {
-        return smtpUser;
+    public String getMailgunApi() {
+        return mailgunApi;
     }
 
-    public String getSmtpPass() {
-        return smtpPass;
+    public String getMailgunUrl() {
+        return mailgunUrl;
     }
 
-    public String getSmtpHost() {
-        return smtpHost;
+    public String getWolframApiKey() {
+        return wolframApiKey;
     }
 
-    public String getSmtpPort() {
-        return smtpPort;
+    public String getImgurClientId() {
+        return imgurClientId;
     }
 
     /*
@@ -196,23 +200,23 @@ public class ConfigurationEntry {
         return this;
     }
 
-    public ConfigurationEntry setSmtpUser(String smtpUser) {
-        this.smtpUser = smtpUser;
+    public ConfigurationEntry setMailgunApi(String mailgunApi) {
+        this.mailgunApi = mailgunApi;
         return this;
     }
 
-    public ConfigurationEntry setSmtpPass(String smtpPass) {
-        this.smtpPass = smtpPass;
+    public ConfigurationEntry setMailgunUrl(String mailgunUrl) {
+        this.mailgunUrl = mailgunUrl;
         return this;
     }
 
-    public ConfigurationEntry setSmtpHost(String smtpHost) {
-        this.smtpHost = smtpHost;
+    public ConfigurationEntry setWolframApiKey(String wolframApiKey) {
+        this.wolframApiKey = wolframApiKey;
         return this;
     }
 
-    public ConfigurationEntry setSmtpPort(String smtpPort) {
-        this.smtpPort = smtpPort;
+    public ConfigurationEntry setImgurClientId(String imgurClientId) {
+        this.imgurClientId = imgurClientId;
         return this;
     }
 }
