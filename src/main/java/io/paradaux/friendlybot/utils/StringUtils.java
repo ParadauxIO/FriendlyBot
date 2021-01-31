@@ -138,3 +138,16 @@ public class StringUtils {
 
         return VALID_EMAIL.matcher(email.toLowerCase()).matches();
     }
+
+    /**
+     * Gets the domain (the section after the @ sign) from an email address.
+     * @param email The Email you wish to get the domain of
+     * @return The Domain of an email. Returns null if the email is invalid
+     * */
+    @Nullable
+    public static String getEmailDomain(String email) {
+        if (!isValidEmail(email)) {
+            return null;
+        }
+        return email.substring(email.indexOf("@") + 1);
+    }
