@@ -26,19 +26,18 @@
 package io.paradaux.friendlybot.commands.staff.technician;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
-import io.paradaux.friendlybot.utils.embeds.*;
-import io.paradaux.friendlybot.utils.embeds.notices.NoPermissionEmbed;
-import io.paradaux.friendlybot.utils.embeds.notices.SyntaxErrorEmbed;
+import io.paradaux.friendlybot.managers.PermissionManager;
+import io.paradaux.friendlybot.utils.embeds.AnnouncementEmbed;
+import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
+import io.paradaux.friendlybot.utils.embeds.PoliticsRulesEmbed;
+import io.paradaux.friendlybot.utils.embeds.RulesEmbed;
 import io.paradaux.friendlybot.utils.embeds.moderation.*;
 import io.paradaux.friendlybot.utils.embeds.modmail.ModMailSentEmbed;
-import io.paradaux.friendlybot.utils.embeds.notices.ModMailNoticeEmbed;
-import io.paradaux.friendlybot.utils.embeds.notices.RulesAcceptanceNoticeEmbed;
-import io.paradaux.friendlybot.utils.embeds.notices.VerificationNoticeEmbed;
+import io.paradaux.friendlybot.utils.embeds.notices.*;
 import io.paradaux.friendlybot.utils.embeds.roleselection.PoliticsOptionEmbed;
-import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.interfaces.Embed;
+import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;

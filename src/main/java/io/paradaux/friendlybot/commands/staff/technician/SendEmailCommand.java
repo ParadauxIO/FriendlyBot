@@ -26,14 +26,12 @@
 package io.paradaux.friendlybot.commands.staff.technician;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
-
-import javax.mail.MessagingException;
 
 public class SendEmailCommand extends PrivilegedCommand {
 
@@ -69,10 +67,10 @@ public class SendEmailCommand extends PrivilegedCommand {
             return;
         }
 
-        try {
-            SMTPManager.getInstance().sendVerificationEmail(args[0], args[1], args[2]);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            SMTPManager.getInstance().sendVerificationEmail(args[0], args[1], args[2]);
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        }
     }
 }
