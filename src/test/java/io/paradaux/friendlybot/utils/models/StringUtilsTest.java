@@ -77,4 +77,19 @@ class StringUtilsTest {
 
     }
 
+    @Test
+    public void invalidEmailTest() {
+        logger.info("Testing EmailController#isValidEmail");
+        Assertions.assertFalse(StringUtils.isValidEmail("ytrregewf@we"), "Not a valid email");
+        Assertions.assertTrue(StringUtils.isValidEmail("someNonTCDEmail@gmail.com"), "is a valid email");
+        Assertions.assertTrue(StringUtils.isValidEmail("someTCDEmail@tcd.ie"), "is a valid email");
+    }
+
+    @Test
+    public void getEmailDomainTest() {
+        logger.info("Testing EmailController#getEmailDomain");
+        Assertions.assertEquals(StringUtils.getEmailDomain("someNonTCDEmail@gmail.com"), "gmail.com");
+        Assertions.assertEquals(StringUtils.getEmailDomain("someTCDEmail@tcd.ie"), "tcd.ie");
+    }
+
 }
