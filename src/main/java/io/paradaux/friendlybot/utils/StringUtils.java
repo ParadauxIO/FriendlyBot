@@ -151,3 +151,12 @@ public class StringUtils {
         }
         return email.substring(email.indexOf("@") + 1);
     }
+
+    /**
+     * Generates a six-digit code with leading zeros.
+     * @return 6-digit number with leading zeroes.
+     * */
+    public static String generateVerificationCode() {
+        return String.format("%06d", new Random().nextInt(999999));
+    }
+}
