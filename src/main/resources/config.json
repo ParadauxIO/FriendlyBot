@@ -1,15 +1,15 @@
 {
-  "botToken": "BOT-TOKEN",
-  "commandPrefix": ";",
-  "csFriendlyGuildID": "GUILD-ID",
-  "verificationChannelID": "VERIFICATION-CHANNEL-ID",
-  "verifiedRoleID": "VERIFIED-ROLE-ID",
-  "auditLogChannelID": "AUDIT-LOG-CHANNEL-ID",
-  "modmailInputChannelID": "MODMAIL-INPUT-CHANNEL-ID",
-  "modmailOutputChannelID": "MODMAIL-OUTPUT-CHANNEL-ID",
-  "mongoConnectionUri": "MONGODB-CONNECTION-URI",
-  "smtpUser": "SMTP-USERNAME",
-  "smtpPass": "SMTP-PASSWORD",
-  "smtpHost": "SMTP-SERVER",
-  "smtpPort": "SMTP-PORT"
+  "botToken": "",
+  "commandPrefix": "",
+  "csFriendlyGuildID": "",
+  "verificationChannelID": "",
+  "verifiedRoleID": "",
+  "auditLogChannelID": "",
+  "modmailInputChannelID": "",
+  "modmailOutputChannelID": "",
+  "mongoConnectionUri": "",
+  "mailgunApi": "",
+  "mailgunUrl": "",
+  "wolframApiKey": "",
+  "imgurClientId": ""
 }
