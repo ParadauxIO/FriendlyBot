@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.managers;
 
 import com.mongodb.client.FindIterable;
+import io.paradaux.friendlybot.utils.StringUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.PendingVerificationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
@@ -37,6 +38,7 @@ import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
+import javax.mail.MessagingException;
 import java.util.concurrent.ExecutionException;
 
 public class VerificationManager {
@@ -45,11 +47,13 @@ public class VerificationManager {
     private final Logger logger;
     private final MongoManager mongo;
     private final ConfigurationEntry config;
+    private final MailGunManager mailGun;
 
-    public VerificationManager(ConfigurationEntry config, Logger logger, MongoManager mongo) {
+    public VerificationManager(ConfigurationEntry config, Logger logger, MongoManager mongo, MailGunManager mailGun) {
         this.config = config;
         this.logger = logger;
         this.mongo = mongo;
+        this.mailGun = mailGun;
 
         logger.info("Initialising: VerificationSystemController");
 
@@ -72,9 +76,7 @@ public class VerificationManager {
         }
 
         mongo.setVerifiedUser(discordID, guildId);
-
         Guild guild = DiscordBotManager.getInstance().getGuild(guildId);
-
         Role role = DiscordBotManager.getInstance().getRole(guildId, config.getVerifiedRoleID());
 
         try {
@@ -89,18 +91,12 @@ public class VerificationManager {
 
     public void setPendingVerification(String email, String guildID, String discordID) throws VerificationException {
         DiscordBotManager discordBotManager = DiscordBotManager.getInstance();
-//        String verificationCode = SMTPManager.generateVerificationCode();
+        String verificationCode = StringUtils.generateVerificationCode();
 
-        Guild guild = discordBotManager.getGuild(guildID);
         User user = discordBotManager.getUser(discordID);
 
-//        try {
-////            SMTPManager.getInstance().sendVerificationEmail(email, verificationCode, user.getAsTag());
-//        } catch (MessagingException e) {
-//            throw new VerificationException("Error sending email.");
-//        }
-
-//        mongo.addPendingVerificationUser(discordID, guildID, verificationCode);
+        mailGun.sendEmail(email, user.getAsTag(), verificationCode);
+        mongo.addPendingVerificationUser(discordID, guildID, verificationCode);
     }
 
     public StringBuilder getPendingUsers() {
