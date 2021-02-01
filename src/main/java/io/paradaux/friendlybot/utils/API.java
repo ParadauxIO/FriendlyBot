@@ -35,11 +35,11 @@ public class API {
     private IOManager ioManager;
     private ConfigManager configManager;
     private ConfigurationEntry configurationEntry;
-    private SMTPManager smtpManager;
     private MongoManager mongoManager;
     private PermissionManager permissionManager;
     private DiscordBotManager discordBotManager;
     private AuditManager auditManager;
+    private MailGunManager mailGunManager;
     private VerificationManager verificationManager;
 
     private API() {
@@ -79,11 +79,6 @@ public class API {
             return this;
         }
 
-        public Builder setSmtpManager(SMTPManager smtpManager) {
-            api.smtpManager = smtpManager;
-            return this;
-        }
-
         public Builder setMongoManager(MongoManager mongoManager) {
             api.mongoManager = mongoManager;
             return this;
@@ -101,6 +96,11 @@ public class API {
 
         public Builder setAuditManager(AuditManager auditManager) {
             api.auditManager = auditManager;
+            return this;
+        }
+
+        public Builder setMailGunManager(MailGunManager mailGunManager) {
+            api.mailGunManager = mailGunManager;
             return this;
         }
 
