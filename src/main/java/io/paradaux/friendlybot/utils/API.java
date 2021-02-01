@@ -115,4 +115,43 @@ public class API {
 
     }
 
+    public Logger getLogger() {
+        return logger;
+    }
+
+    public IOManager getIoManager() {
+        return ioManager;
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
+    }
+
+    public ConfigurationEntry getConfigurationEntry() {
+        return configurationEntry;
+    }
+
+    public MongoManager getMongoManager() {
+        return mongoManager;
+    }
+
+    public PermissionManager getPermissionManager() {
+        return permissionManager;
+    }
+
+    public DiscordBotManager getDiscordBotManager() {
+        return discordBotManager;
+    }
+
+    public AuditManager getAuditManager() {
+        return auditManager;
+    }
+
+    public MailGunManager getMailGunManager() {
+        return mailGunManager;
+    }
+
+    public VerificationManager getVerificationManager() {
+        return verificationManager;
+    }
 }
