@@ -88,7 +88,6 @@ public class StringUtils {
                 .toLocalDateTime());
     }
 
-
     public static String formatTime(OffsetDateTime time) {
         return formatTime(LocalDateTime.from(time));
     }
@@ -123,6 +122,7 @@ public class StringUtils {
                 return "rd";
             default:
                 return "th";
+
         }
     }
 

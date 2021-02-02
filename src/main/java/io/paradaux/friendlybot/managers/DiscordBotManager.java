@@ -49,6 +49,7 @@ import org.slf4j.Logger;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
+import java.util.concurrent.ExecutionException;
 
 public class DiscordBotManager {
 
@@ -206,10 +207,12 @@ public class DiscordBotManager {
     @Nonnull
     @CheckReturnValue
     public User getUser(String userId) {
-        User user = client.getUserById(userId);
-
-        if (user == null) {
-            throw new RuntimeException("User came back null.");
+        User user;
+        try {
+             user = client.retrieveUserById(userId).submit().get();
+        } catch (InterruptedException | ExecutionException e) {
+            logger.info("Concurrency issue occurred while trying to get the user object.");
+            throw new RuntimeException("Concurrency issue occurred while trying to get the user object.");
         }
 
         return user;
