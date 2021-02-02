@@ -28,6 +28,7 @@ package io.paradaux.friendlybot;
 import io.paradaux.friendlybot.managers.*;
 import io.paradaux.friendlybot.utils.API;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import net.sargue.mailgun.Mail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,19 +67,18 @@ public class FriendlyBot {
 
         // Configuration-dependant managers.
 
-        SMTPManager smtpManager = new SMTPManager(config, logger);
         MongoManager mongoManager = new MongoManager(config, logger);
         PermissionManager permissionManager = new PermissionManager(logger);
         DiscordBotManager discordBotManager = new DiscordBotManager(config, logger, permissionManager, mongoManager);
         AuditManager auditManager = new AuditManager(config, logger);
-        VerificationManager verificationManager = new VerificationManager(config, logger, mongoManager);
+        MailGunManager mailGunManager = new MailGunManager(logger);
+        VerificationManager verificationManager = new VerificationManager(config, logger, mongoManager, mailGunManager);
 
         api = API.builder()
                 .setLogger(logger)
                 .setIoManager(ioManager)
                 .setConfigManager(configManager)
                 .setConfigurationEntry(config)
-                .setSmtpManager(smtpManager)
                 .setMongoManager(mongoManager)
                 .setPermissionManager(permissionManager)
                 .setDiscordBotManager(discordBotManager)
