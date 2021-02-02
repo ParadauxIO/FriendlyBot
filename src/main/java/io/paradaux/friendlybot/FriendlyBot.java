@@ -28,9 +28,10 @@ package io.paradaux.friendlybot;
 import io.paradaux.friendlybot.managers.*;
 import io.paradaux.friendlybot.utils.API;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import net.sargue.mailgun.Mail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Scanner;
 
 /**
  * CSBot is the main (executable) class for the project.
@@ -71,7 +72,7 @@ public class FriendlyBot {
         PermissionManager permissionManager = new PermissionManager(logger);
         DiscordBotManager discordBotManager = new DiscordBotManager(config, logger, permissionManager, mongoManager);
         AuditManager auditManager = new AuditManager(config, logger);
-        MailGunManager mailGunManager = new MailGunManager(logger);
+        MailGunManager mailGunManager = new MailGunManager(config, logger);
         VerificationManager verificationManager = new VerificationManager(config, logger, mongoManager, mailGunManager);
 
         api = API.builder()
@@ -86,9 +87,29 @@ public class FriendlyBot {
                 .setVerificationManager(verificationManager)
                 .build();
 
+        Scanner scanner = new Scanner(System.in);
+
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             logger.info("Shutting down...");
         }));
-    }
 
+        Loop:
+        while (true) {
+            if (!scanner.hasNext()) {
+                break;
+            }
+
+            String command = scanner.nextLine();
+
+            switch (command) {
+                case "exit": {
+                    System.exit(0);
+                }
+
+                case "pog": {
+                    System.out.println("pog");
+                }
+            }
+        }
+    }
 }
