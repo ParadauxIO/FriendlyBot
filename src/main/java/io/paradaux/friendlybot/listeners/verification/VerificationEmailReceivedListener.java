@@ -27,6 +27,7 @@ package io.paradaux.friendlybot.listeners.verification;
 
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.VerificationManager;
+import io.paradaux.friendlybot.utils.StringUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
@@ -85,7 +86,7 @@ public class VerificationEmailReceivedListener extends DiscordEventListener {
             return;
         }
 
-        if (!SMTPManager.isValidEmail(email)) {
+        if (!StringUtils.isValidEmail(email)) {
             event.getAuthor().openPrivateChannel().queue((channel) -> channel
                     .sendMessage("Your message did contain a valid email address.").queue());
             return;
@@ -93,7 +94,7 @@ public class VerificationEmailReceivedListener extends DiscordEventListener {
 
         // If it isn't an @tcd.ie email
 
-        String emailDomain = SMTPManager.getEmailDomain(email);
+        String emailDomain = StringUtils.getEmailDomain(email);
 
         if (emailDomain == null) {
             event.getAuthor().openPrivateChannel().queue((channel) -> channel
