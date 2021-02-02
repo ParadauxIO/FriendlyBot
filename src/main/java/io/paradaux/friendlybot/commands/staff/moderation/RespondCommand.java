@@ -32,6 +32,7 @@ import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailResponse;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
@@ -105,8 +106,18 @@ public class RespondCommand extends PrivilegedCommand {
 
         // Now that we've updated the record of the response, inform the ticket owner.
 
+        Member ticketHolder = retrieveMember(message.getGuild(), entry.getUserID());
 
+        if (ticketHolder == null) {
+            message.getChannel().sendMessage("Error while notifying the user of the ticket response. Are they still in the discord?").queue();
+            return;
+        }
 
+        ticketHolder.getUser().openPrivateChannel().queue((privateChannel -> {
+            privateChannel.sendMessage("There has been a new response to your mod-mail query.\n`" + response.getMessage() + "`\n"
+                    + "In order to add on to your ticket, just message me here.").queue();
+        }));
 
+        message.getChannel().sendMessage("Response: `" + response.getMessage() + "` sent to " + ticketHolder.getEffectiveName()).queue();
     }
 }
