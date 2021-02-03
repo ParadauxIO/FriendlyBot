@@ -65,7 +65,7 @@ public class WolframAlphaCommand extends BaseCommand {
         HttpApi http = new HttpApi(getLogger());
 
         // Get's the image from WA
-        HttpRequest request = http.plainRequest(String.format(WOLFRAM_API, args.replace(" ", "%20"), getConfig().getWolframApiKey()));
+        HttpRequest request = http.plainRequest(String.format(WOLFRAM_API, args.replace(" ", "%20"), getConfig().getWolframAlphaApplicationId()));
         http.sendAsync(request, HttpResponse.BodyHandlers.ofByteArray()).thenAccept((response) -> {
             // Send that image to imgur
             String[] headers = {"Authorization", "Client-ID " + getConfig().getImgurClientId()};

@@ -77,7 +77,7 @@ public class VerificationManager {
 
         mongo.setVerifiedUser(discordID, guildId);
         Guild guild = DiscordBotManager.getInstance().getGuild(guildId);
-        Role role = DiscordBotManager.getInstance().getRole(guildId, config.getVerifiedRoleID());
+        Role role = DiscordBotManager.getInstance().getRole(guildId, config.getVerifiedRoleId());
 
         try {
             Member member = guild.retrieveMemberById(discordID).submit().get();
