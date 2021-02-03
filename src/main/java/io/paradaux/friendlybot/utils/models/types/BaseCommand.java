@@ -186,10 +186,4 @@ public abstract class BaseCommand extends Command {
         return permissionManager;
     }
 
-    /**
-     * Deletes the message associated with the specified message object.
-     * */
-    public void delete(Message message) {
-        message.delete().queue();
-    }
 }
