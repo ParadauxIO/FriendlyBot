@@ -1,33 +1,36 @@
 /*
- * Copyright (c) 2021 |  Rían Errity. GPLv3
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * MIT License
  *
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 3 only, as
- * published by the Free Software Foundation.
+ * Copyright (c) 2021 Rían Errity
+ * io.paradaux.friendlybot.managers.VerificationManager :  31/01/2021, 01:26
  *
- * This code is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * version 3 for more details (a copy is included in the LICENSE file that
- * accompanied this code).
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * You should have received a copy of the GNU General Public License version
- * 3 along with this work; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * Please contact Rían Errity <rian@paradaux.io> or visit https://paradaux.io
- * if you need additional information or have any questions.
- * See LICENSE.md for more details.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 package io.paradaux.friendlybot.managers;
 
 import com.mongodb.client.FindIterable;
+import io.paradaux.friendlybot.utils.StringUtils;
+import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.PendingVerificationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
-import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -44,11 +47,13 @@ public class VerificationManager {
     private final Logger logger;
     private final MongoManager mongo;
     private final ConfigurationEntry config;
+    private final MailGunManager mailGun;
 
-    public VerificationManager(ConfigurationEntry config, Logger logger, MongoManager mongo) {
+    public VerificationManager(ConfigurationEntry config, Logger logger, MongoManager mongo, MailGunManager mailGun) {
         this.config = config;
         this.logger = logger;
         this.mongo = mongo;
+        this.mailGun = mailGun;
 
         logger.info("Initialising: VerificationSystemController");
 
@@ -71,10 +76,8 @@ public class VerificationManager {
         }
 
         mongo.setVerifiedUser(discordID, guildId);
-
         Guild guild = DiscordBotManager.getInstance().getGuild(guildId);
-
-        Role role = DiscordBotManager.getInstance().getRole(guildId, config.getVerifiedRoleID());
+        Role role = DiscordBotManager.getInstance().getRole(guildId, config.getVerifiedRoleId());
 
         try {
             Member member = guild.retrieveMemberById(discordID).submit().get();
@@ -88,17 +91,11 @@ public class VerificationManager {
 
     public void setPendingVerification(String email, String guildID, String discordID) throws VerificationException {
         DiscordBotManager discordBotManager = DiscordBotManager.getInstance();
-        String verificationCode = SMTPManager.generateVerificationCode();
+        String verificationCode = StringUtils.generateVerificationCode();
 
-        Guild guild = discordBotManager.getGuild(guildID);
         User user = discordBotManager.getUser(discordID);
 
-        try {
-            SMTPManager.getInstance().sendVerificationEmail(email, verificationCode, user.getAsTag());
-        } catch (MessagingException e) {
-            throw new VerificationException("Error sending email.");
-        }
-
+        mailGun.sendEmail(email, user.getAsTag(), verificationCode);
         mongo.addPendingVerificationUser(discordID, guildID, verificationCode);
     }
 

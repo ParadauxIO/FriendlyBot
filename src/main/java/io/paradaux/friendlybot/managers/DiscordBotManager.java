@@ -1,24 +1,26 @@
 /*
- * Copyright (c) 2021 |  Rían Errity. GPLv3
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * MIT License
  *
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 3 only, as
- * published by the Free Software Foundation.
+ * Copyright (c) 2021 Rían Errity
+ * io.paradaux.friendlybot.managers.DiscordBotManager :  31/01/2021, 01:26
  *
- * This code is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * version 3 for more details (a copy is included in the LICENSE file that
- * accompanied this code).
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * You should have received a copy of the GNU General Public License version
- * 3 along with this work; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * Please contact Rían Errity <rian@paradaux.io> or visit https://paradaux.io
- * if you need additional information or have any questions.
- * See LICENSE.md for more details.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 package io.paradaux.friendlybot.managers;
@@ -32,8 +34,12 @@ import io.paradaux.friendlybot.commands.staff.moderation.*;
 import io.paradaux.friendlybot.commands.staff.technician.*;
 import io.paradaux.friendlybot.commands.utility.*;
 import io.paradaux.friendlybot.listeners.ReadyListener;
+import io.paradaux.friendlybot.listeners.logging.MessageDeleteLog;
+import io.paradaux.friendlybot.listeners.logging.MessageLog;
+import io.paradaux.friendlybot.listeners.logging.UpdatedMessageLog;
 import io.paradaux.friendlybot.listeners.modmail.ModMailChannelListener;
 import io.paradaux.friendlybot.listeners.modmail.ModMailPrivateMessageListener;
+import io.paradaux.friendlybot.listeners.utility.LongMessageListener;
 import io.paradaux.friendlybot.listeners.verification.VerificationCodeReceivedListener;
 import io.paradaux.friendlybot.listeners.verification.VerificationEmailReceivedListener;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
@@ -47,6 +53,7 @@ import org.slf4j.Logger;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
+import java.util.concurrent.ExecutionException;
 
 public class DiscordBotManager {
 
@@ -113,7 +120,6 @@ public class DiscordBotManager {
                         new DmCommand(config, logger, permissionManager),
                         new PermissionsCommand(config, logger, permissionManager),
                         new SayCommand(config, logger, permissionManager),
-                        new SendEmailCommand(config, logger, permissionManager),
                         new SendEmbedCommand(config, logger, permissionManager),
                         new TagSetCommand(config, logger, permissionManager),
                         new VerificationCommand(config, logger, permissionManager),
@@ -147,7 +153,11 @@ public class DiscordBotManager {
                         new ModMailPrivateMessageListener(logger),
                         new VerificationCodeReceivedListener(config, logger),
                         new VerificationEmailReceivedListener(config, logger),
-                        new ReadyListener(logger)
+                        new ReadyListener(logger),
+                        new MessageDeleteLog(config, logger, mongo),
+                        new MessageLog(config, logger, mongo),
+                        new UpdatedMessageLog(config, logger, mongo),
+                        new LongMessageListener(config, logger)
                 );
 
         if (token == null) {
@@ -204,10 +214,12 @@ public class DiscordBotManager {
     @Nonnull
     @CheckReturnValue
     public User getUser(String userId) {
-        User user = client.getUserById(userId);
-
-        if (user == null) {
-            throw new RuntimeException("User came back null.");
+        User user;
+        try {
+             user = client.retrieveUserById(userId).submit().get();
+        } catch (InterruptedException | ExecutionException e) {
+            logger.info("Concurrency issue occurred while trying to get the user object.");
+            throw new RuntimeException("Concurrency issue occurred while trying to get the user object.");
         }
 
         return user;

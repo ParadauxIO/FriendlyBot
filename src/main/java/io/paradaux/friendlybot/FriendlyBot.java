@@ -1,26 +1,26 @@
-
-
 /*
- * Copyright (c) 2021 |  Rían Errity. GPLv3
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * MIT License
  *
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 3 only, as
- * published by the Free Software Foundation.
+ * Copyright (c) 2021 Rían Errity
+ * io.paradaux.friendlybot.FriendlyBot :  31/01/2021, 01:26
  *
- * This code is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * version 3 for more details (a copy is included in the LICENSE file that
- * accompanied this code).
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * You should have received a copy of the GNU General Public License version
- * 3 along with this work; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * Please contact Rían Errity <rian@paradaux.io> or visit https://paradaux.io
- * if you need additional information or have any questions.
- * See LICENSE.md for more details.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 package io.paradaux.friendlybot;
@@ -30,6 +30,8 @@ import io.paradaux.friendlybot.utils.API;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Scanner;
 
 /**
  * CSBot is the main (executable) class for the project.
@@ -43,11 +45,9 @@ import org.slf4j.LoggerFactory;
 public class FriendlyBot {
 
     private static API api;
-
     public static API getApi() {
         return api;
     }
-
 
     /**
      * This is the main method for the application. It handles the instantiation
@@ -68,19 +68,18 @@ public class FriendlyBot {
 
         // Configuration-dependant managers.
 
-        SMTPManager smtpManager = new SMTPManager(config, logger);
         MongoManager mongoManager = new MongoManager(config, logger);
         PermissionManager permissionManager = new PermissionManager(logger);
         DiscordBotManager discordBotManager = new DiscordBotManager(config, logger, permissionManager, mongoManager);
         AuditManager auditManager = new AuditManager(config, logger);
-        VerificationManager verificationManager = new VerificationManager(config, logger, mongoManager);
+        MailGunManager mailGunManager = new MailGunManager(config, logger);
+        VerificationManager verificationManager = new VerificationManager(config, logger, mongoManager, mailGunManager);
 
         api = API.builder()
                 .setLogger(logger)
                 .setIoManager(ioManager)
                 .setConfigManager(configManager)
                 .setConfigurationEntry(config)
-                .setSmtpManager(smtpManager)
                 .setMongoManager(mongoManager)
                 .setPermissionManager(permissionManager)
                 .setDiscordBotManager(discordBotManager)
@@ -92,5 +91,4 @@ public class FriendlyBot {
             logger.info("Shutting down...");
         }));
     }
-
 }

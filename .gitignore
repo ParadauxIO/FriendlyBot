@@ -1,3 +1,7 @@
+# Runtime stuff
+*.json
+src/test/resources/img*
+
 # User-specific stuff
 .idea/
 

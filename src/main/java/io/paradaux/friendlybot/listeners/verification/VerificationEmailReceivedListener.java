@@ -1,34 +1,36 @@
 /*
- * Copyright (c) 2021 |  Rían Errity. GPLv3
- * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
+ * MIT License
  *
- * This code is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 3 only, as
- * published by the Free Software Foundation.
+ * Copyright (c) 2021 Rían Errity
+ * io.paradaux.friendlybot.listeners.verification.VerificationEmailReceivedListener :  31/01/2021, 01:26
  *
- * This code is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
- * version 3 for more details (a copy is included in the LICENSE file that
- * accompanied this code).
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
  *
- * You should have received a copy of the GNU General Public License version
- * 3 along with this work; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
  *
- * Please contact Rían Errity <rian@paradaux.io> or visit https://paradaux.io
- * if you need additional information or have any questions.
- * See LICENSE.md for more details.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
 package io.paradaux.friendlybot.listeners.verification;
 
 import io.paradaux.friendlybot.managers.MongoManager;
-import io.paradaux.friendlybot.managers.SMTPManager;
 import io.paradaux.friendlybot.managers.VerificationManager;
+import io.paradaux.friendlybot.utils.StringUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
-import io.paradaux.friendlybot.utils.models.objects.DiscordEventListener;
+import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -53,7 +55,7 @@ public class VerificationEmailReceivedListener extends DiscordEventListener {
             return;
         }
 
-        if (!event.getChannel().getId().equals(getConfig().getVerificationChannelID())) {
+        if (!event.getChannel().getId().equals(getConfig().getVerificationInputChannelId())) {
             return;
         }
 
@@ -84,7 +86,7 @@ public class VerificationEmailReceivedListener extends DiscordEventListener {
             return;
         }
 
-        if (!SMTPManager.isValidEmail(email)) {
+        if (!StringUtils.isValidEmail(email)) {
             event.getAuthor().openPrivateChannel().queue((channel) -> channel
                     .sendMessage("Your message did contain a valid email address.").queue());
             return;
@@ -92,7 +94,7 @@ public class VerificationEmailReceivedListener extends DiscordEventListener {
 
         // If it isn't an @tcd.ie email
 
-        String emailDomain = SMTPManager.getEmailDomain(email);
+        String emailDomain = StringUtils.getEmailDomain(email);
 
         if (emailDomain == null) {
             event.getAuthor().openPrivateChannel().queue((channel) -> channel
