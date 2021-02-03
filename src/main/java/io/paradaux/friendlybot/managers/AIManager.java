@@ -26,15 +26,15 @@
 package io.paradaux.friendlybot.managers;
 
 import io.paradaux.ai.MarkovMegaHal;
+import io.paradaux.friendlybot.utils.models.database.MessageEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class AIManager {
-
-    // TODO complete
 
     private static AIManager instance = null;
     private final MarkovMegaHal chatterbot;
@@ -44,6 +44,8 @@ public class AIManager {
         this.logger = logger;
 
         chatterbot = new MarkovMegaHal();
+        loadTrainingDataFromDatabase();
+
         instance = this;
     }
 
@@ -59,13 +61,28 @@ public class AIManager {
         try {
             chatterbot.addDocument(file.toURI().toASCIIString());
         } catch (IOException ok) {
-            // TODO do something with this
+            logger.error("Error while adding " + file.getName() + " to the chatterbot's brain");
         }
 
     }
 
+    public void addMessage(String str) {
+        chatterbot.add(str);
+    }
+
+    public void loadTrainingDataFromDatabase() {
+        for (MessageEntry m : MongoManager.getInstance().getAiMessages()) {
+            logger.info("Loading message: " + m.getContent() + "...");
+            chatterbot.add(m.getContent());
+        }
+    }
+
     public String generateMessage() {
         return chatterbot.getSentence();
+    }
+
+    public String generateMessage(String targetWord) {
+        return chatterbot.getSentence(targetWord);
     }
 
 }
