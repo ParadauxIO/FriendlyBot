@@ -74,6 +74,15 @@ public class ConfigurationEntry implements Serializable {
     @SerializedName("mailgun_application_key")
     private String mailGunApplicationKey;
 
+    @SerializedName("verification_email_subject")
+    private String verificationEmailSubject;
+
+    @SerializedName("verification_email_sender")
+    private String verificationEmailSender;
+
+    @SerializedName("verification_email_template_name")
+    private String verificationEmailTemplateName;
+
     @SerializedName("mailgun_base_url")
     private String mailGunBaseUrl;
 
@@ -93,8 +102,9 @@ public class ConfigurationEntry implements Serializable {
     public ConfigurationEntry(String botToken, String commandPrefix, String guildId, String verifiedRoleId,
                               String verificationInputChannelId, String privateAuditLogChannelId, String publicAuditLogChannelId,
                               String modMailInputChannel, String modMailOutputChannel, String mongoDbConnectionUri,
-                              String mailGunApplicationKey, String mailGunBaseUrl, String wolframAlphaApplicationId, String imgurClientId
-            , String messageLogChannel) {
+                              String mailGunApplicationKey, String verificationEmailSubject, String verificationEmailSender,
+                              String verificationEmailTemplateName, String mailGunBaseUrl, String wolframAlphaApplicationId,
+                              String imgurClientId, String messageLogChannel) {
         this.botToken = botToken;
         this.commandPrefix = commandPrefix;
         this.guildId = guildId;
@@ -106,6 +116,9 @@ public class ConfigurationEntry implements Serializable {
         this.modMailOutputChannel = modMailOutputChannel;
         this.mongoDbConnectionUri = mongoDbConnectionUri;
         this.mailGunApplicationKey = mailGunApplicationKey;
+        this.verificationEmailSubject = verificationEmailSubject;
+        this.verificationEmailSender = verificationEmailSender;
+        this.verificationEmailTemplateName = verificationEmailTemplateName;
         this.mailGunBaseUrl = mailGunBaseUrl;
         this.wolframAlphaApplicationId = wolframAlphaApplicationId;
         this.imgurClientId = imgurClientId;
@@ -172,6 +185,21 @@ public class ConfigurationEntry implements Serializable {
         return this;
     }
 
+    public ConfigurationEntry setVerificationEmailSubject(String verificationEmailSubject) {
+        this.verificationEmailSubject = verificationEmailSubject;
+        return this;
+    }
+
+    public ConfigurationEntry setVerificationEmailSender(String verificationEmailSender) {
+        this.verificationEmailSender = verificationEmailSender;
+        return this;
+    }
+
+    public ConfigurationEntry setVerificationEmailTemplateName(String verificationEmailTemplateName) {
+        this.verificationEmailTemplateName = verificationEmailTemplateName;
+        return this;
+    }
+
     public ConfigurationEntry setWolframAlphaApplicationId(String wolframAlphaApplicationId) {
         this.wolframAlphaApplicationId = wolframAlphaApplicationId;
         return this;
@@ -233,6 +261,18 @@ public class ConfigurationEntry implements Serializable {
 
     public String getMailGunBaseUrl() {
         return mailGunBaseUrl;
+    }
+
+    public String getVerificationEmailSubject() {
+        return verificationEmailSubject;
+    }
+
+    public String getVerificationEmailSender() {
+        return verificationEmailSender;
+    }
+
+    public String getVerificationEmailTemplateName() {
+        return verificationEmailTemplateName;
     }
 
     public String getWolframAlphaApplicationId() {

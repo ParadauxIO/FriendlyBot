@@ -11,6 +11,9 @@
   "mongodb_connection_uri": "",
   "mailgun_application_key": "",
   "mailgun_base_url": "",
+  "verification_email_subject": "",
+  "verification_email_sender": "",
+  "verification_email_template_name": "",
   "wolfram_alpha_application_id": "",
   "imgur_client_id": "",
   "message_log_channel": ""
