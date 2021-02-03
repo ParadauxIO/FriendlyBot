@@ -87,29 +87,8 @@ public class FriendlyBot {
                 .setVerificationManager(verificationManager)
                 .build();
 
-        Scanner scanner = new Scanner(System.in);
-
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             logger.info("Shutting down...");
         }));
-
-        Loop:
-        while (true) {
-            if (!scanner.hasNext()) {
-                break;
-            }
-
-            String command = scanner.nextLine();
-
-            switch (command) {
-                case "exit": {
-                    System.exit(0);
-                }
-
-                case "pog": {
-                    System.out.println("pog");
-                }
-            }
-        }
     }
 }
