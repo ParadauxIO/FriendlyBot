@@ -54,8 +54,13 @@ public class UpdatedMessageLog extends DiscordEventListener {
 
         TextChannel messageLogChannel = DiscordBotManager.getInstance().getChannel(getConfig().getMessageLogChannel());
 
-        MessageEntry entry = mongo.getLoggedMessage(event.getMessageId())
-                .setNewContent(event.getMessage().getContentRaw());
+        MessageEntry entry = mongo.getLoggedMessage(event.getMessageId());
+
+        if (entry == null) {
+            return;
+        }
+
+        entry = entry.setNewContent(event.getMessage().getContentRaw());
 
         mongo.updateLoggedMessage(entry.getMessageId(), entry);
 

@@ -52,6 +52,10 @@ public class MessageDeleteLog extends DiscordEventListener {
 
         MessageEntry entry = mongo.getLoggedMessage(event.getMessageId());
 
+        if (entry == null) {
+            return;
+        }
+
         User user = DiscordBotManager.getInstance().getUser(entry.getAuthorId());
 
         if (user.isBot()) {
