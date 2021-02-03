@@ -16,5 +16,6 @@
   "verification_email_template_name": "",
   "wolfram_alpha_application_id": "",
   "imgur_client_id": "",
-  "message_log_channel": ""
+  "message_log_channel": "",
+  "bytebin_instance": ""
 }

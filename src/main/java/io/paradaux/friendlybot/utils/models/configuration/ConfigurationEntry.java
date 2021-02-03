@@ -95,6 +95,9 @@ public class ConfigurationEntry implements Serializable {
     @SerializedName("message_log_channel")
     private String messageLogChannel;
 
+    @SerializedName("bytebin_instance")
+    private String bytebinInstance;
+
     public ConfigurationEntry() {
     
     }
@@ -104,7 +107,7 @@ public class ConfigurationEntry implements Serializable {
                               String modMailInputChannel, String modMailOutputChannel, String mongoDbConnectionUri,
                               String mailGunApplicationKey, String verificationEmailSubject, String verificationEmailSender,
                               String verificationEmailTemplateName, String mailGunBaseUrl, String wolframAlphaApplicationId,
-                              String imgurClientId, String messageLogChannel) {
+                              String imgurClientId, String messageLogChannel, String bytebinInstance) {
         this.botToken = botToken;
         this.commandPrefix = commandPrefix;
         this.guildId = guildId;
@@ -123,6 +126,7 @@ public class ConfigurationEntry implements Serializable {
         this.wolframAlphaApplicationId = wolframAlphaApplicationId;
         this.imgurClientId = imgurClientId;
         this.messageLogChannel = messageLogChannel;
+        this.bytebinInstance = bytebinInstance;
     }
 
     public ConfigurationEntry setBotToken(String botToken) {
@@ -215,6 +219,11 @@ public class ConfigurationEntry implements Serializable {
         return this;
     }
 
+    public ConfigurationEntry setBytebinInstance(String bytebinInstance) {
+        this.bytebinInstance = bytebinInstance;
+        return this;
+    }
+
     public String getBotToken() {
         return botToken;
     }
@@ -285,5 +294,9 @@ public class ConfigurationEntry implements Serializable {
 
     public String getMessageLogChannel() {
         return messageLogChannel;
+    }
+
+    public String getBytebinInstance() {
+        return bytebinInstance;
     }
 }
