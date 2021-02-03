@@ -25,7 +25,10 @@
 
 package io.paradaux.friendlybot.utils.models.configuration;
 
+import com.google.gson.annotations.SerializedName;
 import io.paradaux.friendlybot.managers.ConfigManager;
+
+import java.io.Serializable;
 
 /**
  * Contains a cached copy of the configuration file's contents, to allow easy access within the
@@ -36,128 +39,77 @@ import io.paradaux.friendlybot.managers.ConfigManager;
  * @since 1/11/2020 DD/MM/YY
  * @see ConfigManager
  * */
+public class ConfigurationEntry implements Serializable {
 
-public class ConfigurationEntry {
+    @SerializedName("bot_token")
+    private String botToken;
 
-    // Required to have a discord bot
-    String botToken;
-    String commandPrefix;
+    @SerializedName("command_prefix")
+    private String commandPrefix;
 
-    // Used to access instances of particular channels / to give roles
-    String csFriendlyGuildID;
+    @SerializedName("guild_id")
+    private String guildId;
 
-    // Audit Log System Configuration
-    String auditLogChannelID;
+    @SerializedName("verified_role_id")
+    private String verifiedRoleId;
 
-    // Verification System Configuration
-    String verificationChannelID;
-    String verifiedRoleID;
+    @SerializedName("verification_input_channel_id")
+    private String verificationInputChannelId;
 
-    // Modmail System Configuration
-    String modmailInputChannelID;
-    String modmailOutputChannelID;
+    @SerializedName("private_auditlog_channel_id")
+    private String privateAuditLogChannelId;
 
-    // Database Controller Configuration
-    String mongoConnectionUri;
+    @SerializedName("public_auditlog_channel_id")
+    private String publicAuditLogChannelId;
 
-    // Mailgun: Email Verification
-    String mailgunApi;
-    String mailgunUrl;
+    @SerializedName("modmail_input_channel_id")
+    private String modMailInputChannel;
 
-    // Wolfram Alpha
-    String wolframApiKey;
-    String imgurClientId;
+    @SerializedName("modmail_output_channel_id")
+    private String modMailOutputChannel;
 
-    // Message logging
-    String messageLogChannel;
-    String botResponseLog;
+    @SerializedName("mongodb_connection_uri")
+    private String mongoDbConnectionUri;
 
-    // Constructor for builder-pattern generation
+    @SerializedName("mailgun_application_key")
+    private String mailGunApplicationKey;
+
+    @SerializedName("mailgun_base_url")
+    private String mailGunBaseUrl;
+
+    @SerializedName("wolfram_alpha_application_id")
+    private String wolframAlphaApplicationId;
+
+    @SerializedName("imgur_client_id")
+    private String imgurClientId;
+
+    @SerializedName("message_log_channel")
+    private String messageLogChannel;
+
     public ConfigurationEntry() {
-
+    
     }
 
-    // General constructor.
-
-    public ConfigurationEntry(String botToken, String commandPrefix, String csFriendlyGuildID, String auditLogChannelID,
-                              String verificationChannelID, String verifiedRoleID, String modmailInputChannelID,
-                              String modmailOutputChannelID, String mongoConnectionUri, String mailgunApi, String mailgunUrl,
-                              String wolframApiKey, String imgurClientId, String messageLogChannel, String botResponseLog) {
+    public ConfigurationEntry(String botToken, String commandPrefix, String guildId, String verifiedRoleId,
+                              String verificationInputChannelId, String privateAuditLogChannelId, String publicAuditLogChannelId,
+                              String modMailInputChannel, String modMailOutputChannel, String mongoDbConnectionUri,
+                              String mailGunApplicationKey, String mailGunBaseUrl, String wolframAlphaApplicationId, String imgurClientId
+            , String messageLogChannel) {
         this.botToken = botToken;
         this.commandPrefix = commandPrefix;
-        this.csFriendlyGuildID = csFriendlyGuildID;
-        this.auditLogChannelID = auditLogChannelID;
-        this.verificationChannelID = verificationChannelID;
-        this.verifiedRoleID = verifiedRoleID;
-        this.modmailInputChannelID = modmailInputChannelID;
-        this.modmailOutputChannelID = modmailOutputChannelID;
-        this.mongoConnectionUri = mongoConnectionUri;
-        this.mailgunApi = mailgunApi;
-        this.mailgunUrl = mailgunUrl;
-        this.wolframApiKey = wolframApiKey;
+        this.guildId = guildId;
+        this.verifiedRoleId = verifiedRoleId;
+        this.verificationInputChannelId = verificationInputChannelId;
+        this.privateAuditLogChannelId = privateAuditLogChannelId;
+        this.publicAuditLogChannelId = publicAuditLogChannelId;
+        this.modMailInputChannel = modMailInputChannel;
+        this.modMailOutputChannel = modMailOutputChannel;
+        this.mongoDbConnectionUri = mongoDbConnectionUri;
+        this.mailGunApplicationKey = mailGunApplicationKey;
+        this.mailGunBaseUrl = mailGunBaseUrl;
+        this.wolframAlphaApplicationId = wolframAlphaApplicationId;
         this.imgurClientId = imgurClientId;
         this.messageLogChannel = messageLogChannel;
-        this.botResponseLog = botResponseLog;
-    }
-
-    public String getBotToken() {
-        return botToken;
-    }
-
-    public String getCommandPrefix() {
-        return commandPrefix;
-    }
-
-    public String getCsFriendlyGuildID() {
-        return csFriendlyGuildID;
-    }
-
-    public String getVerificationChannelID() {
-        return verificationChannelID;
-    }
-
-    public String getVerifiedRoleID() {
-        return verifiedRoleID;
-    }
-
-    public String getAuditLogChannelID() {
-        return auditLogChannelID;
-    }
-
-    public String getModmailInputChannelID() {
-        return modmailInputChannelID;
-    }
-
-    public String getModmailOutputChannelID() {
-        return modmailOutputChannelID;
-    }
-
-    public String getMongoConnectionUri() {
-        return mongoConnectionUri;
-    }
-
-    public String getMailgunApi() {
-        return mailgunApi;
-    }
-
-    public String getMailgunUrl() {
-        return mailgunUrl;
-    }
-
-    public String getWolframApiKey() {
-        return wolframApiKey;
-    }
-
-    public String getImgurClientId() {
-        return imgurClientId;
-    }
-
-    public String getMessageLogChannel() {
-        return messageLogChannel;
-    }
-
-    public String getBotResponseLog() {
-        return botResponseLog;
     }
 
     public ConfigurationEntry setBotToken(String botToken) {
@@ -170,53 +122,58 @@ public class ConfigurationEntry {
         return this;
     }
 
-    public ConfigurationEntry setCsFriendlyGuildID(String csFriendlyGuildID) {
-        this.csFriendlyGuildID = csFriendlyGuildID;
+    public ConfigurationEntry setGuildId(String guildId) {
+        this.guildId = guildId;
         return this;
     }
 
-    public ConfigurationEntry setVerificationChannelID(String verificationChannelID) {
-        this.verificationChannelID = verificationChannelID;
+    public ConfigurationEntry setVerifiedRoleId(String verifiedRoleId) {
+        this.verifiedRoleId = verifiedRoleId;
         return this;
     }
 
-    public ConfigurationEntry setAuditLogChannelID(String auditLogChannelID) {
-        this.auditLogChannelID = auditLogChannelID;
+    public ConfigurationEntry setVerificationInputChannelId(String verificationInputChannelId) {
+        this.verificationInputChannelId = verificationInputChannelId;
         return this;
     }
 
-    public ConfigurationEntry setVerifiedRoleID(String verifiedRoleID) {
-        this.verifiedRoleID = verifiedRoleID;
+    public ConfigurationEntry setPrivateAuditLogChannelId(String privateAuditLogChannelId) {
+        this.privateAuditLogChannelId = privateAuditLogChannelId;
         return this;
     }
 
-    public ConfigurationEntry setModmailInputChannelID(String modmailInputChannelID) {
-        this.modmailInputChannelID = modmailInputChannelID;
+    public ConfigurationEntry setPublicAuditLogChannelId(String publicAuditLogChannelId) {
+        this.publicAuditLogChannelId = publicAuditLogChannelId;
         return this;
     }
 
-    public ConfigurationEntry setModmailOutputChannelID(String modmailOutputChannelID) {
-        this.modmailOutputChannelID = modmailOutputChannelID;
+    public ConfigurationEntry setModMailInputChannel(String modMailInputChannel) {
+        this.modMailInputChannel = modMailInputChannel;
         return this;
     }
 
-    public ConfigurationEntry setMongoConnectionUri(String mongoConnectionUri) {
-        this.mongoConnectionUri = mongoConnectionUri;
+    public ConfigurationEntry setModMailOutputChannel(String modMailOutputChannel) {
+        this.modMailOutputChannel = modMailOutputChannel;
         return this;
     }
 
-    public ConfigurationEntry setMailgunApi(String mailgunApi) {
-        this.mailgunApi = mailgunApi;
+    public ConfigurationEntry setMongoDbConnectionUri(String mongoDbConnectionUri) {
+        this.mongoDbConnectionUri = mongoDbConnectionUri;
         return this;
     }
 
-    public ConfigurationEntry setMailgunUrl(String mailgunUrl) {
-        this.mailgunUrl = mailgunUrl;
+    public ConfigurationEntry setMailGunApplicationKey(String mailGunApplicationKey) {
+        this.mailGunApplicationKey = mailGunApplicationKey;
         return this;
     }
 
-    public ConfigurationEntry setWolframApiKey(String wolframApiKey) {
-        this.wolframApiKey = wolframApiKey;
+    public ConfigurationEntry setMailGunBaseUrl(String mailGunBaseUrl) {
+        this.mailGunBaseUrl = mailGunBaseUrl;
+        return this;
+    }
+
+    public ConfigurationEntry setWolframAlphaApplicationId(String wolframAlphaApplicationId) {
+        this.wolframAlphaApplicationId = wolframAlphaApplicationId;
         return this;
     }
 
@@ -230,8 +187,63 @@ public class ConfigurationEntry {
         return this;
     }
 
-    public ConfigurationEntry setBotResponseLog(String botResponseLog) {
-        this.botResponseLog = botResponseLog;
-        return this;
+    public String getBotToken() {
+        return botToken;
+    }
+
+    public String getCommandPrefix() {
+        return commandPrefix;
+    }
+
+    public String getGuildId() {
+        return guildId;
+    }
+
+    public String getVerifiedRoleId() {
+        return verifiedRoleId;
+    }
+
+    public String getVerificationInputChannelId() {
+        return verificationInputChannelId;
+    }
+
+    public String getPrivateAuditLogChannelId() {
+        return privateAuditLogChannelId;
+    }
+
+    public String getPublicAuditLogChannelId() {
+        return publicAuditLogChannelId;
+    }
+
+    public String getModMailInputChannel() {
+        return modMailInputChannel;
+    }
+
+    public String getModMailOutputChannel() {
+        return modMailOutputChannel;
+    }
+
+    public String getMongoDbConnectionUri() {
+        return mongoDbConnectionUri;
+    }
+
+    public String getMailGunApplicationKey() {
+        return mailGunApplicationKey;
+    }
+
+    public String getMailGunBaseUrl() {
+        return mailGunBaseUrl;
+    }
+
+    public String getWolframAlphaApplicationId() {
+        return wolframAlphaApplicationId;
+    }
+
+    public String getImgurClientId() {
+        return imgurClientId;
+    }
+
+    public String getMessageLogChannel() {
+        return messageLogChannel;
     }
 }
