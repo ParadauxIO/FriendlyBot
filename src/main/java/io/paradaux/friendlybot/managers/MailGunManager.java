@@ -25,13 +25,91 @@
 
 package io.paradaux.friendlybot.managers;
 
+import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
+import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
+import okhttp3.*;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Base64;
+import java.util.concurrent.CompletableFuture;
+
 public class MailGunManager {
 
     private static MailGunManager instance;
+    private final ConfigurationEntry config;
+    private final Logger logger;
 
-    public MailGunManager() {
+    public MailGunManager(ConfigurationEntry config, Logger logger) {
+        this.config = config;
+        this.logger = logger;
+
+        instance = this;
+    }
+
+    public static MailGunManager getInstance() {
+        if (instance == null) {
+            throw new ManagerNotReadyException();
+        }
+
+        return instance;
+    }
+
+    public void sendEmail(String recipient, String tag, String code) {
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+
+        RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("from", config.getVerificationEmailSender())
+                .addFormDataPart("to", recipient)
+                .addFormDataPart("subject", config.getVerificationEmailSubject())
+                .addFormDataPart("template",config.getVerificationEmailTemplateName())
+                .addFormDataPart("v:a", tag)
+                .addFormDataPart("v:b", code)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(config.getMailGunBaseUrl())
+                .method("POST", body)
+                .addHeader("Authorization", "Basic " + basicAuth("api", config.getMailGunApplicationKey()))
+                .build();
+
+        sendAsync(client, request).thenAccept((response) -> {
+
+            if (response.body() == null) {
+                throw new VerificationException("No response received.");
+            }
+
+            try (Reader reader = response.body().charStream()) {
+                int charInt;
+                StringBuilder strBuilder = new StringBuilder();
+                while ((charInt = reader.read()) != -1) {
+                    strBuilder.append((char) charInt);
+                }
+            } catch (IOException ok) {
+                logger.error("Error occurred whilst interacting with mailgun.");
+                throw new VerificationException();
+            }
+        }).join();
 
     }
 
+    public CompletableFuture<Response> sendAsync(OkHttpClient client, Request request) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return client.newCall(request).execute();
+            } catch (IOException e) {
+                logger.error("Error occurred whilst interacting with mailgun.");
+                return null;
+            }
+        });
+    }
+
+    private static String basicAuth(String user, String pass) {
+        return Base64.getEncoder().encodeToString((user + ":" + pass).getBytes());
+    }
 
 }
