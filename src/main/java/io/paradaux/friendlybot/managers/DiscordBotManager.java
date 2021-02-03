@@ -119,7 +119,6 @@ public class DiscordBotManager {
                         new DmCommand(config, logger, permissionManager),
                         new PermissionsCommand(config, logger, permissionManager),
                         new SayCommand(config, logger, permissionManager),
-                        new SendEmailCommand(config, logger, permissionManager),
                         new SendEmbedCommand(config, logger, permissionManager),
                         new TagSetCommand(config, logger, permissionManager),
                         new VerificationCommand(config, logger, permissionManager),

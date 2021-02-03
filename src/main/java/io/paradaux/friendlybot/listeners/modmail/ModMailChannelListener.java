@@ -58,7 +58,7 @@ public class ModMailChannelListener extends DiscordEventListener {
             return;
         }
 
-        if (!message.getChannel().getId().equals(getConfig().getModmailInputChannelID())) {
+        if (!message.getChannel().getId().equals(getConfig().getModMailInputChannel())) {
             return;
         }
 
@@ -84,7 +84,7 @@ public class ModMailChannelListener extends DiscordEventListener {
                 issue, ticketNumber, incidentID);
         ModMailSentEmbed sentEmbed = new ModMailSentEmbed(ticketNumber, issue);
 
-        receivedEmbed.sendEmbed(DiscordBotManager.getInstance().getChannel(getConfig().getModmailOutputChannelID()));
+        receivedEmbed.sendEmbed(DiscordBotManager.getInstance().getChannel(getConfig().getModMailOutputChannel()));
         event.getAuthor().openPrivateChannel().queue((privateChannel) -> privateChannel
                 .sendMessage(sentEmbed.getEmbed()).queue());
 

@@ -54,7 +54,7 @@ public class VerificationCodeReceivedListener extends DiscordEventListener {
             return;
         }
 
-        if (!event.getChannel().getId().equals(getConfig().getVerificationChannelID())) {
+        if (!event.getChannel().getId().equals(getConfig().getVerificationInputChannelId())) {
             return;
         }
 

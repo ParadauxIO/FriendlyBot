@@ -73,7 +73,7 @@ public class AuditManager {
 
         MongoManager.getInstance().addAuditLog(auditLogEntry);
 
-        TextChannel channel = DiscordBotManager.getInstance().getChannel(config.getAuditLogChannelID());
+        TextChannel channel = DiscordBotManager.getInstance().getChannel(config.getPrivateAuditLogChannelId());
         embed.sendEmbed(channel);
 
     }
