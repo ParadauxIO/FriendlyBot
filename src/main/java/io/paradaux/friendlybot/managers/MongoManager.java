@@ -42,6 +42,7 @@ import org.slf4j.Logger;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,6 +67,9 @@ public class MongoManager {
     private MongoCollection<ModMailEntry> modmail;
     private MongoCollection<BanEntry> bans;
     private MongoCollection<KickEntry> kicks;
+    private MongoCollection<MessageEntry> loggedMessages;
+    private MongoCollection<MessageEntry> botBrain;
+    private MongoCollection<UserSettingsEntry> userSettings;
 
     public MongoManager(ConfigurationEntry config, Logger logger) {
         this.config = config;
@@ -104,6 +108,9 @@ public class MongoManager {
         modmail = dataBase.getCollection("modmail", ModMailEntry.class);
         bans = dataBase.getCollection("bans", BanEntry.class);
         kicks = dataBase.getCollection("kicks", KickEntry.class);
+        loggedMessages = dataBase.getCollection("messages", MessageEntry.class);
+        botBrain = dataBase.getCollection("ai_brain", MessageEntry.class);
+        userSettings = dataBase.getCollection("user_settings", UserSettingsEntry.class);
 
         instance = this;
     }
@@ -258,20 +265,32 @@ public class MongoManager {
         updateModMailEntry(ticketNumber, entry);
     }
 
-    public void addModMailResponse(String ticketNumber, ModMailResponse response) {
-        ModMailEntry entry = getModMailEntry(ticketNumber);
-        List<ModMailResponse> responses = entry.getResponses();
-        responses.add(response);
-        entry.setResponses(responses);
-        updateModMailEntry(ticketNumber, entry);
-    }
-
     public FindIterable<ModMailEntry> getModMailEntries(ModMailEntry.ModMailStatus status) {
         return modmail.find(Filters.eq("status", status));
     }
 
     public void updateModMailEntry(String ticketNumber, ModMailEntry entry) {
         modmail.findOneAndReplace(Filters.eq("ticket_number", ticketNumber), entry);
+    }
+
+    public void addLoggedMessage(MessageEntry message) {
+        loggedMessages.insertOne(message);
+    }
+
+    public MessageEntry getLoggedMessage(String messageId) {
+        return loggedMessages.find(Filters.eq("message_id", messageId)).first();
+    }
+
+    public void updateLoggedMessage(String messageId, MessageEntry entry) {
+        loggedMessages.findOneAndReplace(Filters.eq("message_id", messageId), entry);
+    }
+
+    public void addAiMessage(MessageEntry message) {
+        loggedMessages.insertOne(message);
+    }
+
+    public FindIterable<MessageEntry> getAiMessages() {
+        return botBrain.find();
     }
 
 }

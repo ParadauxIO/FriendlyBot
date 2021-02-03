@@ -11,5 +11,7 @@
   "mailgunApi": "",
   "mailgunUrl": "",
   "wolframApiKey": "",
-  "imgurClientId": ""
+  "imgurClientId": "",
+  "messageLogChannel": "",
+  "botResponseLog": ""
 }

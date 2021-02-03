@@ -34,6 +34,9 @@ import io.paradaux.friendlybot.commands.staff.moderation.*;
 import io.paradaux.friendlybot.commands.staff.technician.*;
 import io.paradaux.friendlybot.commands.utility.*;
 import io.paradaux.friendlybot.listeners.ReadyListener;
+import io.paradaux.friendlybot.listeners.logging.MessageDeleteLog;
+import io.paradaux.friendlybot.listeners.logging.MessageLog;
+import io.paradaux.friendlybot.listeners.logging.UpdatedMessageLog;
 import io.paradaux.friendlybot.listeners.modmail.ModMailChannelListener;
 import io.paradaux.friendlybot.listeners.modmail.ModMailPrivateMessageListener;
 import io.paradaux.friendlybot.listeners.verification.VerificationCodeReceivedListener;
@@ -150,7 +153,10 @@ public class DiscordBotManager {
                         new ModMailPrivateMessageListener(logger),
                         new VerificationCodeReceivedListener(config, logger),
                         new VerificationEmailReceivedListener(config, logger),
-                        new ReadyListener(logger)
+                        new ReadyListener(logger),
+                        new MessageDeleteLog(config, logger, mongo),
+                        new MessageLog(config, logger, mongo),
+                        new UpdatedMessageLog(config, logger, mongo)
                 );
 
         if (token == null) {

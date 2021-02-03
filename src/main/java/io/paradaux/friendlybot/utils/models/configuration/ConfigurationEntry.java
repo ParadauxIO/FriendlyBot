@@ -68,6 +68,10 @@ public class ConfigurationEntry {
     String wolframApiKey;
     String imgurClientId;
 
+    // Message logging
+    String messageLogChannel;
+    String botResponseLog;
+
     // Constructor for builder-pattern generation
     public ConfigurationEntry() {
 
@@ -78,7 +82,7 @@ public class ConfigurationEntry {
     public ConfigurationEntry(String botToken, String commandPrefix, String csFriendlyGuildID, String auditLogChannelID,
                               String verificationChannelID, String verifiedRoleID, String modmailInputChannelID,
                               String modmailOutputChannelID, String mongoConnectionUri, String mailgunApi, String mailgunUrl,
-                              String wolframApiKey, String imgurClientId) {
+                              String wolframApiKey, String imgurClientId, String messageLogChannel, String botResponseLog) {
         this.botToken = botToken;
         this.commandPrefix = commandPrefix;
         this.csFriendlyGuildID = csFriendlyGuildID;
@@ -92,11 +96,9 @@ public class ConfigurationEntry {
         this.mailgunUrl = mailgunUrl;
         this.wolframApiKey = wolframApiKey;
         this.imgurClientId = imgurClientId;
+        this.messageLogChannel = messageLogChannel;
+        this.botResponseLog = botResponseLog;
     }
-
-    /*
-     * Standard Getters
-     * */
 
     public String getBotToken() {
         return botToken;
@@ -150,10 +152,13 @@ public class ConfigurationEntry {
         return imgurClientId;
     }
 
-    /*
-     * Builder-pattern Setters
-     * Mostly for easy mocking/unit testing
-     * */
+    public String getMessageLogChannel() {
+        return messageLogChannel;
+    }
+
+    public String getBotResponseLog() {
+        return botResponseLog;
+    }
 
     public ConfigurationEntry setBotToken(String botToken) {
         this.botToken = botToken;
@@ -217,6 +222,16 @@ public class ConfigurationEntry {
 
     public ConfigurationEntry setImgurClientId(String imgurClientId) {
         this.imgurClientId = imgurClientId;
+        return this;
+    }
+
+    public ConfigurationEntry setMessageLogChannel(String messageLogChannel) {
+        this.messageLogChannel = messageLogChannel;
+        return this;
+    }
+
+    public ConfigurationEntry setBotResponseLog(String botResponseLog) {
+        this.botResponseLog = botResponseLog;
         return this;
     }
 }
