@@ -89,10 +89,13 @@ public class MailGunManager {
                 while ((charInt = reader.read()) != -1) {
                     strBuilder.append((char) charInt);
                 }
+
+                System.out.println(strBuilder.toString());
             } catch (IOException ok) {
                 logger.error("Error occurred whilst interacting with mailgun.");
                 throw new VerificationException();
             }
+
         }).join();
 
     }
