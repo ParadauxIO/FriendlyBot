@@ -62,7 +62,7 @@ public class PermissionsCommand extends PrivilegedCommand {
             return;
         }
 
-        Member target = retrieveMember(message.getGuild(), parseTarget(message, args[3]));
+        Member target = retrieveMember(message.getGuild(), parseTarget(message, args[2]));
 
         if (target == null) {
             message.getChannel().sendMessage("Invalid target specified.").queue();
