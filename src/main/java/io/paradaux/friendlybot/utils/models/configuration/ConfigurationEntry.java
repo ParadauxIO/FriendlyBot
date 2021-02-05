@@ -98,6 +98,12 @@ public class ConfigurationEntry implements Serializable {
     @SerializedName("bytebin_instance")
     private String bytebinInstance;
 
+    @SerializedName("imgflip_username")
+    private String imgflipUsername;
+
+    @SerializedName("imgflip_password")
+    private String imgflipPassword;
+
     public ConfigurationEntry() {
     
     }
@@ -107,7 +113,8 @@ public class ConfigurationEntry implements Serializable {
                               String modMailInputChannel, String modMailOutputChannel, String mongoDbConnectionUri,
                               String mailGunApplicationKey, String verificationEmailSubject, String verificationEmailSender,
                               String verificationEmailTemplateName, String mailGunBaseUrl, String wolframAlphaApplicationId,
-                              String imgurClientId, String messageLogChannel, String bytebinInstance) {
+                              String imgurClientId, String messageLogChannel, String bytebinInstance, String imgflipUsername,
+                              String imgflipPassword) {
         this.botToken = botToken;
         this.commandPrefix = commandPrefix;
         this.guildId = guildId;
@@ -127,6 +134,8 @@ public class ConfigurationEntry implements Serializable {
         this.imgurClientId = imgurClientId;
         this.messageLogChannel = messageLogChannel;
         this.bytebinInstance = bytebinInstance;
+        this.imgflipUsername = imgflipUsername;
+        this.imgflipPassword = imgflipPassword;
     }
 
     public ConfigurationEntry setBotToken(String botToken) {
@@ -224,6 +233,16 @@ public class ConfigurationEntry implements Serializable {
         return this;
     }
 
+    public ConfigurationEntry setImgflipUsername(String imgflipUsername) {
+        this.imgflipUsername = imgflipUsername;
+        return this;
+    }
+
+    public ConfigurationEntry setImgflipPassword(String imgflipPassword) {
+        this.imgflipPassword = imgflipPassword;
+        return this;
+    }
+
     public String getBotToken() {
         return botToken;
     }
@@ -298,5 +317,13 @@ public class ConfigurationEntry implements Serializable {
 
     public String getBytebinInstance() {
         return bytebinInstance;
+    }
+
+    public String getImgflipUsername() {
+        return imgflipUsername;
+    }
+
+    public String getImgflipPassword() {
+        return imgflipPassword;
     }
 }
