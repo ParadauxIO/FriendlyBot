@@ -44,7 +44,6 @@ import java.io.Reader;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -121,18 +120,27 @@ public class MemeCommand extends BaseCommand {
                 args2.remove(0);
                 args2.remove(0);
 
-                String[] lines = String.join(" ", args2).split("\\|");
+                String[] lines;
+
+                try {
+                    lines = String.join(" ", args2).split("\\|");
+                } catch (IndexOutOfBoundsException exception) {
+                    lines = new String[]{String.join(" ", args2)};
+                }
 
                 OkHttpClient client = new OkHttpClient().newBuilder()
                         .build();
 
-                RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                MultipartBody.Builder bodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM)
                         .addFormDataPart("template_id", id)
                         .addFormDataPart("username", getConfig().getImgflipUsername())
-                        .addFormDataPart("password", getConfig().getImgflipPassword())
-                        .addFormDataPart("text0", lines[0])
-                        .addFormDataPart("text1", lines[1])
-                        .build();
+                        .addFormDataPart("password", getConfig().getImgflipPassword());
+
+                for (int i = 0; i < lines.length; i++) {
+                    bodyBuilder.addFormDataPart("text" + i, lines[i]);
+                }
+
+                RequestBody body = bodyBuilder.build();
 
                 Request request = new Request.Builder()
                         .url(CAPTION_MEMES_API)
@@ -170,7 +178,7 @@ public class MemeCommand extends BaseCommand {
             }
 
             default: {
-                respondSyntaxError(message, ";meme <images/caption> <>");
+                respondSyntaxError(message, ";meme <images/caption> <| separated text blocks>");
                 break;
             }
 
