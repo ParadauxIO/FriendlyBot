@@ -29,7 +29,6 @@ import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
 import okhttp3.*;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 
 import java.io.IOException;
