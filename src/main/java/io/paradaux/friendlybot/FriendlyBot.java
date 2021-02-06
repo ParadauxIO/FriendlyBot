@@ -88,5 +88,7 @@ public class FriendlyBot {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             logger.info("Shutting down...");
         }));
+
+        // TODO unban scheduler
     }
 }
