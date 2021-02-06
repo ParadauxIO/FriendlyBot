@@ -101,6 +101,7 @@ public class DiscordBotManager {
                         // Fun Commands
                         new EightBallCommand(config, logger),
                         new InspireCommand(config, logger),
+                        new LmgtfyCommand(config, logger),
                         new MemeCommand(config, logger),
                         new PingCommand(logger),
                         new XKCDCommand(config, logger),
@@ -127,6 +128,7 @@ public class DiscordBotManager {
 
                         // Utility Commands
                         new GithubCommand(config, logger),
+                        new GoogleCommand(config, logger),
                         new InviteCommand(logger),
                         new UserInfoCommand(config, logger, permissionManager),
                         new WolframAlphaCommand(config, logger)
