@@ -35,7 +35,10 @@ import io.paradaux.http.HttpApi;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import okhttp3.*;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -47,12 +50,11 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class MemeCommand extends BaseCommand {
 
     private static final String GET_MEMES_API = "https://api.imgflip.com/get_memes";
-    private static final String CAPTION_MEMES_API = "https://api.imgflip.com/caption_image";
+    public static final String CAPTION_MEMES_API = "https://api.imgflip.com/caption_image";
 
     public MemeCommand(ConfigurationEntry config, Logger logger) {
         super(config, logger);

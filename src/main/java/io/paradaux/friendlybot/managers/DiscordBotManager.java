@@ -104,6 +104,7 @@ public class DiscordBotManager {
                         new MemeCommand(config, logger),
                         new PingCommand(logger),
                         new XKCDCommand(config, logger),
+                        new YodaifyCommand(config, logger),
 
                         // Moderation Commands
                         new BanCommand(config, logger, permissionManager),
@@ -127,7 +128,6 @@ public class DiscordBotManager {
                         // Utility Commands
                         new GithubCommand(config, logger),
                         new InviteCommand(logger),
-                        new JavadocSearchCommand(config, logger),
                         new UserInfoCommand(config, logger, permissionManager),
                         new WolframAlphaCommand(config, logger)
                 );
