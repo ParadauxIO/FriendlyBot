@@ -25,6 +25,8 @@
 
 package io.paradaux.friendlybot.managers;
 
+import io.paradaux.friendlybot.utils.HttpUtils;
+import io.paradaux.friendlybot.utils.StringUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
@@ -76,7 +78,7 @@ public class MailGunManager {
                 .addHeader("Authorization", "Basic " + StringUtils.basicAuth("api", config.getMailGunApplicationKey()))
                 .build();
 
-        sendAsync(client, request).thenAccept((response) -> {
+        HttpUtils.sendAsync(client, request).thenAccept((response) -> {
 
             if (response.body() == null) {
                 throw new VerificationException("No response received.");
@@ -99,19 +101,5 @@ public class MailGunManager {
 
     }
 
-    public CompletableFuture<Response> sendAsync(OkHttpClient client, Request request) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return client.newCall(request).execute();
-            } catch (IOException e) {
-                logger.error("Error occurred whilst interacting with mailgun.");
-                return null;
-            }
-        });
-    }
-
-    private static String basicAuth(String user, String pass) {
-        return Base64.getEncoder().encodeToString((user + ":" + pass).getBytes());
-    }
 
 }
