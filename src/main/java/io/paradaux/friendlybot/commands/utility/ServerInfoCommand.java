@@ -55,16 +55,16 @@ public class ServerInfoCommand extends BaseCommand {
         StringBuilder builder = new StringBuilder();
 
         for (final var emote : emotes) {
-            builder.append(emote.getAsMention());
+            builder.append(":" + emote.getName() + ":");
         }
 
         MessageEmbed embed = new EmbedBuilder()
                 .setTitle(guild.getName() + " » Server Information")
                 .setColor(0x009999)
                 .setThumbnail(guild.getIconUrl())
-                .addField("Owner", guild.getOwner().getUser().getAsTag(), true)
+                .addField("Owner", retrieveMember(guild, guild.getOwnerId()).getUser().getAsTag(), true)
                 .addField("Member Count", String.valueOf(guild.getMemberCount()), true)
-                .addField("Emojis", emotes.size() + ": " + builder.toString(), false)
+//                .addField("Emojis", emotes.size() + ": " + builder.toString(), false)
                 .build();
 
         message.getChannel().sendMessage(embed).queue();
