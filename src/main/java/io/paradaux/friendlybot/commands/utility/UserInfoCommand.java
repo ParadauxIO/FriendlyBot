@@ -32,7 +32,10 @@ import io.paradaux.friendlybot.utils.embeds.command.UserInfoEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import org.slf4j.Logger;
+
+import java.util.List;
 
 public class UserInfoCommand extends PrivilegedCommand {
 
@@ -48,7 +51,7 @@ public class UserInfoCommand extends PrivilegedCommand {
         Member member;
         String argument = event.getArgs();
         System.out.println(argument);
-        if (argument != null && isStaff(event.getAuthor().getId())) {
+        if (!argument.isEmpty() && isStaff(event.getAuthor().getId())) {
             System.out.println("Attempting to get other member...");
             member = retrieveMember(event.getGuild(), parseTarget(event.getMessage(), getArgs(argument)[0]));
 
@@ -68,9 +71,19 @@ public class UserInfoCommand extends PrivilegedCommand {
         String accountCreated = StringUtils.formatTime(member.getUser().getTimeCreated());
         String joinedServer = StringUtils.formatTime(member.getTimeJoined());
         String nickname = member.getNickname() != null ? member.getNickname() : "No Nickname.";
-        String roles = member.getRoles().toString();
 
-        UserInfoEmbed embed = new UserInfoEmbed(tag, avatarUrl, status, accountCreated, joinedServer, roles, nickname);
+        List<Role> roles = member.getRoles();
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("[ ");
+        int i = 0;
+        for (; i < member.getRoles().size()-1; i++) {
+            builder.append(member.getRoles().get(i).getName()).append(", ");
+        }
+
+        builder.append(roles.get(i).getName()).append(" ]");
+
+        UserInfoEmbed embed = new UserInfoEmbed(tag, avatarUrl, status, accountCreated, joinedServer, builder.toString(), nickname);
         embed.sendEmbed(event.getTextChannel());
 
         // TODO add a staff version which shows infractions.
