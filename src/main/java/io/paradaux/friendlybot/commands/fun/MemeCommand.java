@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.commands.fun;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.utils.HttpUtils;
 import io.paradaux.friendlybot.utils.NumberUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
@@ -147,9 +148,9 @@ public class MemeCommand extends BaseCommand {
                         .method("POST", body)
                         .build();
 
-                sendAsync(client, request).thenAccept((response -> {
+                HttpUtils.sendAsync(client, request).thenAccept((response -> {
                     if (response.body() == null) {
-                        throw new VerificationException("No response received.");
+                        throw new IllegalStateException("No response received.");
                     }
 
                     try (Reader reader = response.body().charStream()) {
@@ -186,14 +187,6 @@ public class MemeCommand extends BaseCommand {
 
     }
 
-    public CompletableFuture<Response> sendAsync(OkHttpClient client, Request request) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return client.newCall(request).execute();
-            } catch (IOException e) {
-                getLogger().error("Error occurred whilst interacting with mailgun.");
-                return null;
-            }
-        });
-    }
+
+
 }
