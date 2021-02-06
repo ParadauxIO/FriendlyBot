@@ -1,0 +1,29 @@
+**Github: Search**
+*;github user/repository*
+
+Not yet implemented.
+
+**Google: Search**
+*;google <query>*
+
+Not yet implemented.
+
+**Bot Information**
+*;invite*
+
+Provides some meta information on how to setup this bot for use in your own discord servers.
+
+**Latency Test**
+*;ping*
+
+Used to gauge how long the bot is taking to respond.
+
+**User Info**
+*;userinfo*
+
+Shows information about your user.
+
+**Wolfram Alpha: Search**
+*;wolframalpha <query>*
+
+Search Wolfram Alpha from the comfort of discord!
