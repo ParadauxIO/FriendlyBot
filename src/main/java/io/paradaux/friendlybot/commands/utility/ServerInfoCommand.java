@@ -28,16 +28,45 @@ package io.paradaux.friendlybot.commands.utility;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Emote;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.slf4j.Logger;
+
+import java.util.List;
 
 public class ServerInfoCommand extends BaseCommand {
 
     public ServerInfoCommand(ConfigurationEntry config, Logger logger) {
         super(config, logger);
+        this.name = "serverinfo";
+        this.help = "Provides information about the server.";
+        this.aliases = new String[]{"si, srvinfo"};
     }
 
     @Override
-    protected void execute(CommandEvent commandEvent) {
+    protected void execute(CommandEvent event) {
+        Message message = event.getMessage();
+        Guild guild = event.getGuild();
 
+        List<Emote> emotes = guild.getEmotes();
+        StringBuilder builder = new StringBuilder();
+
+        for (final var emote : emotes) {
+            builder.append(emote.getAsMention());
+        }
+
+        MessageEmbed embed = new EmbedBuilder()
+                .setTitle(guild.getName() + " » Server Information")
+                .setColor(0x009999)
+                .setThumbnail(guild.getIconUrl())
+                .addField("Owner", guild.getOwner().getUser().getAsTag(), true)
+                .addField("Member Count", String.valueOf(guild.getMemberCount()), true)
+                .addField("Emojis", emotes.size() + ": " + builder.toString(), false)
+                .build();
+
+        message.getChannel().sendMessage(embed).queue();
     }
 }

@@ -1,12 +1,12 @@
 **Github: Search**
 *;github user/repository*
 
-Not yet implemented.
+[Not yet implemented.]
 
 **Google: Search**
 *;google <query>*
 
-Not yet implemented.
+[Not yet implemented.]
 
 **Bot Information**
 *;invite*
@@ -18,7 +18,12 @@ Provides some meta information on how to setup this bot for use in your own disc
 
 Used to gauge how long the bot is taking to respond.
 
-**User Info**
+*Server Information*
+;serverinfo
+
+Shows information about this guild.
+
+**User Information**
 *;userinfo*
 
 Shows information about your user.
@@ -27,3 +32,4 @@ Shows information about your user.
 *;wolframalpha <query>*
 
 Search Wolfram Alpha from the comfort of discord!
+[Currently Broken]
