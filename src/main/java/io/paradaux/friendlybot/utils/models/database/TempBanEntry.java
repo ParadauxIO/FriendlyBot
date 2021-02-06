@@ -2,7 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2021 Rían Errity
- * io.paradaux.friendlybot.utils.models.database.BanEntry :  31/01/2021, 01:26
+ * io.paradaux.friendlybot.utils.models.database.TempBanEntry :  06/02/2021, 18:12
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,22 +30,22 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import java.io.Serializable;
 import java.util.Date;
 
-public class BanEntry implements Serializable {
+public class TempBanEntry implements Serializable {
 
     @BsonProperty(value = "incident_id")
-    private String incidentID;
+    private String incidentId;
 
     @BsonProperty(value = "target_tag")
     private String userTag;
 
     @BsonProperty(value = "target_id")
-    private String userID;
+    private String userId;
 
     @BsonProperty(value = "staff_tag")
     private String staffTag;
 
     @BsonProperty(value = "staff_id")
-    private String staffID;
+    private String staffId;
 
     @BsonProperty(value = "reason")
     private String reason;
@@ -53,76 +53,94 @@ public class BanEntry implements Serializable {
     @BsonProperty(value = "timestamp")
     private Date timestamp;
 
-    public BanEntry() {
+    @BsonProperty(value = "expiry")
+    private Date expiry;
+
+    public TempBanEntry() {
 
     }
 
-    public BanEntry(String incidentID, String userTag, String userID, String staffTag, String staffID, String reason, Date timestamp) {
-        this.incidentID = incidentID;
+    public TempBanEntry(String incidentId, String userTag, String userId, String staffTag, String staffId, String reason, Date timestamp,
+                        Date expiry) {
+        this.incidentId = incidentId;
         this.userTag = userTag;
-        this.userID = userID;
+        this.userId = userId;
         this.staffTag = staffTag;
-        this.staffID = staffID;
+        this.staffId = staffId;
         this.reason = reason;
         this.timestamp = timestamp;
+        this.expiry = expiry;
+    }
+
+    public String getIncidentId() {
+        return incidentId;
     }
 
     public String getUserTag() {
         return userTag;
     }
 
-    public String getUserID() {
-        return userID;
+    public String getUserId() {
+        return userId;
     }
 
     public String getStaffTag() {
         return staffTag;
     }
 
-    public String getStaffID() {
-        return staffID;
+    public String getStaffId() {
+        return staffId;
     }
 
     public String getReason() {
         return reason;
     }
 
-    public String getIncidentID() {
-        return incidentID;
-    }
-
     public Date getTimestamp() {
         return timestamp;
     }
 
-    public BanEntry setIncidentID(String incidentID) {
-        this.incidentID = incidentID;
+    public Date getExpiry() {
+        return expiry;
+    }
+
+    public TempBanEntry setIncidentId(String incidentId) {
+        this.incidentId = incidentId;
         return this;
     }
 
-    public BanEntry setUserTag(String userTag) {
+    public TempBanEntry setUserTag(String userTag) {
         this.userTag = userTag;
         return this;
     }
 
-    public BanEntry setUserID(String userID) {
-        this.userID = userID;
+    public TempBanEntry setUserId(String userId) {
+        this.userId = userId;
         return this;
     }
 
-    public BanEntry setStaffTag(String staffTag) {
+    public TempBanEntry setStaffTag(String staffTag) {
         this.staffTag = staffTag;
         return this;
     }
 
-    public BanEntry setStaffID(String staffID) {
-        this.staffID = staffID;
+    public TempBanEntry setStaffId(String staffId) {
+        this.staffId = staffId;
         return this;
     }
 
-    public BanEntry setReason(String reason) {
+    public TempBanEntry setReason(String reason) {
         this.reason = reason;
         return this;
     }
 
+    public TempBanEntry setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+        return this;
+    }
+
+    public TempBanEntry setExpiry(Date expiry) {
+        this.expiry = expiry;
+        return this;
+    }
 }
