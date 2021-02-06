@@ -28,6 +28,7 @@ package io.paradaux.friendlybot.commands.staff.moderation;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.FriendlyBot;
 import io.paradaux.friendlybot.managers.AuditManager;
+import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
@@ -35,9 +36,13 @@ import io.paradaux.friendlybot.utils.embeds.moderation.WarningEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.WarningEntry;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
+
+import java.util.Date;
 
 /**
  * This is a command which warns the specified user.
@@ -83,11 +88,6 @@ public class WarnCommand extends PrivilegedCommand {
             return;
         }
 
-        if (isStaff(target.getId())) {
-            message.getChannel().sendMessage("You cannot warn a staff member.").queue();
-            return;
-        }
-
         MongoManager mongo = MongoManager.getInstance();
 
         String incidentID = mongo.getNextIncidentID();
@@ -102,15 +102,32 @@ public class WarnCommand extends PrivilegedCommand {
                 .setUserTag(target.getAsTag());
 
         mongo.addWarnEntry(entry);
+
         AuditManager.getInstance().log(AuditLogEmbed.Action.WARN, target,
                 event.getAuthor(), reason, incidentID);
 
-        message.getChannel().sendMessage("Incident ID: " + incidentID
-                + "\nReason: " + reason).queue();
+        MessageEmbed publicAudit = new EmbedBuilder()
+                .setColor(0x33cccc)
+                .setTitle(target.getAsTag() + " has been warned.")
+                .setDescription("**Reason**: " + reason + "\n**N.B**: Receiving a second warning is an automatic temporary ban.")
+                .setFooter("Incident ID: `" + incidentID + "` For more information, reach out to the moderation team via mod-mail.")
+                .setTimestamp(new Date().toInstant())
+                .build();
 
-        WarningEmbed embed = new WarningEmbed(reason, incidentID);
-        target.openPrivateChannel().queue((channel) -> channel.sendMessage(embed.getEmbed())
-                .queue());
+        DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId()).sendMessage(publicAudit).queue();
+        message.getChannel().sendMessage(publicAudit).queue();
+
+        target.openPrivateChannel().queue((channel) -> {
+            MessageEmbed warnNotification = new EmbedBuilder()
+                    .setColor(0x33cccc)
+                    .setTitle("You have been warned.")
+                    .setDescription("**Reason**: " + reason + "\n**N.B**: Receiving a second warning is an automatic temporary ban.")
+                    .setFooter("Incident ID: `" + incidentID + "` For more information, reach out to the moderation team via mod-mail.")
+                    .setTimestamp(new Date().toInstant())
+                    .build();
+
+            channel.sendMessage(warnNotification).queue();
+        });
 
     }
 }
