@@ -103,7 +103,6 @@ public class DiscordBotManager {
                         new InspireCommand(config, logger),
                         new LmgtfyCommand(config, logger),
                         new MemeCommand(config, logger),
-                        new PingCommand(logger),
                         new XKCDCommand(config, logger),
                         new YodaifyCommand(config, logger),
 
@@ -131,6 +130,7 @@ public class DiscordBotManager {
                         new GithubCommand(config, logger),
                         new GoogleCommand(config, logger),
                         new InviteCommand(logger),
+                        new PingCommand(logger),
                         new UserInfoCommand(config, logger, permissionManager),
                         new WolframAlphaCommand(config, logger)
                 );
