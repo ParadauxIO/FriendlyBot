@@ -67,7 +67,7 @@ public class TempBanCommand extends PrivilegedCommand {
             return;
         }
 
-        if (args.length == 0) {
+        if (event.getArgs().isEmpty()) {
             respondSyntaxError(message, ";tempban <user> <time> <reason>");
             return;
         }
