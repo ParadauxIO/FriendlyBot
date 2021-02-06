@@ -84,7 +84,7 @@ public class WarnCommand extends PrivilegedCommand {
         }
 
         if (isStaff(target.getId())) {
-            message.getChannel().sendMessage("You cannot ban a staff member.").queue();
+            message.getChannel().sendMessage("You cannot warn a staff member.").queue();
             return;
         }
 

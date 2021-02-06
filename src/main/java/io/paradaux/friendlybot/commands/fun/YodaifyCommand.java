@@ -64,12 +64,12 @@ public class YodaifyCommand extends BaseCommand {
             return;
         }
 
-        String[] paragraph = event.getArgs().split("\\. *");
+        String[] tokenisedSentence = event.getArgs().split("\\. *");
 
         StringBuilder builder = new StringBuilder();
 
-        for (int i = 0; i < paragraph.length; i++) {
-            String[] temp = paragraph[i].split(" ");
+        for (int i = 0; i < tokenisedSentence.length; i++) {
+            String[] temp = tokenisedSentence[i].split(" ");
             builder.append(temp[temp.length - 1]);
             for (int x = 0; x < temp.length - 1; x++){
                 builder.append(" ").append(temp[x]);
@@ -121,8 +121,6 @@ public class YodaifyCommand extends BaseCommand {
                 throw new VerificationException();
             }
         })).join();
-
-
-
+        
     }
 }
