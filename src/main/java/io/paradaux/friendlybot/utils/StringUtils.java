@@ -173,7 +173,14 @@ public class StringUtils {
     /**
      * Create URL-encoded parameters.
      * */
-    public static String urlEncode(String part) {
-        return URLEncoder.encode(part, StandardCharsets.UTF_8);
+    public static String urlEncode(String str) {
+        return URLEncoder.encode(str, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Removes letters from String
+     * */
+    public static String removeLetters(String str) {
+        return str.replaceAll("[a-zA-Z]", "");
     }
 }
