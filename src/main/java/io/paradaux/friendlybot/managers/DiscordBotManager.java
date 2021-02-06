@@ -130,6 +130,7 @@ public class DiscordBotManager {
                         new GithubCommand(config, logger),
                         new GoogleCommand(config, logger),
                         new InviteCommand(logger),
+                        new MemeImagesCommand(config, logger),
                         new PingCommand(logger),
                         new UserInfoCommand(config, logger, permissionManager),
                         new WolframAlphaCommand(config, logger)
