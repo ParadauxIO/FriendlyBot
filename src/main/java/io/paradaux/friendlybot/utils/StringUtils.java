@@ -26,6 +26,8 @@
 package io.paradaux.friendlybot.utils;
 
 import javax.annotation.Nullable;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -168,4 +170,10 @@ public class StringUtils {
         return Base64.getEncoder().encodeToString((user + ":" + pass).getBytes());
     }
 
+    /**
+     * Create URL-encoded parameters.
+     * */
+    public static String urlEncode(String part) {
+        return URLEncoder.encode(part, StandardCharsets.UTF_8);
+    }
 }
