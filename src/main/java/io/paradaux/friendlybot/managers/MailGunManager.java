@@ -73,7 +73,7 @@ public class MailGunManager {
         Request request = new Request.Builder()
                 .url(config.getMailGunBaseUrl())
                 .method("POST", body)
-                .addHeader("Authorization", "Basic " + basicAuth("api", config.getMailGunApplicationKey()))
+                .addHeader("Authorization", "Basic " + StringUtils.basicAuth("api", config.getMailGunApplicationKey()))
                 .build();
 
         sendAsync(client, request).thenAccept((response) -> {
