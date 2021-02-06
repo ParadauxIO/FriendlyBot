@@ -28,9 +28,15 @@ package io.paradaux.friendlybot.commands.fun;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
+import java.awt.*;
+
 public class LmgtfyCommand extends BaseCommand {
+
+    private static final String LMGTFY_LINK = "https://lmgtfy.com/?q=";
 
     public LmgtfyCommand(ConfigurationEntry config, Logger logger) {
         super(config, logger);
@@ -39,7 +45,19 @@ public class LmgtfyCommand extends BaseCommand {
     }
 
     @Override
-    protected void execute(CommandEvent commandEvent) {
+    protected void execute(CommandEvent event) {
+        Message message = event.getMessage();
+        String query = event.getArgs();
 
+        if (query.isEmpty()) {
+            respondSyntaxError(message, ";lmgtfy <query>");
+            return;
+        }
+
+        String url = (LMGTFY_LINK + query.replace(' ', '+'));
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setAuthor("Click me!", url, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png");
+        embed.setColor(0x17E77E);
+        message.getChannel().sendMessage(embed.build()).queue();
     }
 }
