@@ -98,7 +98,7 @@ public class TempBanCommand extends PrivilegedCommand {
                 .setColor(0xeb5132)
                 .setTitle(target.getAsTag() + " has been temporarily banned.")
                 .setDescription("**Reason**: " + entry.getReason() + "\n**Period**: " + TimeUtils.millisecondsToDisplay(period))
-                .setFooter("For more information, reach out to the moderation team via mod-mail.")
+                .setFooter("Incident ID: `" + entry.getIncidentId() + "` For more information, reach out to the moderation team via mod-mail.")
                 .setTimestamp(new Date().toInstant())
                 .build();
 
@@ -112,7 +112,7 @@ public class TempBanCommand extends PrivilegedCommand {
                     .setColor(0xeb5132)
                     .setTitle("You have been temporarily banned.")
                     .setDescription("**Reason**: " + entry.getReason() + "\n**Period**: " + TimeUtils.millisecondsToDisplay(period))
-                    .setFooter("For more information, reach out to a member of the moderation team.")
+                    .setFooter("Incident ID: `" + entry.getIncidentId() + "` For more information, reach out to a member of the moderation team.")
                     .setTimestamp(new Date().toInstant())
                     .build();
 
