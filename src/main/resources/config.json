@@ -17,5 +17,7 @@
   "wolfram_alpha_application_id": "",
   "imgur_client_id": "",
   "message_log_channel": "",
-  "bytebin_instance": ""
+  "bytebin_instance": "",
+  "imgflip_username": "",
+  "imgflip_password": ""
 }

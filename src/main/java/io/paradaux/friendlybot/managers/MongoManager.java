@@ -42,9 +42,7 @@ import org.slf4j.Logger;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -70,6 +68,8 @@ public class MongoManager {
     private MongoCollection<MessageEntry> loggedMessages;
     private MongoCollection<MessageEntry> botBrain;
     private MongoCollection<UserSettingsEntry> userSettings;
+    private MongoCollection<TempBanEntry> tempbans;
+
 
     public MongoManager(ConfigurationEntry config, Logger logger) {
         this.config = config;
@@ -111,6 +111,7 @@ public class MongoManager {
         loggedMessages = dataBase.getCollection("messages", MessageEntry.class);
         botBrain = dataBase.getCollection("ai_brain", MessageEntry.class);
         userSettings = dataBase.getCollection("user_settings", UserSettingsEntry.class);
+        tempbans = dataBase.getCollection("tempbans", TempBanEntry.class);
 
         instance = this;
     }
@@ -291,6 +292,18 @@ public class MongoManager {
 
     public FindIterable<MessageEntry> getAiMessages() {
         return botBrain.find();
+    }
+
+    public void addTempBanEntry(TempBanEntry entry) {
+        tempbans.insertOne(entry);
+    }
+
+    public TempBanEntry getTempBanEntry(String discordId) {
+        return tempbans.find(Filters.eq("discord_id", discordId)).first();
+    }
+
+    public FindIterable<TempBanEntry> getTempBans() {
+        return tempbans.find();
     }
 
 }

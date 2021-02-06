@@ -26,11 +26,14 @@
 package io.paradaux.friendlybot.utils;
 
 import javax.annotation.Nullable;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -158,5 +161,26 @@ public class StringUtils {
      * */
     public static String generateVerificationCode() {
         return String.format("%06d", new Random().nextInt(999999));
+    }
+
+    /**
+     * Create a basic authentication header
+     * */
+    public static String basicAuth(String user, String pass) {
+        return Base64.getEncoder().encodeToString((user + ":" + pass).getBytes());
+    }
+
+    /**
+     * Create URL-encoded parameters.
+     * */
+    public static String urlEncode(String str) {
+        return URLEncoder.encode(str, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Removes letters from String
+     * */
+    public static String removeLetters(String str) {
+        return str.replaceAll("[a-zA-Z]", "");
     }
 }

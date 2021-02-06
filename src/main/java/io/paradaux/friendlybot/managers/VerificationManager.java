@@ -38,7 +38,6 @@ import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
-import javax.mail.MessagingException;
 import java.util.concurrent.ExecutionException;
 
 public class VerificationManager {

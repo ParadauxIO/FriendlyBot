@@ -2,7 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2021 Rían Errity
- * io.paradaux.friendlybot.commands.fun.PingCommand :  31/01/2021, 01:28
+ * io.paradaux.friendlybot.commands.fun.LmgtfyCommand :  06/02/2021, 11:08
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,30 +26,38 @@
 package io.paradaux.friendlybot.commands.fun;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.FriendlyBot;
+import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
-/**
- * Ping Command is used to gauge DiscordAPI Latency.
- *
- * @author Rían Errity
- * @version Last Modified for 0.1.0-SNAPSHOT
- * @since 2/11/2020 DD/MM/YY
- * @see FriendlyBot
- * */
+import java.awt.*;
 
+public class LmgtfyCommand extends BaseCommand {
 
-public class PingCommand extends BaseCommand {
+    private static final String LMGTFY_LINK = "https://lmgtfy.com/?q=";
 
-    public PingCommand(Logger logger) {
-        super(logger);
-        this.name = "ping";
-        this.help = "Latency Test Command.";
+    public LmgtfyCommand(ConfigurationEntry config, Logger logger) {
+        super(config, logger);
+        this.name = "lmgtfy";
+        this.help = "Let me lmgtfy for you...";
     }
 
     @Override
     protected void execute(CommandEvent event) {
-        event.getChannel().sendMessage("Pong!").queue();
+        Message message = event.getMessage();
+        String query = event.getArgs();
+
+        if (query.isEmpty()) {
+            respondSyntaxError(message, ";lmgtfy <query>");
+            return;
+        }
+
+        String url = (LMGTFY_LINK + query.replace(' ', '+'));
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setAuthor("Click me!", url, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1200px-Google_%22G%22_Logo.svg.png");
+        embed.setColor(0x17E77E);
+        message.getChannel().sendMessage(embed.build()).queue();
     }
 }

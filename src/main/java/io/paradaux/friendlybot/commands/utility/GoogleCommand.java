@@ -2,7 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2021 Rían Errity
- * io.paradaux.friendlybot.commands.staff.technician.TagSetCommand :  31/01/2021, 01:26
+ * io.paradaux.friendlybot.commands.utility.GoogleCommand :  06/02/2021, 11:08
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,25 +23,23 @@
  * SOFTWARE.
  */
 
-package io.paradaux.friendlybot.commands.staff.technician;
+package io.paradaux.friendlybot.commands.utility;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
+import io.paradaux.friendlybot.utils.models.types.BaseCommand;
 import org.slf4j.Logger;
 
-public class TagSetCommand extends PrivilegedCommand {
+public class GoogleCommand extends BaseCommand {
 
-    public TagSetCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
-        super(config, logger, permissionManager);
-        this.name = "tagset";
-        this.aliases = new String[]{"settag", "st", "ts"};
-        this.help = "Sets a tag, which is a subcommand that sends a pre-determined canned message.";
+    public GoogleCommand(ConfigurationEntry config, Logger logger) {
+        super(config, logger);
+        this.name = "google";
+        this.help = "Google via discord!";
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    protected void execute(CommandEvent commandEvent) {
 
     }
 }

@@ -1,6 +1,9 @@
 # Runtime stuff
-*.json
+/*.json
 src/test/resources/img*
+
+# Private tests
+src/test/java/io/paradaux/friendlybot/managers/MailGunManagerTest.java
 
 # User-specific stuff
 .idea/

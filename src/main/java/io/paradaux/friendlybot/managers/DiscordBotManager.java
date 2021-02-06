@@ -27,9 +27,10 @@ package io.paradaux.friendlybot.managers;
 
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
-import io.paradaux.friendlybot.commands.fun.InspireCommand;
-import io.paradaux.friendlybot.commands.fun.PingCommand;
-import io.paradaux.friendlybot.commands.fun.XKCDCommand;
+import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import com.jagrosh.jdautilities.menu.Paginator;
+import com.mongodb.connection.Server;
+import io.paradaux.friendlybot.commands.fun.*;
 import io.paradaux.friendlybot.commands.staff.moderation.*;
 import io.paradaux.friendlybot.commands.staff.technician.*;
 import io.paradaux.friendlybot.commands.utility.*;
@@ -80,6 +81,11 @@ public class DiscordBotManager {
             throw new RuntimeException("Failed to login");
         }
 
+//        Paginator paginator = new Paginator.Builder()
+//                .setEventWaiter(new EventWaiter())
+//                .build();
+
+
         logger.info("Login successful.");
 
         instance = this;
@@ -101,9 +107,12 @@ public class DiscordBotManager {
                 .setActivity(Activity.listening("to modmail queries.."))
                 .addCommands(
                         // Fun Commands
+                        new EightBallCommand(config, logger),
                         new InspireCommand(config, logger),
-                        new PingCommand(logger),
+                        new LmgtfyCommand(config, logger),
+                        new MemeCommand(config, logger),
                         new XKCDCommand(config, logger),
+                        new YodaifyCommand(config, logger),
 
                         // Moderation Commands
                         new BanCommand(config, logger, permissionManager),
@@ -112,6 +121,7 @@ public class DiscordBotManager {
                         new LookupCommand(config, logger, permissionManager),
                         new PruneCommand(config, logger, permissionManager),
                         new RespondCommand(config, logger, permissionManager, mongo),
+                        new TempBanCommand(config, logger, permissionManager, mongo),
                         new TicketCommand(config, logger, permissionManager),
                         new TimeOutCommand(config, logger, permissionManager),
                         new WarnCommand(config, logger, permissionManager),
@@ -121,13 +131,17 @@ public class DiscordBotManager {
                         new PermissionsCommand(config, logger, permissionManager),
                         new SayCommand(config, logger, permissionManager),
                         new SendEmbedCommand(config, logger, permissionManager),
-                        new TagSetCommand(config, logger, permissionManager),
                         new VerificationCommand(config, logger, permissionManager),
 
                         // Utility Commands
+                        new CommandsCommand(config, logger),
                         new GithubCommand(config, logger),
+                        new GoogleCommand(config, logger),
                         new InviteCommand(logger),
-                        new JavadocSearchCommand(config, logger),
+                        new MemeImagesCommand(config, logger),
+                        new PingCommand(logger),
+                        new ServerInfoCommand(config, logger),
+                        new TagCommand(config, logger),
                         new UserInfoCommand(config, logger, permissionManager),
                         new WolframAlphaCommand(config, logger)
                 );

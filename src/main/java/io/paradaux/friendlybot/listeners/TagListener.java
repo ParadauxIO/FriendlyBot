@@ -2,7 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2021 Rían Errity
- * io.paradaux.friendlybot.commands.utility.JavadocSearchCommand :  31/01/2021, 01:26
+ * io.paradaux.friendlybot.listeners.TagListener :  06/02/2021, 17:22
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,37 @@
  * SOFTWARE.
  */
 
-package io.paradaux.friendlybot.commands.utility;
+package io.paradaux.friendlybot.listeners;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.types.BaseCommand;
+import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-public class JavadocSearchCommand extends BaseCommand {
+public class TagListener extends DiscordEventListener {
 
-    public JavadocSearchCommand(ConfigurationEntry config, Logger logger) {
+    private static final String TAG_PREFIX = "!";
+
+    public TagListener(ConfigurationEntry config, Logger logger) {
         super(config, logger);
-        this.name = "javadocs";
-        this.aliases = new String[]{"jd", "javadocs"};
-        this.help = "Searches the javadocs.";
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
+        Message message = event.getMessage();
+        String messageContent = message.getContentRaw();
+
+        if (!messageContent.startsWith(TAG_PREFIX)) {
+            return;
+        }
+
+        messageContent = messageContent.substring(1);
+
+
+
+
 
     }
 }

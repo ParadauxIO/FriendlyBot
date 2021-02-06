@@ -25,11 +25,12 @@
 
 package io.paradaux.friendlybot.managers;
 
+import io.paradaux.friendlybot.utils.HttpUtils;
+import io.paradaux.friendlybot.utils.StringUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
 import okhttp3.*;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -74,10 +75,10 @@ public class MailGunManager {
         Request request = new Request.Builder()
                 .url(config.getMailGunBaseUrl())
                 .method("POST", body)
-                .addHeader("Authorization", "Basic " + basicAuth("api", config.getMailGunApplicationKey()))
+                .addHeader("Authorization", "Basic " + StringUtils.basicAuth("api", config.getMailGunApplicationKey()))
                 .build();
 
-        sendAsync(client, request).thenAccept((response) -> {
+        HttpUtils.sendAsync(client, request).thenAccept((response) -> {
 
             if (response.body() == null) {
                 throw new VerificationException("No response received.");
@@ -89,27 +90,16 @@ public class MailGunManager {
                 while ((charInt = reader.read()) != -1) {
                     strBuilder.append((char) charInt);
                 }
+
+                System.out.println(strBuilder.toString());
             } catch (IOException ok) {
                 logger.error("Error occurred whilst interacting with mailgun.");
                 throw new VerificationException();
             }
+
         }).join();
 
     }
 
-    public CompletableFuture<Response> sendAsync(OkHttpClient client, Request request) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return client.newCall(request).execute();
-            } catch (IOException e) {
-                logger.error("Error occurred whilst interacting with mailgun.");
-                return null;
-            }
-        });
-    }
-
-    private static String basicAuth(String user, String pass) {
-        return Base64.getEncoder().encodeToString((user + ":" + pass).getBytes());
-    }
 
 }

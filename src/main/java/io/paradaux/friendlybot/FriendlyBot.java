@@ -31,8 +31,6 @@ import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Scanner;
-
 /**
  * CSBot is the main (executable) class for the project.
  * It provides a set of lazy dependency injection instances
@@ -90,5 +88,7 @@ public class FriendlyBot {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             logger.info("Shutting down...");
         }));
+
+        // TODO unban scheduler
     }
 }

@@ -70,7 +70,6 @@ public class UpdatedMessageLog extends DiscordEventListener {
                 .setColor(0xda9f20)
                 .setAuthor(user.getName(), null, user.getAvatarUrl())
                 .setTitle("Modified Message in #" + entry.getChannel())
-                .setDescription(entry.getContent())
                 .addField("Old", entry.getContent(), false)
                 .addField("New", entry.getNewContent(), false)
                 .setTimestamp(entry.getDate().toInstant());

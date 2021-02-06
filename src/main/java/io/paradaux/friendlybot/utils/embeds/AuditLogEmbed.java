@@ -39,7 +39,7 @@ public class AuditLogEmbed implements Embed {
     final EmbedBuilder builder = new EmbedBuilder();
 
     public enum Action {
-        WARN, KICK, BAN
+        WARN, KICK, BAN, TEMP_BAN
     }
 
     public AuditLogEmbed(Action action, User user, String reason, String incidentID) {

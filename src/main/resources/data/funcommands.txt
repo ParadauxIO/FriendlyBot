@@ -1,0 +1,31 @@
+**8 Ball**
+*;8ball <question>*
+
+Ask the magical 8 ball, which will (hopefully) take all of your worries away!
+
+**Inspire**
+*;inspire*
+
+Get some very insightful inspiration backed by very scientific machining-learning stuff.
+
+
+**Let me google that for you**
+*;lmgtfy <query>*
+
+If someone is too lazy to google something for themselves, let the bot make a lmgtfy link, because you're too lazy to do it yourself.
+
+**Meme Generator**
+*;meme images*
+*;meme caption <id> <line1> | <line2>*...
+
+The first command sends you a DM of every possible meme image, the second allows you to caption memes, each line has to be separated by a pipe (|)
+
+**Search XKCD**
+*;xkcd <query>*
+
+Search XKCD for the relevant XKCD Comic.
+
+**Yoda Translator**
+*;yodify <sentence>*
+
+Translate sentences into something Yoda would understand...
