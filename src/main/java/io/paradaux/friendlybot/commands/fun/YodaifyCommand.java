@@ -51,7 +51,7 @@ public class YodaifyCommand extends BaseCommand {
     public YodaifyCommand(ConfigurationEntry config, Logger logger) {
         super(config, logger);
         this.name = "yodaify";
-        this.aliases = new String[]{"yoda"};
+        this.aliases = new String[]{"yoda", "yodify"};
         this.help = "Convert english into Yoga's Language!";
     }
 
@@ -121,6 +121,6 @@ public class YodaifyCommand extends BaseCommand {
                 throw new VerificationException();
             }
         })).join();
-        
+
     }
 }
