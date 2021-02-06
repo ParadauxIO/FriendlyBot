@@ -68,6 +68,8 @@ public class MongoManager {
     private MongoCollection<MessageEntry> loggedMessages;
     private MongoCollection<MessageEntry> botBrain;
     private MongoCollection<UserSettingsEntry> userSettings;
+    private MongoCollection<TempBanEntry> tempbans;
+
 
     public MongoManager(ConfigurationEntry config, Logger logger) {
         this.config = config;
@@ -109,6 +111,7 @@ public class MongoManager {
         loggedMessages = dataBase.getCollection("messages", MessageEntry.class);
         botBrain = dataBase.getCollection("ai_brain", MessageEntry.class);
         userSettings = dataBase.getCollection("user_settings", UserSettingsEntry.class);
+        tempbans = dataBase.getCollection("tempbans", TempBanEntry.class);
 
         instance = this;
     }
@@ -289,6 +292,18 @@ public class MongoManager {
 
     public FindIterable<MessageEntry> getAiMessages() {
         return botBrain.find();
+    }
+
+    public void addTempBanEntry(TempBanEntry entry) {
+        tempbans.insertOne(entry);
+    }
+
+    public TempBanEntry getTempBanEntry(String discordId) {
+        return tempbans.find(Filters.eq("discord_id", discordId)).first();
+    }
+
+    public FindIterable<TempBanEntry> getTempBans() {
+        return tempbans.find();
     }
 
 }

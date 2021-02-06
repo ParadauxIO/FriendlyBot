@@ -25,7 +25,6 @@
 
 package io.paradaux.friendlybot.utils;
 
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 public class TimeUtils {

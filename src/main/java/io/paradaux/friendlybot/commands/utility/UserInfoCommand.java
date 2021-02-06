@@ -52,7 +52,6 @@ public class UserInfoCommand extends PrivilegedCommand {
         String argument = event.getArgs();
         System.out.println(argument);
         if (!argument.isEmpty() && isStaff(event.getAuthor().getId())) {
-            System.out.println("Attempting to get other member...");
             member = retrieveMember(event.getGuild(), parseTarget(event.getMessage(), getArgs(argument)[0]));
 
             if (member == null) {
