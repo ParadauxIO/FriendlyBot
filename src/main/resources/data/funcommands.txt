@@ -10,7 +10,7 @@ Get some very insightful inspiration backed by very scientific machining-learnin
 
 
 **Let me google that for you**
-*;lmgtfy <quey>*
+*;lmgtfy <query>*
 
 If someone is too lazy to google something for themselves, let the bot make a lmgtfy link, because you're too lazy to do it yourself.
 
@@ -21,7 +21,7 @@ If someone is too lazy to google something for themselves, let the bot make a lm
 The first command sends you a DM of every possible meme image, the second allows you to caption memes, each line has to be separated by a pipe (|)
 
 **Search XKCD**
-*;xkcd <quey>*
+*;xkcd <query>*
 
 Search XKCD for the relevant XKCD Comic.
 
