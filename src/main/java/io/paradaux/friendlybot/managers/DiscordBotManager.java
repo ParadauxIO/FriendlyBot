@@ -27,10 +27,7 @@ package io.paradaux.friendlybot.managers;
 
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
-import io.paradaux.friendlybot.commands.fun.InspireCommand;
-import io.paradaux.friendlybot.commands.fun.MemeCommand;
-import io.paradaux.friendlybot.commands.fun.PingCommand;
-import io.paradaux.friendlybot.commands.fun.XKCDCommand;
+import io.paradaux.friendlybot.commands.fun.*;
 import io.paradaux.friendlybot.commands.staff.moderation.*;
 import io.paradaux.friendlybot.commands.staff.technician.*;
 import io.paradaux.friendlybot.commands.utility.*;
@@ -102,6 +99,7 @@ public class DiscordBotManager {
                 .setActivity(Activity.listening("to modmail queries.."))
                 .addCommands(
                         // Fun Commands
+                        new EightBallCommand(config, logger),
                         new InspireCommand(config, logger),
                         new MemeCommand(config, logger),
                         new PingCommand(logger),

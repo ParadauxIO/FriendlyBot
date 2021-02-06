@@ -1,5 +1,5 @@
 # Runtime stuff
-*.json
+/*.json
 src/test/resources/img*
 
 # Private tests
