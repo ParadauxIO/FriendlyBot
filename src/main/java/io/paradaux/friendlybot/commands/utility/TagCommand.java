@@ -54,15 +54,15 @@ public class TagCommand extends BaseCommand {
         }
 
         EmbedBuilder entryNotFound = new EmbedBuilder()
-                .setColor(0xeb5132)
-                .setTitle("Tag not found")
+                .setColor(0xeb5132);
+//                .setTitle("Tag not found")
 
 
         switch (args[0]) {
             case "create": {
                 TagEntry entry = mongo.getTag(args[1]);
 
-                if (entry == n)
+//                if (entry == n)
 
 
                 break;
