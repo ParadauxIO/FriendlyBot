@@ -25,21 +25,52 @@
 
 package io.paradaux.friendlybot.commands.utility;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.utils.StringUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
+import io.paradaux.http.HttpApi;
+import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 public class GoogleCommand extends BaseCommand {
+
+    private static final String QUERY_URL = "https://www.googleapis.com/customsearch/v1?key=%s&q=%s&safe=ACTIVE";
+    private final String apiKey;
 
     public GoogleCommand(ConfigurationEntry config, Logger logger) {
         super(config, logger);
         this.name = "google";
+        this.aliases = new String[]{"googleit"};
         this.help = "Google via discord!";
+        this.apiKey = "";
     }
 
     @Override
-    protected void execute(CommandEvent commandEvent) {
+    protected void execute(CommandEvent event) {
+        Message message = event.getMessage();
+        String query = event.getArgs();
+
+        if (query.isEmpty()) {
+            respondSyntaxError(message, ";google <query>");
+            return;
+        }
+
+        HttpApi http = new HttpApi(getLogger());
+        HttpRequest request = http.jsonRequest(String.format(QUERY_URL, apiKey, StringUtils.urlEncode(query.replace(' ','+'))));
+
+        http.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenAccept((response -> {
+            JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
+
+
+
+        })).join();
+
 
     }
 }

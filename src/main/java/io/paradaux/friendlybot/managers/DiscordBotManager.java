@@ -141,7 +141,7 @@ public class DiscordBotManager {
                         new MemeImagesCommand(config, logger),
                         new PingCommand(logger),
                         new ServerInfoCommand(config, logger),
-                        new TagCommand(config, logger),
+                        new TagCommand(config, logger, mongo),
                         new UserInfoCommand(config, logger, permissionManager),
                         new WolframAlphaCommand(config, logger)
                 );

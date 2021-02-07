@@ -26,18 +26,58 @@
 package io.paradaux.friendlybot.commands.utility;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.database.TagEntry;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
 public class TagCommand extends BaseCommand {
 
-    public TagCommand(ConfigurationEntry config, Logger logger) {
+    private final MongoManager mongo;
+
+    public TagCommand(ConfigurationEntry config, Logger logger, MongoManager mongo) {
         super(config, logger);
+        this.mongo = mongo;
     }
 
     @Override
-    protected void execute(CommandEvent commandEvent) {
+    protected void execute(CommandEvent event) {
+        Message message = event.getMessage();
+        String[] args = getArgs(event.getArgs());
+
+        if (args.length < 3) {
+            respondSyntaxError(message, ";tag <create/delete/view> <id> [content]>");
+            return;
+        }
+
+        EmbedBuilder entryNotFound = new EmbedBuilder()
+                .setColor(0xeb5132)
+                .setTitle("Tag not found")
+
+
+        switch (args[0]) {
+            case "create": {
+                TagEntry entry = mongo.getTag(args[1]);
+
+                if (entry == n)
+
+
+                break;
+            }
+
+            case "delete": {
+
+                break;
+            }
+
+            case "view": {
+
+                break;
+            }
+        }
 
     }
 }

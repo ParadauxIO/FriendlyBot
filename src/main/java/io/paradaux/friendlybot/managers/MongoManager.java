@@ -57,19 +57,19 @@ public class MongoManager {
     private final Logger logger;
     private MongoClient client;
 
-    private MongoCollection<PendingVerificationEntry> pendingVerification;
-    private MongoCollection<VerificationEntry> verification;
-    private MongoCollection<CounterEntry> counterCollection;
-    private MongoCollection<AuditLogEntry> auditLog;
-    private MongoCollection<WarningEntry> warnings;
-    private MongoCollection<ModMailEntry> modmail;
-    private MongoCollection<BanEntry> bans;
-    private MongoCollection<KickEntry> kicks;
-    private MongoCollection<MessageEntry> loggedMessages;
-    private MongoCollection<MessageEntry> botBrain;
-    private MongoCollection<UserSettingsEntry> userSettings;
-    private MongoCollection<TempBanEntry> tempbans;
-
+    private final MongoCollection<PendingVerificationEntry> pendingVerification;
+    private final MongoCollection<VerificationEntry> verification;
+    private final MongoCollection<CounterEntry> counterCollection;
+    private final MongoCollection<AuditLogEntry> auditLog;
+    private final MongoCollection<WarningEntry> warnings;
+    private final MongoCollection<ModMailEntry> modmail;
+    private final MongoCollection<BanEntry> bans;
+    private final MongoCollection<KickEntry> kicks;
+    private final MongoCollection<MessageEntry> loggedMessages;
+    private final MongoCollection<MessageEntry> botBrain;
+    private final MongoCollection<UserSettingsEntry> userSettings;
+    private final MongoCollection<TempBanEntry> tempbans;
+    private final MongoCollection<TagEntry> tags;
 
     public MongoManager(ConfigurationEntry config, Logger logger) {
         this.config = config;
@@ -95,7 +95,6 @@ public class MongoManager {
             client = MongoClients.create(clientSettings);
         } catch (Exception exception) {
             logger.error("There was an error logging in to MongoDB", exception);
-            return;
         }
 
         MongoDatabase dataBase = client.getDatabase("friendlybot");
@@ -112,6 +111,7 @@ public class MongoManager {
         botBrain = dataBase.getCollection("ai_brain", MessageEntry.class);
         userSettings = dataBase.getCollection("user_settings", UserSettingsEntry.class);
         tempbans = dataBase.getCollection("tempbans", TempBanEntry.class);
+        tags = dataBase.getCollection("tags", TagEntry.class);
 
         instance = this;
     }
@@ -305,5 +305,21 @@ public class MongoManager {
     public FindIterable<TempBanEntry> getTempBans() {
         return tempbans.find();
     }
+
+    public void addTag(TagEntry entry) {
+        tags.insertOne(entry);
+    }
+
+    public TagEntry getTag(String name) {
+        return tags.find(Filters.eq("", name)).first();
+    }
+
+    public TagEntry getTagByOwner(String discordId) {
+        return tags.find(Filters.eq("", "")).first();
+    }
+
+
+
+
 
 }
