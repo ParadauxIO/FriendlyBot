@@ -77,7 +77,7 @@ public class WarnCommand extends PrivilegedCommand {
         }
 
         if (args.length < 2) {
-            respondSyntaxError(message, ";ban <userid/@mention> <reason>");
+            respondSyntaxError(message, ";warn <userid/@mention> <reason>");
             return;
         }
 
@@ -110,7 +110,7 @@ public class WarnCommand extends PrivilegedCommand {
                 .setColor(0x33cccc)
                 .setTitle(target.getAsTag() + " has been warned.")
                 .setDescription("**Reason**: " + reason + "\n**N.B**: Receiving a second warning is an automatic temporary ban.")
-                .setFooter("Incident ID: `" + incidentID + "` For more information, reach out to the moderation team via mod-mail.")
+                .setFooter("Incident ID: " + incidentID + ". For more information, reach out to the moderation team via mod-mail.")
                 .setTimestamp(new Date().toInstant())
                 .build();
 
@@ -122,7 +122,7 @@ public class WarnCommand extends PrivilegedCommand {
                     .setColor(0x33cccc)
                     .setTitle("You have been warned.")
                     .setDescription("**Reason**: " + reason + "\n**N.B**: Receiving a second warning is an automatic temporary ban.")
-                    .setFooter("Incident ID: `" + incidentID + "` For more information, reach out to the moderation team via mod-mail.")
+                    .setFooter("Incident ID: " + incidentID + ". For more information, reach out to the moderation team via mod-mail.")
                     .setTimestamp(new Date().toInstant())
                     .build();
 
