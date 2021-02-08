@@ -66,7 +66,7 @@ public class TicketCommand extends PrivilegedCommand {
             return;
         }
 
-        if (args.length <= 1) {
+        if (args.length == 0) {
             respondSyntaxError(message, ";ticket <close/open/view> [ticketnumber]");
             return;
         }
@@ -161,12 +161,26 @@ public class TicketCommand extends PrivilegedCommand {
                 break;
             }
 
+            case "pending": {
+                StringBuilder builder = new StringBuilder();
+
+                for (final var entry : mongo.getModMailEntries(TicketStatus.OPEN)) {
+                    builder.append(entry.getTicketNumber()).append(" ");
+                }
+
+                MessageEmbed embed = new EmbedBuilder()
+                        .setTitle("Open Tickets")
+                        .setColor(0x009999)
+                        .setDescription("`" + builder.toString().trim() + "`")
+                        .build();
+
+                message.getChannel().sendMessage(embed).queue();
+                break;
+            }
+
             default: {
                 respondSyntaxError(message, ";ticket <close/open/view> [ticketnumber]");
             }
-
         }
-
-
     }
 }
