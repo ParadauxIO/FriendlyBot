@@ -65,12 +65,14 @@ public class DiscordBotManager {
     private final PermissionManager permissionManager;
     private final MongoManager mongo;
     private final JDA client;
+    private final EventWaiter eventWaiter;
 
     public DiscordBotManager(ConfigurationEntry config, Logger logger, PermissionManager permissionManager, MongoManager mongo) {
         this.config = config;
         this.logger = logger;
         this.permissionManager = permissionManager;
         this.mongo = mongo;
+        this.eventWaiter = new EventWaiter();
 
         logger.info("Initialising: BotController");
         logger.info("Attempting to login");
@@ -80,11 +82,6 @@ public class DiscordBotManager {
         } catch (LoginException e) {
             throw new RuntimeException("Failed to login");
         }
-
-//        Paginator paginator = new Paginator.Builder()
-//                .setEventWaiter(new EventWaiter())
-//                .build();
-
 
         logger.info("Login successful.");
 
@@ -101,6 +98,7 @@ public class DiscordBotManager {
 
     private CommandClient createCommandClient() {
         logger.info("Initialising: CommandController");
+
         CommandClientBuilder builder = new CommandClientBuilder()
                 .setPrefix(config.getCommandPrefix())
                 .setOwnerId("150993042558418944")
@@ -115,6 +113,7 @@ public class DiscordBotManager {
                         new YodaifyCommand(config, logger),
 
                         // Moderation Commands
+                        new AnnouncementCommand(config, logger, permissionManager, eventWaiter),
                         new BanCommand(config, logger, permissionManager),
                         new CiteCommand(config, logger, permissionManager),
                         new KickCommand(config, logger, permissionManager),
@@ -162,7 +161,7 @@ public class DiscordBotManager {
         JDABuilder builder = JDABuilder.createDefault(token)
                 .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
                 .setBulkDeleteSplittingEnabled(false)
-                .addEventListeners(commandClient,
+                .addEventListeners(eventWaiter, commandClient,
                         new ModMailChannelListener(config, logger),
                         new ModMailPrivateMessageListener(logger),
                         new VerificationCodeReceivedListener(config, logger),
