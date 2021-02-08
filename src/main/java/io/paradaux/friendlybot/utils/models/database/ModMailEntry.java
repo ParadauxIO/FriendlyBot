@@ -25,6 +25,7 @@
 
 package io.paradaux.friendlybot.utils.models.database;
 
+import io.paradaux.friendlybot.utils.models.enums.TicketStatus;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.io.Serializable;
@@ -35,15 +36,11 @@ public class ModMailEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
-    public enum ModMailStatus {
-        OPEN, CLOSED
-    }
-
     @BsonProperty(value = "ticket_number")
     private String ticketNumber;
 
     @BsonProperty(value = "status")
-    private ModMailStatus status;
+    private TicketStatus status;
 
     @BsonProperty(value = "user_tag")
     private String userTag;
@@ -70,7 +67,7 @@ public class ModMailEntry implements Serializable {
 
     }
 
-    public ModMailEntry(String ticketNumber, ModMailStatus status, String userTag, String userID, String modmailMethod, String issue,
+    public ModMailEntry(String ticketNumber, TicketStatus status, String userTag, String userID, String modmailMethod, String issue,
                         Date timeOpened, Date lastResponded, List<ModMailResponse> responses) {
         this.ticketNumber = ticketNumber;
         this.status = status;
@@ -87,7 +84,7 @@ public class ModMailEntry implements Serializable {
         return ticketNumber;
     }
 
-    public ModMailStatus getStatus() {
+    public TicketStatus getStatus() {
         return status;
     }
 
@@ -124,7 +121,7 @@ public class ModMailEntry implements Serializable {
         return this;
     }
 
-    public ModMailEntry setStatus(ModMailStatus status) {
+    public ModMailEntry setStatus(TicketStatus status) {
         this.status = status;
         return this;
     }

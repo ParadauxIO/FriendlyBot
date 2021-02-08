@@ -33,6 +33,7 @@ import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.*;
+import io.paradaux.friendlybot.utils.models.enums.TicketStatus;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -262,13 +263,13 @@ public class MongoManager {
         return modmail.find(Filters.eq("ticket_number", ticketNumber)).first();
     }
 
-    public void setModMailStatus(String ticketNumber, ModMailEntry.ModMailStatus status) {
+    public void setModMailStatus(String ticketNumber, TicketStatus status) {
         ModMailEntry entry = getModMailEntry(ticketNumber);
         entry.setStatus(status);
         updateModMailEntry(ticketNumber, entry);
     }
 
-    public FindIterable<ModMailEntry> getModMailEntries(ModMailEntry.ModMailStatus status) {
+    public FindIterable<ModMailEntry> getModMailEntries(TicketStatus status) {
         return modmail.find(Filters.eq("status", status));
     }
 
