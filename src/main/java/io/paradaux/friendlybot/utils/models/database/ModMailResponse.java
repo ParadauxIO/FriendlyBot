@@ -25,10 +25,14 @@
 
 package io.paradaux.friendlybot.utils.models.database;
 
-public class ModMailResponse {
-    
-    String authorId;
-    String message;
+import java.io.Serializable;
+
+public class ModMailResponse implements Serializable {
+
+    protected static final long serialVersionUID = 1L;
+
+    private String authorId;
+    private String message;
     
     public ModMailResponse(String authorId, String message) {
         this.authorId = authorId;

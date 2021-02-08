@@ -25,42 +25,45 @@
 
 package io.paradaux.friendlybot.utils.models.database;
 
-import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class AuditLogEntry {
+public class AuditLogEntry implements Serializable {
+
+    protected static final long serialVersionUID = 1L;
 
     @BsonProperty(value = "action")
-    AuditLogEmbed.Action action;
+    private ModerationAction action;
 
     @BsonProperty(value = "incident_id")
-    String incidentID;
+    private String incidentID;
 
     @BsonProperty(value = "user_tag")
-    String userTag;
+    private String userTag;
 
     @BsonProperty(value = "user_id")
-    String userID;
+    private String userID;
 
     @BsonProperty(value = "staff_tag")
-    String staffTag;
+    private String staffTag;
 
     @BsonProperty(value = "staff_id")
-    String staffID;
+    private String staffID;
 
     @BsonProperty(value = "reason")
-    String reason;
+    private String reason;
 
     @BsonProperty(value = "timestamp")
-    Date timestamp;
+    private Date timestamp;
 
     public AuditLogEntry() {
 
     }
 
-    public AuditLogEntry(AuditLogEmbed.Action action, String incidentID, String userTag,
+    public AuditLogEntry(ModerationAction action, String incidentID, String userTag,
                          String userID, String reason, Date timestamp) {
         this.action = action;
         this.incidentID = incidentID;
@@ -70,7 +73,7 @@ public class AuditLogEntry {
         this.timestamp = timestamp;
     }
 
-    public AuditLogEntry(AuditLogEmbed.Action action, String incidentID, String userTag,
+    public AuditLogEntry(ModerationAction action, String incidentID, String userTag,
                          String userID, String staffTag, String staffID, String reason,
                          Date timestamp) {
         this.action = action;
@@ -83,7 +86,7 @@ public class AuditLogEntry {
         this.timestamp = timestamp;
     }
 
-    public AuditLogEntry(AuditLogEmbed.Action action, String incidentID, String userTag,
+    public AuditLogEntry(ModerationAction action, String incidentID, String userTag,
                          String userID, String reason) {
         this.action = action;
         this.incidentID = incidentID;
@@ -93,7 +96,7 @@ public class AuditLogEntry {
         this.timestamp = new Date();
     }
 
-    public AuditLogEntry setAction(AuditLogEmbed.Action action) {
+    public AuditLogEntry setAction(ModerationAction action) {
         this.action = action;
         return this;
     }
@@ -145,7 +148,7 @@ public class AuditLogEntry {
         return timestamp;
     }
 
-    public AuditLogEmbed.Action getAction() {
+    public ModerationAction getAction() {
         return action;
     }
 

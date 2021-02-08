@@ -32,6 +32,8 @@ import java.util.Date;
 
 public class TempBanEntry implements Serializable {
 
+    protected static final long serialVersionUID = 1L;
+
     @BsonProperty(value = "incident_id")
     private String incidentId;
 

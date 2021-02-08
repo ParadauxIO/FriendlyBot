@@ -35,6 +35,7 @@ import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.embeds.moderation.WarningEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.WarningEntry;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -77,7 +78,7 @@ public class WarnCommand extends PrivilegedCommand {
         }
 
         if (args.length < 2) {
-            respondSyntaxError(message, ";ban <userid/@mention> <reason>");
+            respondSyntaxError(message, ";warn <userid/@mention> <reason>");
             return;
         }
 
@@ -99,18 +100,19 @@ public class WarnCommand extends PrivilegedCommand {
                 .setStaffID(authorID)
                 .setStaffTag(event.getAuthor().getAsTag())
                 .setUserID(target.getId())
-                .setUserTag(target.getAsTag());
+                .setUserTag(target.getAsTag())
+                .setTimestamp(new Date());
 
         mongo.addWarnEntry(entry);
 
-        AuditManager.getInstance().log(AuditLogEmbed.Action.WARN, target,
+        AuditManager.getInstance().log(ModerationAction.WARN, target,
                 event.getAuthor(), reason, incidentID);
 
         MessageEmbed publicAudit = new EmbedBuilder()
                 .setColor(0x33cccc)
                 .setTitle(target.getAsTag() + " has been warned.")
                 .setDescription("**Reason**: " + reason + "\n**N.B**: Receiving a second warning is an automatic temporary ban.")
-                .setFooter("Incident ID: `" + incidentID + "` For more information, reach out to the moderation team via mod-mail.")
+                .setFooter("Incident ID: " + incidentID + ". For more information, reach out to the moderation team via mod-mail.")
                 .setTimestamp(new Date().toInstant())
                 .build();
 
@@ -122,7 +124,7 @@ public class WarnCommand extends PrivilegedCommand {
                     .setColor(0x33cccc)
                     .setTitle("You have been warned.")
                     .setDescription("**Reason**: " + reason + "\n**N.B**: Receiving a second warning is an automatic temporary ban.")
-                    .setFooter("Incident ID: `" + incidentID + "` For more information, reach out to the moderation team via mod-mail.")
+                    .setFooter("Incident ID: " + incidentID + ". For more information, reach out to the moderation team via mod-mail.")
                     .setTimestamp(new Date().toInstant())
                     .build();
 

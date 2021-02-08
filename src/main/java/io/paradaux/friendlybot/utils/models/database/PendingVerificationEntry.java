@@ -27,16 +27,20 @@ package io.paradaux.friendlybot.utils.models.database;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
-public class PendingVerificationEntry {
+import java.io.Serializable;
+
+public class PendingVerificationEntry implements Serializable {
+
+    protected static final long serialVersionUID = 1L;
 
     @BsonProperty(value = "discord_id")
-    String discordID;
+    private String discordID;
 
     @BsonProperty(value = "guild_id")
-    String guildID;
+    private String guildID;
 
     @BsonProperty(value = "verification_id")
-    String verificationCode;
+    private String verificationCode;
 
     public PendingVerificationEntry() {
 

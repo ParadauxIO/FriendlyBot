@@ -73,7 +73,6 @@ public class WolframAlphaCommand extends BaseCommand {
 
             HttpResponse<String> response2 = http.sendSync(request2, HttpResponse.BodyHandlers.ofString());
             JSONObject imgurMeta = new JSONObject(response2.body());
-            System.out.println(response2.body());
 
             EmbedBuilder builder = new EmbedBuilder()
                     .setAuthor("Wolfram Alpha Query.", String.format(WOLFRAM_USER_LINK, args.replace(" ", "%20")), WOLFRAM_ICON)

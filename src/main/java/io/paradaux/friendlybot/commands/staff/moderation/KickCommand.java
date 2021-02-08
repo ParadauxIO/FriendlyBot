@@ -28,17 +28,23 @@ package io.paradaux.friendlybot.commands.staff.moderation;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.FriendlyBot;
 import io.paradaux.friendlybot.managers.AuditManager;
+import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.embeds.moderation.KickedEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.KickEntry;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
+
+import java.util.Date;
 
 /**
  * This is a command which kicks the specified user.
@@ -100,24 +106,41 @@ public class KickCommand extends PrivilegedCommand {
 
         mongo.addKickEntry(entry);
 
-        AuditManager.getInstance().log(AuditLogEmbed.Action.KICK, target,
+        AuditManager.getInstance().log(ModerationAction.KICK, target,
                 event.getAuthor(), reason, incidentID);
 
-        message.getChannel().sendMessage("Incident ID: " + incidentID
-                + "\nReason: " + reason).queue();
+        MessageEmbed publicAudit = new EmbedBuilder()
+                .setColor(0xffff99)
+                .setTitle(target.getAsTag() + " has been kicked.")
+                .setDescription("**Reason**: " + reason)
+                .setFooter("Incident ID: " + incidentID + ". For more information, reach out to the moderation team via mod-mail.")
+                .setTimestamp(new Date().toInstant())
+                .build();
 
-        KickedEmbed embed = new KickedEmbed(reason, incidentID);
-        target.openPrivateChannel().queue((channel) -> channel.sendMessage(embed.getEmbed())
-                .queue());
+        DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId()).sendMessage(publicAudit).queue();
+        message.getChannel().sendMessage(publicAudit).queue();
 
-        Member targetMember = retrieveMember(message.getGuild(), target);
+        target.openPrivateChannel().queue((channel) -> {
+            MessageEmbed kickNotification = new EmbedBuilder()
+                    .setColor(0xffff99)
+                    .setTitle("You have been kicked.")
+                    .setDescription("**Reason**: " + reason)
+                    .setFooter("Incident ID: " + incidentID + ". For more information, reach out to the moderation team via mod-mail.")
+                    .setTimestamp(new Date().toInstant())
+                    .build();
 
-        if (targetMember == null) {
-            message.getChannel().sendMessage("THe user specified is not a member of this discord")
-                    .queue();
-            return;
-        }
+            channel.sendMessage(kickNotification).queue();
 
-        targetMember.kick(reason).queue();
+            Member targetMember = retrieveMember(message.getGuild(), target);
+
+            if (targetMember == null) {
+                message.getChannel().sendMessage("The user specified is not a member of this discord")
+                        .queue();
+                return;
+            }
+
+            targetMember.kick(reason).queue();
+        });
+
     }
 }

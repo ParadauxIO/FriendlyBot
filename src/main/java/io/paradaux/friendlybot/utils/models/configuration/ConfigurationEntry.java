@@ -41,6 +41,8 @@ import java.io.Serializable;
  * */
 public class ConfigurationEntry implements Serializable {
 
+    protected static final long serialVersionUID = 1L;
+
     @SerializedName("bot_token")
     private String botToken;
 

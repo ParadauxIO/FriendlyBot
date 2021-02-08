@@ -27,13 +27,17 @@ package io.paradaux.friendlybot.utils.models.database;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
-public class CounterEntry {
+import java.io.Serializable;
+
+public class CounterEntry implements Serializable {
+
+    protected static final long serialVersionUID = 1L;
 
     @BsonProperty(value = "last_incident_id")
-    Long lastIncidentID;
+    private long lastIncidentID;
 
     @BsonProperty(value = "last_ticket_number")
-    Long lastTickerNumber;
+    private long lastTickerNumber;
 
     public CounterEntry(Long lastIncidentID, Long lastTickerNumber) {
         this.lastIncidentID = lastIncidentID;

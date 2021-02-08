@@ -31,6 +31,7 @@ import io.paradaux.friendlybot.utils.embeds.modmail.ModMailReceivedEmbed;
 import io.paradaux.friendlybot.utils.embeds.modmail.ModMailSentEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailEntry;
+import io.paradaux.friendlybot.utils.models.enums.TicketStatus;
 import io.paradaux.friendlybot.utils.models.interfaces.Embed;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -73,7 +74,7 @@ public class ModMailChannelListener extends DiscordEventListener {
         ModMailEntry entry = new ModMailEntry()
                 .setIssue(issue)
                 .setModmailMethod("channel")
-                .setStatus(ModMailEntry.ModMailStatus.OPEN)
+                .setStatus(TicketStatus.OPEN)
                 .setTicketNumber(ticketNumber)
                 .setTimeOpened(new Date())
                 .setLastResponded(new Date())

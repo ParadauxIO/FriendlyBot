@@ -27,7 +27,6 @@ package io.paradaux.friendlybot.commands.staff.technician;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.managers.PermissionManager;
-import io.paradaux.friendlybot.utils.embeds.AnnouncementEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.MessageBuilder;
@@ -45,13 +44,7 @@ public class DmCommand extends PrivilegedCommand {
 
     @Override
     protected void execute(CommandEvent event) {
-        TextChannel channel = event.getMessage().getMentionedChannels().get(0);
-        AnnouncementEmbed embed = new AnnouncementEmbed();
-
-        MessageBuilder msg = new MessageBuilder();
-        msg.setContent("Hey @everyone \uD83D\uDC4B !");
-        msg.setEmbed(embed.getBuilder().build());
-        channel.sendMessage(msg.build()).queue();
+        // TODO Command stub
     }
 
 }

@@ -29,6 +29,7 @@ import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.AuditLogEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
@@ -59,7 +60,7 @@ public class AuditManager {
         return instance;
     }
 
-    public void log(AuditLogEmbed.Action action, User target, User staff, String reason,
+    public void log(ModerationAction action, User target, User staff, String reason,
                     String incidentID) {
         AuditLogEmbed embed = new AuditLogEmbed(action, target, staff, reason, incidentID);
 

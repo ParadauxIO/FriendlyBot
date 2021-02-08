@@ -27,6 +27,7 @@ package io.paradaux.friendlybot.utils.embeds;
 
 import io.paradaux.friendlybot.utils.models.enums.EmbedColour;
 import io.paradaux.friendlybot.utils.models.interfaces.Embed;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -38,11 +39,7 @@ public class AuditLogEmbed implements Embed {
 
     final EmbedBuilder builder = new EmbedBuilder();
 
-    public enum Action {
-        WARN, KICK, BAN, TEMP_BAN
-    }
-
-    public AuditLogEmbed(Action action, User user, String reason, String incidentID) {
+    public AuditLogEmbed(ModerationAction action, User user, String reason, String incidentID) {
         builder.setColor(EmbedColour.MODERATION.getColour());
         builder.addField("Action: ", action.toString(), true);
         builder.addField("Incident ID: ", incidentID, true);
@@ -54,7 +51,7 @@ public class AuditLogEmbed implements Embed {
         builder.setTimestamp(new Date().toInstant());
     }
 
-    public AuditLogEmbed(Action action, User user, User staffMember, String reason,
+    public AuditLogEmbed(ModerationAction action, User user, User staffMember, String reason,
                          String incidentID) {
         builder.setColor(EmbedColour.MODERATION.getColour());
         builder.addField("Action: ", action.toString(), true);

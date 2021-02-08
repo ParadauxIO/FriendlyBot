@@ -28,6 +28,7 @@ package io.paradaux.friendlybot.utils.embeds.moderation;
 import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.models.enums.EmbedColour;
 import io.paradaux.friendlybot.utils.models.interfaces.Embed;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
@@ -37,7 +38,7 @@ public class ChatFilterTriggeredEmbed implements Embed {
 
     final EmbedBuilder builder = new EmbedBuilder();
 
-    public ChatFilterTriggeredEmbed(AuditLogEmbed.Action action, String messageContent,
+    public ChatFilterTriggeredEmbed(ModerationAction action, String messageContent,
                                     String detectedWord, String incidentID) {
         builder.setColor(EmbedColour.AUTOMATIC.getColour());
         builder.setDescription("You have triggered the chat filter. Please avoid using sensitive "

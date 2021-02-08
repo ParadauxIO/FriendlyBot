@@ -31,6 +31,7 @@ import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailResponse;
+import io.paradaux.friendlybot.utils.models.enums.TicketStatus;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -75,7 +76,7 @@ public class RespondCommand extends PrivilegedCommand {
             return;
         }
 
-        if (entry.getStatus() == ModMailEntry.ModMailStatus.CLOSED) {
+        if (entry.getStatus() == TicketStatus.CLOSED) {
             message.addReaction("\uD83D\uDEAB").queue();
             message.getChannel().sendMessage("You cannot respond to closed tickets.").queue();
             return;

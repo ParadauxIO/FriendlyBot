@@ -34,6 +34,7 @@ import io.paradaux.friendlybot.utils.TimeUtils;
 import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.TempBanEntry;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -98,21 +99,21 @@ public class TempBanCommand extends PrivilegedCommand {
                 .setColor(0xeb5132)
                 .setTitle(target.getAsTag() + " has been temporarily banned.")
                 .setDescription("**Reason**: " + entry.getReason() + "\n**Period**: " + TimeUtils.millisecondsToDisplay(period))
-                .setFooter("Incident ID: `" + entry.getIncidentId() + "` For more information, reach out to the moderation team via mod-mail.")
+                .setFooter("Incident ID: " + entry.getIncidentId() + ". For more information, reach out to the moderation team via mod-mail.")
                 .setTimestamp(new Date().toInstant())
                 .build();
 
         TextChannel channel = DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId());
         channel.sendMessage(publicAudit).queue();
         event.getChannel().sendMessage(publicAudit).queue();
-        AuditManager.getInstance().log(AuditLogEmbed.Action.TEMP_BAN, target, staff, entry.getReason(), entry.getIncidentId());
+        AuditManager.getInstance().log(ModerationAction.TEMP_BAN, target, staff, entry.getReason(), entry.getIncidentId());
 
         target.openPrivateChannel().queue((privateChannel) -> {
             MessageEmbed banNotification = new EmbedBuilder()
                     .setColor(0xeb5132)
                     .setTitle("You have been temporarily banned.")
                     .setDescription("**Reason**: " + entry.getReason() + "\n**Period**: " + TimeUtils.millisecondsToDisplay(period))
-                    .setFooter("Incident ID: `" + entry.getIncidentId() + "` For more information, reach out to a member of the moderation team.")
+                    .setFooter("Incident ID: " + entry.getIncidentId() + ". For more information, reach out to a member of the moderation team.")
                     .setTimestamp(new Date().toInstant())
                     .build();
 

@@ -30,6 +30,8 @@ import io.paradaux.friendlybot.utils.models.interfaces.Embed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import java.util.Date;
+
 public class RulesEmbed implements Embed {
 
     final EmbedBuilder builder = new EmbedBuilder();
@@ -79,12 +81,15 @@ public class RulesEmbed implements Embed {
                 + ".com/channels/757903425311604786/773541543164117013/774420036920016916) "
                 + "feature or contact your class representative. ", false);
 
-        builder.addField("Footnotes:", " [Trinity College: Ethics Policy](https://www.tcd"
+        builder.addField("Footnotes:", "Should a rule be broken, please do not engage the user. Report them using the modmail "
+                + "facility, at which point further action will be taken by a moderator.\n"
+                + "[Trinity College: Ethics Policy](https://www.tcd"
                 + ".ie/about/policies/ethics-policy.php)\n" + "[Trinity College: Dignity and "
                 + "Respect Policy](https://www.tcd.ie/equality/policy/dignity-respect-policy/)\n"
                 + "[Discord: Terms of Service](https://discord.com/terms)", false);
 
-        builder.setFooter("Computer Science Friendly Bot | v0.1 | Rules Last Edited: 08/11/2020");
+        builder.setFooter("Friendly Bot | v1.0 | Rules Last Edited: 08/02/2021")
+                .setTimestamp(new Date().toInstant());
     }
 
     @Override

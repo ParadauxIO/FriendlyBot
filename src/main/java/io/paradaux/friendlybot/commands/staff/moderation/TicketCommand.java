@@ -34,10 +34,12 @@ import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailResponse;
 import io.paradaux.friendlybot.utils.models.enums.EmbedColour;
+import io.paradaux.friendlybot.utils.models.enums.TicketStatus;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 
@@ -64,7 +66,7 @@ public class TicketCommand extends PrivilegedCommand {
             return;
         }
 
-        if (args.length <= 1) {
+        if (args.length == 0) {
             respondSyntaxError(message, ";ticket <close/open/view> [ticketnumber]");
             return;
         }
@@ -80,7 +82,7 @@ public class TicketCommand extends PrivilegedCommand {
                 Member member = retrieveMember(message.getGuild(), entry.getUserID());
 
                 message.getChannel().sendMessage("Ticket involving: `" + entry.getIssue() + "` has been closed.").queue();
-                mongo.setModMailStatus(ticketNumber, ModMailEntry.ModMailStatus.CLOSED);
+                mongo.setModMailStatus(ticketNumber, TicketStatus.CLOSED);
 
                 if (member == null) {
                     message.getChannel().sendMessage("The user that opened this ticket is no longer in the guild.\n"
@@ -144,7 +146,7 @@ public class TicketCommand extends PrivilegedCommand {
                 Member member = retrieveMember(message.getGuild(), entry.getUserID());
 
                 message.getChannel().sendMessage("Ticket involving: `" + entry.getIssue() + "` has been re-opened.").queue();
-                mongo.setModMailStatus(ticketNumber, ModMailEntry.ModMailStatus.OPEN);
+                mongo.setModMailStatus(ticketNumber, TicketStatus.OPEN);
 
                 if (member == null) {
                     message.getChannel().sendMessage("The user that opened this ticket is no longer in the guild.\n"
@@ -159,12 +161,26 @@ public class TicketCommand extends PrivilegedCommand {
                 break;
             }
 
+            case "pending": {
+                StringBuilder builder = new StringBuilder();
+
+                for (final var entry : mongo.getModMailEntries(TicketStatus.OPEN)) {
+                    builder.append(entry.getTicketNumber()).append(" ");
+                }
+
+                MessageEmbed embed = new EmbedBuilder()
+                        .setTitle("Open Tickets")
+                        .setColor(0x009999)
+                        .setDescription("`" + builder.toString().trim() + "`")
+                        .build();
+
+                message.getChannel().sendMessage(embed).queue();
+                break;
+            }
+
             default: {
                 respondSyntaxError(message, ";ticket <close/open/view> [ticketnumber]");
             }
-
         }
-
-
     }
 }

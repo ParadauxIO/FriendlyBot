@@ -27,27 +27,30 @@ package io.paradaux.friendlybot.utils.models.database;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class MessageEntry {
+public class MessageEntry implements Serializable {
+
+    protected static final long serialVersionUID = 1L;
 
     @BsonProperty(value = "author_id")
-    String authorId;
+    private String authorId;
 
     @BsonProperty(value = "message_id")
-    String messageId;
+    private String messageId;
 
     @BsonProperty(value = "message_content")
-    String content;
+    private String content;
 
     @BsonProperty(value = "message_channel")
-    String channel;
+    private String channel;
 
     @BsonProperty(value = "message_newcontent")
-    String newContent;
+    private String newContent;
 
     @BsonProperty(value = "date_sent")
-    Date date;
+    private Date date;
 
     public MessageEntry() {
 

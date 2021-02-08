@@ -80,12 +80,8 @@ public class MemeCommand extends BaseCommand {
                             .getJSONObject("data")
                             .getJSONArray("memes");
 
-                    System.out.println(memes.toString());
-
                     List<MessageEmbed> embeds = new ArrayList<>();
                     EmbedBuilder embedBuilder = new EmbedBuilder();
-
-                    System.out.println(memes.length());
 
                     for (int i = 0, fieldCount = 0; i < memes.length(); i++, fieldCount++) {
                         if (fieldCount == 24) {

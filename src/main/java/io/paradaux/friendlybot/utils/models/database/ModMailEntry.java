@@ -25,49 +25,50 @@
 
 package io.paradaux.friendlybot.utils.models.database;
 
+import io.paradaux.friendlybot.utils.models.enums.TicketStatus;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class ModMailEntry {
+public class ModMailEntry implements Serializable {
 
-    public enum ModMailStatus {
-        OPEN, CLOSED, PENDING
-    }
+    protected static final long serialVersionUID = 1L;
 
     @BsonProperty(value = "ticket_number")
-    String ticketNumber;
+    private String ticketNumber;
 
     @BsonProperty(value = "status")
-    ModMailStatus status;
+    private TicketStatus status;
 
     @BsonProperty(value = "user_tag")
-    String userTag;
+    private String userTag;
 
     @BsonProperty(value = "user_id")
-    String userID;
+    private String userID;
 
     @BsonProperty(value = "modmail_method")
-    String modmailMethod;
+    private String modmailMethod;
 
     @BsonProperty(value = "issue")
-    String issue;
+    private String issue;
 
     @BsonProperty(value = "time_opened")
-    Date timeOpened;
+    private Date timeOpened;
 
     @BsonProperty(value = "last_responded")
-    Date lastResponded;
+    private Date lastResponded;
 
     @BsonProperty(value = "responses")
-    List<ModMailResponse> responses;
+    private List<ModMailResponse> responses;
 
     public ModMailEntry() {
 
     }
 
-    public ModMailEntry(String ticketNumber, ModMailStatus status, String userTag, String userID, String modmailMethod, String issue,
+    public ModMailEntry(String ticketNumber, TicketStatus status, String userTag, String userID, String modmailMethod, String issue,
                         Date timeOpened, Date lastResponded, List<ModMailResponse> responses) {
         this.ticketNumber = ticketNumber;
         this.status = status;
@@ -84,7 +85,7 @@ public class ModMailEntry {
         return ticketNumber;
     }
 
-    public ModMailStatus getStatus() {
+    public TicketStatus getStatus() {
         return status;
     }
 
@@ -121,7 +122,7 @@ public class ModMailEntry {
         return this;
     }
 
-    public ModMailEntry setStatus(ModMailStatus status) {
+    public ModMailEntry setStatus(TicketStatus status) {
         this.status = status;
         return this;
     }

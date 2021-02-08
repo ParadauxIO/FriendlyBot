@@ -34,6 +34,7 @@ import io.paradaux.friendlybot.utils.models.database.AuditLogEntry;
 import io.paradaux.friendlybot.utils.models.database.BanEntry;
 import io.paradaux.friendlybot.utils.models.database.KickEntry;
 import io.paradaux.friendlybot.utils.models.database.WarningEntry;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -74,7 +75,7 @@ public class LookupCommand extends PrivilegedCommand {
             return;
         }
 
-        AuditLogEmbed.Action action = auditLogEntry.getAction();
+        ModerationAction action = auditLogEntry.getAction();
 
         EmbedBuilder builder = new EmbedBuilder();
 

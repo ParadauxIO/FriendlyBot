@@ -33,6 +33,7 @@ import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.model.ReturnDocument;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.*;
+import io.paradaux.friendlybot.utils.models.enums.TicketStatus;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
@@ -70,6 +71,7 @@ public class MongoManager {
     private final MongoCollection<UserSettingsEntry> userSettings;
     private final MongoCollection<TempBanEntry> tempbans;
     private final MongoCollection<TagEntry> tags;
+    private final MongoCollection<RescindmentEntry> rescindments;
 
     public MongoManager(ConfigurationEntry config, Logger logger) {
         this.config = config;
@@ -112,6 +114,7 @@ public class MongoManager {
         userSettings = dataBase.getCollection("user_settings", UserSettingsEntry.class);
         tempbans = dataBase.getCollection("tempbans", TempBanEntry.class);
         tags = dataBase.getCollection("tags", TagEntry.class);
+        rescindments = dataBase.getCollection("rescindments", RescindmentEntry.class);
 
         instance = this;
     }
@@ -260,14 +263,14 @@ public class MongoManager {
         return modmail.find(Filters.eq("ticket_number", ticketNumber)).first();
     }
 
-    public void setModMailStatus(String ticketNumber, ModMailEntry.ModMailStatus status) {
+    public void setModMailStatus(String ticketNumber, TicketStatus status) {
         ModMailEntry entry = getModMailEntry(ticketNumber);
         entry.setStatus(status);
         updateModMailEntry(ticketNumber, entry);
     }
 
-    public FindIterable<ModMailEntry> getModMailEntries(ModMailEntry.ModMailStatus status) {
-        return modmail.find(Filters.eq("status", status));
+    public FindIterable<ModMailEntry> getModMailEntries(TicketStatus status) {
+        return modmail.find(Filters.eq("status", status.toString()));
     }
 
     public void updateModMailEntry(String ticketNumber, ModMailEntry entry) {
@@ -318,8 +321,16 @@ public class MongoManager {
         return tags.find(Filters.eq("", "")).first();
     }
 
+    public void deleteWarning(String incidentId) {
+        warnings.findOneAndDelete(Filters.eq("incident_id", incidentId));
+    }
 
+    public RescindmentEntry getRescindment(String incidentId) {
+        return rescindments.find(Filters.eq("incident_id", incidentId)).first();
+    }
 
-
+    public void addRescindment(RescindmentEntry entry) {
+        rescindments.insertOne(entry);
+    }
 
 }
