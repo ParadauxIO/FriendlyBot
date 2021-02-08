@@ -117,8 +117,7 @@ public class YodaifyCommand extends BaseCommand {
                 event.getChannel().sendMessage(embed).queue();
 
             } catch (IOException ok) {
-                getLogger().error("Error occurred whilst interacting with mailgun.");
-                throw new VerificationException();
+                getLogger().error("Error occurred whilst interacting with Imgflip");
             }
         })).join();
 
