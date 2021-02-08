@@ -109,6 +109,7 @@ public class DiscordBotManager {
                         new InspireCommand(config, logger),
                         new LmgtfyCommand(config, logger),
                         new MemeCommand(config, logger),
+                        new MonkeCommand(config, logger),
                         new XKCDCommand(config, logger),
                         new YodaifyCommand(config, logger),
 
