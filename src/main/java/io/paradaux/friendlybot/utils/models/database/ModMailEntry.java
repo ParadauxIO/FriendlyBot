@@ -40,7 +40,6 @@ public class ModMailEntry implements Serializable {
     @BsonProperty(value = "ticket_number")
     private String ticketNumber;
 
-    @BsonIgnore
     @BsonProperty(value = "status")
     private TicketStatus status;
 
