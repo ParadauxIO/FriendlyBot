@@ -25,13 +25,15 @@
 
 package io.paradaux.friendlybot.utils.models.database;
 
-public class UserSettingsEntry {
+import java.io.Serializable;
 
-    String discordId;
-    String firstSavedDiscordTag;
+public class UserSettingsEntry implements Serializable {
 
-    boolean saveBotMessages;
-    boolean executeCommands;
+    private String discordId;
+    private String firstSavedDiscordTag;
+
+    private boolean saveBotMessages;
+    private boolean executeCommands;
 
     public UserSettingsEntry() {
         

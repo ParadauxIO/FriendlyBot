@@ -27,18 +27,19 @@ package io.paradaux.friendlybot.utils.models.database;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class VerificationEntry {
+public class VerificationEntry implements Serializable {
 
     @BsonProperty(value = "discord_id")
-    String discordID;
+    private String discordID;
 
     @BsonProperty(value = "guild_id")
-    String guildID;
+    private String guildID;
 
     @BsonProperty(value = "date_verified")
-    Date dateVerified;
+    private Date dateVerified;
 
     public VerificationEntry() {
 

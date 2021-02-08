@@ -25,37 +25,37 @@
 
 package io.paradaux.friendlybot.utils.models.database;
 
-import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class AuditLogEntry {
+public class AuditLogEntry implements Serializable {
 
     @BsonProperty(value = "action")
-    ModerationAction action;
+    private ModerationAction action;
 
     @BsonProperty(value = "incident_id")
-    String incidentID;
+    private String incidentID;
 
     @BsonProperty(value = "user_tag")
-    String userTag;
+    private String userTag;
 
     @BsonProperty(value = "user_id")
-    String userID;
+    private String userID;
 
     @BsonProperty(value = "staff_tag")
-    String staffTag;
+    private String staffTag;
 
     @BsonProperty(value = "staff_id")
-    String staffID;
+    private String staffID;
 
     @BsonProperty(value = "reason")
-    String reason;
+    private String reason;
 
     @BsonProperty(value = "timestamp")
-    Date timestamp;
+    private Date timestamp;
 
     public AuditLogEntry() {
 

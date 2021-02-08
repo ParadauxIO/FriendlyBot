@@ -25,14 +25,23 @@
 
 package io.paradaux.friendlybot.utils.models.database;
 
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class TagEntry implements Serializable {
 
+    @BsonProperty(value = "guild_id")
     private String guild;
+
+    @BsonProperty(value = "discord_id")
     private String discordId;
+
+    @BsonProperty(value = "content")
     private String content;
+
+    @BsonProperty(value = "time_created")
     private Date timeCreated;
 
     public TagEntry() {
