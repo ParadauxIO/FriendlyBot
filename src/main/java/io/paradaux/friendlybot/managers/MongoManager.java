@@ -70,6 +70,7 @@ public class MongoManager {
     private final MongoCollection<UserSettingsEntry> userSettings;
     private final MongoCollection<TempBanEntry> tempbans;
     private final MongoCollection<TagEntry> tags;
+    private final MongoCollection<RescindmentEntry> rescindments;
 
     public MongoManager(ConfigurationEntry config, Logger logger) {
         this.config = config;
@@ -112,6 +113,7 @@ public class MongoManager {
         userSettings = dataBase.getCollection("user_settings", UserSettingsEntry.class);
         tempbans = dataBase.getCollection("tempbans", TempBanEntry.class);
         tags = dataBase.getCollection("tags", TagEntry.class);
+        rescindments = dataBase.getCollection("rescindments", RescindmentEntry.class);
 
         instance = this;
     }
@@ -318,8 +320,16 @@ public class MongoManager {
         return tags.find(Filters.eq("", "")).first();
     }
 
+    public void deleteWarning(String incidentId) {
+        warnings.findOneAndDelete(Filters.eq("incident_id", incidentId));
+    }
 
+    public RescindmentEntry getRescindment(String incidentId) {
+        return rescindments.find(Filters.eq("incident_id", incidentId)).first();
+    }
 
-
+    public void addRescindment(RescindmentEntry entry) {
+        rescindments.insertOne(entry);
+    }
 
 }
