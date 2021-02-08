@@ -103,6 +103,7 @@ public class DiscordBotManager {
                 .setActivity(Activity.listening("to modmail queries.."))
                 .addCommands(
                         // Fun Commands
+                        new CatCommand(config, logger),
                         new EightBallCommand(config, logger),
                         new InspireCommand(config, logger),
                         new LmgtfyCommand(config, logger),
