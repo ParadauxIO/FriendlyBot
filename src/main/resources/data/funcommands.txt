@@ -1,3 +1,13 @@
+**Dog**
+;dog
+
+Get a randomly chosen dog picture to brighten up your day!
+
+**Cat**
+;cat
+
+Get a randomly chosen cat picture to brighten up your day!
+
 **8 Ball**
 *;8ball <question>*
 
