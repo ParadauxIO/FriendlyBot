@@ -32,6 +32,8 @@ import java.util.Date;
 
 public class TagEntry implements Serializable {
 
+    protected static final long serialVersionUID = 1L;
+
     @BsonProperty(value = "guild_id")
     private String guild;
 

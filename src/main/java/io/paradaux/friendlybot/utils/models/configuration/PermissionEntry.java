@@ -25,12 +25,22 @@
 
 package io.paradaux.friendlybot.utils.models.configuration;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PermissionEntry {
+public class PermissionEntry implements Serializable {
 
+    protected static final long serialVersionUID = 1L;
+
+    @SerializedName("moderators")
     private ArrayList<String> moderators;
+
+    @SerializedName("administrators")
     private ArrayList<String> administrators;
+
+    @SerializedName("technicians")
     private ArrayList<String> technicians;
 
     public PermissionEntry() {

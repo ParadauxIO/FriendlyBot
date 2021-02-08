@@ -31,6 +31,8 @@ import java.io.Serializable;
 
 public class CounterEntry implements Serializable {
 
+    protected static final long serialVersionUID = 1L;
+
     @BsonProperty(value = "last_incident_id")
     private long lastIncidentID;
 

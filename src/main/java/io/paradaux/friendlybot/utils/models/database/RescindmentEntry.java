@@ -8,6 +8,8 @@ import java.util.Date;
 
 public class RescindmentEntry implements Serializable {
 
+    protected static final long serialVersionUID = 1L;
+
     @BsonProperty(value = "action")
     private ModerationAction action;
 

@@ -29,6 +29,8 @@ import java.io.Serializable;
 
 public class UserSettingsEntry implements Serializable {
 
+    protected static final long serialVersionUID = 1L;
+
     private String discordId;
     private String firstSavedDiscordTag;
 

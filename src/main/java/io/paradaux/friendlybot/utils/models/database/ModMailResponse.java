@@ -29,6 +29,8 @@ import java.io.Serializable;
 
 public class ModMailResponse implements Serializable {
 
+    protected static final long serialVersionUID = 1L;
+
     private String authorId;
     private String message;
     

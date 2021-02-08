@@ -32,6 +32,8 @@ import java.util.Date;
 
 public class MessageEntry implements Serializable {
 
+    protected static final long serialVersionUID = 1L;
+
     @BsonProperty(value = "author_id")
     private String authorId;
 

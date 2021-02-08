@@ -33,6 +33,8 @@ import java.util.Date;
 
 public class AuditLogEntry implements Serializable {
 
+    protected static final long serialVersionUID = 1L;
+
     @BsonProperty(value = "action")
     private ModerationAction action;
 

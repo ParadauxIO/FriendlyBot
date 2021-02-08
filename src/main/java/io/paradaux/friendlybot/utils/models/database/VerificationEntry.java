@@ -32,6 +32,8 @@ import java.util.Date;
 
 public class VerificationEntry implements Serializable {
 
+    protected static final long serialVersionUID = 1L;
+
     @BsonProperty(value = "discord_id")
     private String discordID;
 

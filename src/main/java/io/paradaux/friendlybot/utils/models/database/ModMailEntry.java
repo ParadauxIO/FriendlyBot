@@ -33,6 +33,8 @@ import java.util.List;
 
 public class ModMailEntry implements Serializable {
 
+    protected static final long serialVersionUID = 1L;
+
     public enum ModMailStatus {
         OPEN, CLOSED
     }
