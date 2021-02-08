@@ -18,7 +18,6 @@ Ask the magical 8 ball, which will (hopefully) take all of your worries away!
 
 Get some very insightful inspiration backed by very scientific machining-learning stuff.
 
-
 **Let me google that for you**
 *;lmgtfy <query>*
 
@@ -29,6 +28,16 @@ If someone is too lazy to google something for themselves, let the bot make a lm
 *;meme caption <id> <line1> | <line2>*...
 
 The first command sends you a DM of every possible meme image, the second allows you to caption memes, each line has to be separated by a pipe (|)
+
+**Monke**
+;MONKE this is line 1 | this is line 2
+
+MONKE.
+
+**Monkey**
+;monkey
+
+Get a random monkey picture into your life!
 
 **Search XKCD**
 *;xkcd <query>*
