@@ -270,7 +270,7 @@ public class MongoManager {
     }
 
     public FindIterable<ModMailEntry> getModMailEntries(TicketStatus status) {
-        return modmail.find(Filters.eq("status", status));
+        return modmail.find(Filters.eq("status", status.toString()));
     }
 
     public void updateModMailEntry(String ticketNumber, ModMailEntry entry) {

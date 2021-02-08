@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.utils.models.database;
 
 import io.paradaux.friendlybot.utils.models.enums.TicketStatus;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.io.Serializable;
@@ -39,6 +40,7 @@ public class ModMailEntry implements Serializable {
     @BsonProperty(value = "ticket_number")
     private String ticketNumber;
 
+    @BsonIgnore
     @BsonProperty(value = "status")
     private TicketStatus status;
 
