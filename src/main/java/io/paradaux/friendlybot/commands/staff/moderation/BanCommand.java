@@ -34,6 +34,7 @@ import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.embeds.moderation.BannedEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.BanEntry;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
@@ -98,7 +99,7 @@ public class BanCommand extends PrivilegedCommand {
                 .setUserTag(target.getAsTag());
 
         mongo.addBanEntry(entry);
-        AuditManager.getInstance().log(AuditLogEmbed.Action.BAN, target,
+        AuditManager.getInstance().log(ModerationAction.BAN, target,
                 event.getAuthor(), reason, incidentID);
 
         message.getChannel().sendMessage("Incident ID: " + incidentID

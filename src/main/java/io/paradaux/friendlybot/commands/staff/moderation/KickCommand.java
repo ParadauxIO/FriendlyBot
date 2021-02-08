@@ -35,6 +35,7 @@ import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.embeds.moderation.KickedEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.KickEntry;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
@@ -105,7 +106,7 @@ public class KickCommand extends PrivilegedCommand {
 
         mongo.addKickEntry(entry);
 
-        AuditManager.getInstance().log(AuditLogEmbed.Action.KICK, target,
+        AuditManager.getInstance().log(ModerationAction.KICK, target,
                 event.getAuthor(), reason, incidentID);
 
         MessageEmbed publicAudit = new EmbedBuilder()

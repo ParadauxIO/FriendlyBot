@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.utils.models.database;
 
 import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.util.Date;
@@ -33,7 +34,7 @@ import java.util.Date;
 public class AuditLogEntry {
 
     @BsonProperty(value = "action")
-    AuditLogEmbed.Action action;
+    ModerationAction action;
 
     @BsonProperty(value = "incident_id")
     String incidentID;
@@ -60,7 +61,7 @@ public class AuditLogEntry {
 
     }
 
-    public AuditLogEntry(AuditLogEmbed.Action action, String incidentID, String userTag,
+    public AuditLogEntry(ModerationAction action, String incidentID, String userTag,
                          String userID, String reason, Date timestamp) {
         this.action = action;
         this.incidentID = incidentID;
@@ -70,7 +71,7 @@ public class AuditLogEntry {
         this.timestamp = timestamp;
     }
 
-    public AuditLogEntry(AuditLogEmbed.Action action, String incidentID, String userTag,
+    public AuditLogEntry(ModerationAction action, String incidentID, String userTag,
                          String userID, String staffTag, String staffID, String reason,
                          Date timestamp) {
         this.action = action;
@@ -83,7 +84,7 @@ public class AuditLogEntry {
         this.timestamp = timestamp;
     }
 
-    public AuditLogEntry(AuditLogEmbed.Action action, String incidentID, String userTag,
+    public AuditLogEntry(ModerationAction action, String incidentID, String userTag,
                          String userID, String reason) {
         this.action = action;
         this.incidentID = incidentID;
@@ -93,7 +94,7 @@ public class AuditLogEntry {
         this.timestamp = new Date();
     }
 
-    public AuditLogEntry setAction(AuditLogEmbed.Action action) {
+    public AuditLogEntry setAction(ModerationAction action) {
         this.action = action;
         return this;
     }
@@ -145,7 +146,7 @@ public class AuditLogEntry {
         return timestamp;
     }
 
-    public AuditLogEmbed.Action getAction() {
+    public ModerationAction getAction() {
         return action;
     }
 

@@ -34,6 +34,7 @@ import io.paradaux.friendlybot.utils.TimeUtils;
 import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.TempBanEntry;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -105,7 +106,7 @@ public class TempBanCommand extends PrivilegedCommand {
         TextChannel channel = DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId());
         channel.sendMessage(publicAudit).queue();
         event.getChannel().sendMessage(publicAudit).queue();
-        AuditManager.getInstance().log(AuditLogEmbed.Action.TEMP_BAN, target, staff, entry.getReason(), entry.getIncidentId());
+        AuditManager.getInstance().log(ModerationAction.TEMP_BAN, target, staff, entry.getReason(), entry.getIncidentId());
 
         target.openPrivateChannel().queue((privateChannel) -> {
             MessageEmbed banNotification = new EmbedBuilder()

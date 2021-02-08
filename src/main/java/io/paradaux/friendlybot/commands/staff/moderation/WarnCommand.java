@@ -35,6 +35,7 @@ import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.embeds.moderation.WarningEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.WarningEntry;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -99,11 +100,12 @@ public class WarnCommand extends PrivilegedCommand {
                 .setStaffID(authorID)
                 .setStaffTag(event.getAuthor().getAsTag())
                 .setUserID(target.getId())
-                .setUserTag(target.getAsTag());
+                .setUserTag(target.getAsTag())
+                .setTimestamp(new Date());
 
         mongo.addWarnEntry(entry);
 
-        AuditManager.getInstance().log(AuditLogEmbed.Action.WARN, target,
+        AuditManager.getInstance().log(ModerationAction.WARN, target,
                 event.getAuthor(), reason, incidentID);
 
         MessageEmbed publicAudit = new EmbedBuilder()

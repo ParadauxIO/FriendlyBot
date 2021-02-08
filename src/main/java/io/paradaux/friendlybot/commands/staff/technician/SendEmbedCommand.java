@@ -27,7 +27,6 @@ package io.paradaux.friendlybot.commands.staff.technician;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.managers.PermissionManager;
-import io.paradaux.friendlybot.utils.embeds.AnnouncementEmbed;
 import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.embeds.PoliticsRulesEmbed;
 import io.paradaux.friendlybot.utils.embeds.RulesEmbed;
@@ -37,6 +36,7 @@ import io.paradaux.friendlybot.utils.embeds.notices.*;
 import io.paradaux.friendlybot.utils.embeds.roleselection.PoliticsOptionEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.interfaces.Embed;
+import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -87,7 +87,7 @@ public class SendEmbedCommand extends PrivilegedCommand {
             }
 
             case "chatfiltertriggered": {
-                embed = new ChatFilterTriggeredEmbed(AuditLogEmbed.Action.valueOf(args[1]),
+                embed = new ChatFilterTriggeredEmbed(ModerationAction.valueOf(args[1]),
                         args[3], args[4], args[5]);
                 break;
             }
@@ -132,13 +132,8 @@ public class SendEmbedCommand extends PrivilegedCommand {
                 break;
             }
 
-            case "announcement": {
-                embed = new AnnouncementEmbed();
-                break;
-            }
-
             case "auditlog": {
-                embed = new AuditLogEmbed(AuditLogEmbed.Action.valueOf(args[1]), event.getAuthor(),
+                embed = new AuditLogEmbed(ModerationAction.valueOf(args[1]), event.getAuthor(),
                         args[2], args[3]);
                 break;
             }
