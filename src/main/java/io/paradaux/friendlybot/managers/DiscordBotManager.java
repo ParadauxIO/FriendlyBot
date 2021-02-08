@@ -28,8 +28,6 @@ package io.paradaux.friendlybot.managers;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import com.jagrosh.jdautilities.menu.Paginator;
-import com.mongodb.connection.Server;
 import io.paradaux.friendlybot.commands.fun.*;
 import io.paradaux.friendlybot.commands.staff.moderation.*;
 import io.paradaux.friendlybot.commands.staff.technician.*;
@@ -119,6 +117,7 @@ public class DiscordBotManager {
                         new KickCommand(config, logger, permissionManager),
                         new LookupCommand(config, logger, permissionManager),
                         new PruneCommand(config, logger, permissionManager),
+                        new PunishmentCommand(config, logger, permissionManager, mongo),
                         new RespondCommand(config, logger, permissionManager, mongo),
                         new TempBanCommand(config, logger, permissionManager, mongo),
                         new TicketCommand(config, logger, permissionManager),

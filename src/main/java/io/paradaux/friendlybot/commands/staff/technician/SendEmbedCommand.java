@@ -63,7 +63,7 @@ public class SendEmbedCommand extends PrivilegedCommand {
             return;
         }
 
-        if (args.length < 3) {
+        if (args.length == 0) {
             respondSyntaxError(message, ";sendembed <embed>");
             return;
         }

@@ -57,7 +57,6 @@ public class TagCommand extends BaseCommand {
                 .setColor(0xeb5132);
 //                .setTitle("Tag not found")
 
-
         switch (args[0]) {
             case "create": {
                 TagEntry entry = mongo.getTag(args[1]);
