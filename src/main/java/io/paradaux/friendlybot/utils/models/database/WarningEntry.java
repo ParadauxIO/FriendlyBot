@@ -27,30 +27,31 @@ package io.paradaux.friendlybot.utils.models.database;
 
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class WarningEntry {
+public class WarningEntry implements Serializable {
 
     @BsonProperty(value = "incident_id")
-    String incidentID;
+    private String incidentID;
 
     @BsonProperty(value = "target_tag")
-    String userTag;
+    private String userTag;
 
     @BsonProperty(value = "target_id")
-    String userID;
+    private String userID;
 
     @BsonProperty(value = "staff_tag")
-    String staffTag;
+    private String staffTag;
 
     @BsonProperty(value = "staff_id")
-    String staffID;
+    private String staffID;
 
     @BsonProperty(value = "reason")
-    String reason;
+    private String reason;
 
     @BsonProperty(value = "timestamp")
-    Date timestamp;
+    private Date timestamp;
 
     public WarningEntry() {
 
