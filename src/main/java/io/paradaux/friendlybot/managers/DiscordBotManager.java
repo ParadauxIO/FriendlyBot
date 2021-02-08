@@ -110,6 +110,7 @@ public class DiscordBotManager {
                         new LmgtfyCommand(config, logger),
                         new MemeCommand(config, logger),
                         new MonkeCommand(config, logger),
+                        new MonkeyCommand(config, logger),
                         new XKCDCommand(config, logger),
                         new YodaifyCommand(config, logger),
 
