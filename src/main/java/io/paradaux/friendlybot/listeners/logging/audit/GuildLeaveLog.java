@@ -25,8 +25,11 @@
 
 package io.paradaux.friendlybot.listeners.logging.audit;
 
+import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -39,6 +42,14 @@ public class GuildLeaveLog extends DiscordEventListener {
 
     @Override
     public void onGuildMemberRemove(@NotNull GuildMemberRemoveEvent event) {
-        super.onGuildMemberRemove(event);
+
+        var user = event.getUser();
+        var embed = new EmbedBuilder()
+                .setTitle(user.getAsTag() + " has left the guild.")
+                .setColor(0xff5050)
+                .build();
+
+        DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId()).sendMessage(embed).queue();
+
     }
 }

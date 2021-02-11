@@ -25,8 +25,10 @@
 
 package io.paradaux.friendlybot.listeners.logging.audit;
 
+import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -39,6 +41,13 @@ public class GuildJoinLog extends DiscordEventListener {
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
-        super.onGuildMemberJoin(event);
+
+        var user = event.getUser();
+        var embed = new EmbedBuilder()
+                .setTitle(user.getAsTag() + " has joined the guild.")
+                .setColor(0x00cc99)
+                .build();
+
+        DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId()).sendMessage(embed).queue();
     }
 }
