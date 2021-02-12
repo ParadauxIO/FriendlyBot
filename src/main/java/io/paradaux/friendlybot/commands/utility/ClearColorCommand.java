@@ -41,7 +41,14 @@ public class ClearColorCommand extends BaseCommand {
             return;
         }
 
-        guild.removeRoleFromMember(event.getMember(), customRoles.get(0)).queue();
-        settings.updateSettingsProfile(entry.setCustomColorRole(null));
+        guild.removeRoleFromMember(event.getMember(), customRoles.get(0)).queue((success) -> {
+            String customColor = entry.getCustomColorRole();
+            entry.setCustomColorRole(null);
+            settings.updateSettingsProfile(entry);
+
+            if (settings.getProfileCountByColor(guild.getId(), customColor) == 0) {
+                customRoles.get(0).delete().queue();
+            }
+        });
     }
 }
