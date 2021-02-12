@@ -87,18 +87,15 @@ public class SettingsManager {
         UserSettingsEntry entry = settings.find(getGuildUserSearchQuery(guildId, userId)).first();
 
         if (entry == null) {
-            entry = createNewProfile(DiscordBotManager.getInstance().getUser(userId), guildId)
+            entry = createNewProfile(DiscordBotManager.getInstance().getUser(userId), guildId);
         }
 
         return entry;
     }
 
     public void updateSettingsProfile(UserSettingsEntry entry) {
-        settings.findOneAndUpdate(getGuildUserSearchQuery(entry.getGuildId(), entry.getDiscordId()), entry);
-
-        throw new NoSuchUserException("No such profile exists for: " + entry.getFirstSavedDiscordTag());
+        settings.findOneAndReplace(getGuildUserSearchQuery(entry.getGuildId(), entry.getDiscordId()), entry);
     }
-
 
     public void updateColorCooldown(String guildId, String userId) {
         UserSettingsEntry entry = getProfileById(guildId, userId)
