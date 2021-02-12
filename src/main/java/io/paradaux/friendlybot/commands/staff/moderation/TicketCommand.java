@@ -30,6 +30,7 @@ import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.StringUtils;
+import io.paradaux.friendlybot.utils.TimeUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailResponse;
@@ -115,8 +116,8 @@ public class TicketCommand extends PrivilegedCommand {
                         .addField("User Id", entry.getUserID(), true)
                         .addField("Ticket Id", entry.getTicketNumber(), true)
                         .addField("Method", entry.getModmailMethod(), true)
-                        .addField("Opened", StringUtils.formatTime(entry.getTimeOpened()), true)
-                        .addField("Last Responded", StringUtils.formatTime(entry.getTimeOpened()), true)
+                        .addField("Opened", TimeUtils.formatTime(entry.getTimeOpened()), true)
+                        .addField("Last Responded", TimeUtils.formatTime(entry.getLastResponded()), true)
                         .addField("Issue", entry.getIssue(), false)
                         .addBlankField(true)
                         .addBlankField(true);

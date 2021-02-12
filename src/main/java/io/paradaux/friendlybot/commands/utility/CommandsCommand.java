@@ -27,6 +27,7 @@ package io.paradaux.friendlybot.commands.utility;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.utils.StringUtils;
+import io.paradaux.friendlybot.utils.TimeUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -70,7 +71,7 @@ public class CommandsCommand extends BaseCommand {
                 .setThumbnail(THUMBNAIL_IMAGE)
                 .addField(THIS_EMOJI + " __Fun Commands__", funCommandContent, false)
                 .addField(THIS_EMOJI + " __Utility Commands__", utilityCommandContent, false)
-                .setFooter("Last updated: " + StringUtils.formatTime(new Date()), "https://cdn.paradaux.io/img/fteuv.png")
+                .setFooter("Last updated: " + TimeUtils.formatTime(new Date()), "https://cdn.paradaux.io/img/fteuv.png")
                 .build();
 
         event.getChannel().sendMessage(embed).queue();
