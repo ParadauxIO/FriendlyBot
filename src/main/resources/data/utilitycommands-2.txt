@@ -1,0 +1,15 @@
+**Strike Command**
+;strike <message>
+
+Generate a unicode and markdown representation of your message, with a strike through it.
+
+**User Information**
+*;userinfo*
+
+Shows information about your user.
+
+**Wolfram Alpha: Search**
+*;wolframalpha <query>*
+
+Search Wolfram Alpha from the comfort of discord!
+[Currently Broken]
