@@ -25,12 +25,14 @@
 
 package io.paradaux.friendlybot.listeners.verification;
 
+import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.VerificationManager;
 import io.paradaux.friendlybot.utils.StringUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -123,10 +125,20 @@ public class VerificationEmailReceivedListener extends DiscordEventListener {
         }
 
         // Notify the user that there's an email waiting for them.
-        event.getAuthor().openPrivateChannel().queue((channel) -> channel
-                .sendMessage("Please check your email for a verification token. Once you have"
+        event.getAuthor().openPrivateChannel().queue((channel) -> {
+            channel.sendMessage("Please check your email for a verification token. Once you have"
                         + " it, please paste it back into #verification.\nPlease message the bot"
                         + " if you run into issues with this, a moderator/technician will be with"
-                        + " you shortly.").queue());
+                        + " you shortly.").queue();
+
+            // Log the fact that their email has been sent.
+            var user = event.getAuthor();
+            var embed = new EmbedBuilder()
+                    .setTitle(user.getAsTag() + " has begun the verification process.")
+                    .setColor(0x99ccff)
+                    .build();
+
+            DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId()).sendMessage(embed).queue();
+        });
     }
 }
