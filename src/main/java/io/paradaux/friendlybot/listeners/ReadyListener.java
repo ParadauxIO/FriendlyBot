@@ -59,8 +59,5 @@ public class ReadyListener extends DiscordEventListener {
         }
 
         getLogger().info("Currently serving {} user(s) in {} guild(s)", userCount, guildCount);
-
-        SettingsManager.getInstance().updateProfiles(DiscordBotManager.getInstance());
-
     }
 }

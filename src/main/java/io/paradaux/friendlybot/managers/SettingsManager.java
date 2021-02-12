@@ -41,26 +41,6 @@ public class SettingsManager {
         return instance;
     }
 
-    public void updateProfiles(DiscordBotManager discord) {
-        System.out.println("Creating profiles");
-        for (Guild guild : discord.getClient().getGuilds()) {
-            System.out.println("Guild: " + guild.getName());
-            for (Member member : guild.getMembers()) {
-                if (member.getUser().isBot()) {
-                    return;
-                }
-
-                if (getProfileById(guild.getId(), member.getId()) != null) {
-                    return;
-                }
-
-                System.out.println("Member: " + member.getEffectiveName());
-
-                createNewProfile(member);
-            }
-        }
-    }
-
     public UserSettingsEntry createNewProfile(Member member) {
         return createNewProfile(member.getUser(), member.getGuild().getId());
     }
