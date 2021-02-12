@@ -149,6 +149,7 @@ public class DiscordBotManager {
                         new InviteCommand(logger),
                         new MemeImagesCommand(config, logger),
                         new PingCommand(logger),
+                        new RandomColorCommand(config, logger),
                         new ServerInfoCommand(config, logger),
                         new SetColorCommand(config, logger, roles, mongo),
                         new TagCommand(config, logger, mongo),
