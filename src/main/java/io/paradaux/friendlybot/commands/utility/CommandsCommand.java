@@ -44,7 +44,9 @@ public class CommandsCommand extends BaseCommand {
     private static final String THUMBNAIL_IMAGE = "https://cdn.paradaux.io/img/ybv70.png";
     private static final String THIS_EMOJI = "<a:thisicon:807586522181533707>";
     private final String funCommandContent;
-    private final String utilityCommandContent;
+    private final String utilityCommandContent1;
+    private final String utilityCommandContent2;
+
 
     public CommandsCommand(ConfigurationEntry config, Logger logger) {
         super(config, logger);
@@ -57,22 +59,32 @@ public class CommandsCommand extends BaseCommand {
 
         inputStream = getClass().getResourceAsStream("/data/utilitycommands.txt");
         reader = new BufferedReader(new InputStreamReader(inputStream));
-        this.utilityCommandContent = reader.lines().collect(Collectors.joining("\n"));
+        this.utilityCommandContent1 = reader.lines().collect(Collectors.joining("\n"));
+
+        inputStream = getClass().getResourceAsStream("/data/utilitycommands-2.txt");
+        reader = new BufferedReader(new InputStreamReader(inputStream));
+        this.utilityCommandContent2 = reader.lines().collect(Collectors.joining("\n"));
     }
 
     @Override
     protected void execute(CommandEvent event) {
         event.getMessage().delete().queue();
-        
-        MessageEmbed embed = new EmbedBuilder()
+
+        MessageEmbed funCommands = new EmbedBuilder()
                 .setTitle("FriendlyBot » Commands")
-                .setColor(0x009999)
                 .setThumbnail(THUMBNAIL_IMAGE)
+                .setColor(0x009999)
                 .addField(THIS_EMOJI + " __Fun Commands__", funCommandContent, false)
-                .addField(THIS_EMOJI + " __Utility Commands__", utilityCommandContent, false)
+                .build();
+
+        MessageEmbed utilityCommands = new EmbedBuilder()
+                .setColor(0x009999)
+                .addField(THIS_EMOJI + " __Utility Commands__", utilityCommandContent1, false)
+                .addField("\u200B", utilityCommandContent2, false)
                 .setFooter("Last updated: " + TimeUtils.formatTime(new Date()), "https://cdn.paradaux.io/img/fteuv.png")
                 .build();
 
-        event.getChannel().sendMessage(embed).queue();
+        event.getChannel().sendMessage(funCommands).queue();
+        event.getChannel().sendMessage(utilityCommands).queue();
     }
 }
