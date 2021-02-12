@@ -37,15 +37,26 @@ public class SetColorCommand extends BaseCommand {
     protected void execute(CommandEvent event) {
         final Message message = event.getMessage();
         final Guild guild = event.getGuild();
-        final String chosenColor = event.getArgs();
+        final String chosenColor = event.getArgs().replace("0x", "");
 
-        System.out.println(chosenColor);
         if (!(HEX_PATTERN.matcher(chosenColor).results().count() > 0)) {
             message.getChannel().sendMessage(new EmbedBuilder()
                     .setColor(0xeb5132)
                     .setTitle("Invalid Hex Color")
                     .setDescription("Please format your color as a hex string between `000000` and `FFFFFF`")
                     .build()).queue();
+            return;
+        }
+
+        SettingsManager settings = SettingsManager.getInstance();
+        UserSettingsEntry entry = settings.getProfileById(guild.getId(), event.getAuthor().getId());
+        if (entry.getLastSetColor() != null && !settings.hasCooldownElapsed(entry)) {
+            message.reply("You must wait until your cooldown expires before running this command again.").queue();
+            return;
+        }
+
+        if (entry.getCustomColorRole() != null) {
+            message.reply("Please clear your existing color role by using `;clearcolor` before setting a new color.").queue();
             return;
         }
 
@@ -60,25 +71,21 @@ public class SetColorCommand extends BaseCommand {
             // role already exists, let's not create a duplicate
             guild.addRoleToMember(event.getMember(), guild.getRolesByName(chosenColor, true).get(0)).queue();
 
-            UserSettingsEntry entry = SettingsManager.getInstance().getProfileById(guild.getId(), event.getAuthor().getId());
-
             entry.setCustomColorRole(chosenColor)
                     .setLastSetColor(new Date());
 
-            SettingsManager.getInstance().updateSettingsProfile(entry);
+            settings.updateSettingsProfile(entry);
             return;
         }
 
-        roles.createRole(guild, event.getArgs()).queue((role -> {
+        roles.createRole(guild, chosenColor).queue((role -> {
             guild.modifyRolePositions().selectPosition(role).moveTo(separatorRole.getPosition() - 1).queue();
             guild.addRoleToMember(event.getMember(), role).queue();
-
-            UserSettingsEntry entry = SettingsManager.getInstance().getProfileById(guild.getId(), event.getAuthor().getId());
 
             entry.setCustomColorRole(chosenColor)
                     .setLastSetColor(new Date());
 
-            SettingsManager.getInstance().updateSettingsProfile(entry);
+            settings.updateSettingsProfile(entry);
         }));
     }
 }
