@@ -58,9 +58,10 @@ public class SettingsManager {
         return entry;
     }
 
-    public FindIterable<UserSettingsEntry> getProfilesByColor(String color) {
-        return settings.find(eq("custom_color_role", color));
+    public long getProfileCountByColor(String guildId, String color) {
+        return settings.countDocuments(new Document().append("guild_id", color).append("custom_color_role", color));
     }
+
 
     public UserSettingsEntry getProfileById(String guildId, String userId) {
         UserSettingsEntry entry = settings.find(getGuildUserSearchQuery(guildId, userId)).first();
