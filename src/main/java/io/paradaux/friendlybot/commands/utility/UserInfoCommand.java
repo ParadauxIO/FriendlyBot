@@ -28,6 +28,7 @@ package io.paradaux.friendlybot.commands.utility;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.StringUtils;
+import io.paradaux.friendlybot.utils.TimeUtils;
 import io.paradaux.friendlybot.utils.embeds.command.UserInfoEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
@@ -67,8 +68,8 @@ public class UserInfoCommand extends PrivilegedCommand {
 
         String status = StringUtils.toTitleCase(member.getOnlineStatus().toString());
 
-        String accountCreated = StringUtils.formatTime(member.getUser().getTimeCreated());
-        String joinedServer = StringUtils.formatTime(member.getTimeJoined());
+        String accountCreated = TimeUtils.formatTime(member.getUser().getTimeCreated());
+        String joinedServer = TimeUtils.formatTime(member.getTimeJoined());
         String nickname = member.getNickname() != null ? member.getNickname() : "No Nickname.";
 
         List<Role> roles = member.getRoles();

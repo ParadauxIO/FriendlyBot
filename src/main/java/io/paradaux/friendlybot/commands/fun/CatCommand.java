@@ -7,7 +7,6 @@ import io.paradaux.friendlybot.utils.models.types.BaseCommand;
 import io.paradaux.http.HttpApi;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 
 import java.net.http.HttpRequest;

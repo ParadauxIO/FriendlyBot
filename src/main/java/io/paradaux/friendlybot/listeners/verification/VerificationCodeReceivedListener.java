@@ -25,11 +25,13 @@
 
 package io.paradaux.friendlybot.listeners.verification;
 
+import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.VerificationManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -84,6 +86,15 @@ public class VerificationCodeReceivedListener extends DiscordEventListener {
                 event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage(
                         "You" + " have successfully verified your friendly corner discord account"
                                 + ".").queue());
+
+                var user = event.getAuthor();
+                var embed = new EmbedBuilder()
+                        .setTitle(user.getAsTag() + " has passed verification.")
+                        .setColor(0x00cc99)
+                        .build();
+
+                DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId()).sendMessage(embed).queue();
+
             } else {
                 event.getAuthor().openPrivateChannel().queue((channel) -> channel.sendMessage(
                         "The Verification code you provided was incorrect. If this issue "

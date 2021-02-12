@@ -127,6 +127,9 @@ public class MongoManager {
         return instance;
     }
 
+    public MongoCollection<UserSettingsEntry> getUserSettings() {
+        return userSettings;
+    }
 
     public String getNextIncidentID() {
         CounterEntry result = incrementCounter("last_incident_id");

@@ -28,19 +28,11 @@ package io.paradaux.friendlybot.utils;
 import javax.annotation.Nullable;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Base64;
-import java.util.Date;
 import java.util.Random;
 import java.util.regex.Pattern;
 
 public class StringUtils {
-
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("MMMM yyyy HH:mm:ss");
 
     private static final Pattern VALID_EMAIL = Pattern.compile("(?:[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\"
             + ".[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\""
@@ -51,6 +43,8 @@ public class StringUtils {
             + "(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:"
             + "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09"
             + "\\x0b\\x0c\\x0e-\\x7f])+)\\])");
+
+    private static final char STRIKE_CONTROL_CHARACTER = '\u0336';
 
     /**
      * Converts the specified string to Title Case
@@ -83,50 +77,6 @@ public class StringUtils {
         }
 
         return converted.toString();
-    }
-
-    public static String formatTime(Date date) {
-        return formatTime(date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime());
-    }
-
-    public static String formatTime(OffsetDateTime time) {
-        return formatTime(LocalDateTime.from(time));
-    }
-
-    public static String formatTime(LocalDateTime dateTime) {
-        LocalDateTime time = LocalDateTime.from(dateTime.atOffset(ZoneOffset.UTC));
-        return time.getDayOfMonth() + getDayOfMonthSuffix(time.getDayOfMonth()) + " " + time
-                .format(TIME_FORMATTER) + " UTC";
-    }
-
-    /**
-     * Gets the suffix for the a day in a month
-     * Example: 1st
-     *
-     * @param n The day in the month to get a suffix.
-     * @return The suffix for the day.
-     */
-    public static String getDayOfMonthSuffix(final int n) {
-        if (n < 1 || n > 31) {
-            throw new IllegalArgumentException("illegal day of month: " + n);
-        }
-
-        if (n >= 11 && n <= 13) {
-            return "th";
-        }
-        switch (n % 10) {
-            case 1:
-                return "st";
-            case 2:
-                return "nd";
-            case 3:
-                return "rd";
-            default:
-                return "th";
-
-        }
     }
 
     /**
@@ -182,5 +132,16 @@ public class StringUtils {
      * */
     public static String removeLetters(String str) {
         return str.replaceAll("[a-zA-Z]", "");
+    }
+
+    /**
+     * Creates strikethrough unicode text by applying the strike control character after each individual character in the provided string
+     * */
+    public static String toStrikeOut(String str) {
+        final StringBuilder builder = new StringBuilder();
+        for (char c : str.toCharArray()) {
+            builder.append(c).append(STRIKE_CONTROL_CHARACTER);
+        }
+        return builder.toString();
     }
 }

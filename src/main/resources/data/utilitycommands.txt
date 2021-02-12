@@ -1,3 +1,8 @@
+**Clear Color**
+*;clearcolor*
+
+Removes your currently active custom color role, does not affect your cooldown.
+
 **Github: Search**
 *;github user/repository*
 
@@ -18,18 +23,18 @@ Provides some meta information on how to setup this bot for use in your own disc
 
 Used to gauge how long the bot is taking to respond.
 
+**Random Color**
+*;randomcolor*
+
+Generates a random hexadecimal RGB color.
+
 *Server Information*
 ;serverinfo
 
 Shows information about this guild.
 
-**User Information**
-*;userinfo*
+**Set Color**
+;setcolor <HEX>
 
-Shows information about your user.
+Sets your role color to any arbitrary hexadecimal RGB color. Formatted as 0x000000 or FFFFFF
 
-**Wolfram Alpha: Search**
-*;wolframalpha <query>*
-
-Search Wolfram Alpha from the comfort of discord!
-[Currently Broken]

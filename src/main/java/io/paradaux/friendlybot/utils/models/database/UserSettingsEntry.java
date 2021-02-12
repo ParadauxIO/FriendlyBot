@@ -25,27 +25,50 @@
 
 package io.paradaux.friendlybot.utils.models.database;
 
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
 import java.io.Serializable;
+import java.util.Date;
 
 public class UserSettingsEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
+    @BsonProperty(value = "guild_id")
+    private String guildId;
+
+    @BsonProperty(value = "discord_id")
     private String discordId;
+
+    @BsonProperty(value = "discord_tag")
     private String firstSavedDiscordTag;
 
-    private boolean saveBotMessages;
-    private boolean executeCommands;
+    @BsonProperty(value = "do_train_ai")
+    private boolean doTrainAi;
+
+    @BsonProperty(value = "last_changed_color")
+    private Date lastSetColor;
+
+    @BsonProperty(value = "custom_color_role")
+    private String customColorRole;
 
     public UserSettingsEntry() {
         
     }
 
-    public UserSettingsEntry(String discordId, String firstSavedDiscordTag, boolean saveBotMessages, boolean executeCommands) {
+    public UserSettingsEntry(String guildId, String discordId, String firstSavedDiscordTag, boolean doTrainAi, Date lastSetColor,
+                             String customColorRole) {
+        this.guildId = guildId;
         this.discordId = discordId;
         this.firstSavedDiscordTag = firstSavedDiscordTag;
-        this.saveBotMessages = saveBotMessages;
-        this.executeCommands = executeCommands;
+        this.doTrainAi = doTrainAi;
+        this.lastSetColor = lastSetColor;
+        this.customColorRole = customColorRole;
+    }
+
+    public UserSettingsEntry setGuildId(String guildId) {
+        this.guildId = guildId;
+        return this;
     }
 
     public UserSettingsEntry setDiscordId(String discordId) {
@@ -58,14 +81,23 @@ public class UserSettingsEntry implements Serializable {
         return this;
     }
 
-    public UserSettingsEntry setSaveBotMessages(boolean saveBotMessages) {
-        this.saveBotMessages = saveBotMessages;
+    public UserSettingsEntry setDoTrainAi(boolean doTrainAi) {
+        this.doTrainAi = doTrainAi;
         return this;
     }
 
-    public UserSettingsEntry setExecuteCommands(boolean executeCommands) {
-        this.executeCommands = executeCommands;
+    public UserSettingsEntry setLastSetColor(Date lastSetColor) {
+        this.lastSetColor = lastSetColor;
         return this;
+    }
+
+    public UserSettingsEntry setCustomColorRole(String customColorRole) {
+        this.customColorRole = customColorRole;
+        return this;
+    }
+
+    public String getGuildId() {
+        return guildId;
     }
 
     public String getDiscordId() {
@@ -76,11 +108,15 @@ public class UserSettingsEntry implements Serializable {
         return firstSavedDiscordTag;
     }
 
-    public boolean isSaveBotMessages() {
-        return saveBotMessages;
+    public boolean isDoTrainAi() {
+        return doTrainAi;
     }
 
-    public boolean isExecuteCommands() {
-        return executeCommands;
+    public Date getLastSetColor() {
+        return lastSetColor;
+    }
+
+    public String getCustomColorRole() {
+        return customColorRole;
     }
 }

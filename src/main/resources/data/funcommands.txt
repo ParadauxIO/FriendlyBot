@@ -1,12 +1,12 @@
-**Dog**
-;dog
-
-Get a randomly chosen dog picture to brighten up your day!
-
 **Cat**
 ;cat
 
 Get a randomly chosen cat picture to brighten up your day!
+
+**Dog**
+;dog
+
+Get a randomly chosen dog picture to brighten up your day!
 
 **8 Ball**
 *;8ball <question>*
@@ -21,13 +21,13 @@ Get some very insightful inspiration backed by very scientific machining-learnin
 **Let me google that for you**
 *;lmgtfy <query>*
 
-If someone is too lazy to google something for themselves, let the bot make a lmgtfy link, because you're too lazy to do it yourself.
+If someone is too lazy to google something for themselves, let the bot make a lmgtfy link.
 
 **Meme Generator**
 *;meme images*
 *;meme caption <id> <line1> | <line2>*...
 
-The first command sends you a DM of every possible meme image, the second allows you to caption memes, each line has to be separated by a pipe (|)
+Allows you to caption memes, each line has to be separated by a pipe (|)
 
 **Monke**
 ;MONKE this is line 1 | this is line 2

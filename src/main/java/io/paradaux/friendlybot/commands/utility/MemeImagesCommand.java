@@ -27,22 +27,18 @@ package io.paradaux.friendlybot.commands.utility;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.utils.NumberUtils;
-import io.paradaux.friendlybot.utils.StringUtils;
+import io.paradaux.friendlybot.utils.TimeUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.interfaces.Embed;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
 import io.paradaux.http.HttpApi;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class MemeImagesCommand extends BaseCommand {
 
@@ -84,7 +80,7 @@ public class MemeImagesCommand extends BaseCommand {
                             + "the same amount of lines as requested by the command.")
                     .addField(";meme images", "Get a list of these images sent to your DMs", false)
                     .addField(";meme caption 222403160 Meme Documentation | For you to read the documentation", "Caption memes by specifying the ID, then each line separated by a pipe (|)", false)
-                    .setFooter("Last updated: " + StringUtils.formatTime(new Date()), "https://cdn.paradaux.io/img/fteuv.png");
+                    .setFooter("Last updated: " + TimeUtils.formatTime(new Date()), "https://cdn.paradaux.io/img/fteuv.png");
 
             event.getChannel().sendMessage(builder.build()).queue();
         }).join();

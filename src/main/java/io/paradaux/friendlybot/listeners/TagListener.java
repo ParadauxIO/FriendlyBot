@@ -27,6 +27,7 @@ package io.paradaux.friendlybot.listeners;
 
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +44,15 @@ public class TagListener extends DiscordEventListener {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Message message = event.getMessage();
+
+        if (message.getChannelType() == ChannelType.PRIVATE) {
+            return;
+        }
+
+        if (event.getAuthor().isBot()) {
+            return;
+        }
+
         String messageContent = message.getContentRaw();
 
         if (!messageContent.startsWith(TAG_PREFIX)) {

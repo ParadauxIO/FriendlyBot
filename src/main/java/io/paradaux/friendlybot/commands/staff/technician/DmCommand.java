@@ -29,8 +29,6 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;
 
 public class DmCommand extends PrivilegedCommand {

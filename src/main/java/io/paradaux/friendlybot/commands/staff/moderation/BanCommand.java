@@ -30,7 +30,6 @@ import io.paradaux.friendlybot.FriendlyBot;
 import io.paradaux.friendlybot.managers.AuditManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
-import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.embeds.moderation.BannedEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.BanEntry;

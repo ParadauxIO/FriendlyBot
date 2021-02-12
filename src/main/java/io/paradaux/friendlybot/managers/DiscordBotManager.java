@@ -36,6 +36,8 @@ import io.paradaux.friendlybot.listeners.ReadyListener;
 import io.paradaux.friendlybot.listeners.logging.MessageDeleteLog;
 import io.paradaux.friendlybot.listeners.logging.MessageLog;
 import io.paradaux.friendlybot.listeners.logging.UpdatedMessageLog;
+import io.paradaux.friendlybot.listeners.logging.audit.GuildJoinLog;
+import io.paradaux.friendlybot.listeners.logging.audit.GuildLeaveLog;
 import io.paradaux.friendlybot.listeners.modmail.ModMailChannelListener;
 import io.paradaux.friendlybot.listeners.modmail.ModMailPrivateMessageListener;
 import io.paradaux.friendlybot.listeners.utility.LongMessageListener;
@@ -46,12 +48,14 @@ import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.slf4j.Logger;
 
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.security.auth.login.LoginException;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class DiscordBotManager {
@@ -64,13 +68,15 @@ public class DiscordBotManager {
     private final MongoManager mongo;
     private final JDA client;
     private final EventWaiter eventWaiter;
+    private final RoleManager roles;
 
-    public DiscordBotManager(ConfigurationEntry config, Logger logger, PermissionManager permissionManager, MongoManager mongo) {
+    public DiscordBotManager(ConfigurationEntry config, Logger logger, PermissionManager permissionManager, MongoManager mongo, RoleManager roles) {
         this.config = config;
         this.logger = logger;
         this.permissionManager = permissionManager;
         this.mongo = mongo;
         this.eventWaiter = new EventWaiter();
+        this.roles = roles;
 
         logger.info("Initialising: BotController");
         logger.info("Attempting to login");
@@ -136,13 +142,17 @@ public class DiscordBotManager {
                         new VerificationCommand(config, logger, permissionManager),
 
                         // Utility Commands
+                        new ClearColorCommand(config, logger),
                         new CommandsCommand(config, logger),
                         new GithubCommand(config, logger),
                         new GoogleCommand(config, logger),
                         new InviteCommand(logger),
                         new MemeImagesCommand(config, logger),
                         new PingCommand(logger),
+                        new RandomColorCommand(config, logger),
                         new ServerInfoCommand(config, logger),
+                        new SetColorCommand(config, logger, roles, mongo),
+                        new StrikeCommand(config, logger),
                         new TagCommand(config, logger, mongo),
                         new UserInfoCommand(config, logger, permissionManager),
                         new WolframAlphaCommand(config, logger)
@@ -161,10 +171,13 @@ public class DiscordBotManager {
 
         CommandClient commandClient = createCommandClient();
 
-        JDABuilder builder = JDABuilder.createDefault(token)
-                .disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE)
+        JDABuilder builder = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS)
+                .setMemberCachePolicy(MemberCachePolicy.ALL)
+                .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setBulkDeleteSplittingEnabled(false)
                 .addEventListeners(eventWaiter, commandClient,
+                        new GuildJoinLog(config, logger),
+                        new GuildLeaveLog(config, logger),
                         new ModMailChannelListener(config, logger),
                         new ModMailPrivateMessageListener(logger),
                         new VerificationCodeReceivedListener(config, logger),
@@ -224,8 +237,15 @@ public class DiscordBotManager {
         }
 
         return role;
-
     }
+
+    @Nonnull
+    @CheckReturnValue
+    public List<Role> getRolesByName(String guildId, String roleName) {
+        return getGuild(guildId).getRolesByName(roleName, true);
+    }
+
+
 
     @Nonnull
     @CheckReturnValue
