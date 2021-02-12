@@ -1,3 +1,8 @@
+**Ai Controls**
+;ai <optout/optin>
+
+Opt in and out of having your messages be used to train the AI.
+
 **Clear Color**
 *;clearcolor*
 
