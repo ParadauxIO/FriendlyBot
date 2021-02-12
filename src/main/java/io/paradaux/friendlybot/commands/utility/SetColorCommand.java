@@ -3,7 +3,9 @@ package io.paradaux.friendlybot.commands.utility;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.RoleManager;
+import io.paradaux.friendlybot.managers.SettingsManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.database.UserSettingsEntry;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -11,6 +13,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import org.slf4j.Logger;
 
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -56,15 +59,26 @@ public class SetColorCommand extends BaseCommand {
         if (roles.checkForConflicts(guild, chosenColor)) {
             // role already exists, let's not create a duplicate
             guild.addRoleToMember(event.getMember(), guild.getRolesByName(chosenColor, true).get(0)).queue();
-            // todo update the database.
 
+            UserSettingsEntry entry = SettingsManager.getInstance().getProfileById(guild.getId(), event.getAuthor().getId());
+
+            entry.setCustomColorRole(chosenColor)
+                    .setLastSetColor(new Date());
+
+            SettingsManager.getInstance().updateSettingsProfile(entry);
             return;
         }
 
         roles.createRole(guild, event.getArgs()).queue((role -> {
             guild.modifyRolePositions().selectPosition(role).moveTo(separatorRole.getPosition() - 1).queue();
             guild.addRoleToMember(event.getMember(), role).queue();
-            // todo update the database
+
+            UserSettingsEntry entry = SettingsManager.getInstance().getProfileById(guild.getId(), event.getAuthor().getId());
+
+            entry.setCustomColorRole(chosenColor)
+                    .setLastSetColor(new Date());
+
+            SettingsManager.getInstance().updateSettingsProfile(entry);
         }));
     }
 }
