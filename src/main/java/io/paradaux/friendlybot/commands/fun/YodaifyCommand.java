@@ -29,7 +29,6 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.utils.HttpUtils;
 import io.paradaux.friendlybot.utils.NumberUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;

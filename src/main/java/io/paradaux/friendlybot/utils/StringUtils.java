@@ -28,13 +28,7 @@ package io.paradaux.friendlybot.utils;
 import javax.annotation.Nullable;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.Base64;
-import java.util.Date;
 import java.util.Random;
 import java.util.regex.Pattern;
 

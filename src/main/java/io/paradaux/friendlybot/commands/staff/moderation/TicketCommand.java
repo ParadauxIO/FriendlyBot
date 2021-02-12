@@ -29,7 +29,6 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
-import io.paradaux.friendlybot.utils.StringUtils;
 import io.paradaux.friendlybot.utils.TimeUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailEntry;

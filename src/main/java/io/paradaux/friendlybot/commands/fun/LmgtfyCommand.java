@@ -32,8 +32,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
-import java.awt.*;
-
 public class LmgtfyCommand extends BaseCommand {
 
     private static final String LMGTFY_LINK = "https://lmgtfy.com/?q=";

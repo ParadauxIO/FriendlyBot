@@ -31,7 +31,6 @@ import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.TimeUtils;
-import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.TempBanEntry;
 import io.paradaux.friendlybot.utils.models.types.ModerationAction;

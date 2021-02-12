@@ -30,13 +30,14 @@ import io.paradaux.friendlybot.utils.StringUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
-import okhttp3.*;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Base64;
-import java.util.concurrent.CompletableFuture;
 
 public class MailGunManager {
 

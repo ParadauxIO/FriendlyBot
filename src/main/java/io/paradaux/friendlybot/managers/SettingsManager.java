@@ -5,7 +5,6 @@ import com.mongodb.client.MongoCollection;
 import io.paradaux.friendlybot.utils.TimeUtils;
 import io.paradaux.friendlybot.utils.models.database.UserSettingsEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
-import io.paradaux.friendlybot.utils.models.exceptions.NoSuchUserException;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;

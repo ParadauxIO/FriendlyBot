@@ -29,7 +29,6 @@ import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
