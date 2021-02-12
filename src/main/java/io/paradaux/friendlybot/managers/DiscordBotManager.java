@@ -152,6 +152,7 @@ public class DiscordBotManager {
                         new RandomColorCommand(config, logger),
                         new ServerInfoCommand(config, logger),
                         new SetColorCommand(config, logger, roles, mongo),
+                        new StrikeCommand(config, logger),
                         new TagCommand(config, logger, mongo),
                         new UserInfoCommand(config, logger, permissionManager),
                         new WolframAlphaCommand(config, logger)
