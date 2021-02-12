@@ -2,9 +2,11 @@ package io.paradaux.friendlybot.commands.utility;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.managers.SettingsManager;
+import io.paradaux.friendlybot.utils.NumberUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.UserSettingsEntry;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
@@ -49,6 +51,12 @@ public class ClearColorCommand extends BaseCommand {
             if (settings.getProfileCountByColor(guild.getId(), customColor) == 0) {
                 customRoles.get(0).delete().queue();
             }
+
+            message.getChannel().sendMessage(new EmbedBuilder()
+                    .setColor(NumberUtils.randomColor())
+                    .setTitle("Your custom color role has been cleared.")
+                    .setDescription("This has not had any effect on your 3-day cooldown, you may not modify your color again until that has expired.")
+                    .build()).queue();
         });
     }
 }

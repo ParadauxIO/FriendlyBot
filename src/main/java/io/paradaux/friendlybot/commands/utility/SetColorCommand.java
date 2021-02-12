@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.RoleManager;
 import io.paradaux.friendlybot.managers.SettingsManager;
+import io.paradaux.friendlybot.utils.NumberUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.UserSettingsEntry;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
@@ -38,6 +39,17 @@ public class SetColorCommand extends BaseCommand {
         final Message message = event.getMessage();
         final Guild guild = event.getGuild();
         final String chosenColor = event.getArgs().replace("0x", "");
+
+        if (event.getArgs().isEmpty()) {
+            event.getChannel().sendMessage(new EmbedBuilder()
+                    .setColor(NumberUtils.randomColor())
+                    .setTitle("Setting Your Uniquely Coloured Role")
+                    .setDescription("To get your own coloured role, run `;setcolour <hex>`. This has a 3 day cooldown, so make sure "
+                            + "you're certain! After 3 days you can run this command again to change the colour\n\n"
+                            + "**Want to remove the colour?**\nYou can do this at any time using `;clearcolour` it doesn't affect your cooldown!")
+                    .build()).queue();
+            return;
+        }
 
         if (!(HEX_PATTERN.matcher(chosenColor).results().count() > 0)) {
             message.getChannel().sendMessage(new EmbedBuilder()
