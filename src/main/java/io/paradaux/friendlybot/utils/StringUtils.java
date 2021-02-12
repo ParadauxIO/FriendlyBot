@@ -44,6 +44,8 @@ public class StringUtils {
             + "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09"
             + "\\x0b\\x0c\\x0e-\\x7f])+)\\])");
 
+    private static final char STRIKE_CONTROL_CHARACTER = '\u0336';
+
     /**
      * Converts the specified string to Title Case
      * <br>
@@ -130,5 +132,16 @@ public class StringUtils {
      * */
     public static String removeLetters(String str) {
         return str.replaceAll("[a-zA-Z]", "");
+    }
+
+    /**
+     * Creates strikethrough unicode text by applying the strike control character after each individual character in the provided string
+     * */
+    public static String toStrikeOut(String str) {
+        final StringBuilder builder = new StringBuilder();
+        for (char c : str.toCharArray()) {
+            builder.append(c).append(STRIKE_CONTROL_CHARACTER);
+        }
+        return builder.toString();
     }
 }
