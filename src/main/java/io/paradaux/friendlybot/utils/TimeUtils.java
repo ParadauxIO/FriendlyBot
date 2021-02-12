@@ -25,11 +25,19 @@
 
 package io.paradaux.friendlybot.utils;
 
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.regex.Pattern;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 public class TimeUtils {
 
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("MMMM yyyy HH:mm:ss");
+
     private static final Pattern TIME_SPLITTER = Pattern.compile("(?<=[a-zA-Z])");
+
     private static final long SECOND = 1000;
     private static final long MINUTE = SECOND * 60;
     private static final long HOUR = MINUTE * 60;
@@ -138,5 +146,60 @@ public class TimeUtils {
 
         return builder.toString().trim();
     }
+
+    public static String formatTime(Date date) {
+        return formatTime(date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime());
+    }
+
+    public static String formatTime(OffsetDateTime time) {
+        return formatTime(LocalDateTime.from(time));
+    }
+
+    public static String formatTime(LocalDateTime dateTime) {
+        LocalDateTime time = LocalDateTime.from(dateTime.atOffset(ZoneOffset.UTC));
+        return time.getDayOfMonth() + getDayOfMonthSuffix(time.getDayOfMonth()) + " " + time
+                .format(TIME_FORMATTER) + " UTC";
+    }
+
+    /**
+     * Gets the suffix for the a day in a month
+     * Example: 1st
+     *
+     * @param n The day in the month to get a suffix.
+     * @return The suffix for the day.
+     */
+    public static String getDayOfMonthSuffix(final int n) {
+        if (n < 1 || n > 31) {
+            throw new IllegalArgumentException("illegal day of month: " + n);
+        }
+
+        if (n >= 11 && n <= 13) {
+            return "th";
+        }
+        switch (n % 10) {
+            case 1:
+                return "st";
+            case 2:
+                return "nd";
+            case 3:
+                return "rd";
+            default:
+                return "th";
+
+        }
+    }
+
+    public static long getDaysBetween(Date date1, Date date2) {
+        return DAYS.between(toLocalDate(date1), toLocalDate(date2));
+    }
+
+    public static LocalDate toLocalDate(Date date) {
+        return date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+    }
+
 
 }

@@ -40,8 +40,6 @@ import java.util.regex.Pattern;
 
 public class StringUtils {
 
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("MMMM yyyy HH:mm:ss");
-
     private static final Pattern VALID_EMAIL = Pattern.compile("(?:[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\"
             + ".[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*|\""
             + "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01"
@@ -83,50 +81,6 @@ public class StringUtils {
         }
 
         return converted.toString();
-    }
-
-    public static String formatTime(Date date) {
-        return formatTime(date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime());
-    }
-
-    public static String formatTime(OffsetDateTime time) {
-        return formatTime(LocalDateTime.from(time));
-    }
-
-    public static String formatTime(LocalDateTime dateTime) {
-        LocalDateTime time = LocalDateTime.from(dateTime.atOffset(ZoneOffset.UTC));
-        return time.getDayOfMonth() + getDayOfMonthSuffix(time.getDayOfMonth()) + " " + time
-                .format(TIME_FORMATTER) + " UTC";
-    }
-
-    /**
-     * Gets the suffix for the a day in a month
-     * Example: 1st
-     *
-     * @param n The day in the month to get a suffix.
-     * @return The suffix for the day.
-     */
-    public static String getDayOfMonthSuffix(final int n) {
-        if (n < 1 || n > 31) {
-            throw new IllegalArgumentException("illegal day of month: " + n);
-        }
-
-        if (n >= 11 && n <= 13) {
-            return "th";
-        }
-        switch (n % 10) {
-            case 1:
-                return "st";
-            case 2:
-                return "nd";
-            case 3:
-                return "rd";
-            default:
-                return "th";
-
-        }
     }
 
     /**
