@@ -142,6 +142,7 @@ public class DiscordBotManager {
                         new VerificationCommand(config, logger, permissionManager),
 
                         // Utility Commands
+                        new ClearColorCommand(config, logger),
                         new CommandsCommand(config, logger),
                         new GithubCommand(config, logger),
                         new GoogleCommand(config, logger),
