@@ -2,15 +2,23 @@ package io.paradaux.friendlybot.managers;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import io.paradaux.friendlybot.utils.TimeUtils;
 import io.paradaux.friendlybot.utils.models.database.UserSettingsEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
+import io.paradaux.friendlybot.utils.models.exceptions.NoSuchUserException;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
+import org.bson.Document;
 import org.slf4j.Logger;
+
+import java.util.Date;
 
 import static com.mongodb.client.model.Filters.eq;
 
 public class SettingsManager {
+
+    private static final short COOLDOWN = 3;
 
     private static SettingsManager instance;
 
@@ -39,22 +47,36 @@ public class SettingsManager {
         for (Guild guild : discord.getClient().getGuilds()) {
             System.out.println("Guild: " + guild.getName());
             for (Member member : guild.getMembers()) {
+                if (member.getUser().isBot()) {
+                    return;
+                }
+
+                if (getProfileById(guild.getId(), member.getId()) != null) {
+                    return;
+                }
+
                 System.out.println("Member: " + member.getEffectiveName());
-                logger.info("Creating profile for: " + member.getEffectiveName());
+
                 createNewProfile(member);
             }
         }
     }
 
+    public UserSettingsEntry createNewProfile(Member member) {
+        return createNewProfile(member.getUser(), member.getGuild().getId());
+    }
 
-    public void createNewProfile(Member member) {
+    public UserSettingsEntry createNewProfile(User user, String guildId) {
+        logger.info("Creating profile for: " + user.getAsTag());
         UserSettingsEntry entry = new UserSettingsEntry()
-                .setGuildId(member.getGuild().getId())
+                .setGuildId(guildId)
                 .setDoTrainAi(true)
-                .setDiscordId(member.getId())
-                .setFirstSavedDiscordTag(member.getUser().getAsTag());
+                .setDiscordId(user.getId())
+                .setFirstSavedDiscordTag(user.getAsTag());
 
         settings.insertOne(entry);
+
+        return entry;
     }
 
     public FindIterable<UserSettingsEntry> getProfilesByColor(String color) {
@@ -62,13 +84,36 @@ public class SettingsManager {
     }
 
     public UserSettingsEntry getProfileById(String guildId, String userId) {
-        for (var potEntry : settings.find(eq("discord_id", userId))) {
-            if (potEntry.getGuildId().equals(guildId)) {
-                return potEntry;
-            }
+        UserSettingsEntry entry = settings.find(getGuildUserSearchQuery(guildId, userId)).first();
+
+        if (entry == null) {
+            entry = createNewProfile(DiscordBotManager.getInstance().getUser(userId), guildId)
         }
 
-        return null;
+        return entry;
+    }
+
+    public void updateSettingsProfile(UserSettingsEntry entry) {
+        settings.findOneAndUpdate(getGuildUserSearchQuery(entry.getGuildId(), entry.getDiscordId()), entry);
+
+        throw new NoSuchUserException("No such profile exists for: " + entry.getFirstSavedDiscordTag());
+    }
+
+
+    public void updateColorCooldown(String guildId, String userId) {
+        UserSettingsEntry entry = getProfileById(guildId, userId)
+                .setLastSetColor(new Date());
+
+    }
+
+    public boolean hasCooldownElapsed(UserSettingsEntry entry) {
+        return TimeUtils.getDaysBetween(entry.getLastSetColor(), new Date()) >= COOLDOWN;
+    }
+
+    private Document getGuildUserSearchQuery(String guildId, String discordId) {
+        return new Document()
+                .append("guild_id", guildId)
+                .append("discord_id", discordId);
     }
 
 }
