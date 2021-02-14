@@ -51,7 +51,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 public class MongoManager {
 
     // Singleton Instance
-    public static MongoManager instance;
+    private static MongoManager instance;
 
     // Dependencies
     private final ConfigurationEntry config;
@@ -290,14 +290,6 @@ public class MongoManager {
 
     public void updateLoggedMessage(String messageId, MessageEntry entry) {
         loggedMessages.findOneAndReplace(Filters.eq("message_id", messageId), entry);
-    }
-
-    public void addAiMessage(MessageEntry message) {
-        loggedMessages.insertOne(message);
-    }
-
-    public FindIterable<MessageEntry> getAiMessages() {
-        return botBrain.find();
     }
 
     public void addTempBanEntry(TempBanEntry entry) {

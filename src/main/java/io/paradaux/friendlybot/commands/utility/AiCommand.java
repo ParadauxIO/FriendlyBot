@@ -39,6 +39,7 @@ public class AiCommand extends PrivilegedCommand {
                         .setTitle("You have opted out of our chatter bot training system.")
                         .setDescription("in the near future their will be a facility to delete already existing data recorded.")
                         .build()).queue();
+                break;
             }
 
             case "optin": {
@@ -49,15 +50,19 @@ public class AiCommand extends PrivilegedCommand {
                         .setTitle("You have opted in to our chatter bot training system.")
                         .setDescription("in the near future their will be a facility to delete already existing data recorded.")
                         .build()).queue();
+                break;
+            }
+
+            case "deleteall": {
+
+
+
             }
 
             case "nth": {
                 // TODO stub
             }
         }
-
-
-
-
+        
     }
 }
