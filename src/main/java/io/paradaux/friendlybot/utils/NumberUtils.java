@@ -38,4 +38,19 @@ public class NumberUtils {
         return (short) Math.round(0xffffff * Math.random());
     }
 
+    /**
+     * Turns Degrees Kelvin to Degrees Celsius
+     * */
+    public static double kelvinToCelsius(int degKelvin) {
+        return degKelvin - 273.15d;
+    }
+
+    /**
+     * Turns Degrees Kelvin to Degrees Fahrenheit.
+     * You're a filthy little American aren't you?
+     * */
+    public static double kelvinToFahrenheit(int degKelvin) {
+        return ((degKelvin - 273.15d) * 9/5) + 32;
+    }
+
 }
