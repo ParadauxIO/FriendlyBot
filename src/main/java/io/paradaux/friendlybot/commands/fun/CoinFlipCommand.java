@@ -44,7 +44,7 @@ public class CoinFlipCommand extends BaseCommand {
 
         event.getChannel().sendMessage(waitingEmbed).queue((sentMessage) -> {
             try {
-                TimeUnit.MILLISECONDS.sleep(1500);
+                TimeUnit.MILLISECONDS.sleep(1200);
                 sentMessage.editMessage(resultEmbed).queue();
             } catch (InterruptedException e) {
                 getLogger().error("Interrupted whilst shaking the magic eight ball..");
