@@ -29,6 +29,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Iterator;
@@ -90,6 +91,19 @@ public class RandomUtils {
         }
 
         return iterator.next();
+    }
+
+    /**
+     * Picks a random number between the provided bounds
+     * */
+    @CheckReturnValue
+    @Nonnull
+    public int pickRandomNumber(int min, int max) {
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        return random.nextInt((max - min) + 1) + min;
     }
 
 }
