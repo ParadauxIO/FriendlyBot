@@ -110,6 +110,7 @@ public class DiscordBotManager {
                 .addCommands(
                         // Fun Commands
                         new CatCommand(config, logger),
+                        new CoinFlipCommand(config, logger),
                         new DogCommand(config, logger),
                         new EightBallCommand(config, logger),
                         new InspireCommand(config, logger),
