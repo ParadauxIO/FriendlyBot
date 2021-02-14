@@ -25,6 +25,7 @@
 
 package io.paradaux.friendlybot.managers;
 
+import com.mongodb.client.MongoCollection;
 import io.paradaux.ai.MarkovMegaHal;
 import io.paradaux.friendlybot.utils.models.database.MessageEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
@@ -32,18 +33,22 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 
 public class AIManager {
 
     private static AIManager instance = null;
     private final MarkovMegaHal chatterbot;
     private final Logger logger;
+    private final MongoCollection<MessageEntry> trainingData;
 
     public AIManager(Logger logger) {
         this.logger = logger;
 
         chatterbot = new MarkovMegaHal();
         loadTrainingDataFromDatabase();
+
+        trainingData = MongoManager.getInstance().getAiMessages();
 
         instance = this;
     }
@@ -70,7 +75,7 @@ public class AIManager {
     }
 
     public void loadTrainingDataFromDatabase() {
-        for (MessageEntry m : MongoManager.getInstance().getAiMessages()) {
+        for (MessageEntry m : trainingData.find()) {
             logger.info("Loading message: " + m.getContent() + "...");
             chatterbot.add(m.getContent());
         }

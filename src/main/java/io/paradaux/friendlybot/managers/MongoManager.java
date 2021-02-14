@@ -72,6 +72,7 @@ public class MongoManager {
     private final MongoCollection<TempBanEntry> tempbans;
     private final MongoCollection<TagEntry> tags;
     private final MongoCollection<RescindmentEntry> rescindments;
+    private final MongoCollection<GuildSettingsEntry> guilds;
 
     public MongoManager(ConfigurationEntry config, Logger logger) {
         this.config = config;
@@ -115,6 +116,7 @@ public class MongoManager {
         tempbans = dataBase.getCollection("tempbans", TempBanEntry.class);
         tags = dataBase.getCollection("tags", TagEntry.class);
         rescindments = dataBase.getCollection("rescindments", RescindmentEntry.class);
+        guilds = dataBase.getCollection("guildsettings", GuildSettingsEntry.class);
 
         instance = this;
     }
@@ -127,8 +129,16 @@ public class MongoManager {
         return instance;
     }
 
+    public MongoCollection<GuildSettingsEntry> getGuildSettings() {
+        return guilds;
+    }
+
     public MongoCollection<UserSettingsEntry> getUserSettings() {
         return userSettings;
+    }
+
+    public MongoCollection<MessageEntry> getAiMessages() {
+        return botBrain;
     }
 
     public String getNextIncidentID() {
