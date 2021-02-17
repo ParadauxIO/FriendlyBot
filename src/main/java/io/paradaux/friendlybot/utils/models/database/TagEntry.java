@@ -40,6 +40,9 @@ public class TagEntry implements Serializable {
     @BsonProperty(value = "discord_id")
     private String discordId;
 
+    @BsonProperty(value = "id")
+    private String id;
+
     @BsonProperty(value = "content")
     private String content;
 
@@ -50,9 +53,10 @@ public class TagEntry implements Serializable {
 
     }
 
-    public TagEntry(String guild, String discordId, String content, Date timeCreated) {
+    public TagEntry(String guild, String discordId, String id, String content, Date timeCreated) {
         this.guild = guild;
         this.discordId = discordId;
+        this.id = id;
         this.content = content;
         this.timeCreated = timeCreated;
     }
@@ -65,6 +69,10 @@ public class TagEntry implements Serializable {
         return discordId;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public String getContent() {
         return content;
     }
@@ -73,21 +81,29 @@ public class TagEntry implements Serializable {
         return timeCreated;
     }
 
-    public void setGuild(String guild) {
+    public TagEntry setGuild(String guild) {
         this.guild = guild;
+        return this;
     }
 
-    public void setDiscordId(String discordId) {
+    public TagEntry setDiscordId(String discordId) {
         this.discordId = discordId;
+        return this;
     }
 
-    public void setContent(String content) {
+    public TagEntry setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public TagEntry setContent(String content) {
         this.content = content;
+        return this;
     }
 
-    public void setTimeCreated(Date timeCreated) {
+    public TagEntry setTimeCreated(Date timeCreated) {
         this.timeCreated = timeCreated;
+        return this;
     }
-
 
 }
