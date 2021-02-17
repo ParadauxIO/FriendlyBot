@@ -72,7 +72,6 @@ public class FriendlyBot {
         DiscordBotManager discordBotManager = new DiscordBotManager(config, logger, permissionManager, mongoManager, roleManager);
         SettingsManager settingsManager = new SettingsManager(logger, mongoManager);
         TagManager tagManager = new TagManager(config, logger, mongoManager);
-        AIManager aiManager = new AIManager(logger);
         AuditManager auditManager = new AuditManager(config, logger);
         MailGunManager mailGunManager = new MailGunManager(config, logger);
         VerificationManager verificationManager = new VerificationManager(config, logger, mongoManager, mailGunManager);
