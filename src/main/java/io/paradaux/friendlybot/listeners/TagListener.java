@@ -66,9 +66,7 @@ public class TagListener extends DiscordEventListener {
         }
 
         String[] args = messageContent.substring(1).split(" ");
-
-        System.out.println(Arrays.toString(args));
-
+        
         TagManager tags = TagManager.getInstance();
         TagEntry entry = tags.getTagById(event.getGuild().getId(), args[0]);
 
