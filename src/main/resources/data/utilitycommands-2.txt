@@ -3,10 +3,20 @@
 
 Generate a unicode and markdown representation of your message, with a strike through it.
 
+**Tag Command**
+;tag <create/delete/view> <id> [content]>
+
+Manage tags, which are special user-defined commands used by beginning with !, think of them like aliases or macros.
+
 **User Information**
 *;userinfo*
 
 Shows information about your user.
+
+**Weather Information**
+;weather <Location>
+
+Shows weather information pertaining to the location specified.
 
 **Wolfram Alpha: Search**
 *;wolframalpha <query>*
