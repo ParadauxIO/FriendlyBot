@@ -66,9 +66,7 @@ public class WeatherCommand extends BaseCommand {
             double feelsLikeTemperatureKelvin = temperatureData.get("feels_like").getAsDouble();
             double minimumTemperatureKelvin = temperatureData.get("temp_min").getAsDouble();
             double maximumTemperatureKelvin = temperatureData.get("temp_max").getAsDouble();
-
-            System.out.printf((WEATHER_ICON_LINK) + "%n", weatherData.getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString());
-
+            
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(NumberUtils.randomColor())
                     .setAuthor("Weather » " + place, String.format(MORE_INFORMATION_LINK, weatherData.get("id").getAsInt()),
