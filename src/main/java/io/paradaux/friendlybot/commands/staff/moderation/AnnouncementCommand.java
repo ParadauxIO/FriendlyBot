@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 
 public class AnnouncementCommand extends PrivilegedCommand {
 
+    private static final Pattern URL_PATTERN = Pattern.compile("^(http://|https://)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?");
     private final EventWaiter waiter;
 
     public AnnouncementCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager, EventWaiter waiter) {
@@ -36,18 +37,30 @@ public class AnnouncementCommand extends PrivilegedCommand {
                 event.getChannel().sendMessage("Please set the picture (use a link!)").queue(message3 -> waiter.waitForEvent(MessageReceivedEvent.class, messageEvent3 -> sameOrigin(event.getMessage(), messageEvent3.getMessage()), messageEvent3 -> {
                     final String imageUrl = messageEvent3.getMessage().getContentRaw();
 
+                    if (!URL_PATTERN.matcher(messageEvent3.getMessage().getContentRaw()).find()) {
+                        event.getChannel().sendMessage("Please use a *valid* link.").queue();
+                        return;
+                    }
+
                     event.getChannel().sendMessage("Please set the link").queue(message4 -> waiter.waitForEvent(MessageReceivedEvent.class, messageEvent4 -> sameOrigin(event.getMessage(), messageEvent4.getMessage()), messageEvent4 -> {
                         builder.setAuthor(title, messageEvent4.getMessage().getContentRaw(), imageUrl).setThumbnail(imageUrl).setDescription(content);
 
-                        message.getChannel().sendMessage(builder.build()).queue(message5 -> event.getChannel().sendMessage("Where should I send this? (type null for nowhere)").queue(message6 -> waiter.waitForEvent(MessageReceivedEvent.class, messageEvent6 -> sameOrigin(event.getMessage(), messageEvent6.getMessage()), messageEvent6 -> {
-                            if (messageEvent6.getMessage().getContentRaw().equals("null")) {
-                                return;
-                            }
+                        if (!URL_PATTERN.matcher(link).find()) {
+                            event.getChannel().sendMessage("Please use a *valid* link.").queue();
+                            return;
+                        }
+
+                        builder.setAuthor(title, link, imageUrl).setThumbnail(imageUrl).setDescription(content);
+
+                        event.getChannel().sendMessage("Please set a color (use a HEX Integer with no prefix.)").queue(message5 -> waiter.waitForEvent(MessageReceivedEvent.class, messageEvent5 -> sameOrigin(event.getMessage(), messageEvent5.getMessage()), messageEvent5 -> {
+                            final String colorString = messageEvent5.getMessage().getContentRaw();
+                            final int color;
 
                             try {
-                                messageEvent6.getMessage().getMentionedChannels().get(0).sendMessage(builder.build()).queue();
-                            } catch (IndexOutOfBoundsException ok) {
-                                messageEvent6.getMessage().reply("Invalid channel.").queue();
+                                color = Integer.parseInt(colorString, 16);
+                            } catch (NumberFormatException ok) {
+                                event.getChannel().sendMessage("You entered an invalid color.").queue();
+                                return;
                             }
 
                         })));
