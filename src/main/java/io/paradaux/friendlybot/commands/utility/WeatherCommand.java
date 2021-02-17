@@ -61,12 +61,13 @@ public class WeatherCommand extends BaseCommand {
             JsonObject coordinateData = weatherData.getAsJsonObject("coord");
             JsonObject temperatureData = weatherData.getAsJsonObject("main");
             JsonObject windData = weatherData.getAsJsonObject("wind");
+            JsonObject climateData = weatherData.getAsJsonArray("weather").get(0).getAsJsonObject();
 
             double currentTemperatureKelvin = temperatureData.get("temp").getAsDouble();
             double feelsLikeTemperatureKelvin = temperatureData.get("feels_like").getAsDouble();
             double minimumTemperatureKelvin = temperatureData.get("temp_min").getAsDouble();
             double maximumTemperatureKelvin = temperatureData.get("temp_max").getAsDouble();
-            
+
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(NumberUtils.randomColor())
                     .setAuthor("Weather » " + place, String.format(MORE_INFORMATION_LINK, weatherData.get("id").getAsInt()),
@@ -88,6 +89,7 @@ public class WeatherCommand extends BaseCommand {
                             NumberUtils.kelvinToFahrenheit(maximumTemperatureKelvin)), false)
                     .setFooter("Weather Information reflects the current weather conditions, this information is provided courtesy of OpenWeatherMap.org")
                     .build();
+
 
             event.getChannel().sendMessage(embed).queue();
         }).join();
