@@ -34,6 +34,7 @@ import io.paradaux.friendlybot.commands.staff.technician.*;
 import io.paradaux.friendlybot.commands.utility.*;
 import io.paradaux.friendlybot.listeners.AlotListener;
 import io.paradaux.friendlybot.listeners.ReadyListener;
+import io.paradaux.friendlybot.listeners.TagListener;
 import io.paradaux.friendlybot.listeners.logging.MessageDeleteLog;
 import io.paradaux.friendlybot.listeners.logging.MessageLog;
 import io.paradaux.friendlybot.listeners.logging.UpdatedMessageLog;
@@ -191,7 +192,8 @@ public class DiscordBotManager {
                         new MessageDeleteLog(config, logger, mongo),
                         new MessageLog(config, logger, mongo),
                         new UpdatedMessageLog(config, logger, mongo),
-                        new LongMessageListener(config, logger)
+                        new LongMessageListener(config, logger),
+                        new TagListener(config, logger)
                 );
 
         if (token == null) {

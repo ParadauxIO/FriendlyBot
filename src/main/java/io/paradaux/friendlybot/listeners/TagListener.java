@@ -25,13 +25,19 @@
 
 package io.paradaux.friendlybot.listeners;
 
+import io.paradaux.friendlybot.managers.TagManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.database.TagEntry;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
+
+import java.util.Arrays;
 
 public class TagListener extends DiscordEventListener {
 
@@ -59,11 +65,22 @@ public class TagListener extends DiscordEventListener {
             return;
         }
 
-        messageContent = messageContent.substring(1);
+        String[] args = messageContent.substring(1).split(" ");
 
+        System.out.println(Arrays.toString(args));
 
+        TagManager tags = TagManager.getInstance();
+        TagEntry entry = tags.getTagById(event.getGuild().getId(), args[0]);
 
+        if (entry == null) {
+            MessageEmbed embed = new EmbedBuilder()
+                    .setColor(0xeb5132)
+                    .setTitle("This tag does not exist.")
+                    .build();
+            message.getChannel().sendMessage(embed).queue();
+            return;
+        }
 
-
+        message.getChannel().sendMessage(entry.getContent()).queue();
     }
 }

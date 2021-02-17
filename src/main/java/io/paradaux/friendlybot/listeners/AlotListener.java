@@ -9,7 +9,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class AlotListener extends DiscordEventListener {
@@ -51,6 +50,5 @@ public class AlotListener extends DiscordEventListener {
                 message.addReaction(alot).queue();
             }));
         }
-
     }
 }
