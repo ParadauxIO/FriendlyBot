@@ -11,7 +11,6 @@ import io.paradaux.http.HttpApi;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 
 import java.net.http.HttpRequest;
@@ -89,7 +88,6 @@ public class WeatherCommand extends BaseCommand {
                             NumberUtils.kelvinToFahrenheit(maximumTemperatureKelvin)), false)
                     .setFooter("Weather Information reflects the current weather conditions, this information is provided courtesy of OpenWeatherMap.org")
                     .build();
-
 
             event.getChannel().sendMessage(embed).queue();
         }).join();
