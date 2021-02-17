@@ -70,8 +70,8 @@ public class WeatherCommand extends BaseCommand {
             MessageEmbed embed = new EmbedBuilder()
                     .setColor(NumberUtils.randomColor())
                     .setAuthor("Weather » " + place, String.format(MORE_INFORMATION_LINK, weatherData.get("id").getAsInt()),
-                            String.format(WEATHER_ICON_LINK, weatherData.getAsJsonArray("weather").get(0).getAsJsonObject().get("icon").getAsString()))
-                    .setDescription("Weather Information reflects the current weather conditions, this information is provided courtesy of [OpenWeatherMap](https://openweathermap.org/).")
+                            String.format(WEATHER_ICON_LINK, climateData.get("icon").getAsString()))
+                    .setDescription(climateData.get("main").getAsString() + " » " + climateData.get("description").getAsString())
                     .addField("Location:", String.format("%s: %.4f°N, %.4f°W", place, coordinateData.get("lon").getAsFloat(), coordinateData.get("lat").getAsFloat()), true)
                     .addField("Current Temperature: ", String.format(TEMPERATURE_FORMAT, NumberUtils.kelvinToCelsius(currentTemperatureKelvin),
                             NumberUtils.kelvinToFahrenheit(currentTemperatureKelvin)), true)
@@ -86,6 +86,7 @@ public class WeatherCommand extends BaseCommand {
                             NumberUtils.kelvinToFahrenheit(minimumTemperatureKelvin)), false)
                     .addField("Maximum Temperature Expected Today:", String.format(TEMPERATURE_FORMAT, NumberUtils.kelvinToCelsius(maximumTemperatureKelvin),
                             NumberUtils.kelvinToFahrenheit(maximumTemperatureKelvin)), false)
+                    .setFooter("Weather Information reflects the current weather conditions, this information is provided courtesy of OpenWeatherMap.org")
                     .build();
 
             event.getChannel().sendMessage(embed).queue();
