@@ -24,21 +24,19 @@ public class SetColorCommand extends BaseCommand {
     private static final Pattern HEX_PATTERN = Pattern.compile("(0x)?[0-9a-f]+");
 
     private final RoleManager roles;
-    private final MongoManager mongo;
 
-    public SetColorCommand(ConfigurationEntry config, Logger logger, RoleManager roles, MongoManager mongo) {
+    public SetColorCommand(ConfigurationEntry config, Logger logger, RoleManager roles) {
         super(config, logger);
         this.name = "setcolor";
         this.aliases = new String[]{"setcolour"};
         this.roles = roles;
-        this.mongo = mongo;
     }
 
     @Override
     protected void execute(CommandEvent event) {
         final Message message = event.getMessage();
         final Guild guild = event.getGuild();
-        final String chosenColor = event.getArgs().replace("0x", "");
+        final String chosenColor = event.getArgs().replace("0x", "").toUpperCase();
 
         if (event.getArgs().isEmpty()) {
             event.getChannel().sendMessage(new EmbedBuilder()

@@ -67,24 +67,29 @@ public class VerificationManager {
         return instance;
     }
 
-    public boolean setVerified(String discordID, String guildId, @Nullable String verificationCode) throws VerificationException {
+    public boolean setVerified(String discordId, String guildId, @Nullable String verificationCode) throws VerificationException {
         if (!(verificationCode == null)) {
-            if (!verificationCode.equals(mongo.getVerificationCode(discordID))) {
+            if (!verificationCode.equals(mongo.getVerificationCode(discordId))) {
                 return false;
             }
         }
 
-        mongo.setVerifiedUser(discordID, guildId);
+        mongo.setVerifiedUser(discordId, guildId);
         Guild guild = DiscordBotManager.getInstance().getGuild(guildId);
         Role role = DiscordBotManager.getInstance().getRole(guildId, config.getVerifiedRoleId());
 
+        Member member;
+
         try {
-            Member member = guild.retrieveMemberById(discordID).submit().get();
+            member = guild.retrieveMemberById(discordId).submit().get();
             guild.addRoleToMember(member, role).queue();
-            mongo.setVerifiedUser(discordID, guildId);
+            mongo.setVerifiedUser(discordId, guildId);
         } catch (InterruptedException | ExecutionException exception) {
+            logger.warn("Verification ran into a concurrency issue for ID: {} in Guild: {}", discordId, guildId);
             throw new VerificationException("Error execution asynchronously.");
         }
+
+        logger.info("User: {} is now verified.", member.getUser().getAsTag());
         return true;
     }
 
@@ -93,6 +98,8 @@ public class VerificationManager {
         String verificationCode = StringUtils.generateVerificationCode();
 
         User user = discordBotManager.getUser(discordID);
+
+        logger.info("Set {} as pending verification. Sending them an email.", user.getAsTag());
 
         mailGun.sendEmail(email, user.getAsTag(), verificationCode);
         mongo.addPendingVerificationUser(discordID, guildID, verificationCode);

@@ -26,8 +26,6 @@
 package io.paradaux.friendlybot.listeners;
 
 import io.paradaux.friendlybot.FriendlyBot;
-import io.paradaux.friendlybot.managers.DiscordBotManager;
-import io.paradaux.friendlybot.managers.SettingsManager;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;

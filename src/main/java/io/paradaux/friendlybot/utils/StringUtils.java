@@ -46,6 +46,8 @@ public class StringUtils {
 
     private static final char STRIKE_CONTROL_CHARACTER = '\u0336';
 
+    private static final String SHORTHAND_CARDINAL_DIRECTIONS[] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"};
+
     /**
      * Converts the specified string to Title Case
      * <br>
@@ -143,5 +145,12 @@ public class StringUtils {
             builder.append(c).append(STRIKE_CONTROL_CHARACTER);
         }
         return builder.toString();
+    }
+
+    /**
+     * Converts a heading in degrees to a shorthand cardinal direction.
+     * */
+    public static String headingToShortCardinalDirection(double heading) {
+        return SHORTHAND_CARDINAL_DIRECTIONS[(int) Math.round(((heading % 360)/45))];
     }
 }

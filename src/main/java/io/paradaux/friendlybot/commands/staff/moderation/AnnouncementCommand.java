@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.slf4j.Logger;
 
+import java.util.regex.Pattern;
+
 public class AnnouncementCommand extends PrivilegedCommand {
 
     private static final Pattern URL_PATTERN = Pattern.compile("^(http://|https://)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?");
@@ -28,7 +30,8 @@ public class AnnouncementCommand extends PrivilegedCommand {
 
         EmbedBuilder builder = new EmbedBuilder();
 
-        event.getChannel().sendMessage("Please set the title.").queue(message -> waiter.waitForEvent(MessageReceivedEvent.class, messageEvent -> sameOrigin(event.getMessage(), messageEvent.getMessage()), messageEvent -> {
+        event.getChannel().sendMessage("Please set the title.").queue(message -> waiter.waitForEvent(MessageReceivedEvent.class,
+                messageEvent -> sameOrigin(event.getMessage(), messageEvent.getMessage()), messageEvent -> {
             final String title = messageEvent.getMessage().getContentRaw();
 
             event.getChannel().sendMessage("Please set the content.").queue(message2 -> waiter.waitForEvent(MessageReceivedEvent.class, messageEvent2 -> sameOrigin(event.getMessage(), messageEvent2.getMessage()), messageEvent2 -> {
@@ -43,7 +46,7 @@ public class AnnouncementCommand extends PrivilegedCommand {
                     }
 
                     event.getChannel().sendMessage("Please set the link").queue(message4 -> waiter.waitForEvent(MessageReceivedEvent.class, messageEvent4 -> sameOrigin(event.getMessage(), messageEvent4.getMessage()), messageEvent4 -> {
-                        builder.setAuthor(title, messageEvent4.getMessage().getContentRaw(), imageUrl).setThumbnail(imageUrl).setDescription(content);
+                        final String link = messageEvent4.getMessage().getContentRaw();
 
                         if (!URL_PATTERN.matcher(link).find()) {
                             event.getChannel().sendMessage("Please use a *valid* link.").queue();
@@ -63,7 +66,21 @@ public class AnnouncementCommand extends PrivilegedCommand {
                                 return;
                             }
 
-                        })));
+                            builder.setColor(color);
+
+                            message.getChannel().sendMessage(builder.build()).queue(nullMessage -> event.getChannel().sendMessage("Where "
+                                    + "should I send this? (type null for nowhere)").queue(message6 -> waiter.waitForEvent(MessageReceivedEvent.class, messageEvent6 -> sameOrigin(event.getMessage(), messageEvent6.getMessage()), messageEvent6 -> {
+                                if (messageEvent6.getMessage().getContentRaw().equals("null")) {
+                                    return;
+                                }
+
+                                try {
+                                    messageEvent6.getMessage().getMentionedChannels().get(0).sendMessage(builder.build()).queue();
+                                } catch (IndexOutOfBoundsException ok) {
+                                    messageEvent6.getMessage().reply("Invalid channel.").queue();
+                                }
+                            })));
+                        }));
                     }));
                 }));
             }));

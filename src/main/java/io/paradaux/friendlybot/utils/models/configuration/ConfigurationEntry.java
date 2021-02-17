@@ -41,7 +41,7 @@ import java.io.Serializable;
  * */
 public class ConfigurationEntry implements Serializable {
 
-    protected static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2L;
 
     @SerializedName("bot_token")
     private String botToken;
@@ -106,6 +106,9 @@ public class ConfigurationEntry implements Serializable {
     @SerializedName("imgflip_password")
     private String imgflipPassword;
 
+    @SerializedName("openweathermap_api_key")
+    private String weatherApiKey;
+
     public ConfigurationEntry() {
     
     }
@@ -116,7 +119,7 @@ public class ConfigurationEntry implements Serializable {
                               String mailGunApplicationKey, String verificationEmailSubject, String verificationEmailSender,
                               String verificationEmailTemplateName, String mailGunBaseUrl, String wolframAlphaApplicationId,
                               String imgurClientId, String messageLogChannel, String bytebinInstance, String imgflipUsername,
-                              String imgflipPassword) {
+                              String imgflipPassword, String weatherApiKey) {
         this.botToken = botToken;
         this.commandPrefix = commandPrefix;
         this.guildId = guildId;
@@ -138,6 +141,7 @@ public class ConfigurationEntry implements Serializable {
         this.bytebinInstance = bytebinInstance;
         this.imgflipUsername = imgflipUsername;
         this.imgflipPassword = imgflipPassword;
+        this.weatherApiKey = weatherApiKey;
     }
 
     public ConfigurationEntry setBotToken(String botToken) {
@@ -245,6 +249,11 @@ public class ConfigurationEntry implements Serializable {
         return this;
     }
 
+    public ConfigurationEntry setWeatherApiKey(String weatherApiKey) {
+        this.weatherApiKey = weatherApiKey;
+        return this;
+    }
+
     public String getBotToken() {
         return botToken;
     }
@@ -327,5 +336,9 @@ public class ConfigurationEntry implements Serializable {
 
     public String getImgflipPassword() {
         return imgflipPassword;
+    }
+
+    public String getWeatherApiKey() {
+        return weatherApiKey;
     }
 }

@@ -51,7 +51,7 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 public class MongoManager {
 
     // Singleton Instance
-    public static MongoManager instance;
+    private static MongoManager instance;
 
     // Dependencies
     private final ConfigurationEntry config;
@@ -72,6 +72,7 @@ public class MongoManager {
     private final MongoCollection<TempBanEntry> tempbans;
     private final MongoCollection<TagEntry> tags;
     private final MongoCollection<RescindmentEntry> rescindments;
+    private final MongoCollection<GuildSettingsEntry> guilds;
 
     public MongoManager(ConfigurationEntry config, Logger logger) {
         this.config = config;
@@ -115,6 +116,7 @@ public class MongoManager {
         tempbans = dataBase.getCollection("tempbans", TempBanEntry.class);
         tags = dataBase.getCollection("tags", TagEntry.class);
         rescindments = dataBase.getCollection("rescindments", RescindmentEntry.class);
+        guilds = dataBase.getCollection("guildsettings", GuildSettingsEntry.class);
 
         instance = this;
     }
@@ -127,8 +129,20 @@ public class MongoManager {
         return instance;
     }
 
+    public MongoCollection<GuildSettingsEntry> getGuildSettings() {
+        return guilds;
+    }
+
     public MongoCollection<UserSettingsEntry> getUserSettings() {
         return userSettings;
+    }
+
+    public MongoCollection<MessageEntry> getAiMessages() {
+        return botBrain;
+    }
+
+    public MongoCollection<TagEntry> getTags() {
+        return tags;
     }
 
     public String getNextIncidentID() {
@@ -292,14 +306,6 @@ public class MongoManager {
         loggedMessages.findOneAndReplace(Filters.eq("message_id", messageId), entry);
     }
 
-    public void addAiMessage(MessageEntry message) {
-        loggedMessages.insertOne(message);
-    }
-
-    public FindIterable<MessageEntry> getAiMessages() {
-        return botBrain.find();
-    }
-
     public void addTempBanEntry(TempBanEntry entry) {
         tempbans.insertOne(entry);
     }
@@ -310,18 +316,6 @@ public class MongoManager {
 
     public FindIterable<TempBanEntry> getTempBans() {
         return tempbans.find();
-    }
-
-    public void addTag(TagEntry entry) {
-        tags.insertOne(entry);
-    }
-
-    public TagEntry getTag(String name) {
-        return tags.find(Filters.eq("", name)).first();
-    }
-
-    public TagEntry getTagByOwner(String discordId) {
-        return tags.find(Filters.eq("", "")).first();
     }
 
     public void deleteWarning(String incidentId) {

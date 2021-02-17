@@ -3,6 +3,7 @@ package io.paradaux.friendlybot.listeners;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.entities.ChannelType;
+import net.dv8tion.jda.api.entities.Emote;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
@@ -32,10 +33,22 @@ public class AlotListener extends DiscordEventListener {
         }
 
         if (ALOT.matcher(message.getContentRaw()).results().count() >= 1) {
-            event.getGuild().retrieveEmoteById(ALOT_EMOT_ID).queue((emote) -> {
-                message.addReaction(emote).queue();
-            });
-        }
+            event.getGuild().retrieveEmotes().queue((listedEmotes -> {
+                Emote alot = null;
 
+                for (var emote : listedEmotes) {
+                    if (emote.getName().equals("alot")) {
+                        alot = emote;
+                        break;
+                    }
+                }
+
+                if (alot == null) {
+                    throw new RuntimeException("The alot emoji does not exist for the guild.");
+                }
+
+                message.addReaction(alot).queue();
+            }));
+        }
     }
 }

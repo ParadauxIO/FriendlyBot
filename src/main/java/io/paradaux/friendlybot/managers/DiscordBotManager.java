@@ -32,7 +32,11 @@ import io.paradaux.friendlybot.commands.fun.*;
 import io.paradaux.friendlybot.commands.staff.moderation.*;
 import io.paradaux.friendlybot.commands.staff.technician.*;
 import io.paradaux.friendlybot.commands.utility.*;
+import io.paradaux.friendlybot.listeners.AlotListener;
 import io.paradaux.friendlybot.listeners.ReadyListener;
+import io.paradaux.friendlybot.listeners.TagListener;
+import io.paradaux.friendlybot.listeners.ai.ResponseListener;
+import io.paradaux.friendlybot.listeners.ai.TrainingListener;
 import io.paradaux.friendlybot.listeners.logging.MessageDeleteLog;
 import io.paradaux.friendlybot.listeners.logging.MessageLog;
 import io.paradaux.friendlybot.listeners.logging.UpdatedMessageLog;
@@ -106,10 +110,11 @@ public class DiscordBotManager {
         CommandClientBuilder builder = new CommandClientBuilder()
                 .setPrefix(config.getCommandPrefix())
                 .setOwnerId("150993042558418944")
-                .setActivity(Activity.listening("to modmail queries.."))
+                .setActivity(Activity.listening("modmail queries.."))
                 .addCommands(
                         // Fun Commands
                         new CatCommand(config, logger),
+                        new CoinFlipCommand(config, logger),
                         new DogCommand(config, logger),
                         new EightBallCommand(config, logger),
                         new InspireCommand(config, logger),
@@ -142,6 +147,7 @@ public class DiscordBotManager {
                         new VerificationCommand(config, logger, permissionManager),
 
                         // Utility Commands
+                        new AiCommand(config, logger, permissionManager),
                         new ClearColorCommand(config, logger),
                         new CommandsCommand(config, logger),
                         new GithubCommand(config, logger),
@@ -151,10 +157,11 @@ public class DiscordBotManager {
                         new PingCommand(logger),
                         new RandomColorCommand(config, logger),
                         new ServerInfoCommand(config, logger),
-                        new SetColorCommand(config, logger, roles, mongo),
+                        new SetColorCommand(config, logger, roles),
                         new StrikeCommand(config, logger),
                         new TagCommand(config, logger, mongo),
                         new UserInfoCommand(config, logger, permissionManager),
+                        new WeatherCommand(config, logger),
                         new WolframAlphaCommand(config, logger)
                 );
 
@@ -176,6 +183,9 @@ public class DiscordBotManager {
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setBulkDeleteSplittingEnabled(false)
                 .addEventListeners(eventWaiter, commandClient,
+                        new ResponseListener(config, logger),
+                        new TrainingListener(logger, mongo),
+                        new AlotListener(config, logger),
                         new GuildJoinLog(config, logger),
                         new GuildLeaveLog(config, logger),
                         new ModMailChannelListener(config, logger),
@@ -186,7 +196,8 @@ public class DiscordBotManager {
                         new MessageDeleteLog(config, logger, mongo),
                         new MessageLog(config, logger, mongo),
                         new UpdatedMessageLog(config, logger, mongo),
-                        new LongMessageListener(config, logger)
+                        new LongMessageListener(config, logger),
+                        new TagListener(config, logger)
                 );
 
         if (token == null) {

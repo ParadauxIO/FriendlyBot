@@ -3,6 +3,11 @@
 
 Get a randomly chosen cat picture to brighten up your day!
 
+**Coin Flip**
+;coinflip
+
+Flips a virtual €2 coin!
+
 **Dog**
 ;dog
 

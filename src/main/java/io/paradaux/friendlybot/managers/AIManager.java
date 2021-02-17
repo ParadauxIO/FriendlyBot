@@ -25,6 +25,8 @@
 
 package io.paradaux.friendlybot.managers;
 
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
 import io.paradaux.ai.MarkovMegaHal;
 import io.paradaux.friendlybot.utils.models.database.MessageEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
@@ -32,12 +34,19 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AIManager {
 
     private static AIManager instance = null;
+
+    private boolean isEnabled;
     private final MarkovMegaHal chatterbot;
     private final Logger logger;
+    private final MongoCollection<MessageEntry> trainingData;
+
+    private final List<String> ignoreList;
 
     public AIManager(Logger logger) {
         this.logger = logger;
@@ -45,6 +54,10 @@ public class AIManager {
         chatterbot = new MarkovMegaHal();
         loadTrainingDataFromDatabase();
 
+        trainingData = MongoManager.getInstance().getAiMessages();
+        ignoreList = SettingsManager.getInstance().getIgnoredUsers();
+
+        isEnabled = false;
         instance = this;
     }
 
@@ -65,23 +78,60 @@ public class AIManager {
 
     }
 
+    public void storeMessage(MessageEntry entry) {
+        if (!isEnabled) {
+            return;
+        }
+        trainingData.insertOne(entry);
+    }
+
     public void addMessage(String str) {
+        if (!isEnabled) {
+            return;
+        }
+
         chatterbot.add(str);
     }
 
     public void loadTrainingDataFromDatabase() {
-        for (MessageEntry m : MongoManager.getInstance().getAiMessages()) {
+        if (trainingData == null) {
+            return;
+        }
+
+        for (MessageEntry m : trainingData.find()) {
             logger.info("Loading message: " + m.getContent() + "...");
             chatterbot.add(m.getContent());
         }
     }
 
     public String generateMessage() {
+        if (!isEnabled) {
+            return "AI currently disabled.";
+        }
         return chatterbot.getSentence();
     }
 
     public String generateMessage(String targetWord) {
+        if (!isEnabled) {
+            return "AI currently disabled.";
+        }
         return chatterbot.getSentence(targetWord);
+    }
+
+    public void addIgnored(String discordId) {
+        ignoreList.add(discordId);
+    }
+
+    public void removeIgnored(String discordId) {
+        ignoreList.remove(discordId);
+    }
+
+    public boolean isIgnored(String discordId) {
+        return ignoreList.contains(discordId);
+    }
+
+    public boolean toggleAi() {
+        return isEnabled ^= true;
     }
 
 }
