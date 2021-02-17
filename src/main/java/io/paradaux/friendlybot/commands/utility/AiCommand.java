@@ -1,6 +1,7 @@
 package io.paradaux.friendlybot.commands.utility;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.managers.AIManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.managers.SettingsManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
@@ -39,6 +40,8 @@ public class AiCommand extends PrivilegedCommand {
                         .setTitle("You have opted out of our chatter bot training system.")
                         .setDescription("in the near future their will be a facility to delete already existing data recorded.")
                         .build()).queue();
+
+                AIManager.getInstance().addIgnored(event.getAuthor().getId());
                 break;
             }
 
@@ -50,17 +53,18 @@ public class AiCommand extends PrivilegedCommand {
                         .setTitle("You have opted in to our chatter bot training system.")
                         .setDescription("in the near future their will be a facility to delete already existing data recorded.")
                         .build()).queue();
+                AIManager.getInstance().removeIgnored(event.getAuthor().getId());
                 break;
             }
 
             case "deleteall": {
-
-
-
+                // TODO stub
             }
 
-            case "nth": {
-                // TODO stub
+            case "toggle": {
+                if (event.getAuthor().getId().equals("150993042558418944")) {
+                    message.getChannel().sendMessage(AIManager.getInstance().toggleAi() ? "AI has been enabled" : "AI has been disabled.").queue();
+                }
             }
         }
         
