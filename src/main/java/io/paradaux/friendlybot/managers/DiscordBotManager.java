@@ -153,7 +153,7 @@ public class DiscordBotManager {
                         new PingCommand(logger),
                         new RandomColorCommand(config, logger),
                         new ServerInfoCommand(config, logger),
-                        new SetColorCommand(config, logger, roles, mongo),
+                        new SetColorCommand(config, logger, roles),
                         new StrikeCommand(config, logger),
                         new TagCommand(config, logger, mongo),
                         new UserInfoCommand(config, logger, permissionManager),
