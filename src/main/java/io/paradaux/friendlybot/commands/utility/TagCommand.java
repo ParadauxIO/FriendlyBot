@@ -27,20 +27,31 @@ package io.paradaux.friendlybot.commands.utility;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.managers.MongoManager;
+import io.paradaux.friendlybot.managers.TagManager;
+import io.paradaux.friendlybot.utils.NumberUtils;
+import io.paradaux.friendlybot.utils.TimeUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.TagEntry;
 import io.paradaux.friendlybot.utils.models.types.BaseCommand;
+import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.slf4j.Logger;
 
-public class TagCommand extends BaseCommand {
+import java.util.Date;
+
+public class TagCommand extends PrivilegedCommand {
 
     private final MongoManager mongo;
 
     public TagCommand(ConfigurationEntry config, Logger logger, MongoManager mongo) {
         super(config, logger);
         this.mongo = mongo;
+        this.name = "tag";
+        this.help = "Manage tags.";
     }
 
     @Override
@@ -48,35 +59,107 @@ public class TagCommand extends BaseCommand {
         Message message = event.getMessage();
         String[] args = getArgs(event.getArgs());
 
-        if (args.length < 3) {
+        if (args.length < 2) {
             respondSyntaxError(message, ";tag <create/delete/view> <id> [content]>");
             return;
         }
 
-        EmbedBuilder entryNotFound = new EmbedBuilder()
-                .setColor(0xeb5132);
-//                .setTitle("Tag not found")
+        TagManager tags = TagManager.getInstance();
 
         switch (args[0]) {
             case "create": {
-                TagEntry entry = mongo.getTag(args[1]);
+                TagEntry entry = tags.getTagById(event.getGuild().getId(), args[1]);
 
-//                if (entry == n)
+                if (entry != null) {
+                    MessageEmbed embed = new EmbedBuilder()
+                            .setColor(0xeb5132)
+                            .setTitle("This tag already exists")
+                            .setDescription("This tag is owned by " + retrieveMember(event.getGuild(), entry.getDiscordId()))
+                            .build();
+                    message.getChannel().sendMessage(embed).queue();
+                }
 
+                // Tag doesn't exist, make a new one.
+                entry = new TagEntry()
+                        .setId(args[1])
+                        .setContent(parseSentance(2, args))
+                        .setDiscordId(event.getAuthor().getId())
+                        .setGuild(event.getGuild().getId())
+                        .setTimeCreated(new Date());
 
+                tags.addTag(entry);
+
+                MessageEmbed embed = new EmbedBuilder()
+                        .setTitle("Tag successfully created.")
+                        .setColor(0x00cc99)
+                        .build();
+
+                event.getChannel().sendMessage(embed).queue();
                 break;
             }
 
             case "delete": {
+                TagEntry entry = tags.getTagById(event.getGuild().getId(), args[1]);
+                if (entry == null) {
+                    MessageEmbed embed = new EmbedBuilder()
+                            .setColor(0xeb5132)
+                            .setTitle("This tag does not exist.")
+                            .build();
+                    message.getChannel().sendMessage(embed).queue();
+                    return;
+                }
 
+                if (!(entry.getDiscordId().equals(event.getAuthor().getId()) || isStaff(event.getAuthor().getId()))) {
+                    // Not staff, not the owner.
+                    MessageEmbed embed = new EmbedBuilder()
+                            .setColor(0xeb5132)
+                            .setTitle("You do not have permission to modify this tag.")
+                            .setDescription("This tag is owned by " + retrieveMember(event.getGuild(), entry.getDiscordId()))
+                            .build();
+                    message.getChannel().sendMessage(embed).queue();
+                    return;
+                }
+
+                tags.removeTag(entry);
+
+                MessageEmbed embed = new EmbedBuilder()
+                        .setTitle("Tag successfully removed.")
+                        .setColor(0x00cc99)
+                        .build();
+
+                message.getChannel().sendMessage(embed).queue();
                 break;
             }
 
             case "view": {
+                TagEntry entry = tags.getTagById(event.getGuild().getId(), args[1]);
 
+                if (entry == null) {
+                    MessageEmbed embed = new EmbedBuilder()
+                            .setColor(0xeb5132)
+                            .setTitle("This tag does not exist.")
+                            .build();
+                    message.getChannel().sendMessage(embed).queue();
+                    return;
+                }
+
+                Member owner = retrieveMember(event.getGuild(), entry.getDiscordId());
+                String tag = owner != null ? owner.getUser().getAsTag() : "User no longer in guild.";
+
+                MessageEmbed embed = new EmbedBuilder()
+                        .setTitle("Tag » " + entry.getId())
+                        .setColor(NumberUtils.randomColor())
+                        .addField("Owner", tag, true)
+                        .addField("Created", TimeUtils.formatTime(entry.getTimeCreated()), true)
+                        .build();
+
+                message.getChannel().sendMessage(embed).queue();
                 break;
             }
-        }
 
+            default: {
+                respondSyntaxError(message, ";tag <create/delete/view> <id> [content]>");
+            }
+        }
     }
 }
