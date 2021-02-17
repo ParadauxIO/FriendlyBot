@@ -1,4 +1,4 @@
-package io.paradaux.friendlybot.commands.fun;
+package io.paradaux.friendlybot.commands.utility;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
