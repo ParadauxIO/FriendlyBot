@@ -141,6 +141,10 @@ public class MongoManager {
         return botBrain;
     }
 
+    public MongoCollection<TagEntry> getTags() {
+        return tags;
+    }
+
     public String getNextIncidentID() {
         CounterEntry result = incrementCounter("last_incident_id");
         return Long.toString(result.getLastIncidentID() + 1);
@@ -312,18 +316,6 @@ public class MongoManager {
 
     public FindIterable<TempBanEntry> getTempBans() {
         return tempbans.find();
-    }
-
-    public void addTag(TagEntry entry) {
-        tags.insertOne(entry);
-    }
-
-    public TagEntry getTag(String name) {
-        return tags.find(Filters.eq("", name)).first();
-    }
-
-    public TagEntry getTagByOwner(String discordId) {
-        return tags.find(Filters.eq("", "")).first();
     }
 
     public void deleteWarning(String incidentId) {
