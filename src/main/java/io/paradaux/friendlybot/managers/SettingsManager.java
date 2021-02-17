@@ -8,7 +8,9 @@ import net.dv8tion.jda.api.entities.User;
 import org.bson.Document;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class SettingsManager {
 
@@ -73,6 +75,18 @@ public class SettingsManager {
         return new Document()
                 .append("guild_id", guildId)
                 .append("discord_id", discordId);
+    }
+
+    public List<String> getIgnoredUsers() {
+        final List<String> ignoredUsers = new ArrayList<>();
+
+        for (var user : settings.find()) {
+            if (!user.isDoTrainAi()) {
+                ignoredUsers.add(user.getDiscordId());
+            }
+        }
+
+        return ignoredUsers;
     }
 
 }

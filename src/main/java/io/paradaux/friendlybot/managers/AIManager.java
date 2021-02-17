@@ -25,6 +25,7 @@
 
 package io.paradaux.friendlybot.managers;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import io.paradaux.ai.MarkovMegaHal;
 import io.paradaux.friendlybot.utils.models.database.MessageEntry;
@@ -33,13 +34,19 @@ import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AIManager {
 
     private static AIManager instance = null;
+
+    private boolean isEnabled;
     private final MarkovMegaHal chatterbot;
     private final Logger logger;
     private final MongoCollection<MessageEntry> trainingData;
+
+    private final List<String> ignoreList;
 
     public AIManager(Logger logger) {
         this.logger = logger;
@@ -48,7 +55,9 @@ public class AIManager {
         loadTrainingDataFromDatabase();
 
         trainingData = MongoManager.getInstance().getAiMessages();
+        ignoreList = SettingsManager.getInstance().getIgnoredUsers();
 
+        isEnabled = false;
         instance = this;
     }
 
@@ -86,6 +95,22 @@ public class AIManager {
 
     public String generateMessage(String targetWord) {
         return chatterbot.getSentence(targetWord);
+    }
+
+    public void addIgnored(String discordId) {
+        ignoreList.add(discordId);
+    }
+
+    public void removeIgnored(String discordId) {
+        ignoreList.remove(discordId);
+    }
+
+    public boolean isIgnored(String discordId) {
+        return ignoreList.contains(discordId);
+    }
+
+    public boolean toggleAi() {
+        return isEnabled ^= true;
     }
 
 }
