@@ -78,11 +78,26 @@ public class AIManager {
 
     }
 
+    public void storeMessage(MessageEntry entry) {
+        if (!isEnabled) {
+            return;
+        }
+        trainingData.insertOne(entry);
+    }
+
     public void addMessage(String str) {
+        if (!isEnabled) {
+            return;
+        }
+
         chatterbot.add(str);
     }
 
     public void loadTrainingDataFromDatabase() {
+        if (trainingData == null) {
+            return;
+        }
+
         for (MessageEntry m : trainingData.find()) {
             logger.info("Loading message: " + m.getContent() + "...");
             chatterbot.add(m.getContent());
@@ -90,10 +105,16 @@ public class AIManager {
     }
 
     public String generateMessage() {
+        if (!isEnabled) {
+            return "AI currently disabled.";
+        }
         return chatterbot.getSentence();
     }
 
     public String generateMessage(String targetWord) {
+        if (!isEnabled) {
+            return "AI currently disabled.";
+        }
         return chatterbot.getSentence(targetWord);
     }
 
