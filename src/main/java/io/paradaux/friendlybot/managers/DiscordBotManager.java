@@ -106,7 +106,7 @@ public class DiscordBotManager {
         CommandClientBuilder builder = new CommandClientBuilder()
                 .setPrefix(config.getCommandPrefix())
                 .setOwnerId("150993042558418944")
-                .setActivity(Activity.listening("to modmail queries.."))
+                .setActivity(Activity.listening("modmail queries.."))
                 .addCommands(
                         // Fun Commands
                         new CatCommand(config, logger),
