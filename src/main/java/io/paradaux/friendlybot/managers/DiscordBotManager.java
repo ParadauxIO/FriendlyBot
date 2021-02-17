@@ -157,6 +157,7 @@ public class DiscordBotManager {
                         new StrikeCommand(config, logger),
                         new TagCommand(config, logger, mongo),
                         new UserInfoCommand(config, logger, permissionManager),
+                        new WeatherCommand(config, logger),
                         new WolframAlphaCommand(config, logger)
                 );
 
