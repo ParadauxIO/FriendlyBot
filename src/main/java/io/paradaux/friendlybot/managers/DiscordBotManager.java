@@ -35,6 +35,8 @@ import io.paradaux.friendlybot.commands.utility.*;
 import io.paradaux.friendlybot.listeners.AlotListener;
 import io.paradaux.friendlybot.listeners.ReadyListener;
 import io.paradaux.friendlybot.listeners.TagListener;
+import io.paradaux.friendlybot.listeners.ai.ResponseListener;
+import io.paradaux.friendlybot.listeners.ai.TrainingListener;
 import io.paradaux.friendlybot.listeners.logging.MessageDeleteLog;
 import io.paradaux.friendlybot.listeners.logging.MessageLog;
 import io.paradaux.friendlybot.listeners.logging.UpdatedMessageLog;
@@ -181,6 +183,8 @@ public class DiscordBotManager {
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setBulkDeleteSplittingEnabled(false)
                 .addEventListeners(eventWaiter, commandClient,
+                        new ResponseListener(config, logger),
+                        new TrainingListener(logger, mongo),
                         new AlotListener(config, logger),
                         new GuildJoinLog(config, logger),
                         new GuildLeaveLog(config, logger),
