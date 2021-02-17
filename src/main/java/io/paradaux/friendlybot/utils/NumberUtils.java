@@ -41,7 +41,7 @@ public class NumberUtils {
     /**
      * Turns Degrees Kelvin to Degrees Celsius
      * */
-    public static double kelvinToCelsius(int degKelvin) {
+    public static double kelvinToCelsius(double degKelvin) {
         return degKelvin - 273.15d;
     }
 
@@ -49,7 +49,7 @@ public class NumberUtils {
      * Turns Degrees Kelvin to Degrees Fahrenheit.
      * You're a filthy little American aren't you?
      * */
-    public static double kelvinToFahrenheit(int degKelvin) {
+    public static double kelvinToFahrenheit(double degKelvin) {
         return ((degKelvin - 273.15d) * 9/5) + 32;
     }
 
