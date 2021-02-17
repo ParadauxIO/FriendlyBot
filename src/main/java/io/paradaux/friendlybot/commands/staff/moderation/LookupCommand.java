@@ -142,7 +142,7 @@ public class LookupCommand extends PrivilegedCommand {
                         .addBlankField(true)
                         .addField("Reason", warningEntry.getReason(), false)
                         .setColor(0x000000)
-                        .setAuthor("Lookup Request: KICK")
+                        .setAuthor("Lookup Request: WARN")
                         .setFooter("A copy of the audit log entry for this event has "
                                 + "been messaged to you.");
                 break;
