@@ -199,7 +199,7 @@
         <dependency> <!-- TODO update mongo manager.-->
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-            <version>3.12.7</version>
+            <version>3.12.8</version>
         </dependency>
 
         <!-- Latest as of 31/1/21 -->
