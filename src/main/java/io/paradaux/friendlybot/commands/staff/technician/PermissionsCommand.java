@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.commands.staff.technician;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.listeners.InsultListener;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
@@ -130,6 +131,30 @@ public class PermissionsCommand extends PrivilegedCommand {
                 String responseMessage = String.format("Taken `%s`'s `%s` permissions.",
                         target.getUser().getAsTag(), args[1]);
                 message.getChannel().sendMessage(responseMessage).queue();
+                break;
+            }
+
+            case "insult": {
+
+                switch (args[1]) {
+
+                    case "add": {
+                        InsultListener.addUser(args[2]);
+                        message.reply("Added: `" + args[2] + "` to the target list.").queue();
+                        break;
+                    }
+
+                    case "remove": {
+                        InsultListener.removeUser(args[2]);
+                        message.reply("Removed: `" + args[2] + "` from the target list.").queue();
+                        break;
+                    }
+
+                    case "view": {
+                        message.reply("```" + InsultListener.getTargetUsers() + "```").queue();
+                        break;
+                    }
+                }
                 break;
             }
 
