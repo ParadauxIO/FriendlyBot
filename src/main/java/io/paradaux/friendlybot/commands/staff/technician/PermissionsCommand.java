@@ -80,12 +80,12 @@ public class PermissionsCommand extends PrivilegedCommand {
                     }
 
                     case "admin": {
-                        manager.addAdmin(authorID);
+                        manager.addAdmin(target.getId());
                         break;
                     }
 
                     case "technician": {
-                        manager.addTechnician(authorID);
+                        manager.addTechnician(target.getId());
                         break;
                     }
 
