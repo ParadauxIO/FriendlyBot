@@ -67,8 +67,7 @@ public class FriendlyBot {
 
         Sentry.init(options -> {
             System.out.println("Initialising: Sentry");
-
-            options.setDsn("https://c139234af3374f4cb85382c40ad565d4@o538452.ingest.sentry.io/5656539");
+            options.setDsn(config.getSentryDsn());
         });
 
         // Configuration-dependant managers.
