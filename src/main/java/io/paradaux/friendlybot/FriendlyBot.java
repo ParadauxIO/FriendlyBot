@@ -28,6 +28,7 @@ package io.paradaux.friendlybot;
 import io.paradaux.friendlybot.managers.*;
 import io.paradaux.friendlybot.utils.API;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.sentry.Sentry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,6 +64,12 @@ public class FriendlyBot {
 
         ConfigManager configManager = new ConfigManager(logger);
         ConfigurationEntry config = configManager.getConfig();
+
+        Sentry.init(options -> {
+            System.out.println("Initialising: Sentry");
+
+            options.setDsn("https://c139234af3374f4cb85382c40ad565d4@o538452.ingest.sentry.io/5656539");
+        });
 
         // Configuration-dependant managers.
 
