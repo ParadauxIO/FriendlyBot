@@ -44,7 +44,7 @@ public class PermissionManager {
     public PermissionManager(Logger logger) {
         this.logger = logger;
 
-        logger.info("Initialising: PermissionController");
+        logger.info("Initialising: Permission Manager");
 
         try {
             permissions = IOManager.getInstance().readPermissionFile();

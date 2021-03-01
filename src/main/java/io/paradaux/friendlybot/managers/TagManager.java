@@ -20,6 +20,7 @@ public class TagManager {
         this.config = config;
         this.logger = logger;
         this.tags = mongo.getTags();
+        logger.info("Initialising: Tag Manager");
         instance = this;
     }
 

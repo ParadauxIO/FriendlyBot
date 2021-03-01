@@ -48,7 +48,7 @@ public class AuditManager {
         this.config = config;
         this.logger = logger;
 
-        logger.info("Initialising: AuditLogController");
+        logger.info("Initialising: Audit Manager");
         instance = this;
     }
 

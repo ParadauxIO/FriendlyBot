@@ -44,7 +44,7 @@ public class IOManager {
 
     public IOManager(Logger logger) {
         this.logger = logger;
-        logger.info("Initialising: FileController");
+        logger.info("Initialising: IO Manager");
         instance = this;
     }
 

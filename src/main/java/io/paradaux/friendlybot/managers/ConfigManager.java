@@ -39,7 +39,7 @@ public class ConfigManager {
     public ConfigManager(ConfigurationEntry config, Logger logger) {
         this.config = config;
 
-        logger.info("Initialising: ConfigurationController");
+        logger.info("Initialising: Configuration Manager");
         instance = this;
     }
 

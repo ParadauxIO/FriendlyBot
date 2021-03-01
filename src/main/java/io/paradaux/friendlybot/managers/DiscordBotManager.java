@@ -81,7 +81,7 @@ public class DiscordBotManager {
         this.eventWaiter = new EventWaiter();
         this.roles = roles;
 
-        logger.info("Initialising: BotController");
+        logger.info("Initialising: Discord Bot Manager");
         logger.info("Attempting to login");
 
         try {

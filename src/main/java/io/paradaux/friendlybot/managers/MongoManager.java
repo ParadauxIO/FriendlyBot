@@ -78,7 +78,7 @@ public class MongoManager {
         this.config = config;
         this.logger = logger;
 
-        logger.info("Initialising: Database Controller");
+        logger.info("Initialising: MongoDB Manager");
         ConnectionString connectionString = new ConnectionString(config.getMongoDbConnectionUri());
 
         CodecRegistry pojoCodecRegistry = fromProviders(PojoCodecProvider
