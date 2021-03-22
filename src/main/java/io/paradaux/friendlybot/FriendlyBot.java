@@ -28,7 +28,7 @@ package io.paradaux.friendlybot;
 import io.paradaux.friendlybot.managers.*;
 import io.paradaux.friendlybot.utils.API;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.sentry.Sentry;
+import net.dv8tion.jda.api.utils.concurrent.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,13 +65,6 @@ public class FriendlyBot {
         ConfigManager configManager = new ConfigManager(logger);
         ConfigurationEntry config = configManager.getConfig();
 
-        Sentry.init(options -> {
-            System.out.println("Initialising: Sentry");
-            options.setDsn(config.getSentryDsn());
-        });
-
-        // Configuration-dependant managers.
-
         MongoManager mongoManager = new MongoManager(config, logger);
         PermissionManager permissionManager = new PermissionManager(logger);
         RoleManager roleManager = new RoleManager(logger, mongoManager);
@@ -81,6 +74,7 @@ public class FriendlyBot {
         AuditManager auditManager = new AuditManager(config, logger);
         MailGunManager mailGunManager = new MailGunManager(config, logger);
         VerificationManager verificationManager = new VerificationManager(config, logger, mongoManager, mailGunManager);
+        TaskManager taskManager = new TaskManager();
 
         api = API.builder()
                 .setLogger(logger)

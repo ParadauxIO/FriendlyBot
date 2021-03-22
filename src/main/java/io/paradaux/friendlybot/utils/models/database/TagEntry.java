@@ -32,7 +32,7 @@ import java.util.Date;
 
 public class TagEntry implements Serializable {
 
-    protected static final long serialVersionUID = 1L;
+    protected static final long serialVersionUID = 2L;
 
     @BsonProperty(value = "guild_id")
     private String guild;
@@ -49,16 +49,20 @@ public class TagEntry implements Serializable {
     @BsonProperty(value = "time_created")
     private Date timeCreated;
 
+    @BsonProperty(value = "dot_command")
+    private boolean isDotCommand;
+
     public TagEntry() {
 
     }
 
-    public TagEntry(String guild, String discordId, String id, String content, Date timeCreated) {
+    public TagEntry(String guild, String discordId, String id, String content, Date timeCreated, boolean isDotCommand) {
         this.guild = guild;
         this.discordId = discordId;
         this.id = id;
         this.content = content;
         this.timeCreated = timeCreated;
+        this.isDotCommand = isDotCommand;
     }
 
     public String getGuild() {
@@ -79,6 +83,10 @@ public class TagEntry implements Serializable {
 
     public Date getTimeCreated() {
         return timeCreated;
+    }
+
+    public boolean isDotCommand() {
+        return isDotCommand;
     }
 
     public TagEntry setGuild(String guild) {
@@ -106,4 +114,7 @@ public class TagEntry implements Serializable {
         return this;
     }
 
+    public void setDotCommand(boolean dotCommand) {
+        isDotCommand = dotCommand;
+    }
 }

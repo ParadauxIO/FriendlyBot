@@ -48,7 +48,7 @@ import java.util.concurrent.TimeUnit;
 public class EightBallCommand extends BaseCommand {
 
     private static final String WAITING_IMAGE = "https://i.imgur.com/nBRPBMf.gif";
-    private JsonObject eightBallResponses;
+    private final JsonObject eightBallResponses;
 
     public EightBallCommand(ConfigurationEntry config, Logger logger) {
         super(config, logger);

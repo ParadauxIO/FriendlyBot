@@ -32,10 +32,7 @@ import io.paradaux.friendlybot.commands.fun.*;
 import io.paradaux.friendlybot.commands.staff.moderation.*;
 import io.paradaux.friendlybot.commands.staff.technician.*;
 import io.paradaux.friendlybot.commands.utility.*;
-import io.paradaux.friendlybot.listeners.AlotListener;
-import io.paradaux.friendlybot.listeners.InsultListener;
-import io.paradaux.friendlybot.listeners.ReadyListener;
-import io.paradaux.friendlybot.listeners.TagListener;
+import io.paradaux.friendlybot.listeners.*;
 import io.paradaux.friendlybot.listeners.logging.MessageDeleteLog;
 import io.paradaux.friendlybot.listeners.logging.MessageLog;
 import io.paradaux.friendlybot.listeners.logging.UpdatedMessageLog;
@@ -182,6 +179,7 @@ public class DiscordBotManager {
                 .setBulkDeleteSplittingEnabled(false)
                 .addEventListeners(eventWaiter, commandClient,
                         new AlotListener(config, logger),
+                        new DotCommandsListener(config, logger),
                         new InsultListener(config, logger),
                         new GuildJoinLog(config, logger),
                         new GuildLeaveLog(config, logger),

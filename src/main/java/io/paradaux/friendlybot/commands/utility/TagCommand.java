@@ -39,6 +39,7 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 
 import java.util.Date;
@@ -59,8 +60,8 @@ public class TagCommand extends PrivilegedCommand {
         Message message = event.getMessage();
         String[] args = getArgs(event.getArgs());
 
-        if (args.length < 2) {
-            respondSyntaxError(message, ";tag <create/delete/view> <id> [content]>");
+        if (args.length == 0) {
+            respondSyntaxError(message, ";tag <create/delete/view/list> [id] [content]");
             return;
         }
 
@@ -157,8 +158,26 @@ public class TagCommand extends PrivilegedCommand {
                 break;
             }
 
+            case "list": {
+
+                StringBuilder builder = new StringBuilder().append("```asciidoc\n");
+
+                for (TagEntry entry : TagManager.getInstance().getTags(event.getGuild().getId())) {
+                    Member owner = retrieveMember(event.getGuild(), entry.getDiscordId());
+
+                    if (owner == null) {
+                        builder.append(String.format("The owner of %s is no longer in the guild.%n", entry.getId()));
+                        continue;
+                    }
+
+                    builder.append(String.format("%s owned by: %s%n", entry.getId(), owner.getUser().getAsTag()));
+                }
+
+                builder.append("```");
+            }
+
             default: {
-                respondSyntaxError(message, ";tag <create/delete/view> <id> [content]>");
+                respondSyntaxError(message, ";tag <create/delete/view/list> [id] [content]");
             }
         }
     }
