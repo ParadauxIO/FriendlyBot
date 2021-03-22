@@ -133,7 +133,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.2.0_228</version>
+            <version>4.2.0_231</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
@@ -175,7 +175,7 @@
         <dependency> <!-- TODO update mongo manager.-->
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-            <version>3.12.7</version>
+            <version>3.12.8</version>
         </dependency>
 
         <dependency>
