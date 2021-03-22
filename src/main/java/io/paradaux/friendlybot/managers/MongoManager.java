@@ -73,6 +73,8 @@ public class MongoManager {
     private final MongoCollection<TagEntry> tags;
     private final MongoCollection<RescindmentEntry> rescindments;
     private final MongoCollection<GuildSettingsEntry> guilds;
+    private final MongoCollection<BotStats> stats;
+
 
     public MongoManager(ConfigurationEntry config, Logger logger) {
         this.config = config;
@@ -117,6 +119,7 @@ public class MongoManager {
         tags = dataBase.getCollection("tags", TagEntry.class);
         rescindments = dataBase.getCollection("rescindments", RescindmentEntry.class);
         guilds = dataBase.getCollection("guildsettings", GuildSettingsEntry.class);
+        stats = dataBase.getCollection("stats", BotStats.class);
 
         instance = this;
     }
@@ -329,5 +332,14 @@ public class MongoManager {
     public void addRescindment(RescindmentEntry entry) {
         rescindments.insertOne(entry);
     }
+
+    public void updateStats(int userCount, int guildCount) {
+        System.out.printf("userCOunt: " + userCount + " guildCount" + guildCount);
+        stats.findOneAndUpdate(new Document(), new Document()
+                .append("user_count", userCount)
+                .append("guild_count", guildCount));
+        logger.info("Updated counts.");
+    }
+
 
 }
