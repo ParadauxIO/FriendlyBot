@@ -192,7 +192,8 @@ public class DiscordBotManager {
                         new MessageLog(config, logger, mongo),
                         new UpdatedMessageLog(config, logger, mongo),
                         new LongMessageListener(config, logger),
-                        new TagListener(config, logger)
+                        new TagListener(config, logger),
+                        new VotePinListener(logger)
                 );
 
         if (token == null) {
