@@ -155,6 +155,7 @@ public class DiscordBotManager {
                         new SetColorCommand(config, logger, roles),
                         new StrikeCommand(config, logger),
                         new TagCommand(config, logger, mongo),
+                        new TagsCommand(logger),
                         new UserInfoCommand(config, logger, permissionManager),
                         new WeatherCommand(config, logger),
                         new WolframAlphaCommand(config, logger)
@@ -173,7 +174,7 @@ public class DiscordBotManager {
 
         CommandClient commandClient = createCommandClient();
 
-        JDABuilder builder = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS)
+        JDABuilder builder = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setBulkDeleteSplittingEnabled(false)
