@@ -32,10 +32,7 @@ import io.paradaux.friendlybot.commands.fun.*;
 import io.paradaux.friendlybot.commands.staff.moderation.*;
 import io.paradaux.friendlybot.commands.staff.technician.*;
 import io.paradaux.friendlybot.commands.utility.*;
-import io.paradaux.friendlybot.listeners.AlotListener;
-import io.paradaux.friendlybot.listeners.InsultListener;
-import io.paradaux.friendlybot.listeners.ReadyListener;
-import io.paradaux.friendlybot.listeners.TagListener;
+import io.paradaux.friendlybot.listeners.*;
 import io.paradaux.friendlybot.listeners.logging.MessageDeleteLog;
 import io.paradaux.friendlybot.listeners.logging.MessageLog;
 import io.paradaux.friendlybot.listeners.logging.UpdatedMessageLog;
@@ -81,7 +78,7 @@ public class DiscordBotManager {
         this.eventWaiter = new EventWaiter();
         this.roles = roles;
 
-        logger.info("Initialising: BotController");
+        logger.info("Initialising: Discord Bot Manager");
         logger.info("Attempting to login");
 
         try {
@@ -158,6 +155,7 @@ public class DiscordBotManager {
                         new SetColorCommand(config, logger, roles),
                         new StrikeCommand(config, logger),
                         new TagCommand(config, logger, mongo),
+                        new TagsCommand(logger),
                         new UserInfoCommand(config, logger, permissionManager),
                         new WeatherCommand(config, logger),
                         new WolframAlphaCommand(config, logger)
@@ -176,12 +174,13 @@ public class DiscordBotManager {
 
         CommandClient commandClient = createCommandClient();
 
-        JDABuilder builder = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS)
+        JDABuilder builder = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setBulkDeleteSplittingEnabled(false)
                 .addEventListeners(eventWaiter, commandClient,
                         new AlotListener(config, logger),
+                        new DotCommandsListener(config, logger),
                         new InsultListener(config, logger),
                         new GuildJoinLog(config, logger),
                         new GuildLeaveLog(config, logger),
@@ -194,7 +193,8 @@ public class DiscordBotManager {
                         new MessageLog(config, logger, mongo),
                         new UpdatedMessageLog(config, logger, mongo),
                         new LongMessageListener(config, logger),
-                        new TagListener(config, logger)
+                        new TagListener(config, logger),
+                        new VotePinListener(logger)
                 );
 
         if (token == null) {

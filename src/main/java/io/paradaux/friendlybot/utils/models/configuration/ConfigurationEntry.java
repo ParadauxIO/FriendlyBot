@@ -109,6 +109,9 @@ public class ConfigurationEntry implements Serializable {
     @SerializedName("openweathermap_api_key")
     private String weatherApiKey;
 
+    @SerializedName("sentry_dsn")
+    private String sentryDsn;
+
     public ConfigurationEntry() {
     
     }
@@ -119,7 +122,7 @@ public class ConfigurationEntry implements Serializable {
                               String mailGunApplicationKey, String verificationEmailSubject, String verificationEmailSender,
                               String verificationEmailTemplateName, String mailGunBaseUrl, String wolframAlphaApplicationId,
                               String imgurClientId, String messageLogChannel, String bytebinInstance, String imgflipUsername,
-                              String imgflipPassword, String weatherApiKey) {
+                              String imgflipPassword, String weatherApiKey, String sentryDsn) {
         this.botToken = botToken;
         this.commandPrefix = commandPrefix;
         this.guildId = guildId;
@@ -142,6 +145,7 @@ public class ConfigurationEntry implements Serializable {
         this.imgflipUsername = imgflipUsername;
         this.imgflipPassword = imgflipPassword;
         this.weatherApiKey = weatherApiKey;
+        this.sentryDsn = sentryDsn;
     }
 
     public ConfigurationEntry setBotToken(String botToken) {
@@ -254,6 +258,11 @@ public class ConfigurationEntry implements Serializable {
         return this;
     }
 
+    public ConfigurationEntry setSentryDsn(String sentryDsn) {
+        this.sentryDsn = sentryDsn;
+        return this;
+    }
+
     public String getBotToken() {
         return botToken;
     }
@@ -340,5 +349,9 @@ public class ConfigurationEntry implements Serializable {
 
     public String getWeatherApiKey() {
         return weatherApiKey;
+    }
+
+    public String getSentryDsn() {
+        return sentryDsn;
     }
 }

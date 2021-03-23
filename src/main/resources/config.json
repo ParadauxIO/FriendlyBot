@@ -20,5 +20,6 @@
   "bytebin_instance": "",
   "imgflip_username": "",
   "imgflip_password": "",
-  "openweathermap_api_key": ""
+  "openweathermap_api_key": "",
+  "sentry_dsn": ""
 }

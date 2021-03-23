@@ -48,7 +48,7 @@ public class MailGunManager {
     public MailGunManager(ConfigurationEntry config, Logger logger) {
         this.config = config;
         this.logger = logger;
-
+        logger.info("Initialising: Mailgun Manager");
         instance = this;
     }
 

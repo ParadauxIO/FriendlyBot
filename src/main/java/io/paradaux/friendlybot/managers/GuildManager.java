@@ -12,6 +12,7 @@ public class GuildManager {
 
     public GuildManager(Logger logger) {
         this.settingsProfile = new HashMap<>();
+        logger.info("Initialising: Guild Manager");
         this.logger = logger;
     }
 

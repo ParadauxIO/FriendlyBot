@@ -102,7 +102,7 @@ public class StringUtils {
     @Nullable
     public static String getEmailDomain(String email) {
         if (!isValidEmail(email)) {
-            return null;
+            throw new RuntimeException("Please provide a valid email.");
         }
         return email.substring(email.indexOf("@") + 1);
     }

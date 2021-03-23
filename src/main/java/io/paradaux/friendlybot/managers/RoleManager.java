@@ -15,6 +15,7 @@ public class RoleManager {
     public RoleManager(Logger logger, MongoManager mongo) {
         this.logger = logger;
         this.mongo = mongo;
+        logger.info("Initialising: Role Manager");
         instance = this;
     }
 

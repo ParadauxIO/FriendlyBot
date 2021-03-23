@@ -1,5 +1,6 @@
 package io.paradaux.friendlybot.managers;
 
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
@@ -21,6 +22,7 @@ public class TagManager {
         this.config = config;
         this.logger = logger;
         this.tags = mongo.getTags();
+        logger.info("Initialising: Tag Manager");
         instance = this;
     }
 
@@ -48,6 +50,14 @@ public class TagManager {
         return tags.find(getTagSearchQueryByOwner(guildId, discordId)).first();
     }
 
+    public FindIterable<TagEntry> getTags(String guildId) {
+        return tags.find(Filters.eq("guild_id", guildId));
+    }
+
+    public void updateTag(TagEntry entry) {
+        tags.findOneAndReplace(getTagSearchQueryById(entry.getGuild(), entry.getId()), entry);
+    }
+
     private Document getTagSearchQueryById(String guildId, String tagName) {
         return new Document()
                 .append("guild_id", guildId)
@@ -59,4 +69,5 @@ public class TagManager {
                 .append("guild_id", guildId)
                 .append("discord_id", discordId);
     }
+
 }

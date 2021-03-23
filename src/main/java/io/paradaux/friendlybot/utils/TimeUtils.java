@@ -53,7 +53,7 @@ public class TimeUtils {
         long time = 0;
         String[] inputs = TIME_SPLITTER.split(input);
 
-        for (String str : inputs) {
+        for (final var str : inputs) {
             switch (str.charAt(str.length()-1)) {
                 case 's': {
                     time += Long.parseLong(StringUtils.removeLetters(str)) * SECOND;

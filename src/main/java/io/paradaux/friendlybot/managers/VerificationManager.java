@@ -54,8 +54,7 @@ public class VerificationManager {
         this.mongo = mongo;
         this.mailGun = mailGun;
 
-        logger.info("Initialising: VerificationSystemController");
-
+        logger.info("Initialising: Verification Manager");
         instance = this;
     }
 

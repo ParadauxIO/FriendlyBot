@@ -39,9 +39,11 @@ import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 
 import java.util.Date;
+import java.util.Locale;
 
 public class TagCommand extends PrivilegedCommand {
 
@@ -59,8 +61,8 @@ public class TagCommand extends PrivilegedCommand {
         Message message = event.getMessage();
         String[] args = getArgs(event.getArgs());
 
-        if (args.length < 2) {
-            respondSyntaxError(message, ";tag <create/delete/view> <id> [content]>");
+        if (args.length == 0) {
+            respondSyntaxError(message, ";tag <create/delete/view/list> [id] [content]");
             return;
         }
 
@@ -68,7 +70,7 @@ public class TagCommand extends PrivilegedCommand {
 
         switch (args[0]) {
             case "create": {
-                TagEntry entry = tags.getTagById(event.getGuild().getId(), args[1]);
+                TagEntry entry = tags.getTagById(event.getGuild().getId(), args[1].toLowerCase(Locale.ROOT));
 
                 if (entry != null) {
                     MessageEmbed embed = new EmbedBuilder()
@@ -81,7 +83,7 @@ public class TagCommand extends PrivilegedCommand {
 
                 // Tag doesn't exist, make a new one.
                 entry = new TagEntry()
-                        .setId(args[1])
+                        .setId(args[1].toLowerCase(Locale.ROOT))
                         .setContent(parseSentance(2, args))
                         .setDiscordId(event.getAuthor().getId())
                         .setGuild(event.getGuild().getId())
@@ -132,7 +134,7 @@ public class TagCommand extends PrivilegedCommand {
             }
 
             case "view": {
-                TagEntry entry = tags.getTagById(event.getGuild().getId(), args[1]);
+                TagEntry entry = tags.getTagById(event.getGuild().getId(), args[1].toLowerCase(Locale.ROOT));
 
                 if (entry == null) {
                     MessageEmbed embed = new EmbedBuilder()
@@ -158,7 +160,7 @@ public class TagCommand extends PrivilegedCommand {
             }
 
             default: {
-                respondSyntaxError(message, ";tag <create/delete/view> <id> [content]>");
+                respondSyntaxError(message, ";tag <create/delete/view/list> [id] [content]");
             }
         }
     }
