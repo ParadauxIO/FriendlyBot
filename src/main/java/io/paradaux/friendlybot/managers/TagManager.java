@@ -54,6 +54,10 @@ public class TagManager {
         return tags.find(Filters.eq("guild_id", guildId));
     }
 
+    public void updateTag(TagEntry entry) {
+        tags.findOneAndReplace(getTagSearchQueryById(entry.getGuild(), entry.getId()), entry);
+    }
+
     private Document getTagSearchQueryById(String guildId, String tagName) {
         return new Document()
                 .append("guild_id", guildId)
