@@ -158,7 +158,7 @@ public class TagCommand extends PrivilegedCommand {
                 message.getChannel().sendMessage(embed).queue();
                 break;
             }
-            
+
             default: {
                 respondSyntaxError(message, ";tag <create/delete/view/list> [id] [content]");
             }

@@ -8,6 +8,11 @@ Generate a unicode and markdown representation of your message, with a strike th
 
 Manage tags, which are special user-defined commands used by beginning with !, think of them like aliases or macros.
 
+**Tags**
+;tags
+
+Generates a link to this guild's tag viewer.
+
 **User Information**
 *;userinfo*
 
