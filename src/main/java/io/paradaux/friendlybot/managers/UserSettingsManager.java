@@ -12,24 +12,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SettingsManager {
+public class UserSettingsManager {
 
     private static final short COOLDOWN = 3;
 
-    private static SettingsManager instance;
+    private static UserSettingsManager instance;
 
     private final Logger logger;
 
     private final MongoCollection<UserSettingsEntry> settings;
 
-    public SettingsManager(Logger logger, MongoManager mongo) {
+    public UserSettingsManager(Logger logger, MongoManager mongo) {
         this.logger = logger;
         instance = this;
         logger.info("Initialising: Settings Manager");
         settings = mongo.getUserSettings();
     }
 
-    public static SettingsManager getInstance() {
+    public static UserSettingsManager getInstance() {
         if (instance == null) {
             throw new ManagerNotReadyException();
         }

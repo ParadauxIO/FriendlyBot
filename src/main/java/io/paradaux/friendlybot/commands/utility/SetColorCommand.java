@@ -1,9 +1,8 @@
 package io.paradaux.friendlybot.commands.utility;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.RoleManager;
-import io.paradaux.friendlybot.managers.SettingsManager;
+import io.paradaux.friendlybot.managers.UserSettingsManager;
 import io.paradaux.friendlybot.utils.NumberUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.UserSettingsEntry;
@@ -58,7 +57,7 @@ public class SetColorCommand extends BaseCommand {
             return;
         }
 
-        SettingsManager settings = SettingsManager.getInstance();
+        UserSettingsManager settings = UserSettingsManager.getInstance();
         UserSettingsEntry entry = settings.getProfileById(guild.getId(), event.getAuthor().getId());
         if (entry.getLastSetColor() != null && !settings.hasCooldownElapsed(entry)) {
             message.reply("You must wait until your cooldown expires before running this command again.").queue();

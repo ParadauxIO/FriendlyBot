@@ -1,7 +1,7 @@
 package io.paradaux.friendlybot.commands.utility;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.managers.SettingsManager;
+import io.paradaux.friendlybot.managers.UserSettingsManager;
 import io.paradaux.friendlybot.utils.NumberUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.UserSettingsEntry;
@@ -28,7 +28,7 @@ public class ClearColorCommand extends BaseCommand {
         final Message message = event.getMessage();
         final Guild guild = event.getGuild();
 
-        SettingsManager settings = SettingsManager.getInstance();
+        UserSettingsManager settings = UserSettingsManager.getInstance();
         UserSettingsEntry entry = settings.getProfileById(guild.getId(), event.getAuthor().getId());
 
         if (entry.getCustomColorRole() == null) {
