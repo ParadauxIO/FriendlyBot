@@ -1,6 +1,7 @@
 package io.paradaux.friendlybot.utils.models.database;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class GuildSettingsEntry implements Serializable {
 
@@ -14,6 +15,9 @@ public class GuildSettingsEntry implements Serializable {
     private String modmailInputChannel;
     private String modmailOutputChannel;
     private String messageLogChannel;
+
+    private HashMap<String, String> moderators;
+    private HashMap<String, String> administrators;
 
     public GuildSettingsEntry() {
         
