@@ -67,8 +67,9 @@ public class FriendlyBot {
         MongoManager mongoManager = new MongoManager(config, logger);
         PermissionManager permissionManager = new PermissionManager(logger);
         RoleManager roleManager = new RoleManager(logger, mongoManager);
-        DiscordBotManager discordBotManager = new DiscordBotManager(config, logger, permissionManager, mongoManager, roleManager);
         UserSettingsManager settingsManager = new UserSettingsManager(logger, mongoManager);
+        GuildSettingsManager guildSettingsManager = new GuildSettingsManager(logger, mongoManager);
+        DiscordBotManager discordBotManager = new DiscordBotManager(config, logger, permissionManager, mongoManager, roleManager, guildSettingsManager);
         TagManager tagManager = new TagManager(config, logger, mongoManager);
         AuditManager auditManager = new AuditManager(config, logger);
         MailGunManager mailGunManager = new MailGunManager(config, logger);
@@ -92,5 +93,8 @@ public class FriendlyBot {
         }));
 
         // TODO unban scheduler
+        // TODO update API
+        // TODO Sentry integration
+
     }
 }

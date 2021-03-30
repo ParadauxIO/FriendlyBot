@@ -69,14 +69,17 @@ public class DiscordBotManager {
     private final JDA client;
     private final EventWaiter eventWaiter;
     private final RoleManager roles;
+    private final GuildSettingsManager guilds;
 
-    public DiscordBotManager(ConfigurationEntry config, Logger logger, PermissionManager permissionManager, MongoManager mongo, RoleManager roles) {
+    public DiscordBotManager(ConfigurationEntry config, Logger logger, PermissionManager permissionManager, MongoManager mongo,
+                             RoleManager roles, GuildSettingsManager guilds) {
         this.config = config;
         this.logger = logger;
         this.permissionManager = permissionManager;
         this.mongo = mongo;
         this.eventWaiter = new EventWaiter();
         this.roles = roles;
+        this.guilds = guilds;
 
         logger.info("Initialising: Discord Bot Manager");
         logger.info("Attempting to login");
@@ -182,16 +185,16 @@ public class DiscordBotManager {
                         new AlotListener(config, logger),
                         new DotCommandsListener(config, logger),
                         new InsultListener(config, logger),
-                        new GuildJoinLog(config, logger),
-                        new GuildLeaveLog(config, logger),
+                        new GuildJoinLog(config, logger, guilds),
+                        new GuildLeaveLog(config, logger, guilds),
                         new ModMailChannelListener(config, logger),
                         new ModMailPrivateMessageListener(logger),
                         new VerificationCodeReceivedListener(config, logger),
                         new VerificationEmailReceivedListener(config, logger),
                         new ReadyListener(logger),
-                        new MessageDeleteLog(config, logger, mongo),
-                        new MessageLog(config, logger, mongo),
-                        new UpdatedMessageLog(config, logger, mongo),
+                        new MessageDeleteLog(config, logger, mongo, guilds),
+                        new MessageLog(config, logger, mongo, guilds),
+                        new UpdatedMessageLog(config, logger, mongo, guilds),
                         new LongMessageListener(config, logger),
                         new TagListener(config, logger),
                         new VotePinListener(logger)

@@ -40,7 +40,7 @@ class BotControllerTest {
 
         ConfigManager configurationController;
         ConfigurationEntry config = new ConfigurationEntry();
-        DiscordBotManager controller = new DiscordBotManager(config, logger, null, null, null);
+        DiscordBotManager controller = new DiscordBotManager(config, logger, null, null, null, null);
 
     }
 }

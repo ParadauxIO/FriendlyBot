@@ -51,6 +51,7 @@ public class GuildSettingsManager {
     }
 
     public GuildSettingsEntry createNewProfile(String guildId) {
+        logger.info("Creating a guild profile for {}", guildId);
         GuildSettingsEntry entry = new GuildSettingsEntry()
                 .setGuildId(guildId);
         guilds.insertOne(entry);
