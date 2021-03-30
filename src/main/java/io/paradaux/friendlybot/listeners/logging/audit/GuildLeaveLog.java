@@ -26,7 +26,9 @@
 package io.paradaux.friendlybot.listeners.logging.audit;
 
 import io.paradaux.friendlybot.managers.DiscordBotManager;
+import io.paradaux.friendlybot.managers.GuildSettingsManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.database.GuildSettingsEntry;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
@@ -35,12 +37,20 @@ import org.slf4j.Logger;
 
 public class GuildLeaveLog extends DiscordEventListener {
 
-    public GuildLeaveLog(ConfigurationEntry config, Logger logger) {
+    private final GuildSettingsManager guilds;
+    public GuildLeaveLog(ConfigurationEntry config, Logger logger, GuildSettingsManager guilds) {
         super(config, logger);
+        this.guilds = guilds;
     }
 
     @Override
     public void onGuildMemberRemove(@NotNull GuildMemberRemoveEvent event) {
+
+        GuildSettingsEntry guild = guilds.getGuild(event.getGuild().getId());
+
+        if (guild.getPublicAuditLogChannel() == null || guild.getPublicAuditLogChannel().isEmpty()) {
+            return;
+        }
 
         var user = event.getUser();
         var embed = new EmbedBuilder()
@@ -48,7 +58,7 @@ public class GuildLeaveLog extends DiscordEventListener {
                 .setColor(0xff5050)
                 .build();
 
-        DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId()).sendMessage(embed).queue();
+        DiscordBotManager.getInstance().getChannel(guild.getPublicAuditLogChannel()).sendMessage(embed).queue();
 
     }
 }

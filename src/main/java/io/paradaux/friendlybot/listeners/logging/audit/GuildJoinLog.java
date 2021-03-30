@@ -26,7 +26,9 @@
 package io.paradaux.friendlybot.listeners.logging.audit;
 
 import io.paradaux.friendlybot.managers.DiscordBotManager;
+import io.paradaux.friendlybot.managers.GuildSettingsManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.database.GuildSettingsEntry;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
@@ -35,12 +37,20 @@ import org.slf4j.Logger;
 
 public class GuildJoinLog extends DiscordEventListener {
 
-    public GuildJoinLog(ConfigurationEntry config, Logger logger) {
+    private final GuildSettingsManager guilds;
+    public GuildJoinLog(ConfigurationEntry config, Logger logger, GuildSettingsManager guilds) {
         super(config, logger);
+        this.guilds = guilds;
     }
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
+
+        GuildSettingsEntry guild = guilds.getGuild(event.getGuild().getId());
+
+        if (guild.getPublicAuditLogChannel() == null || guild.getPublicAuditLogChannel().isEmpty()) {
+            return;
+        }
 
         var user = event.getUser();
         var embed = new EmbedBuilder()
@@ -48,6 +58,6 @@ public class GuildJoinLog extends DiscordEventListener {
                 .setColor(0x00cc99)
                 .build();
 
-        DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId()).sendMessage(embed).queue();
+        DiscordBotManager.getInstance().getChannel(guild.getPublicAuditLogChannel()).sendMessage(embed).queue();
     }
 }

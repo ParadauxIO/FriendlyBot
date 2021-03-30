@@ -26,8 +26,10 @@
 package io.paradaux.friendlybot.listeners.logging;
 
 import io.paradaux.friendlybot.managers.DiscordBotManager;
+import io.paradaux.friendlybot.managers.GuildSettingsManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.database.GuildSettingsEntry;
 import io.paradaux.friendlybot.utils.models.database.MessageEntry;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -40,15 +42,23 @@ import org.slf4j.Logger;
 public class MessageDeleteLog extends DiscordEventListener {
 
     private final MongoManager mongo;
+    private final GuildSettingsManager guilds;
 
-    public MessageDeleteLog(ConfigurationEntry config, Logger logger, MongoManager mongo) {
+    public MessageDeleteLog(ConfigurationEntry config, Logger logger, MongoManager mongo, GuildSettingsManager guilds) {
         super(config, logger);
         this.mongo = mongo;
+        this.guilds = guilds;
     }
 
     @Override
     public void onGuildMessageDelete(@NotNull GuildMessageDeleteEvent event) {
         TextChannel messageLogChannel = DiscordBotManager.getInstance().getChannel(getConfig().getMessageLogChannel());
+
+        GuildSettingsEntry guild = guilds.getGuild(event.getGuild().getId());
+
+        if (guild.getMessageLogChannel() == null || guild.getMessageLogChannel().isEmpty()) {
+            return;
+        }
 
         MessageEntry entry = mongo.getLoggedMessage(event.getMessageId());
 

@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.listeners.logging;
 
 import io.paradaux.friendlybot.managers.DiscordBotManager;
+import io.paradaux.friendlybot.managers.GuildSettingsManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.MessageEntry;
@@ -40,10 +41,12 @@ import org.slf4j.Logger;
 public class UpdatedMessageLog extends DiscordEventListener {
 
     private final MongoManager mongo;
+    private final GuildSettingsManager guilds;
 
-    public UpdatedMessageLog(ConfigurationEntry config, Logger logger, MongoManager mongo) {
+    public UpdatedMessageLog(ConfigurationEntry config, Logger logger, MongoManager mongo, GuildSettingsManager guilds) {
         super(config, logger);
         this.mongo = mongo;
+        this.guilds = guilds;
     }
 
     @Override
