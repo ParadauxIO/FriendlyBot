@@ -26,6 +26,11 @@ public class AnnouncementCommand extends PrivilegedCommand {
 
     @Override
     protected void execute(CommandEvent event) {
+
+        if (!isStaff(event.getGuild(), event.getAuthor().getId())) {
+            return;
+        }
+
         event.reply("Beginning to build an announcement.");
 
         EmbedBuilder builder = new EmbedBuilder();
