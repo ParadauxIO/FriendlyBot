@@ -1,5 +1,7 @@
 package io.paradaux.friendlybot.utils.models.database;
 
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -7,16 +9,34 @@ public class GuildSettingsEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
+    @BsonProperty(value = "guild_id")
     private String guildId;
+
+    @BsonProperty(value = "verification_role_id")
     private String verificationRoleId;
+
+    @BsonProperty(value = "verification_input_channel")
     private String verificationInputChannel;
+
+    @BsonProperty(value = "mod_audit_log_channel")
     private String privateAuditLogChannel;
+
+    @BsonProperty(value = "audit_log_channel")
     private String publicAuditLogChannel;
+
+    @BsonProperty(value = "modmail_input_channel")
     private String modmailInputChannel;
+
+    @BsonProperty(value = "modmail_output_channel")
     private String modmailOutputChannel;
+
+    @BsonProperty(value = "message_log_channel")
     private String messageLogChannel;
 
+    @BsonProperty(value = "moderators")
     private HashMap<String, String> moderators;
+
+    @BsonProperty(value = "administrators")
     private HashMap<String, String> administrators;
 
     public GuildSettingsEntry() {

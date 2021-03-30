@@ -25,7 +25,7 @@ public class UserSettingsManager {
     public UserSettingsManager(Logger logger, MongoManager mongo) {
         this.logger = logger;
         instance = this;
-        logger.info("Initialising: Settings Manager");
+        logger.info("Initialising: User Settings Manager");
         settings = mongo.getUserSettings();
     }
 
