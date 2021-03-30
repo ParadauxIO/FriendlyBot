@@ -29,6 +29,8 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 
 public class DmCommand extends PrivilegedCommand {
@@ -43,6 +45,32 @@ public class DmCommand extends PrivilegedCommand {
     @Override
     protected void execute(CommandEvent event) {
         // TODO Command stub
+
+        if (!isStaff(event.getGuild(), event.getAuthor().getId())) {
+            respondNoPermission(event.getMessage(), "Moderator");
+            return;
+        }
+
+        String[] args = getArgs(event.getArgs());
+
+        if (args.length < 3) {
+            respondSyntaxError(event.getMessage(), ";dm <user> <message>");
+            return;
+        }
+
+        User target = parseTarget(event.getMessage(), args[0]);
+
+        if (target == null) {
+            respondSyntaxError(event.getMessage(), ";dm <user> <message>");
+            return;
+        }
+
+        target.openPrivateChannel().queue((channel) -> {
+            String message = parseSentance(1, args);
+            channel.sendMessage(message).queue();
+            event.getChannel().sendMessage("Sent `" + message + "` to target: " + target.getAsTag()).queue();
+        });
+
     }
 
 }
