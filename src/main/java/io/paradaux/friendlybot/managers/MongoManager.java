@@ -30,6 +30,8 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.ReturnDocument;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.*;
@@ -44,6 +46,7 @@ import org.slf4j.Logger;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -120,6 +123,12 @@ public class MongoManager {
         rescindments = dataBase.getCollection("rescindments", RescindmentEntry.class);
         guilds = dataBase.getCollection("guildsettings", GuildSettingsEntry.class);
         stats = dataBase.getCollection("stats", BotStats.class);
+
+        loggedMessages.createIndex(Indexes.ascending("date_sent"),
+                new IndexOptions().expireAfter(1L, TimeUnit.DAYS));
+
+        logger.info("Ensuring we're not storing any messages that should have expired.");
+        loggedMessages.countDocuments();
 
         instance = this;
     }
