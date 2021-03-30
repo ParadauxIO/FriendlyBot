@@ -33,7 +33,7 @@ public class PunishmentCommand extends PrivilegedCommand {
         Message message = event.getMessage();
         String[] args = getArgs(event.getArgs());
 
-        if (!isStaff(event.getAuthor().getId())) {
+        if (!isStaff(event.getGuild(), event.getAuthor().getId())) {
             respondNoPermission(message, "[Moderator, Administrator]");
             return;
         }

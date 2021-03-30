@@ -61,7 +61,7 @@ public class TicketCommand extends PrivilegedCommand {
 
         String ticketNumber;
 
-        if (!isStaff(message.getAuthor().getId())) {
+        if (!isStaff(event.getGuild(), message.getAuthor().getId())) {
             respondNoPermission(message, "[Moderator, Administrator]");
             return;
         }

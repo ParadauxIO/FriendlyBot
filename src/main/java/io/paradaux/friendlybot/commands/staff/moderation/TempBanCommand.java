@@ -62,7 +62,7 @@ public class TempBanCommand extends PrivilegedCommand {
         Message message = event.getMessage();
         String[] args = getArgs(event.getArgs());
 
-        if (!isStaff(staff.getId())) {
+        if (!isStaff(event.getGuild(), staff.getId())) {
             respondNoPermission(message, "[Moderator, Administrator]");
             return;
         }

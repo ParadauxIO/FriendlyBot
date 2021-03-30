@@ -25,9 +25,13 @@
 
 package io.paradaux.friendlybot.utils.models.types;
 
+import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.utils.embeds.notices.NoPermissionEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
@@ -52,7 +56,7 @@ public abstract class PrivilegedCommand extends BaseCommand {
     /**
      * Returns true if the provided user is a member of staff.
      * */
-    public boolean isStaff(String discordID) {
+    public boolean isStaff(Guild guild, String discordID) {
         PermissionManager permissionManager = getPermissionManager();
 
         if (permissionManager == null) {
@@ -61,7 +65,18 @@ public abstract class PrivilegedCommand extends BaseCommand {
 
         return getPermissionManager().isAdmin(discordID)
                 || permissionManager.isMod(discordID)
-                || permissionManager.isTechnician(discordID);
+                || permissionManager.isTechnician(discordID)
+                || isAdmin(guild, discordID);
+    }
+
+    public boolean isAdmin(Guild guild, String discordId) {
+        Member member = retrieveMember(guild, discordId);
+
+        if (member == null) {
+            return false;
+        }
+
+        return member.getPermissions().contains(Permission.ADMINISTRATOR);
     }
 
     /**

@@ -111,7 +111,7 @@ public class TagCommand extends PrivilegedCommand {
                     return;
                 }
 
-                if (!(entry.getDiscordId().equals(event.getAuthor().getId()) || isStaff(event.getAuthor().getId()))) {
+                if (!(entry.getDiscordId().equals(event.getAuthor().getId()) || isStaff(event.getGuild(), event.getAuthor().getId()))) {
                     // Not staff, not the owner.
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(0xeb5132)

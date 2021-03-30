@@ -68,7 +68,7 @@ public class KickCommand extends PrivilegedCommand {
         String[] args = getArgs(event.getArgs());
         String authorID = event.getAuthor().getId();
 
-        if (!isStaff(authorID)) {
+        if (!isStaff(event.getGuild(), authorID)) {
             respondNoPermission(message, "[Moderator, Administrator]");
             return;
         }
@@ -84,7 +84,7 @@ public class KickCommand extends PrivilegedCommand {
             return;
         }
 
-        if (isStaff(target.getId())) {
+        if (isStaff(event.getGuild(), target.getId())) {
             message.getChannel().sendMessage("You cannot ban a staff member.").queue();
             return;
         }

@@ -135,7 +135,6 @@ public class DiscordBotManager {
                         new RespondCommand(config, logger, permissionManager, mongo),
                         new TempBanCommand(config, logger, permissionManager, mongo),
                         new TicketCommand(config, logger, permissionManager),
-                        new TimeOutCommand(config, logger, permissionManager),
                         new WarnCommand(config, logger, permissionManager),
 
                         // Technician Commands.

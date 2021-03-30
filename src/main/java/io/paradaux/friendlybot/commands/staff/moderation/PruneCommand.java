@@ -48,7 +48,7 @@ public class PruneCommand extends PrivilegedCommand {
         String[] args = getArgs(event.getArgs());
         String authorID = event.getAuthor().getId();
 
-        if (!isStaff(authorID)) {
+        if (!isStaff(event.getGuild(), authorID)) {
             respondNoPermission(message, "[Moderator, Administrator]");
             return;
         }
