@@ -343,7 +343,6 @@ public class MongoManager {
     }
 
     public void updateStats(int userCount, int guildCount) {
-        System.out.printf("userCOunt: " + userCount + " guildCount" + guildCount);
         stats.findOneAndUpdate(new Document(), new Document()
                 .append("user_count", userCount)
                 .append("guild_count", guildCount));

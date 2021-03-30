@@ -79,28 +79,8 @@ public class MailGunManager {
                 .addHeader("Authorization", "Basic " + StringUtils.basicAuth("api", config.getMailGunApplicationKey()))
                 .build();
 
-        HttpUtils.sendAsync(client, request).thenAccept((response) -> {
-
-            if (response.body() == null) {
-                throw new VerificationException("No response received.");
-            }
-
-            try (Reader reader = response.body().charStream()) {
-                int charInt;
-                StringBuilder strBuilder = new StringBuilder();
-                while ((charInt = reader.read()) != -1) {
-                    strBuilder.append((char) charInt);
-                }
-
-                System.out.println(strBuilder.toString());
-            } catch (IOException ok) {
-                logger.error("Error occurred whilst interacting with mailgun.");
-                throw new VerificationException();
-            }
-
-        }).join();
+        HttpUtils.sendAsync(client, request).thenAccept((response) -> logger.info("Sending a verification email for " + tag)).join();
 
     }
-
 
 }
