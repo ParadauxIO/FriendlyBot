@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.Locale;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -152,5 +153,21 @@ public class StringUtils {
      * */
     public static String headingToShortCardinalDirection(double heading) {
         return SHORTHAND_CARDINAL_DIRECTIONS[(int) Math.round(((heading % 360)/45))];
+    }
+
+    /**
+     * Parses a boolean from human input, whether that be "yes" or "no" or "true" and "false."
+     * */
+    public static boolean parseBoolean(String str) {
+        str = str.toLowerCase();
+        if (str.contains("yes") || str.contains("true")) {
+            return true;
+        }
+
+        if (str.contains("no") || str.contains("false")) {
+            return false;
+        }
+
+        throw new IllegalArgumentException("Argument did not contain boolean value.");
     }
 }
