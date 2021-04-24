@@ -62,6 +62,7 @@ public class DiscordBotManager {
 
     // Singleton Instance
     private static DiscordBotManager instance = null;
+
     private final ConfigurationEntry config;
     private final Logger logger;
     private final PermissionManager permissionManager;
@@ -142,6 +143,7 @@ public class DiscordBotManager {
                         new PermissionsCommand(config, logger, permissionManager),
                         new SayCommand(config, logger, permissionManager),
                         new SendEmbedCommand(config, logger, permissionManager),
+                        new SetupCommand(config, logger, permissionManager, eventWaiter),
                         new VerificationCommand(config, logger, permissionManager),
 
                         // Utility Commands
