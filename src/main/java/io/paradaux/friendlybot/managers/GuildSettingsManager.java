@@ -27,6 +27,7 @@ public class GuildSettingsManager {
         if (instance == null) {
             throw new ManagerNotReadyException();
         }
+        instance.logger.info("Getting an instance of GuildSettingsManager...");
 
         return instance;
     }
@@ -35,34 +36,51 @@ public class GuildSettingsManager {
         // Check if it's cached
         GuildSettingsEntry guild = cachedGuilds.get(guildId);
 
-        // If it's not cached try to pull it from the database
-        if (guild == null) {
-            guild = guilds.find(Filters.eq("guild_id", guildId)).first();
-            cachedGuilds.put(guildId, guild);
+        if (guild != null) {
+            return guild;
         }
+
+        // If it's not cached try to pull it from the database
+        logger.info("Guild did not exist in the cache");
+        guild = guilds.find(Filters.eq("guild_id", guildId)).first();
 
         // if it's not in the database create a new profile.
         if (guild == null) {
             guild = createNewProfile(guildId);
-            cachedGuilds.put(guildId, guild);
         }
 
+        // Load the guild into the cache
+        cachedGuilds.put(guildId, guild);
+
+        // Return the guild after it has been loaded into the cache
         return guild;
     }
 
     public GuildSettingsEntry createNewProfile(String guildId) {
         logger.info("Creating a guild profile for {}", guildId);
+
+        // Create an empty guild with just the ID
         GuildSettingsEntry entry = new GuildSettingsEntry()
                 .setGuildId(guildId);
+
+        // Insert the newly created guild back into the database.
         guilds.insertOne(entry);
         return entry;
     }
 
     public void updateProfile(GuildSettingsEntry entry) {
+        // Updates it in the cache
+        cachedGuilds.put(entry.getGuildId(), entry);
+
+        // Updates it in the database
         guilds.findOneAndReplace(Filters.eq("guild_id", entry.getGuildId()), entry);
     }
 
     public void removeProfile(String guildId) {
+        // Removes a guild from the cache
+        cachedGuilds.remove(guildId);
+
+        // Removes a guild from the database
         guilds.findOneAndDelete(Filters.eq("guild_id", guildId));
     }
 
