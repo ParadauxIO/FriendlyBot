@@ -73,7 +73,24 @@ public class GuildSettingsManager {
         cachedGuilds.put(entry.getGuildId(), entry);
 
         // Updates it in the database
-        guilds.findOneAndReplace(Filters.eq("guild_id", entry.getGuildId()), entry);
+        if (!guildExists(entry.getGuildId())) {
+            guilds.insertOne(entry);
+        } else {
+            guilds.findOneAndReplace(Filters.eq("guild_id", entry.getGuildId()), entry);
+        }
+    }
+
+    public boolean guildExists(String guildId) {
+        // Checks first to see if it's in the cache
+        GuildSettingsEntry entry = cachedGuilds.get(guildId);
+
+        // If it isn't, check the database
+        if (entry == null) {
+            entry = guilds.find(Filters.eq("guild_id", guildId)).first();
+        }
+
+        // Return whether or not we found it.
+        return entry != null;
     }
 
     public void removeProfile(String guildId) {
