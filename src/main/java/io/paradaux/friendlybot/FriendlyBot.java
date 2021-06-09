@@ -31,6 +31,8 @@ import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 /**
  * CSBot is the main (executable) class for the project.
  * It provides a set of lazy dependency injection instances
@@ -74,7 +76,6 @@ public class FriendlyBot {
         AuditManager auditManager = new AuditManager(config, logger);
         MailGunManager mailGunManager = new MailGunManager(config, logger);
         VerificationManager verificationManager = new VerificationManager(config, logger, mongoManager, mailGunManager);
-        TaskManager taskManager = new TaskManager();
 
         api = API.builder()
                 .setLogger(logger)
