@@ -29,6 +29,7 @@ import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.GuildSettingsManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.database.GuildSettingsEntry;
 import io.paradaux.friendlybot.utils.models.database.MessageEntry;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -55,7 +56,13 @@ public class UpdatedMessageLog extends DiscordEventListener {
             return;
         }
 
-        TextChannel messageLogChannel = DiscordBotManager.getInstance().getChannel(getConfig().getMessageLogChannel());
+        GuildSettingsEntry guild = guilds.getGuild(event.getGuild().getId());
+
+        if (guild.getMessageLogChannel() == null || guild.getMessageLogChannel().isEmpty()) {
+            return;
+        }
+
+        TextChannel messageLogChannel = DiscordBotManager.getInstance().getChannel(guild.getMessageLogChannel());
 
         MessageEntry entry = mongo.getLoggedMessage(event.getMessageId());
 

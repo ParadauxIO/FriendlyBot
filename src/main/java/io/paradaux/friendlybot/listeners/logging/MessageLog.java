@@ -57,7 +57,9 @@ public class MessageLog extends DiscordEventListener {
             return;
         }
 
-        TextChannel messageLogChannel = DiscordBotManager.getInstance().getChannel(getConfig().getMessageLogChannel());
+        if (event.getMessage().getContentRaw().startsWith(";")) {
+            return;
+        }
 
         GuildSettingsEntry guild = guilds.getGuild(event.getGuild().getId());
 
@@ -65,6 +67,7 @@ public class MessageLog extends DiscordEventListener {
             return;
         }
 
+        TextChannel messageLogChannel = DiscordBotManager.getInstance().getChannel(guild.getMessageLogChannel());
         MessageEntry entry = new MessageEntry()
                 .setAuthorId(event.getAuthor().getId())
                 .setMessageId(event.getMessageId())

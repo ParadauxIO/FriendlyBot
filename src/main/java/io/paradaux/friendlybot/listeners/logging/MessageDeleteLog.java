@@ -52,7 +52,6 @@ public class MessageDeleteLog extends DiscordEventListener {
 
     @Override
     public void onGuildMessageDelete(@NotNull GuildMessageDeleteEvent event) {
-        TextChannel messageLogChannel = DiscordBotManager.getInstance().getChannel(getConfig().getMessageLogChannel());
 
         GuildSettingsEntry guild = guilds.getGuild(event.getGuild().getId());
 
@@ -60,6 +59,7 @@ public class MessageDeleteLog extends DiscordEventListener {
             return;
         }
 
+        TextChannel messageLogChannel = DiscordBotManager.getInstance().getChannel(guild.getMessageLogChannel());
         MessageEntry entry = mongo.getLoggedMessage(event.getMessageId());
 
         if (entry == null) {
