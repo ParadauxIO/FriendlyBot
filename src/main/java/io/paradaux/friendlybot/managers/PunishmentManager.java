@@ -5,6 +5,7 @@ import io.paradaux.friendlybot.utils.embeds.moderation.BannedEmbed;
 import io.paradaux.friendlybot.utils.models.database.BanEntry;
 import io.paradaux.friendlybot.utils.models.database.GuildSettingsEntry;
 import io.paradaux.friendlybot.utils.models.database.KickEntry;
+import io.paradaux.friendlybot.utils.models.database.RescindmentEntry;
 import io.paradaux.friendlybot.utils.models.database.TempBanEntry;
 import io.paradaux.friendlybot.utils.models.database.WarningEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
@@ -14,6 +15,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 
 import java.util.Date;
 
@@ -189,5 +191,51 @@ public class PunishmentManager {
 //                .build();
         // TODO
         return null;
+    }
+
+    public void deleteWarning(Guild guild, Member staff, String warningId, String reason) {
+        GuildSettingsEntry settings = guilds.getGuild(guild.getId());
+
+        WarningEntry entry = mongo.getWarningEntry(warningId);
+        mongo.deleteWarning(warningId);
+        String incidentId = String.valueOf(settings.getIncidentId());
+
+        RescindmentEntry rescindment = new RescindmentEntry()
+                .setAction(ModerationAction.WARN)
+                .setIncidentId(incidentId)
+                .setIncidentIdOfPunishment(entry.getIncidentID())
+                .setUserTag(entry.getUserTag())
+                .setUserId(entry.getUserID())
+                .setStaffTag(staff.getUser().getAsTag())
+                .setStaffId(staff.getId())
+                .setReason(reason)
+                .setTimeOfPunishment(entry.getTimestamp())
+                .setTimeOfRescindment(new Date());
+
+        mongo.addRescindment(rescindment);
+
+        MessageEmbed publicAudit = new EmbedBuilder()
+                .setColor(0x34eb9b)
+                .setTitle("Punishment Rescinded. | Warning of " + entry.getUserTag())
+                .setDescription(rescindment.getReason())
+                .setFooter("Punishment ID: " + entry.getIncidentID() + " Incident ID: " + incidentId)
+                .setTimestamp(new Date().toInstant())
+                .build();
+
+        DiscordBotManager.getInstance().getChannel(settings.getPublicAuditLogChannel()).sendMessage(publicAudit).queue();
+
+        User target = DiscordBotManager.getInstance().getUser(entry.getUserID());
+
+        target.openPrivateChannel().queue((channel) -> {
+            MessageEmbed rescindmentNotification = new EmbedBuilder()
+                    .setColor(0x33cccc)
+                    .setTitle("A warning levied against you has been taken back..")
+                    .setDescription("** Original Reason**: " + entry.getReason() + "\n" + rescindment.getReason())
+                    .setFooter("Punishment ID: " + entry.getIncidentID() + " Incident ID: " + incidentId)
+                    .setTimestamp(new Date().toInstant())
+                    .build();
+
+            channel.sendMessage(rescindmentNotification).queue();
+        });
     }
 }
