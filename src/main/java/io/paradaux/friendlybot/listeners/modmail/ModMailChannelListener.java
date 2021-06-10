@@ -55,10 +55,6 @@ public class ModMailChannelListener extends DiscordEventListener {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Message message = event.getMessage();
 
-        if (message.getChannelType() == ChannelType.PRIVATE) {
-            return;
-        }
-
         if (!message.getChannel().getId().equals(getConfig().getModMailInputChannel())) {
             return;
         }

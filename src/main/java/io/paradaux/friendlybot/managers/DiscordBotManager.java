@@ -39,7 +39,6 @@ import io.paradaux.friendlybot.listeners.logging.UpdatedMessageLog;
 import io.paradaux.friendlybot.listeners.logging.audit.GuildJoinLog;
 import io.paradaux.friendlybot.listeners.logging.audit.GuildLeaveLog;
 import io.paradaux.friendlybot.listeners.modmail.ModMailChannelListener;
-import io.paradaux.friendlybot.listeners.modmail.ModMailPrivateMessageListener;
 import io.paradaux.friendlybot.listeners.utility.LongMessageListener;
 import io.paradaux.friendlybot.listeners.verification.VerificationCodeReceivedListener;
 import io.paradaux.friendlybot.listeners.verification.VerificationEmailReceivedListener;
@@ -190,7 +189,6 @@ public class DiscordBotManager {
                         new GuildJoinLog(config, logger, guilds),
                         new GuildLeaveLog(config, logger, guilds),
                         new ModMailChannelListener(config, logger),
-                        new ModMailPrivateMessageListener(logger),
                         new VerificationCodeReceivedListener(config, logger),
                         new VerificationEmailReceivedListener(config, logger),
                         new ReadyListener(logger),
@@ -257,8 +255,6 @@ public class DiscordBotManager {
     public List<Role> getRolesByName(String guildId, String roleName) {
         return getGuild(guildId).getRolesByName(roleName, true);
     }
-
-
 
     @Nonnull
     @CheckReturnValue
