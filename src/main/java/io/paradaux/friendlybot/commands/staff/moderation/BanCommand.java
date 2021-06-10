@@ -91,6 +91,6 @@ public class BanCommand extends PrivilegedCommand {
             return;
         }
 
-        punishments.banUser(event.getGuild(), target, event.getMember(), parseSentance(1, args));
+        punishments.banUser(event.getGuild(), target, event.getMember(), event.getTextChannel(), parseSentance(1, args));
     }
 }

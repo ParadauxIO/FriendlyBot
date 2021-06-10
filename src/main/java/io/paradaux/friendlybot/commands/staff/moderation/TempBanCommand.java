@@ -83,6 +83,6 @@ public class TempBanCommand extends PrivilegedCommand {
             return;
         }
 
-        punishments.tempBanUser(event.getGuild(), target, event.getMember(), args[1], parseSentance(2, args));
+        punishments.tempBanUser(event.getGuild(), target, event.getMember(), event.getTextChannel(),  args[1], parseSentance(2, args));
     }
 }

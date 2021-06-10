@@ -90,6 +90,6 @@ public class WarnCommand extends PrivilegedCommand {
             return;
         }
 
-        punishments.warnUser(event.getGuild(), target, event.getMember(), parseSentance(1, args));
+        punishments.warnUser(event.getGuild(), target, event.getMember(), event.getTextChannel(),  parseSentance(1, args));
     }
 }

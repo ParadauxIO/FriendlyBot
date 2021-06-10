@@ -94,6 +94,6 @@ public class KickCommand extends PrivilegedCommand {
             return;
         }
 
-        punishments.kickUser(event.getGuild(), target, event.getMember(), parseSentance(1, args));
+        punishments.kickUser(event.getGuild(), target, event.getMember(), event.getTextChannel(),  parseSentance(1, args));
     }
 }
