@@ -132,7 +132,6 @@ public class DiscordBotManager {
                         new KickCommand(config, logger, permissionManager),
                         new LookupCommand(config, logger, permissionManager),
                         new PruneCommand(config, logger, permissionManager),
-                        new PunishmentCommand(config, logger, permissionManager, mongo),
                         new RespondCommand(config, logger, permissionManager, mongo),
                         new TempBanCommand(config, logger, permissionManager, mongo),
                         new TicketCommand(config, logger, permissionManager),
