@@ -63,7 +63,6 @@ public class MongoManager {
 
     private final MongoCollection<PendingVerificationEntry> pendingVerification;
     private final MongoCollection<VerificationEntry> verification;
-    private final MongoCollection<CounterEntry> counterCollection;
     private final MongoCollection<AuditLogEntry> auditLog;
     private final MongoCollection<WarningEntry> warnings;
     private final MongoCollection<ModMailEntry> modmail;
@@ -109,7 +108,6 @@ public class MongoManager {
 
         pendingVerification = dataBase.getCollection("pendingVerification", PendingVerificationEntry.class);
         verification = dataBase.getCollection("verification", VerificationEntry.class);
-        counterCollection = dataBase.getCollection("counter", CounterEntry.class);
         auditLog = dataBase.getCollection("auditlog", AuditLogEntry.class);
         warnings = dataBase.getCollection("warnings", WarningEntry.class);
         modmail = dataBase.getCollection("modmail", ModMailEntry.class);
@@ -155,39 +153,6 @@ public class MongoManager {
 
     public MongoCollection<TagEntry> getTags() {
         return tags;
-    }
-
-    public String getNextIncidentID() {
-        CounterEntry result = incrementCounter("last_incident_id");
-        return Long.toString(result.getLastIncidentID() + 1);
-    }
-
-    public String getNextTicketNumber() {
-        CounterEntry result = incrementCounter("last_ticket_number");
-        return Long.toString(result.getLastIncidentID() + 1);
-    }
-
-    @CheckReturnValue
-    @Nullable
-    public CounterEntry incrementCounter(String field) {
-        Document query = new Document("_id", new ObjectId("5fb6895ba9dc2abc3eec8c4a"));
-
-        Document increment = new Document(field, 1L);
-        Document update = new Document("$inc", increment);
-
-        FindOneAndUpdateOptions options = new FindOneAndUpdateOptions()
-                .returnDocument(ReturnDocument.AFTER)
-                .upsert(true);
-
-        CounterEntry result = counterCollection.findOneAndUpdate(query, update, options);
-
-        if (result == null) {
-            result = new CounterEntry()
-                    .setLastIncidentID(0L)
-                    .setLastTickerNumber(0L);
-        }
-
-        return result;
     }
 
     public void addPendingVerificationUser(String discordID, String guildID,

@@ -26,16 +26,19 @@
 package io.paradaux.friendlybot.listeners.modmail;
 
 import io.paradaux.friendlybot.managers.DiscordBotManager;
+import io.paradaux.friendlybot.managers.GuildSettingsManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.utils.embeds.modmail.ModMailReceivedEmbed;
 import io.paradaux.friendlybot.utils.embeds.modmail.ModMailSentEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.utils.models.database.GuildSettingsEntry;
 import io.paradaux.friendlybot.utils.models.database.ModMailEntry;
 import io.paradaux.friendlybot.utils.models.enums.TicketStatus;
 import io.paradaux.friendlybot.utils.models.interfaces.Embed;
 import io.paradaux.friendlybot.utils.models.types.DiscordEventListener;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -55,7 +58,13 @@ public class ModMailChannelListener extends DiscordEventListener {
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         Message message = event.getMessage();
 
-        if (!message.getChannel().getId().equals(getConfig().getModMailInputChannel())) {
+        GuildSettingsEntry guild = GuildSettingsManager.getInstance().getGuild(event.getGuild().getId());
+
+        if (guild.getMessageLogChannel() == null || guild.getMessageLogChannel().isEmpty()) {
+            return;
+        }
+
+        if (!message.getChannel().getId().equals(guild.getModmailInputChannel())) {
             return;
         }
 
@@ -81,7 +90,7 @@ public class ModMailChannelListener extends DiscordEventListener {
                 issue, ticketNumber, incidentID);
         ModMailSentEmbed sentEmbed = new ModMailSentEmbed(ticketNumber, issue);
 
-        receivedEmbed.sendEmbed(DiscordBotManager.getInstance().getChannel(getConfig().getModMailOutputChannel()));
+        receivedEmbed.sendEmbed(DiscordBotManager.getInstance().getChannel(guild.getModmailOutputChannel()));
         event.getAuthor().openPrivateChannel().queue((privateChannel) -> privateChannel
                 .sendMessage(sentEmbed.getEmbed()).queue());
 

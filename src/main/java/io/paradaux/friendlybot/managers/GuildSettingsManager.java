@@ -2,13 +2,17 @@ package io.paradaux.friendlybot.managers;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.FindOneAndUpdateOptions;
 import io.paradaux.friendlybot.utils.models.database.GuildSettingsEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
+import org.bson.Document;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
 
 public class GuildSettingsManager {
+
+    private static final FindOneAndUpdateOptions INCREMENT_OPTIONS = new FindOneAndUpdateOptions().upsert(true);
 
     private static final HashMap<String, GuildSettingsEntry> cachedGuilds = new HashMap<>();
     private static GuildSettingsManager instance;
@@ -101,4 +105,15 @@ public class GuildSettingsManager {
         guilds.findOneAndDelete(Filters.eq("guild_id", guildId));
     }
 
+    public void incrementIncidentId(String guildId) {
+        incrementField(guildId, "last_incident_id");
+    }
+
+    public void incrementTicketNumber(String guildId) {
+        incrementField(guildId, "last_ticket_number");
+    }
+
+    private void incrementField(String guildId, String field) {
+        guilds.findOneAndUpdate(new Document("guild_id", guildId), new Document("$inc", new Document(field, 1L)), INCREMENT_OPTIONS);
+    }
 }
