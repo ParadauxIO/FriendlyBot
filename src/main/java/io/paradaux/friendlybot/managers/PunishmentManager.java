@@ -1,8 +1,12 @@
 package io.paradaux.friendlybot.managers;
 
 import io.paradaux.friendlybot.utils.TimeUtils;
+import io.paradaux.friendlybot.utils.embeds.moderation.BannedEmbed;
+import io.paradaux.friendlybot.utils.models.database.BanEntry;
 import io.paradaux.friendlybot.utils.models.database.GuildSettingsEntry;
+import io.paradaux.friendlybot.utils.models.database.KickEntry;
 import io.paradaux.friendlybot.utils.models.database.TempBanEntry;
+import io.paradaux.friendlybot.utils.models.database.WarningEntry;
 import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
 import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -33,7 +37,7 @@ public class PunishmentManager {
         return instance;
     }
 
-    public void tempBanUser(Guild guild, Member target, Member staff, String time, String reason) {
+    public void tempBanUser(Guild guild, Member target, Member staff, TextChannel channel, String time, String reason) {
         GuildSettingsEntry settings = guilds.getGuild(guild.getId());
 
         long period = TimeUtils.getTime(time);
@@ -51,20 +55,11 @@ public class PunishmentManager {
 
         mongo.addTempBanEntry(entry);
 
-        MessageEmbed publicAudit = new EmbedBuilder()
-                .setColor(0xeb5132)
-                .setTitle(target.getAsTag() + " has been temporarily banned.")
-                .setDescription("**Reason**: " + entry.getReason() + "\n**Period**: " + TimeUtils.millisecondsToDisplay(period))
-                .setFooter("Incident ID: " + entry.getIncidentId() + ". For more information, reach out to the moderation team via mod-mail.")
-                .setTimestamp(new Date().toInstant())
-                .build();
+        TextChannel publicAuditLog = DiscordBotManager.getInstance().getChannel(settings.getPublicAuditLogChannel());
+        AuditManager.getInstance().log(ModerationAction.TEMP_BAN, target.getUser(), staff.getUser(), entry.getReason(), entry.getIncidentId());
+        publicAuditLog.sendMessage(this.publicAuditPunishmentEmbed()).queue();
 
-        TextChannel channel = DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId());
-        channel.sendMessage(publicAudit).queue();
-        event.getChannel().sendMessage(publicAudit).queue();
-        AuditManager.getInstance().log(ModerationAction.TEMP_BAN, target, staff, entry.getReason(), entry.getIncidentId());
-
-        target.openPrivateChannel().queue((privateChannel) -> {
+        target.getUser().openPrivateChannel().queue((privateChannel) -> {
             MessageEmbed banNotification = new EmbedBuilder()
                     .setColor(0xeb5132)
                     .setTitle("You have been temporarily banned.")
@@ -74,22 +69,125 @@ public class PunishmentManager {
                     .build();
 
             privateChannel.sendMessage(banNotification).queue((message2) -> {
-                message.getGuild().ban(target, 0).queue();
+                guild.ban(target, 0).queue();
             });
 
         });
     }
 
-    public void banUser(Guild guild, Member user, String reason) {
+    public void banUser(Guild guild, Member target, Member staff, TextChannel channel, String reason) {
         GuildSettingsEntry settings = guilds.getGuild(guild.getId());
+
+        String incidentID = String.valueOf(settings.getIncidentId());
+
+        BanEntry entry = new BanEntry()
+                .setIncidentID(incidentID)
+                .setReason(reason)
+                .setStaffID(staff.getId())
+                .setStaffTag(staff.getUser().getAsTag())
+                .setUserID(target.getId())
+                .setUserTag(target.getUser().getAsTag());
+
+        mongo.addBanEntry(entry);
+        AuditManager.getInstance().log(ModerationAction.BAN, target.getUser(), staff.getUser(), reason, incidentID);
+
+        BannedEmbed embed = new BannedEmbed(reason, incidentID);
+        target.getUser().openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage(embed.getEmbed()).queue());
+
+        guild.ban(target, 0).queue();
     }
 
-    public void kickUser(Guild guild, Member user, String reason) {
+    public void kickUser(Guild guild, Member target, Member staff, TextChannel channel, String reason) {
         GuildSettingsEntry settings = guilds.getGuild(guild.getId());
+
+        MongoManager mongo = MongoManager.getInstance();
+
+        String incidentID = String.valueOf(settings.getIncidentId());
+
+        KickEntry entry = new KickEntry()
+                .setIncidentID(incidentID)
+                .setReason(reason)
+                .setStaffID(staff.getId())
+                .setStaffTag(staff.getUser().getAsTag())
+                .setUserID(target.getId())
+                .setUserTag(target.getUser().getAsTag());
+
+        mongo.addKickEntry(entry);
+
+        AuditManager.getInstance().log(ModerationAction.KICK, target.getUser(), staff.getUser(), reason, incidentID);
+
+        DiscordBotManager.getInstance().getChannel(settings.getPublicAuditLogChannel()).sendMessage(this.publicAuditPunishmentEmbed()).queue();
+
+        target.getUser().openPrivateChannel().queue((privateChannel ) -> {
+            MessageEmbed kickNotification = new EmbedBuilder()
+                    .setColor(0xffff99)
+                    .setTitle("You have been kicked.")
+                    .setDescription("**Reason**: " + reason)
+                    .setFooter("Incident ID: " + incidentID + ". For more information, reach out to the moderation team via mod-mail.")
+                    .setTimestamp(new Date().toInstant())
+                    .build();
+
+            privateChannel.sendMessage(kickNotification).queue();
+
+            target.kick(reason).queue();
+        });
     }
 
-    public void warnUser(Guild guild, Member user, String reason) {
+    public void warnUser(Guild guild, Member target, Member staff, TextChannel channel, String reason) {
         GuildSettingsEntry settings = guilds.getGuild(guild.getId());
+
+        MongoManager mongo = MongoManager.getInstance();
+
+        String incidentID = String.valueOf(settings.getIncidentId());
+
+        WarningEntry entry = new WarningEntry()
+                .setIncidentID(incidentID)
+                .setReason(reason)
+                .setStaffID(staff.getId())
+                .setStaffTag(staff.getUser().getAsTag())
+                .setUserID(target.getId())
+                .setUserTag(target.getUser().getAsTag())
+                .setTimestamp(new Date());
+
+        mongo.addWarnEntry(entry);
+
+        AuditManager.getInstance().log(ModerationAction.WARN, target.getUser(), staff.getUser(), reason, incidentID);
+
+        DiscordBotManager.getInstance().getChannel(settings.getPublicAuditLogChannel()).sendMessage(this.publicAuditPunishmentEmbed()).queue();
+
+        target.getUser().openPrivateChannel().queue((privateChannel) -> {
+            MessageEmbed warnNotification = new EmbedBuilder()
+                    .setColor(0x33cccc)
+                    .setTitle("You have been warned.")
+                    .setDescription("**Reason**: " + reason + "\n**N.B**: Receiving a second warning is an automatic temporary ban.")
+                    .setFooter("Incident ID: " + incidentID + ". For more information, reach out to the moderation team via mod-mail.")
+                    .setTimestamp(new Date().toInstant())
+                    .build();
+
+            channel.sendMessage(warnNotification).queue();
+        });
     }
 
+    private MessageEmbed sameChannelPunishmentEmbed() {
+        // TODO
+        return null;
+    }
+
+    private MessageEmbed privateAuditPunishmentEmbed() {
+        // TODO
+        return null;
+    }
+
+    private MessageEmbed publicAuditPunishmentEmbed() {
+        //User target, ModerationAction action, String reason
+//        return new EmbedBuilder()
+//                .setColor(0xeb5132)
+//                .setTitle(target.getUser().getAsTag() + " has been temporarily banned.")
+//                .setDescription("**Reason**: " + entry.getReason() + "\n**Period**: " + TimeUtils.millisecondsToDisplay(period))
+//                .setFooter("Incident ID: " + entry.getIncidentId() + ". For more information, reach out to the moderation team via mod-mail.")
+//                .setTimestamp(new Date().toInstant())
+//                .build();
+        // TODO
+        return null;
+    }
 }
