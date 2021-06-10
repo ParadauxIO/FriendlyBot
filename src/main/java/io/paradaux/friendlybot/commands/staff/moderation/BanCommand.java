@@ -30,11 +30,13 @@ import io.paradaux.friendlybot.FriendlyBot;
 import io.paradaux.friendlybot.managers.AuditManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
+import io.paradaux.friendlybot.managers.PunishmentManager;
 import io.paradaux.friendlybot.utils.embeds.moderation.BannedEmbed;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.BanEntry;
 import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
@@ -50,10 +52,13 @@ import org.slf4j.Logger;
 
 public class BanCommand extends PrivilegedCommand {
 
+    private final PunishmentManager punishments;
+
     public BanCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
         super(config, logger, permissionManager);
         this.name = "ban";
         this.help = "Bans the specified user";
+        this.punishments = PunishmentManager.getInstance();
     }
 
     @Override
@@ -74,7 +79,7 @@ public class BanCommand extends PrivilegedCommand {
             return;
         }
 
-        User target = parseTarget(message, args[0]);
+        Member target = retrieveMember(event.getGuild(), args[0]);
 
         if (target == null) {
             message.getChannel().sendMessage("You did not specify a (valid) target.").queue();
@@ -86,29 +91,6 @@ public class BanCommand extends PrivilegedCommand {
             return;
         }
 
-        String incidentID = mongo.getNextIncidentID();
-        String reason = parseSentance(1, args);
-
-        BanEntry entry = new BanEntry()
-                .setIncidentID(incidentID)
-                .setReason(reason)
-                .setStaffID(authorID)
-                .setStaffTag(event.getAuthor().getAsTag())
-                .setUserID(target.getId())
-                .setUserTag(target.getAsTag());
-
-        mongo.addBanEntry(entry);
-        AuditManager.getInstance().log(ModerationAction.BAN, target,
-                event.getAuthor(), reason, incidentID);
-
-        message.getChannel().sendMessage("Incident ID: " + incidentID
-                + "\nReason: " + reason).queue();
-
-        BannedEmbed embed = new BannedEmbed(reason, incidentID);
-        target.openPrivateChannel().queue((channel) -> channel.sendMessage(embed.getEmbed())
-                .queue());
-
-         message.getGuild().ban(target, 0).queue();
-
+        punishments.banUser(event.getGuild(), target, event.getMember(), parseSentance(1, args));
     }
 }

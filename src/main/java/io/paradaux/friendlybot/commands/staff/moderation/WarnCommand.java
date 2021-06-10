@@ -31,11 +31,13 @@ import io.paradaux.friendlybot.managers.AuditManager;
 import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
+import io.paradaux.friendlybot.managers.PunishmentManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.WarningEntry;
 import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
@@ -54,13 +56,14 @@ import java.util.Date;
 
 public class WarnCommand extends PrivilegedCommand {
 
-    // Dependencies
+    private final PunishmentManager punishments;
 
     public WarnCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
         super(config, logger, permissionManager);
         this.name = "warn";
         this.aliases = new String[]{"w"};
         this.help = "Warns the specified user";
+        this.punishments = PunishmentManager.getInstance();
     }
 
     @Override
@@ -80,54 +83,13 @@ public class WarnCommand extends PrivilegedCommand {
             return;
         }
 
-        User target = parseTarget(message, args[0]);
+        Member target = retrieveMember(event.getGuild(), args[0]);
 
         if (target == null) {
             message.getChannel().sendMessage("You did not specify a (valid) target.").queue();
             return;
         }
 
-        MongoManager mongo = MongoManager.getInstance();
-
-        String incidentID = mongo.getNextIncidentID();
-        String reason = parseSentance(1, args);
-
-        WarningEntry entry = new WarningEntry()
-                .setIncidentID(incidentID)
-                .setReason(reason)
-                .setStaffID(authorID)
-                .setStaffTag(event.getAuthor().getAsTag())
-                .setUserID(target.getId())
-                .setUserTag(target.getAsTag())
-                .setTimestamp(new Date());
-
-        mongo.addWarnEntry(entry);
-
-        AuditManager.getInstance().log(ModerationAction.WARN, target,
-                event.getAuthor(), reason, incidentID);
-
-        MessageEmbed publicAudit = new EmbedBuilder()
-                .setColor(0x33cccc)
-                .setTitle(target.getAsTag() + " has been warned.")
-                .setDescription("**Reason**: " + reason + "\n**N.B**: Receiving a second warning is an automatic temporary ban.")
-                .setFooter("Incident ID: " + incidentID + ". For more information, reach out to the moderation team via mod-mail.")
-                .setTimestamp(new Date().toInstant())
-                .build();
-
-        DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId()).sendMessage(publicAudit).queue();
-        message.getChannel().sendMessage(publicAudit).queue();
-
-        target.openPrivateChannel().queue((channel) -> {
-            MessageEmbed warnNotification = new EmbedBuilder()
-                    .setColor(0x33cccc)
-                    .setTitle("You have been warned.")
-                    .setDescription("**Reason**: " + reason + "\n**N.B**: Receiving a second warning is an automatic temporary ban.")
-                    .setFooter("Incident ID: " + incidentID + ". For more information, reach out to the moderation team via mod-mail.")
-                    .setTimestamp(new Date().toInstant())
-                    .build();
-
-            channel.sendMessage(warnNotification).queue();
-        });
-
+        punishments.warnUser(event.getGuild(), target, event.getMember(), parseSentance(1, args));
     }
 }

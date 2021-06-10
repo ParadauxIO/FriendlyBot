@@ -30,12 +30,14 @@ import io.paradaux.friendlybot.managers.AuditManager;
 import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
+import io.paradaux.friendlybot.managers.PunishmentManager;
 import io.paradaux.friendlybot.utils.TimeUtils;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.TempBanEntry;
 import io.paradaux.friendlybot.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.utils.models.types.PrivilegedCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -47,18 +49,20 @@ import java.util.Date;
 public class TempBanCommand extends PrivilegedCommand {
 
     private final MongoManager mongo;
+    private final PunishmentManager punishments;
 
     public TempBanCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager, MongoManager mongo) {
         super(config, logger, permissionManager);
         this.mongo = mongo;
         this.name = "tempban";
         this.help = "Temporarily bans a user.";
+        this.punishments = PunishmentManager.getInstance();
     }
 
     @Override
     protected void execute(CommandEvent event) {
 
-        User staff = event.getAuthor();
+        Member staff = event.getMember();
         Message message = event.getMessage();
         String[] args = getArgs(event.getArgs());
 
@@ -72,55 +76,13 @@ public class TempBanCommand extends PrivilegedCommand {
             return;
         }
 
-        User target = parseTarget(message, args[0]);
+        Member target = retrieveMember(event.getGuild(), args[0]);
 
         if (target == null) {
             message.reply("User does not exist.").queue();
             return;
         }
 
-        long period = TimeUtils.getTime(args[1]);
-        Date expiry = new Date(System.currentTimeMillis() + period);
-
-        TempBanEntry entry = new TempBanEntry()
-                .setIncidentId(mongo.getNextIncidentID())
-                .setUserTag(target.getAsTag())
-                .setUserId(target.getId())
-                .setStaffTag(staff.getAsTag())
-                .setStaffId(staff.getId())
-                .setReason(parseSentance(2, args))
-                .setTimestamp(new Date())
-                .setExpiry(expiry);
-
-        mongo.addTempBanEntry(entry);
-
-        MessageEmbed publicAudit = new EmbedBuilder()
-                .setColor(0xeb5132)
-                .setTitle(target.getAsTag() + " has been temporarily banned.")
-                .setDescription("**Reason**: " + entry.getReason() + "\n**Period**: " + TimeUtils.millisecondsToDisplay(period))
-                .setFooter("Incident ID: " + entry.getIncidentId() + ". For more information, reach out to the moderation team via mod-mail.")
-                .setTimestamp(new Date().toInstant())
-                .build();
-
-        TextChannel channel = DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId());
-        channel.sendMessage(publicAudit).queue();
-        event.getChannel().sendMessage(publicAudit).queue();
-        AuditManager.getInstance().log(ModerationAction.TEMP_BAN, target, staff, entry.getReason(), entry.getIncidentId());
-
-        target.openPrivateChannel().queue((privateChannel) -> {
-            MessageEmbed banNotification = new EmbedBuilder()
-                    .setColor(0xeb5132)
-                    .setTitle("You have been temporarily banned.")
-                    .setDescription("**Reason**: " + entry.getReason() + "\n**Period**: " + TimeUtils.millisecondsToDisplay(period))
-                    .setFooter("Incident ID: " + entry.getIncidentId() + ". For more information, reach out to a member of the moderation team.")
-                    .setTimestamp(new Date().toInstant())
-                    .build();
-
-            privateChannel.sendMessage(banNotification).queue((message2) -> {
-                message.getGuild().ban(target, 0).queue();
-            });
-
-        });
-
+        punishments.tempBanUser(event.getGuild(), target, event.getMember(), args[1], parseSentance(2, args));
     }
 }

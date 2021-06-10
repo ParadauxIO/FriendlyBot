@@ -31,6 +31,7 @@ import io.paradaux.friendlybot.managers.AuditManager;
 import io.paradaux.friendlybot.managers.DiscordBotManager;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
+import io.paradaux.friendlybot.managers.PunishmentManager;
 import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.utils.models.database.KickEntry;
 import io.paradaux.friendlybot.utils.models.types.ModerationAction;
@@ -55,10 +56,13 @@ import java.util.Date;
 
 public class KickCommand extends PrivilegedCommand {
 
+    private final PunishmentManager punishments;
+
     public KickCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
         super(config, logger, permissionManager);
         this.name = "kick";
         this.help = "Kicks the specified user";
+        this.punishments = PunishmentManager.getInstance();
     }
 
     @Override
@@ -72,12 +76,13 @@ public class KickCommand extends PrivilegedCommand {
             respondNoPermission(message, "[Moderator, Administrator]");
             return;
         }
+
         if (args.length < 2) {
             respondSyntaxError(message, ";kick <userid/@mention> <reason>");
             return;
         }
 
-        User target = parseTarget(message, args[0]);
+        Member target = retrieveMember(event.getGuild(), args[0]);
 
         if (target == null) {
             message.getChannel().sendMessage("You did not specify a (valid) target.").queue();
@@ -89,56 +94,6 @@ public class KickCommand extends PrivilegedCommand {
             return;
         }
 
-        MongoManager mongo = MongoManager.getInstance();
-
-        String incidentID = mongo.getNextIncidentID();
-        String reason = parseSentance(1, args);
-
-        KickEntry entry = new KickEntry()
-                .setIncidentID(incidentID)
-                .setReason(reason)
-                .setStaffID(authorID)
-                .setStaffTag(event.getAuthor().getAsTag())
-                .setUserID(target.getId())
-                .setUserTag(target.getAsTag());
-
-        mongo.addKickEntry(entry);
-
-        AuditManager.getInstance().log(ModerationAction.KICK, target,
-                event.getAuthor(), reason, incidentID);
-
-        MessageEmbed publicAudit = new EmbedBuilder()
-                .setColor(0xffff99)
-                .setTitle(target.getAsTag() + " has been kicked.")
-                .setDescription("**Reason**: " + reason)
-                .setFooter("Incident ID: " + incidentID + ". For more information, reach out to the moderation team via mod-mail.")
-                .setTimestamp(new Date().toInstant())
-                .build();
-
-        DiscordBotManager.getInstance().getChannel(getConfig().getPublicAuditLogChannelId()).sendMessage(publicAudit).queue();
-        message.getChannel().sendMessage(publicAudit).queue();
-
-        target.openPrivateChannel().queue((channel) -> {
-            MessageEmbed kickNotification = new EmbedBuilder()
-                    .setColor(0xffff99)
-                    .setTitle("You have been kicked.")
-                    .setDescription("**Reason**: " + reason)
-                    .setFooter("Incident ID: " + incidentID + ". For more information, reach out to the moderation team via mod-mail.")
-                    .setTimestamp(new Date().toInstant())
-                    .build();
-
-            channel.sendMessage(kickNotification).queue();
-
-            Member targetMember = retrieveMember(message.getGuild(), target);
-
-            if (targetMember == null) {
-                message.getChannel().sendMessage("The user specified is not a member of this discord")
-                        .queue();
-                return;
-            }
-
-            targetMember.kick(reason).queue();
-        });
-
+        punishments.kickUser(event.getGuild(), target, event.getMember(), parseSentance(1, args));
     }
 }
