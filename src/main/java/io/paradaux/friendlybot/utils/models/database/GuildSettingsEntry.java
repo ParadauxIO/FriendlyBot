@@ -1,5 +1,6 @@
 package io.paradaux.friendlybot.utils.models.database;
 
+import io.paradaux.friendlybot.managers.GuildSettingsManager;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 
 import java.io.Serializable;
@@ -39,13 +40,20 @@ public class GuildSettingsEntry implements Serializable {
     @BsonProperty(value = "administrators")
     private HashMap<String, String> administrators;
 
+    @BsonProperty(value = "last_incident_id")
+    private Integer lastIncidentId;
+
+    @BsonProperty(value = "last_ticket_id")
+    private Integer lastTicketId;
+
     public GuildSettingsEntry() {
         
     }
 
     public GuildSettingsEntry(String guildId, String verificationRoleId, String verificationInputChannel, String privateAuditLogChannel,
                               String publicAuditLogChannel, String modmailInputChannel, String modmailOutputChannel,
-                              String messageLogChannel) {
+                              String messageLogChannel, HashMap<String, String> moderators, HashMap<String, String> administrators,
+                              Integer lastIncidentId, Integer lastTicketId) {
         this.guildId = guildId;
         this.verificationRoleId = verificationRoleId;
         this.verificationInputChannel = verificationInputChannel;
@@ -54,7 +62,23 @@ public class GuildSettingsEntry implements Serializable {
         this.modmailInputChannel = modmailInputChannel;
         this.modmailOutputChannel = modmailOutputChannel;
         this.messageLogChannel = messageLogChannel;
+        this.moderators = moderators;
+        this.administrators = administrators;
+        this.lastIncidentId = lastIncidentId;
+        this.lastTicketId = lastTicketId;
     }
+
+    public Integer getTicketId() {
+        GuildSettingsManager.getInstance().incrementTicketNumber(this.guildId);
+        return this.lastTicketId++;
+    }
+
+    public Integer getIncidentId() {
+        GuildSettingsManager.getInstance().incrementIncidentId(this.guildId);
+        return this.lastIncidentId++;
+    }
+
+    // Dumb Getters and Setters
 
     public GuildSettingsEntry setGuildId(String guildId) {
         this.guildId = guildId;
