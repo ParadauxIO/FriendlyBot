@@ -73,8 +73,8 @@ public class ModMailChannelListener extends DiscordEventListener {
         String userId = event.getAuthor().getId();
         String userTag = event.getAuthor().getAsTag();
         String issue = message.getContentRaw();
-        String ticketNumber = mongo.getNextTicketNumber();
-        String incidentID = mongo.getNextIncidentID();
+        String ticketNumber = String.valueOf(guild.getTicketId());
+        String incidentID = String.valueOf(guild.getIncidentId());
 
         ModMailEntry entry = new ModMailEntry()
                 .setIssue(issue)

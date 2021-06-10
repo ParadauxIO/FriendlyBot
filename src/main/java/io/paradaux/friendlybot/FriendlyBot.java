@@ -71,12 +71,13 @@ public class FriendlyBot {
         RoleManager roleManager = new RoleManager(logger, mongoManager);
         UserSettingsManager settingsManager = new UserSettingsManager(logger, mongoManager);
         GuildSettingsManager guildSettingsManager = new GuildSettingsManager(logger, mongoManager);
+        PunishmentManager punishmentManager = new PunishmentManager();
         DiscordBotManager discordBotManager = new DiscordBotManager(config, logger, permissionManager, mongoManager, roleManager, guildSettingsManager);
         TagManager tagManager = new TagManager(config, logger, mongoManager);
         AuditManager auditManager = new AuditManager(config, logger);
         MailGunManager mailGunManager = new MailGunManager(config, logger);
         VerificationManager verificationManager = new VerificationManager(config, logger, mongoManager, mailGunManager);
-
+        
         api = API.builder()
                 .setLogger(logger)
                 .setIoManager(ioManager)
