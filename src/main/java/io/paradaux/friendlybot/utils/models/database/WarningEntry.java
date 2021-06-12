@@ -34,6 +34,9 @@ public class WarningEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
+    @BsonProperty(value = "guild_id")
+    private String guildID;
+
     @BsonProperty(value = "incident_id")
     private String incidentID;
 
@@ -59,8 +62,9 @@ public class WarningEntry implements Serializable {
 
     }
 
-    public WarningEntry(String incidentID, String userTag, String userID, String staffTag,
-                        String staffID, String reason, Date timestamp) {
+    public WarningEntry(String guildID, String incidentID, String userTag, String userID, String staffTag, String staffID, String reason,
+                        Date timestamp) {
+        this.guildID = guildID;
         this.incidentID = incidentID;
         this.userTag = userTag;
         this.userID = userID;
@@ -68,6 +72,10 @@ public class WarningEntry implements Serializable {
         this.staffID = staffID;
         this.reason = reason;
         this.timestamp = timestamp;
+    }
+
+    public String getGuildID() {
+        return guildID;
     }
 
     public String getIncidentID() {
@@ -96,6 +104,11 @@ public class WarningEntry implements Serializable {
 
     public Date getTimestamp() {
         return timestamp;
+    }
+
+    public WarningEntry setGuildID(String guildID) {
+        this.guildID = guildID;
+        return this;
     }
 
     public WarningEntry setIncidentID(String incidentID) {

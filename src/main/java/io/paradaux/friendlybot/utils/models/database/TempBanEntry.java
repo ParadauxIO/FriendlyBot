@@ -34,6 +34,9 @@ public class TempBanEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
+    @BsonProperty(value = "guild_id")
+    private String guildID;
+
     @BsonProperty(value = "incident_id")
     private String incidentId;
 
@@ -62,8 +65,9 @@ public class TempBanEntry implements Serializable {
 
     }
 
-    public TempBanEntry(String incidentId, String userTag, String userId, String staffTag, String staffId, String reason, Date timestamp,
-                        Date expiry) {
+    public TempBanEntry(String guildID, String incidentId, String userTag, String userId, String staffTag, String staffId, String reason,
+                        Date timestamp, Date expiry) {
+        this.guildID = guildID;
         this.incidentId = incidentId;
         this.userTag = userTag;
         this.userId = userId;
@@ -72,6 +76,10 @@ public class TempBanEntry implements Serializable {
         this.reason = reason;
         this.timestamp = timestamp;
         this.expiry = expiry;
+    }
+
+    public String getGuildID() {
+        return guildID;
     }
 
     public String getIncidentId() {
@@ -145,4 +153,10 @@ public class TempBanEntry implements Serializable {
         this.expiry = expiry;
         return this;
     }
+
+    public TempBanEntry setGuildID(String guildID) {
+        this.guildID = guildID;
+        return this;
+    }
+
 }

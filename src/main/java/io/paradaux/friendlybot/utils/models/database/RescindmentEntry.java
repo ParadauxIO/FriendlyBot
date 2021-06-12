@@ -10,6 +10,9 @@ public class RescindmentEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
+    @BsonProperty(value = "guild_id")
+    private String guildID;
+
     @BsonProperty(value = "action")
     private ModerationAction action;
 
@@ -44,8 +47,9 @@ public class RescindmentEntry implements Serializable {
         
     }
 
-    public RescindmentEntry(ModerationAction action, String incidentId, String incidentIdOfPunishment, String userTag, String userId,
-                            String staffTag, String staffId, String reason, Date timeOfPunishment, Date timeOfRescindment) {
+    public RescindmentEntry(String guildID, ModerationAction action, String incidentId, String incidentIdOfPunishment, String userTag,
+                            String userId, String staffTag, String staffId, String reason, Date timeOfPunishment, Date timeOfRescindment) {
+        this.guildID = guildID;
         this.action = action;
         this.incidentId = incidentId;
         this.incidentIdOfPunishment = incidentIdOfPunishment;
@@ -56,6 +60,10 @@ public class RescindmentEntry implements Serializable {
         this.reason = reason;
         this.timeOfPunishment = timeOfPunishment;
         this.timeOfRescindment = timeOfRescindment;
+    }
+
+    public String getGuildID() {
+        return guildID;
     }
 
     public ModerationAction getAction() {
@@ -145,6 +153,11 @@ public class RescindmentEntry implements Serializable {
 
     public RescindmentEntry setTimeOfRescindment(Date timeOfRescindment) {
         this.timeOfRescindment = timeOfRescindment;
+        return this;
+    }
+
+    public RescindmentEntry setGuildID(String guildID) {
+        this.guildID = guildID;
         return this;
     }
 }

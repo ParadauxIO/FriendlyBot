@@ -34,6 +34,9 @@ public class KickEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
+    @BsonProperty(value="guild_id")
+    private String guildId;
+
     @BsonProperty(value = "incident_id")
     private String incidentID;
 
@@ -59,8 +62,9 @@ public class KickEntry implements Serializable {
 
     }
 
-    public KickEntry(String incidentID, String userTag, String userID, String staffTag,
-                     String staffID, String reason, Date timestamp) {
+    public KickEntry(String guildId, String incidentID, String userTag, String userID, String staffTag, String staffID, String reason,
+                     Date timestamp) {
+        this.guildId = guildId;
         this.incidentID = incidentID;
         this.userTag = userTag;
         this.userID = userID;
@@ -68,6 +72,10 @@ public class KickEntry implements Serializable {
         this.staffID = staffID;
         this.reason = reason;
         this.timestamp = timestamp;
+    }
+
+    public String getGuildId() {
+        return guildId;
     }
 
     public String getIncidentID() {
@@ -133,4 +141,8 @@ public class KickEntry implements Serializable {
         return this;
     }
 
+    public KickEntry setGuildId(String guildId) {
+        this.guildId = guildId;
+        return this;
+    }
 }

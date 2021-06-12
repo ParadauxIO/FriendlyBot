@@ -120,6 +120,26 @@ public class GuildSettingsEntry implements Serializable {
         return this;
     }
 
+    public GuildSettingsEntry setModerators(HashMap<String, String> moderators) {
+        this.moderators = moderators;
+        return this;
+    }
+
+    public GuildSettingsEntry setAdministrators(HashMap<String, String> administrators) {
+        this.administrators = administrators;
+        return this;
+    }
+
+    public GuildSettingsEntry setLastIncidentId(Integer lastIncidentId) {
+        this.lastIncidentId = lastIncidentId;
+        return this;
+    }
+
+    public GuildSettingsEntry setLastTicketId(Integer lastTicketId) {
+        this.lastTicketId = lastTicketId;
+        return this;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -154,5 +174,21 @@ public class GuildSettingsEntry implements Serializable {
 
     public String getMessageLogChannel() {
         return messageLogChannel;
+    }
+
+    public HashMap<String, String> getModerators() {
+        return moderators;
+    }
+
+    public HashMap<String, String> getAdministrators() {
+        return administrators;
+    }
+
+    public Integer getLastIncidentId() {
+        return lastIncidentId;
+    }
+
+    public Integer getLastTicketId() {
+        return lastTicketId;
     }
 }

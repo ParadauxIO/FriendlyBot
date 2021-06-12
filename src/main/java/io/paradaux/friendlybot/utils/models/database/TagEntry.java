@@ -35,7 +35,7 @@ public class TagEntry implements Serializable {
     protected static final long serialVersionUID = 2L;
 
     @BsonProperty(value = "guild_id")
-    private String guild;
+    private String guildId;
 
     @BsonProperty(value = "discord_id")
     private String discordId;
@@ -56,8 +56,8 @@ public class TagEntry implements Serializable {
 
     }
 
-    public TagEntry(String guild, String discordId, String id, String content, Date timeCreated, boolean isDotCommand) {
-        this.guild = guild;
+    public TagEntry(String guildId, String discordId, String id, String content, Date timeCreated, boolean isDotCommand) {
+        this.guildId = guildId;
         this.discordId = discordId;
         this.id = id;
         this.content = content;
@@ -65,8 +65,8 @@ public class TagEntry implements Serializable {
         this.isDotCommand = isDotCommand;
     }
 
-    public String getGuild() {
-        return guild;
+    public String getGuildId() {
+        return guildId;
     }
 
     public String getDiscordId() {
@@ -89,8 +89,8 @@ public class TagEntry implements Serializable {
         return isDotCommand;
     }
 
-    public TagEntry setGuild(String guild) {
-        this.guild = guild;
+    public TagEntry setGuildId(String guildId) {
+        this.guildId = guildId;
         return this;
     }
 

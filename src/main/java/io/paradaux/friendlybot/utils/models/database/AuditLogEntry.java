@@ -35,6 +35,9 @@ public class AuditLogEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
+    @BsonProperty(value="guild_id")
+    private String guildId;
+
     @BsonProperty(value = "action")
     private ModerationAction action;
 
@@ -63,19 +66,9 @@ public class AuditLogEntry implements Serializable {
 
     }
 
-    public AuditLogEntry(ModerationAction action, String incidentID, String userTag,
-                         String userID, String reason, Date timestamp) {
-        this.action = action;
-        this.incidentID = incidentID;
-        this.userTag = userTag;
-        this.userID = userID;
-        this.reason = reason;
-        this.timestamp = timestamp;
-    }
-
-    public AuditLogEntry(ModerationAction action, String incidentID, String userTag,
-                         String userID, String staffTag, String staffID, String reason,
-                         Date timestamp) {
+    public AuditLogEntry(String guildId, ModerationAction action, String incidentID, String userTag, String userID, String staffTag,
+                         String staffID, String reason, Date timestamp) {
+        this.guildId = guildId;
         this.action = action;
         this.incidentID = incidentID;
         this.userTag = userTag;
@@ -86,14 +79,9 @@ public class AuditLogEntry implements Serializable {
         this.timestamp = timestamp;
     }
 
-    public AuditLogEntry(ModerationAction action, String incidentID, String userTag,
-                         String userID, String reason) {
-        this.action = action;
-        this.incidentID = incidentID;
-        this.userTag = userTag;
-        this.userID = userID;
-        this.reason = reason;
-        this.timestamp = new Date();
+    public AuditLogEntry setGuildId(String guildId) {
+        this.guildId = guildId;
+        return this;
     }
 
     public AuditLogEntry setAction(ModerationAction action) {
@@ -134,6 +122,10 @@ public class AuditLogEntry implements Serializable {
     public AuditLogEntry setStaffID(String staffID) {
         this.staffID = staffID;
         return this;
+    }
+
+    public String getGuildId() {
+        return guildId;
     }
 
     public String getUserTag() {

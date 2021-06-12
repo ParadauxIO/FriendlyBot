@@ -34,11 +34,11 @@ public class VerificationEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
-    @BsonProperty(value = "discord_id")
-    private String discordID;
-
     @BsonProperty(value = "guild_id")
     private String guildID;
+
+    @BsonProperty(value = "discord_id")
+    private String discordID;
 
     @BsonProperty(value = "date_verified")
     private Date dateVerified;

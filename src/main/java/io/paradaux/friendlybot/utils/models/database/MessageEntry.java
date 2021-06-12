@@ -34,6 +34,9 @@ public class MessageEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
+    @BsonProperty(value="guild_id")
+    private String guildId;
+
     @BsonProperty(value = "author_id")
     private String authorId;
 
@@ -56,6 +59,16 @@ public class MessageEntry implements Serializable {
 
     }
 
+    public MessageEntry(String guildId, String authorId, String messageId, String content, String channel, String newContent, Date date) {
+        this.guildId = guildId;
+        this.authorId = authorId;
+        this.messageId = messageId;
+        this.content = content;
+        this.channel = channel;
+        this.newContent = newContent;
+        this.date = date;
+    }
+
     public MessageEntry(String authorId, String messageId, String content, String channel, String newContent, Date date) {
         this.authorId = authorId;
         this.messageId = messageId;
@@ -63,6 +76,11 @@ public class MessageEntry implements Serializable {
         this.channel = channel;
         this.newContent = newContent;
         this.date = date;
+    }
+
+    public MessageEntry setGuildId(String guildId) {
+        this.guildId = guildId;
+        return this;
     }
 
     public MessageEntry setAuthorId(String authorId) {
@@ -93,6 +111,10 @@ public class MessageEntry implements Serializable {
     public MessageEntry setNewContent(String newContent) {
         this.newContent = newContent;
         return this;
+    }
+
+    public String getGuildId() {
+        return guildId;
     }
 
     public String getAuthorId() {

@@ -33,11 +33,11 @@ public class PendingVerificationEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
-    @BsonProperty(value = "discord_id")
-    private String discordID;
-
     @BsonProperty(value = "guild_id")
     private String guildID;
+
+    @BsonProperty(value = "discord_id")
+    private String discordID;
 
     @BsonProperty(value = "verification_id")
     private String verificationCode;
@@ -46,10 +46,14 @@ public class PendingVerificationEntry implements Serializable {
 
     }
 
-    public PendingVerificationEntry(String discordID, String guildID, String verificationCode) {
-        this.discordID = discordID;
+    public PendingVerificationEntry(String guildID, String discordID, String verificationCode) {
         this.guildID = guildID;
+        this.discordID = discordID;
         this.verificationCode = verificationCode;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public String getDiscordID() {
@@ -78,4 +82,5 @@ public class PendingVerificationEntry implements Serializable {
         this.verificationCode = verificationCode;
         return this;
     }
+
 }

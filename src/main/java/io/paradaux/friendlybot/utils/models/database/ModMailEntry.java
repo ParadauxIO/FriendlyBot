@@ -36,6 +36,9 @@ public class ModMailEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
+    @BsonProperty(value="guild_id")
+    private String guildId;
+
     @BsonProperty(value = "ticket_number")
     private String ticketNumber;
 
@@ -67,8 +70,9 @@ public class ModMailEntry implements Serializable {
 
     }
 
-    public ModMailEntry(String ticketNumber, TicketStatus status, String userTag, String userID, String modmailMethod, String issue,
-                        Date timeOpened, Date lastResponded, List<ModMailResponse> responses) {
+    public ModMailEntry(String guildId, String ticketNumber, TicketStatus status, String userTag, String userID, String modmailMethod,
+                        String issue, Date timeOpened, Date lastResponded, List<ModMailResponse> responses) {
+        this.guildId = guildId;
         this.ticketNumber = ticketNumber;
         this.status = status;
         this.userTag = userTag;
@@ -78,6 +82,10 @@ public class ModMailEntry implements Serializable {
         this.timeOpened = timeOpened;
         this.lastResponded = lastResponded;
         this.responses = responses;
+    }
+
+    public String getGuildId() {
+        return guildId;
     }
 
     public String getTicketNumber() {
@@ -114,6 +122,11 @@ public class ModMailEntry implements Serializable {
 
     public List<ModMailResponse> getResponses() {
         return responses;
+    }
+
+    public ModMailEntry setGuildId(String guildId) {
+        this.guildId = guildId;
+        return this;
     }
 
     public ModMailEntry setTicketNumber(String ticketNumber) {

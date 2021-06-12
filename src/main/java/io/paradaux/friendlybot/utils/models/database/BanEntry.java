@@ -34,6 +34,9 @@ public class BanEntry implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
+    @BsonProperty(value="guild_id")
+    private String guildId;
+
     @BsonProperty(value = "incident_id")
     private String incidentID;
 
@@ -59,7 +62,9 @@ public class BanEntry implements Serializable {
 
     }
 
-    public BanEntry(String incidentID, String userTag, String userID, String staffTag, String staffID, String reason, Date timestamp) {
+    public BanEntry(String guildId, String incidentID, String userTag, String userID, String staffTag, String staffID, String reason,
+                    Date timestamp) {
+        this.guildId = guildId;
         this.incidentID = incidentID;
         this.userTag = userTag;
         this.userID = userID;
@@ -67,6 +72,10 @@ public class BanEntry implements Serializable {
         this.staffID = staffID;
         this.reason = reason;
         this.timestamp = timestamp;
+    }
+
+    public String getGuildId() {
+        return guildId;
     }
 
     public String getUserTag() {
@@ -95,6 +104,11 @@ public class BanEntry implements Serializable {
 
     public Date getTimestamp() {
         return timestamp;
+    }
+
+    public BanEntry setGuildId(String guildId) {
+        this.guildId = guildId;
+        return this;
     }
 
     public BanEntry setIncidentID(String incidentID) {

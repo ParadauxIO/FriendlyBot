@@ -25,16 +25,25 @@
 
 package io.paradaux.friendlybot.utils.models.database;
 
+import org.bson.codecs.pojo.annotations.BsonProperty;
+
 import java.io.Serializable;
 
 public class ModMailResponse implements Serializable {
 
     protected static final long serialVersionUID = 1L;
 
+    @BsonProperty(value="guild_id")
+    private String guildId;
+
+    @BsonProperty(value="author_id")
     private String authorId;
+
+    @BsonProperty(value="message")
     private String message;
-    
-    public ModMailResponse(String authorId, String message) {
+
+    public ModMailResponse(String guildId, String authorId, String message) {
+        this.guildId = guildId;
         this.authorId = authorId;
         this.message = message;
     }
@@ -43,12 +52,21 @@ public class ModMailResponse implements Serializable {
     
     }
 
+    public String getGuildId() {
+        return guildId;
+    }
+
     public String getAuthorId() {
         return authorId;
     }
 
     public String getMessage() {
         return message;
+    }
+
+    public ModMailResponse setGuildId(String guildId) {
+        this.guildId = guildId;
+        return this;
     }
 
     public ModMailResponse setAuthorId(String authorId) {
