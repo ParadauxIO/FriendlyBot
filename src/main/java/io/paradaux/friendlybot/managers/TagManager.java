@@ -39,7 +39,7 @@ public class TagManager {
     }
 
     public void removeTag(TagEntry entry) {
-        tags.findOneAndDelete(getTagSearchQueryById(entry.getGuild(), entry.getId()));
+        tags.findOneAndDelete(getTagSearchQueryById(entry.getGuildId(), entry.getId()));
     }
 
     public TagEntry getTagById(String guildId, String tagName) {
@@ -55,7 +55,7 @@ public class TagManager {
     }
 
     public void updateTag(TagEntry entry) {
-        tags.findOneAndReplace(getTagSearchQueryById(entry.getGuild(), entry.getId()), entry);
+        tags.findOneAndReplace(getTagSearchQueryById(entry.getGuildId(), entry.getId()), entry);
     }
 
     private Document getTagSearchQueryById(String guildId, String tagName) {
