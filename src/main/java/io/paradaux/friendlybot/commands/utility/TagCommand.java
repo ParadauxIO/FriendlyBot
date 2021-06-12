@@ -86,7 +86,7 @@ public class TagCommand extends PrivilegedCommand {
                         .setId(args[1].toLowerCase(Locale.ROOT))
                         .setContent(parseSentance(2, args))
                         .setDiscordId(event.getAuthor().getId())
-                        .setGuild(event.getGuild().getId())
+                        .setGuildId(event.getGuild().getId())
                         .setTimeCreated(new Date());
 
                 tags.addTag(entry);
