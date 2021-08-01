@@ -41,8 +41,11 @@ public class PermissionManager {
     private PermissionEntry permissions;
     private final Logger logger;
 
-    public PermissionManager(Logger logger) {
+    private final GuildSettingsManager guilds;
+
+    public PermissionManager(Logger logger, GuildSettingsManager guilds) {
         this.logger = logger;
+        this.guilds = guilds;
 
         logger.info("Initialising: Permission Manager");
 
