@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 public class VotePinListener extends DiscordEventListener {
 
     private static final int PIN_THRESHOLD = 4;
-    private static final String PIN_EMOJI = "\uD83D\uDCCC";
+    private static final String PIN_EMOJI = "📌";
 
     private final Logger logger;
 
