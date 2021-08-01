@@ -67,10 +67,11 @@ public class FriendlyBot {
         ConfigurationEntry config = configManager.getConfig();
 
         MongoManager mongoManager = new MongoManager(config, logger);
-        PermissionManager permissionManager = new PermissionManager(logger);
+        GuildSettingsManager guildSettingsManager = new GuildSettingsManager(logger, mongoManager);
+        PermissionManager permissionManager = new PermissionManager(logger, guildSettingsManager);
         RoleManager roleManager = new RoleManager(logger, mongoManager);
         UserSettingsManager settingsManager = new UserSettingsManager(logger, mongoManager);
-        GuildSettingsManager guildSettingsManager = new GuildSettingsManager(logger, mongoManager);
+
         PunishmentManager punishmentManager = new PunishmentManager();
         DiscordBotManager discordBotManager = new DiscordBotManager(config, logger, permissionManager, mongoManager, roleManager, guildSettingsManager);
         TagManager tagManager = new TagManager(config, logger, mongoManager);
