@@ -1,6 +1,6 @@
 package io.paradaux.friendlybot.managers;
 
-import io.paradaux.friendlybot.utils.models.database.GuildSettingsEntry;
+import io.paradaux.friendlybot.core.utils.models.database.GuildSettingsEntry;
 import org.slf4j.Logger;
 
 import java.util.HashMap;

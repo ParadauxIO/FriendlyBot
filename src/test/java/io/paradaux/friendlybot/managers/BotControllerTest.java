@@ -25,7 +25,7 @@
 
 package io.paradaux.friendlybot.managers;
 
-import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -26,12 +26,10 @@
 package io.paradaux.friendlybot;
 
 import io.paradaux.friendlybot.managers.*;
-import io.paradaux.friendlybot.utils.API;
-import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.core.utils.API;
+import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 /**
  * CSBot is the main (executable) class for the project.

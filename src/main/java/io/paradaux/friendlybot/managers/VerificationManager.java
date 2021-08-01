@@ -26,11 +26,11 @@
 package io.paradaux.friendlybot.managers;
 
 import com.mongodb.client.FindIterable;
-import io.paradaux.friendlybot.utils.StringUtils;
-import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.database.PendingVerificationEntry;
-import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
-import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
+import io.paradaux.friendlybot.core.utils.StringUtils;
+import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.core.utils.models.database.PendingVerificationEntry;
+import io.paradaux.friendlybot.core.utils.models.exceptions.ManagerNotReadyException;
+import io.paradaux.friendlybot.core.utils.models.exceptions.VerificationException;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;

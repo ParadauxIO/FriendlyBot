@@ -1,9 +1,9 @@
 package io.paradaux.friendlybot.managers;
 
 import com.mongodb.client.MongoCollection;
-import io.paradaux.friendlybot.utils.TimeUtils;
-import io.paradaux.friendlybot.utils.models.database.UserSettingsEntry;
-import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
+import io.paradaux.friendlybot.core.utils.TimeUtils;
+import io.paradaux.friendlybot.core.utils.models.database.UserSettingsEntry;
+import io.paradaux.friendlybot.core.utils.models.exceptions.ManagerNotReadyException;
 import net.dv8tion.jda.api.entities.User;
 import org.bson.Document;
 import org.slf4j.Logger;

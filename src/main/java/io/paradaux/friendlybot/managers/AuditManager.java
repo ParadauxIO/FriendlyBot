@@ -25,11 +25,11 @@
 
 package io.paradaux.friendlybot.managers;
 
-import io.paradaux.friendlybot.utils.embeds.AuditLogEmbed;
-import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.database.AuditLogEntry;
-import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
-import io.paradaux.friendlybot.utils.models.types.ModerationAction;
+import io.paradaux.friendlybot.core.utils.embeds.AuditLogEmbed;
+import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.core.utils.models.database.AuditLogEntry;
+import io.paradaux.friendlybot.core.utils.models.exceptions.ManagerNotReadyException;
+import io.paradaux.friendlybot.core.utils.models.types.ModerationAction;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;

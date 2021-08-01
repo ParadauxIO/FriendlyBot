@@ -1,6 +1,6 @@
 package io.paradaux.friendlybot.models;
 
-import io.paradaux.friendlybot.utils.models.database.GuildSettingsEntry;
+import io.paradaux.friendlybot.core.utils.models.database.GuildSettingsEntry;
 import net.dv8tion.jda.api.entities.Guild;
 
 public class FGuild {

@@ -1,6 +1,6 @@
 package io.paradaux.friendlybot.managers;
 
-import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
+import io.paradaux.friendlybot.core.utils.models.exceptions.ManagerNotReadyException;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;

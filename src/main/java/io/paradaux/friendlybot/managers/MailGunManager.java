@@ -25,19 +25,15 @@
 
 package io.paradaux.friendlybot.managers;
 
-import io.paradaux.friendlybot.utils.HttpUtils;
-import io.paradaux.friendlybot.utils.StringUtils;
-import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
-import io.paradaux.friendlybot.utils.models.exceptions.VerificationException;
+import io.paradaux.friendlybot.core.utils.HttpUtils;
+import io.paradaux.friendlybot.core.utils.StringUtils;
+import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.core.utils.models.exceptions.ManagerNotReadyException;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import org.slf4j.Logger;
-
-import java.io.IOException;
-import java.io.Reader;
 
 public class MailGunManager {
 

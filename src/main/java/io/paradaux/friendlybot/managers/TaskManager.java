@@ -1,12 +1,11 @@
 package io.paradaux.friendlybot.managers;
 
-import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
+import io.paradaux.friendlybot.core.utils.models.exceptions.ManagerNotReadyException;
 import net.dv8tion.jda.api.entities.Guild;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class TaskManager {

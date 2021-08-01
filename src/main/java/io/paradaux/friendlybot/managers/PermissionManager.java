@@ -25,8 +25,8 @@
 
 package io.paradaux.friendlybot.managers;
 
-import io.paradaux.friendlybot.utils.models.configuration.PermissionEntry;
-import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
+import io.paradaux.friendlybot.core.utils.models.configuration.PermissionEntry;
+import io.paradaux.friendlybot.core.utils.models.exceptions.ManagerNotReadyException;
 import org.slf4j.Logger;
 
 import java.io.FileNotFoundException;

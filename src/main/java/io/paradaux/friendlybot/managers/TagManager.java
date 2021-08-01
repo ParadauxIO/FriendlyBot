@@ -3,9 +3,9 @@ package io.paradaux.friendlybot.managers;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
-import io.paradaux.friendlybot.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.utils.models.database.TagEntry;
-import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
+import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.core.utils.models.database.TagEntry;
+import io.paradaux.friendlybot.core.utils.models.exceptions.ManagerNotReadyException;
 import org.bson.Document;
 import org.slf4j.Logger;
 

@@ -3,8 +3,8 @@ package io.paradaux.friendlybot.managers;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
-import io.paradaux.friendlybot.utils.models.database.GuildSettingsEntry;
-import io.paradaux.friendlybot.utils.models.exceptions.ManagerNotReadyException;
+import io.paradaux.friendlybot.core.utils.models.database.GuildSettingsEntry;
+import io.paradaux.friendlybot.core.utils.models.exceptions.ManagerNotReadyException;
 import org.bson.Document;
 import org.slf4j.Logger;
 
