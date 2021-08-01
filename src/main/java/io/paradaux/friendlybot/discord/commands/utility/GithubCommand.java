@@ -62,8 +62,6 @@ public class GithubCommand extends BaseCommand {
                 break;
             }
 
-            // TODO implement issue searching
-//            case 2: {
 //                embed = makeIssueEmbed(args[0], Long.parseLong(args[1]));
 //                break;
 //            }

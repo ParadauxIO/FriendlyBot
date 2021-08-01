@@ -43,8 +43,6 @@ public class DmCommand extends PrivilegedCommand {
 
     @Override
     protected void execute(CommandEvent event) {
-        // TODO Command stub
-
         if (!isStaff(event.getGuild(), event.getAuthor().getId())) {
             respondNoPermission(event.getMessage(), "Moderator");
             return;

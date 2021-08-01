@@ -171,12 +171,10 @@ public class PunishmentManager {
     }
 
     private MessageEmbed sameChannelPunishmentEmbed() {
-        // TODO
         return null;
     }
 
     private MessageEmbed privateAuditPunishmentEmbed() {
-        // TODO
         return null;
     }
 
@@ -189,7 +187,6 @@ public class PunishmentManager {
 //                .setFooter("Incident ID: " + entry.getIncidentId() + ". For more information, reach out to the moderation team via mod-mail.")
 //                .setTimestamp(new Date().toInstant())
 //                .build();
-        // TODO
         return null;
     }
 

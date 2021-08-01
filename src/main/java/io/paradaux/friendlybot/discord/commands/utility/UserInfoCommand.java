@@ -86,6 +86,5 @@ public class UserInfoCommand extends PrivilegedCommand {
         UserInfoEmbed embed = new UserInfoEmbed(tag, avatarUrl, status, accountCreated, joinedServer, builder.toString(), nickname);
         embed.sendEmbed(event.getTextChannel());
 
-        // TODO add a staff version which shows infractions.
     }
 }

@@ -38,8 +38,6 @@ import java.util.Date;
 
 public class AuditManager {
 
-    // TODO tidy
-
     private static AuditManager instance = null;
     private final ConfigurationEntry config;
     private final Logger logger;

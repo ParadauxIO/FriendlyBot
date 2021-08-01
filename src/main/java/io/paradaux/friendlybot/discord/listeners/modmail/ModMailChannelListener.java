@@ -93,8 +93,6 @@ public class ModMailChannelListener extends DiscordEventListener {
                 .sendMessage(sentEmbed.getEmbed()).queue());
 
         mongo.addModMailEntry(entry);
-
-        // TODO tidy
     }
 
 
