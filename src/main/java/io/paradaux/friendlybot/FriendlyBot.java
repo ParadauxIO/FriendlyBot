@@ -58,7 +58,7 @@ public class FriendlyBot {
     public static void main(String[] args) {
 
         Logger logger = LoggerFactory.getLogger("io.paradaux.friendlybot");
-        logger.info("CSBot v1.0.0 - Maintained by Rían Errity <rian@paradaux.io>");
+        logger.info("FriendlyBot v2.0 - Maintained by Rían Errity <rian@paradaux.io>");
         logger.info("Initialising Controllers. This may take some time...");
 
         IOManager ioManager = new IOManager(logger);
