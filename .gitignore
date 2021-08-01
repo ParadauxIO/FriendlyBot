@@ -1,3 +1,6 @@
+# Unit testing
+friendlybot.mv.db
+
 # Runtime stuff
 /*.json
 src/test/resources/img*
