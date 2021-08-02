@@ -82,7 +82,7 @@ public abstract class PrivilegedCommand extends BaseCommand {
      * Fills in the canned no permission embed.
      * */
     public void respondNoPermission(Message message, String requiredRole) {
-        message.addReaction("\uD83D\uDEAB").queue();
+        message.addReaction("🚫").queue();
         new NoPermissionEmbed(message.getAuthor(), this.name, requiredRole)
                 .sendEmbed(message.getTextChannel());
     }
