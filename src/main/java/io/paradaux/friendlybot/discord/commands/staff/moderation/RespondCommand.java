@@ -71,13 +71,13 @@ public class RespondCommand extends PrivilegedCommand {
         ModMailEntry entry = mongo.getModMailEntry(args[0]);
 
         if (entry == null) {
-            message.addReaction("\uD83D\uDEAB").queue();
+            message.addReaction("🚫").queue();
             message.getChannel().sendMessage("That ticket was not found").queue();
             return;
         }
 
         if (entry.getStatus() == TicketStatus.CLOSED) {
-            message.addReaction("\uD83D\uDEAB").queue();
+            message.addReaction("🚫").queue();
             message.getChannel().sendMessage("You cannot respond to closed tickets.").queue();
             return;
         }

@@ -121,6 +121,10 @@ public class EightBallCommand extends BaseCommand {
                 color = 0xFF0000;
                 break;
             }
+
+            default: {
+                throw new IllegalStateException("Invalid 8ball responses file.");
+            }
         }
 
         MessageEmbed responseEmbed = new EmbedBuilder()

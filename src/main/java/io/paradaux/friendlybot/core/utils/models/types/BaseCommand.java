@@ -95,7 +95,7 @@ public abstract class BaseCommand extends Command {
      * Responds with a canned syntax error embed.
      * */
     public void respondSyntaxError(Message message, String correctSyntax) {
-        message.addReaction("\uD83D\uDEAB").queue();
+        message.addReaction("🚫").queue();
         new SyntaxErrorEmbed(message.getAuthor(), this.name, correctSyntax)
                 .sendEmbed(message.getTextChannel());
     }
