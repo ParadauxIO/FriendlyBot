@@ -1,8 +1,11 @@
 package io.paradaux.friendlybot.core.cache;
 
+import io.ebean.DB;
+import io.paradaux.friendlybot.core.database.models.FGuild;
+import io.paradaux.friendlybot.core.database.models.GuildSettings;
+import io.paradaux.friendlybot.core.database.models.query.QFGuild;
 import io.paradaux.friendlybot.managers.GuildSettingsManager;
-import io.paradaux.friendlybot.models.FGuild;
-import io.paradaux.friendlybot.utils.models.database.GuildSettingsEntry;
+import io.paradaux.friendlybot.core.utils.models.database.GuildSettingsEntry;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +15,12 @@ import java.util.Map;
 
 public class GuildCache {
 
+    private static GuildCache instance;
+
+    public static GuildCache getInstance() {
+        return instance;
+    }
+
     /**
      * Map of Guild IDs (Snowflake) to FGuild objects.
      * */
@@ -20,6 +29,7 @@ public class GuildCache {
 
     public GuildCache(JDA client) {
         this.client = client;
+        GuildCache.instance = this;
     }
 
     public boolean isCached(String id) {
@@ -44,14 +54,21 @@ public class GuildCache {
      * */
     @NotNull
     public FGuild retrieveGuild(String id) {
-        GuildSettingsEntry entry = GuildSettingsManager.getInstance().getGuild(id);
-
         Guild guild = client.getGuildById(id);
         if (guild == null) {
             throw new IllegalArgumentException("The provided guild does not exist.");
         }
 
-        return new FGuild(guild, entry);
+        FGuild fGuild = new QFGuild().guildId.equalTo(id).findOne();
+        if (fGuild == null) {
+            // TODO Create new guild profile.
+            throw new IllegalStateException();
+        }
+
+        fGuild.setGuild(guild);
+
+        //return new FGuild(guild, entry);
+        return fGuild; // TODO
     }
 
     /**
