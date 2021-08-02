@@ -1,0 +1,8 @@
+ebean:
+  test:
+    useDocker: false  ## DO NOT USE DOCKER
+    platform: h2 # h2, postgres, mysql, oracle, sqlserver
+    ddlMode: dropCreate # none | dropCreate | migrations | create
+    dbName: friendlybot
+    h2:
+      url: jdbc:h2:./friendlybot
