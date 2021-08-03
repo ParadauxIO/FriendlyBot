@@ -37,6 +37,15 @@ public class GuildCache {
     }
 
     /**
+     * Loads guilds into the cache
+     * */
+    public void load() {
+        for (Guild g : client.getGuilds()) {
+            resetGuild(g.getId());
+        }
+    }
+
+    /**
      * Returns an FGuild, directly from the cache if available, otherwise it's grabbed from the database/client.
      * */
     @NotNull
