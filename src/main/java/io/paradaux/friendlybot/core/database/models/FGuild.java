@@ -1,7 +1,6 @@
 package io.paradaux.friendlybot.core.database.models;
 
 import io.ebean.Model;
-import io.paradaux.friendlybot.core.cache.GuildCache;
 import net.dv8tion.jda.api.entities.Guild;
 
 import javax.annotation.Nullable;
@@ -20,7 +19,8 @@ public class FGuild extends Model {
     @Nullable
     private Guild guild;
 
-    String guildId;
+    private String guildId;
+    private String commandPrefix;
 
     private String verificationRoleId;
     private String verificationInputId;
@@ -59,54 +59,6 @@ public class FGuild extends Model {
         return guild;
     }
 
-    public String getGuildId() {
-        return guildId;
-    }
-
-    public String getVerificationRoleId() {
-        return verificationRoleId;
-    }
-
-    public String getVerificationInputId() {
-        return verificationInputId;
-    }
-
-    public String getAuditLogId() {
-        return auditLogId;
-    }
-
-    public String getModAuditLogId() {
-        return modAuditLogId;
-    }
-
-    public String getModMailInId() {
-        return modMailInId;
-    }
-
-    public String getModMailOutId() {
-        return modMailOutId;
-    }
-
-    public String getMessageLogId() {
-        return messageLogId;
-    }
-
-    public List<String> getModerators() {
-        return moderators;
-    }
-
-    public List<String> getAdministrators() {
-        return administrators;
-    }
-
-    public Integer getLastIncidentId() {
-        return lastIncidentId;
-    }
-
-    public Integer getLastTicketId() {
-        return lastTicketId;
-    }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -115,48 +67,104 @@ public class FGuild extends Model {
         this.guild = guild;
     }
 
+    public String getGuildId() {
+        return guildId;
+    }
+
     public void setGuildId(String guildId) {
         this.guildId = guildId;
+    }
+
+    public String getCommandPrefix() {
+        return commandPrefix;
+    }
+
+    public void setCommandPrefix(String commandPrefix) {
+        this.commandPrefix = commandPrefix;
+    }
+
+    public String getVerificationRoleId() {
+        return verificationRoleId;
     }
 
     public void setVerificationRoleId(String verificationRoleId) {
         this.verificationRoleId = verificationRoleId;
     }
 
+    public String getVerificationInputId() {
+        return verificationInputId;
+    }
+
     public void setVerificationInputId(String verificationInputId) {
         this.verificationInputId = verificationInputId;
+    }
+
+    public String getAuditLogId() {
+        return auditLogId;
     }
 
     public void setAuditLogId(String auditLogId) {
         this.auditLogId = auditLogId;
     }
 
+    public String getModAuditLogId() {
+        return modAuditLogId;
+    }
+
     public void setModAuditLogId(String modAuditLogId) {
         this.modAuditLogId = modAuditLogId;
+    }
+
+    public String getModMailInId() {
+        return modMailInId;
     }
 
     public void setModMailInId(String modMailInId) {
         this.modMailInId = modMailInId;
     }
 
+    public String getModMailOutId() {
+        return modMailOutId;
+    }
+
     public void setModMailOutId(String modMailOutId) {
         this.modMailOutId = modMailOutId;
+    }
+
+    public String getMessageLogId() {
+        return messageLogId;
     }
 
     public void setMessageLogId(String messageLogId) {
         this.messageLogId = messageLogId;
     }
 
+    public List<String> getModerators() {
+        return moderators;
+    }
+
     public void setModerators(List<String> moderators) {
         this.moderators = moderators;
+    }
+
+    public List<String> getAdministrators() {
+        return administrators;
     }
 
     public void setAdministrators(List<String> administrators) {
         this.administrators = administrators;
     }
 
+    public Integer getLastIncidentId() {
+        return lastIncidentId;
+    }
+
     public void setLastIncidentId(Integer lastIncidentId) {
         this.lastIncidentId = lastIncidentId;
+    }
+
+    public Integer getLastTicketId() {
+        return lastTicketId;
     }
 
     public void setLastTicketId(Integer lastTicketId) {
