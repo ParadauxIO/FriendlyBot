@@ -67,7 +67,7 @@
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>io.paradaux.friendlybot.FriendlyBot</mainClass>
+                                    <mainClass>io.paradaux.friendlybot.FBApplication</mainClass>
                                 </transformer>
                             </transformers>
 
@@ -85,7 +85,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>io.paradaux.friendlybot.FriendlyBot</mainClass>
+                            <mainClass>io.paradaux.friendlybot.FBApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
