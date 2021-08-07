@@ -1,0 +1,75 @@
+plugins {
+    id 'java'
+    id 'io.ebean' version '12.10.0'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+group 'io.paradaux'
+version '2.0.0'
+
+repositories {
+    gradlePluginPortal()
+    mavenCentral()
+    maven {
+        url = "https://m2.dv8tion.net/releases"
+    }
+
+    maven {
+        url = "https://jitpack.io"
+    }
+
+    maven {
+        url = "https://repo.paradaux.io/releases"
+    }
+
+    maven {
+        url = "https://m2.chew.pro/releases"
+    }
+}
+
+dependencies {
+
+    implementation 'net.dv8tion:JDA:4.3.0_300'
+    implementation 'pw.chew:jda-chewtils:1.20'
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'org.slf4j:slf4j-log4j12:1.7.32'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'org.mongodb:mongo-java-driver:3.12.8'
+    implementation 'io.paradaux.http:HttpApi:1.1.2'
+    implementation 'io.ebean:ebean:12.10.0'
+    implementation 'com.h2database:h2:1.4.196'
+    implementation 'org.spongepowered:configurate-hocon:4.1.1'
+
+    annotationProcessor 'io.ebean:querybean-generator:12.10.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.1'
+    testImplementation 'io.ebean:ebean-test:12.10.0'
+
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileJava {
+    options.release = 11
+    options.encoding('UTF-8')
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'io.paradaux.friendlybot.FBApplication'
+        )
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+// Allow use of Emojis inline
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

@@ -141,7 +141,6 @@ public class DiscordBotManager {
                         new DmCommand(config, logger, permissionManager),
                         new SayCommand(config, logger, permissionManager),
                         new SendEmbedCommand(config, logger, permissionManager),
-                        new SetupCommand(config, logger, permissionManager, eventWaiter),
                         new VerificationCommand(config, logger, permissionManager),
 
                         // Utility Commands
