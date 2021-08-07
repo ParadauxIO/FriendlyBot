@@ -6,12 +6,12 @@
 
 <br />
 <p align="center">
-  <a href="https://github.com/ParadauxIO/FriendlyBot">
-    <img src="images/FriendlyBot.png" alt="Logo" width="80" height="80">
-  </a>
+<a href="https://github.com/ParadauxIO/FriendlyBot">
+    <img src=".github/images/FriendlyBot.png" alt="Logo" width="80" height="80">
+</a>
 
 <h3 align="center">FriendlyBot</h3>
-  <p align="center">
+<p align="center">
     The general-purpose discord bot made for the <a href="https://csfriendlycorner.com">Computer Science Friendly Corner</a>.
     <br />
     <a href="https://paradaux.myjetbrains.com/youtrack/projects/821cb79e-73d0-4a28-b06d-ce495ffb1b13">YouTrack</a>
@@ -21,7 +21,6 @@
     <a href="https://github.com/ParadauxIO/FriendlyBot/issues">Issues</a>
     ·
     <a href="https://github.com/ParadauxIO/FriendlyBot/actions">Actions</a>
-  </p>
 </p>
 
 There are plans to generify the codebase to allow for a public discord bot, as well as having a web-based user interface
@@ -35,7 +34,7 @@ production server.
 
 FriendlyBot makes use of a MongoDB database which is integral to the functionality of the bot, the connection url must 
 be specified in the configuration file. As well as that, a stable internet connection is required at all times; to talk to
-discord and the various web APIs the bot makes use of. 
+discord, and the various web APIs the bot makes use of. 
 
 The following instructions are to be executed on the command line (terminal) requiring write permissions. 
 This requires both Maven and Git to be added to your terminal's path, other than that these instructions are fairly platform agnostic.
@@ -69,3 +68,4 @@ Distributed under the MIT License. See [LICENSE.md](https://github.com/ParadauxI
 ## Contributors
 
 1. [Rían Errity](mailto:rian@paradaux.io) — Project Lead — https://paradaux.io
+2. This could be you o.0
