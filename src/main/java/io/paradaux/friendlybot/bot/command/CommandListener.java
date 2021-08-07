@@ -85,7 +85,6 @@ public class CommandListener extends ListenerAdapter {
             throw new CommandException("Command is already marked as registered.");
         }
 
-
         Class<?> clazz = command.getClass();
         if (!clazz.isAnnotationPresent(Command.class)) {
             throw new CommandException("Provided Argument is not a valid command. Not annotated as command.");

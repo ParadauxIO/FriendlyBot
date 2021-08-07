@@ -28,6 +28,7 @@ package io.paradaux.friendlybot.managers;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import io.paradaux.friendlybot.bot.commands.CatCommand;
 import io.paradaux.friendlybot.discord.commands.fun.*;
 import io.paradaux.friendlybot.discord.commands.staff.moderation.*;
 import io.paradaux.friendlybot.discord.commands.staff.technician.*;
@@ -112,7 +113,6 @@ public class DiscordBotManager {
                 .setActivity(Activity.listening("modmail queries.."))
                 .addCommands(
                         // Fun Commands
-                        new CatCommand(config, logger),
                         new CharmanderCommand(config, logger),
                         new CoinFlipCommand(config, logger),
                         new DogCommand(config, logger),
@@ -155,7 +155,6 @@ public class DiscordBotManager {
                         new RandomColorCommand(config, logger),
                         new ServerInfoCommand(config, logger),
                         new SetColorCommand(config, logger, roles),
-                        new StrikeCommand(config, logger),
                         new TagCommand(config, logger, mongo),
                         new TagsCommand(logger),
                         new UserInfoCommand(config, logger, permissionManager),
