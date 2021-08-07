@@ -18,9 +18,9 @@ import java.net.http.HttpResponse;
 
 public class WeatherCommand extends BaseCommand {
 
-    private static final String WEATHER_API = "http://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s";
+    private static final String WEATHER_API = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s";
     private static final String MORE_INFORMATION_LINK = "https://openweathermap.org/city/%d";
-    private static final String WEATHER_ICON_LINK = "http://openweathermap.org/img/wn/%s@4x.png";
+    private static final String WEATHER_ICON_LINK = "https://openweathermap.org/img/wn/%s@4x.png";
     private static final String TEMPERATURE_FORMAT = "%.2f°C (%.2f°F)";
     private static final String WIND_FORMAT = "%.1fm/s %.0f° (%s)";
 

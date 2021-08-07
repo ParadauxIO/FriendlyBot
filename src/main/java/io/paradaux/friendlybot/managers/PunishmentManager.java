@@ -178,18 +178,6 @@ public class PunishmentManager {
         return null;
     }
 
-    private MessageEmbed publicAuditPunishmentEmbed() {
-        //User target, ModerationAction action, String reason
-//        return new EmbedBuilder()
-//                .setColor(0xeb5132)
-//                .setTitle(target.getUser().getAsTag() + " has been temporarily banned.")
-//                .setDescription("**Reason**: " + entry.getReason() + "\n**Period**: " + TimeUtils.millisecondsToDisplay(period))
-//                .setFooter("Incident ID: " + entry.getIncidentId() + ". For more information, reach out to the moderation team via mod-mail.")
-//                .setTimestamp(new Date().toInstant())
-//                .build();
-        return null;
-    }
-
     public void deleteWarning(Guild guild, Member staff, String warningId, String reason) {
         GuildSettingsEntry settings = guilds.getGuild(guild.getId());
 
