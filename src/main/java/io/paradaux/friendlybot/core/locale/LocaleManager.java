@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
  * */
 public class LocaleManager {
 
-    private static final File locale = new File("");
+    private static final File locale = new File("friendlybot.locale");
 
     private static ResourceBundle bundle;
 
