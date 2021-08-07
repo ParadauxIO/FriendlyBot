@@ -57,6 +57,22 @@ public class CommandListener extends ListenerAdapter {
      * */
     public void helpMenu(Message message) {
         EmbedBuilder builder = new EmbedBuilder();
+        StringBuilder descBuilder = new StringBuilder();
+
+        descBuilder.append("**FriendlyBot**: Commands\n")
+                .append("\n");
+
+        for (DiscordCommand c : commands) {
+            descBuilder.append(c.getCommand())
+                    .append(" » ")
+                    .append(c.getDescription());
+        }
+
+        descBuilder.append("\n")
+                .append("**N.B**: Some commands may be role-locked.");
+
+        builder.setDescription(descBuilder);
+
         // TODO
     }
 

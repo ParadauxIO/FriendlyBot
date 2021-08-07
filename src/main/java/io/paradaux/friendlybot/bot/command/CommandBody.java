@@ -4,8 +4,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 
-import java.nio.channels.Channel;
-
 public class CommandBody {
 
     private final JDA jda;
@@ -30,7 +28,7 @@ public class CommandBody {
         return message;
     }
 
-    public Channel getChannel() {
+    public MessageChannel getChannel() {
         return channel;
     }
 
