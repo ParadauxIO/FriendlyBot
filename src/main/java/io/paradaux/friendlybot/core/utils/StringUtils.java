@@ -44,7 +44,7 @@ public class StringUtils {
             + "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09"
             + "\\x0b\\x0c\\x0e-\\x7f])+)\\])");
 
-    private static final String SHORTHAND_CARDINAL_DIRECTIONS[] = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"};
+    private static final String[] SHORTHAND_CARDINAL_DIRECTIONS = {"N", "NE", "E", "SE", "S", "SW", "W", "NW", "N"};
 
     /**
      * Converts the specified string to Title Case
