@@ -146,7 +146,6 @@ public class DiscordBotManager {
                         // Utility Commands
                         new ClearColorCommand(config, logger),
                         new CommandsCommand(config, logger),
-                        new GithubCommand(config, logger),
                         new GoogleCommand(config, logger),
                         new InviteCommand(logger),
                         new MemeImagesCommand(config, logger),
