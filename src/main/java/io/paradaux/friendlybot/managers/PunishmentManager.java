@@ -199,6 +199,8 @@ public class PunishmentManager {
 
         mongo.addRescindment(rescindment);
 
+        String s;
+
         MessageEmbed publicAudit = new EmbedBuilder()
                 .setColor(0x34eb9b)
                 .setTitle("Punishment Rescinded. | Warning of " + entry.getUserTag())
