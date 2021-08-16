@@ -1,5 +1,7 @@
 package io.paradaux.friendlybot.core.locale;
 
+import io.paradaux.friendlybot.core.utils.IOUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,27 +15,28 @@ import java.util.ResourceBundle;
  * */
 public class LocaleManager {
 
-    private static final File locale = new File("friendlybot.locale");
+    private static final File locale = new File("friendlybot-locale.properties");
 
     private static ResourceBundle bundle;
 
     public LocaleManager() {
         if (!locale.exists()) {
-
-        }
-
-        try (FileInputStream fis = new FileInputStream(locale)) {
-            bundle = new PropertyResourceBundle(fis);
-        } catch (IOException e) {
-            e.printStackTrace();
+            IOUtils.exportResource("/friendlybot-locale.properties", System.getProperty("user.dir") + "/friendlybot-locale.properties");
+        } else {
+            try (FileInputStream fis = new FileInputStream(locale)) {
+                bundle = new PropertyResourceBundle(fis);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public static String get(String key) {
-        if (!bundle.containsKey(key)) {
-            return key;
-        }
-
-        return bundle.getString(key);
+//        if (!bundle.containsKey(key)) {
+//            return key;
+//        }
+//
+//        return bundle.getString(key);
+        return "test";
     }
 }
