@@ -59,7 +59,6 @@ public class PunishmentManager {
 
         TextChannel publicAuditLog = DiscordBotManager.getInstance().getChannel(settings.getPublicAuditLogChannel());
         AuditManager.getInstance().log(ModerationAction.TEMP_BAN, target.getUser(), staff.getUser(), entry.getReason(), entry.getIncidentId());
-        publicAuditLog.sendMessage(null).queue();
 
         target.getUser().openPrivateChannel().queue((privateChannel) -> {
             MessageEmbed banNotification = new EmbedBuilder()
@@ -118,7 +117,6 @@ public class PunishmentManager {
 
         AuditManager.getInstance().log(ModerationAction.KICK, target.getUser(), staff.getUser(), reason, incidentID);
 
-        DiscordBotManager.getInstance().getChannel(settings.getPublicAuditLogChannel()).sendMessage(null).queue();
 
         target.getUser().openPrivateChannel().queue((privateChannel ) -> {
             MessageEmbed kickNotification = new EmbedBuilder()
@@ -155,7 +153,6 @@ public class PunishmentManager {
 
         AuditManager.getInstance().log(ModerationAction.WARN, target.getUser(), staff.getUser(), reason, incidentID);
 
-        DiscordBotManager.getInstance().getChannel(settings.getPublicAuditLogChannel()).sendMessage(this.publicAuditPunishmentEmbed()).queue();
 
         target.getUser().openPrivateChannel().queue((privateChannel) -> {
             MessageEmbed warnNotification = new EmbedBuilder()
