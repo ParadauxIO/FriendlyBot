@@ -12,6 +12,7 @@ public class FConfigurationLoader {
 
     private static HoconConfigurationLoader loader;
     private static FConfiguration config;
+    private static CommentedConfigurationNode root;
 
     public static HoconConfigurationLoader getLoader() {
         return loader;
@@ -22,8 +23,6 @@ public class FConfigurationLoader {
                 .path(Path.of("friendlybot.conf"))
                 .build();
 
-        CommentedConfigurationNode root;
-
         try {
             root = loader.load();
         } catch (IOException e) {
@@ -31,13 +30,17 @@ public class FConfigurationLoader {
         }
 
         config = root.get(FConfiguration.class);
-        config.setRoot(root);
+
+        if (config == null) {
+            throw new IllegalStateException("Configuration is null");
+        }
+
         return config;
     }
 
     public static void saveConfig() throws ConfigurateException {
-        config.save();
-        loader.save(config.getRoot());
+        root.set(FConfiguration.class, root);
+        loader.save(root);
     }
 
 }
