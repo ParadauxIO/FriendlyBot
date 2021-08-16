@@ -8,6 +8,8 @@ friendlybot.mv.db
 # Runtime stuff
 /*.json
 src/test/resources/img*
+friendlybot-locale.properties
+friendlybot.conf
 
 # Private tests
 src/test/java/io/paradaux/friendlybot/managers/MailGunManagerTest.java
