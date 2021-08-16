@@ -1,156 +1,150 @@
 package io.paradaux.friendlybot.config;
 
-import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;
 import org.spongepowered.configurate.objectmapping.meta.Comment;
-import org.spongepowered.configurate.serialize.SerializationException;
 
 @ConfigSerializable
 public class FConfiguration {
 
-    private transient CommentedConfigurationNode root;
-
     @Comment("Your Discord Bot Token")
-    private String botToken;
+    private @Nullable String botToken = "BOT-TOKEN";
     @Comment("What symbol to begin commands with.")
-    private String commandPrefix;
+    private @Nullable String commandPrefix = ";";
 
     @Comment("Mailgun is used to send verification emails. Enter your API key and URL here.")
-    private String mailgunApplicationKey;
-    private String mailgunBaseUrl;
+    private @Nullable String mailgunApplicationKey = "MAILGUN-TOKEN";
+    private @Nullable String mailgunBaseUrl = "MAILGUN-URL";
 
     @Comment("Imgflip is used for meme generation. Enter your login details here.")
-    private String imgflipUsername;
-    private String imgflipPassword;
+    private @Nullable String imgflipUsername = "IMGFLIP-USERNAME";
+    private @Nullable String imgflipPassword = "IMGFLIP-PASSWORD";
 
     @Comment("Other random services.")
-    private String wolframAlphaApiKey;
-    private String imgurClientId;
-    private String bytebinInstanceUrl;
-    private String openWeatherMapApiKey;
+    private @Nullable String wolframAlphaApiKey = "WOLFRAM-API";
+    private @Nullable String imgurClientId = "IMGUR-CLIENT";
+    private @Nullable String bytebinInstanceUrl = "BYTEBIN-URL";
+    private @Nullable String openWeatherMapApiKey = "OPENWEATHER-API";
 
     @Comment("Database connection")
-    private String jdbcUrl;
-    private String jdbcUsername;
-    private String jdbcPassword;
+    private @Nullable String jdbcUrl = "DATABASE-URL";
+    private @Nullable String jdbcUsername = "DATABASE-USER";
+    private @Nullable String jdbcPassword = "DATABASE-PASS";
 
-    public FConfiguration() {
-
-    }
-
-    public void save() throws SerializationException {
-        root.set(FConfiguration.class, root);
-    }
-
-    public CommentedConfigurationNode getRoot() {
-        return root;
-    }
-
+    @Nullable
     public String getBotToken() {
         return botToken;
     }
 
+    @Nullable
     public String getCommandPrefix() {
         return commandPrefix;
     }
 
+    @Nullable
     public String getMailgunApplicationKey() {
         return mailgunApplicationKey;
     }
 
+    @Nullable
     public String getMailgunBaseUrl() {
         return mailgunBaseUrl;
     }
 
+    @Nullable
     public String getImgflipUsername() {
         return imgflipUsername;
     }
 
+    @Nullable
     public String getImgflipPassword() {
         return imgflipPassword;
     }
 
+    @Nullable
     public String getWolframAlphaApiKey() {
         return wolframAlphaApiKey;
     }
 
+    @Nullable
     public String getImgurClientId() {
         return imgurClientId;
     }
 
+    @Nullable
     public String getBytebinInstanceUrl() {
         return bytebinInstanceUrl;
     }
 
+    @Nullable
     public String getOpenWeatherMapApiKey() {
         return openWeatherMapApiKey;
     }
 
+    @Nullable
     public String getJdbcUrl() {
         return jdbcUrl;
     }
 
+    @Nullable
     public String getJdbcUsername() {
         return jdbcUsername;
     }
 
+    @Nullable
     public String getJdbcPassword() {
         return jdbcPassword;
     }
 
-    public void setRoot(CommentedConfigurationNode root) {
-        this.root = root;
-    }
-
-    public void setBotToken(String botToken) {
+    public void setBotToken(@Nullable String botToken) {
         this.botToken = botToken;
     }
 
-    public void setCommandPrefix(String commandPrefix) {
+    public void setCommandPrefix(@Nullable String commandPrefix) {
         this.commandPrefix = commandPrefix;
     }
 
-    public void setMailgunApplicationKey(String mailgunApplicationKey) {
+    public void setMailgunApplicationKey(@Nullable String mailgunApplicationKey) {
         this.mailgunApplicationKey = mailgunApplicationKey;
     }
 
-    public void setMailgunBaseUrl(String mailgunBaseUrl) {
+    public void setMailgunBaseUrl(@Nullable String mailgunBaseUrl) {
         this.mailgunBaseUrl = mailgunBaseUrl;
     }
 
-    public void setImgflipUsername(String imgflipUsername) {
+    public void setImgflipUsername(@Nullable String imgflipUsername) {
         this.imgflipUsername = imgflipUsername;
     }
 
-    public void setImgflipPassword(String imgflipPassword) {
+    public void setImgflipPassword(@Nullable String imgflipPassword) {
         this.imgflipPassword = imgflipPassword;
     }
 
-    public void setWolframAlphaApiKey(String wolframAlphaApiKey) {
+    public void setWolframAlphaApiKey(@Nullable String wolframAlphaApiKey) {
         this.wolframAlphaApiKey = wolframAlphaApiKey;
     }
 
-    public void setImgurClientId(String imgurClientId) {
+    public void setImgurClientId(@Nullable String imgurClientId) {
         this.imgurClientId = imgurClientId;
     }
 
-    public void setBytebinInstanceUrl(String bytebinInstanceUrl) {
+    public void setBytebinInstanceUrl(@Nullable String bytebinInstanceUrl) {
         this.bytebinInstanceUrl = bytebinInstanceUrl;
     }
 
-    public void setOpenWeatherMapApiKey(String openWeatherMapApiKey) {
+    public void setOpenWeatherMapApiKey(@Nullable String openWeatherMapApiKey) {
         this.openWeatherMapApiKey = openWeatherMapApiKey;
     }
 
-    public void setJdbcUrl(String jdbcUrl) {
+    public void setJdbcUrl(@Nullable String jdbcUrl) {
         this.jdbcUrl = jdbcUrl;
     }
 
-    public void setJdbcUsername(String jdbcUsername) {
+    public void setJdbcUsername(@Nullable String jdbcUsername) {
         this.jdbcUsername = jdbcUsername;
     }
 
-    public void setJdbcPassword(String jdbcPassword) {
+    public void setJdbcPassword(@Nullable String jdbcPassword) {
         this.jdbcPassword = jdbcPassword;
     }
 }
