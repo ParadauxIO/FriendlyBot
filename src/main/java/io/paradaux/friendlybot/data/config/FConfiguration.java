@@ -1,4 +1,4 @@
-package io.paradaux.friendlybot.config;
+package io.paradaux.friendlybot.data.config;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.objectmapping.ConfigSerializable;

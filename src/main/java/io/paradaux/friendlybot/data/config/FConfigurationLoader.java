@@ -1,4 +1,4 @@
-package io.paradaux.friendlybot.config;
+package io.paradaux.friendlybot.data.config;
 
 import io.paradaux.friendlybot.core.utils.IOUtils;
 import org.spongepowered.configurate.CommentedConfigurationNode;

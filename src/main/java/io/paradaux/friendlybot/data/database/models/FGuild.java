@@ -1,4 +1,4 @@
-package io.paradaux.friendlybot.core.database.models;
+package io.paradaux.friendlybot.data.database.models;
 
 import io.ebean.Model;
 import net.dv8tion.jda.api.entities.Guild;
