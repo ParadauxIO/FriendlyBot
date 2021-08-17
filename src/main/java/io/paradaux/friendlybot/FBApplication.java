@@ -26,7 +26,6 @@ public class FBApplication {
         logger = new LocaleLogger(LoggerFactory.getLogger(FBApplication.class), true);
 
         config = FConfigurationLoader.loadConfig();
-        FConfigurationLoader.saveConfig();
         bot = new FBot(config);
         guildCache = new GuildCache(bot.getClient());
     }
