@@ -38,6 +38,7 @@ dependencies {
     implementation 'io.paradaux.http:HttpApi:1.1.2'
     implementation 'io.ebean:ebean:12.10.0'
     implementation 'com.h2database:h2:1.4.196'
+    implementation 'org.postgresql:postgresql:42.2.18'
     implementation 'org.spongepowered:configurate-hocon:4.1.1'
 
     annotationProcessor 'io.ebean:querybean-generator:12.10.0'
