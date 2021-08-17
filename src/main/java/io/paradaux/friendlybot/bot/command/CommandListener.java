@@ -2,7 +2,7 @@ package io.paradaux.friendlybot.bot.command;
 
 import io.paradaux.friendlybot.bot.command.exception.CommandException;
 import io.paradaux.friendlybot.core.cache.GuildCache;
-import io.paradaux.friendlybot.core.database.models.FGuild;
+import io.paradaux.friendlybot.data.database.models.FGuild;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;

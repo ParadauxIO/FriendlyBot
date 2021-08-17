@@ -1,7 +1,5 @@
 package io.paradaux.friendlybot.database;
 
-import io.ebean.DB;
-import io.paradaux.friendlybot.core.database.models.GuildSettings;
 import org.junit.jupiter.api.Test;
 
 public class GuildSettingsTest {

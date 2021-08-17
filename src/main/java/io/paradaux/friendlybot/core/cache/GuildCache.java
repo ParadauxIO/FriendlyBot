@@ -1,11 +1,7 @@
 package io.paradaux.friendlybot.core.cache;
 
-import io.ebean.DB;
-import io.paradaux.friendlybot.core.database.models.FGuild;
-import io.paradaux.friendlybot.core.database.models.GuildSettings;
+import io.paradaux.friendlybot.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.database.models.query.QFGuild;
-import io.paradaux.friendlybot.managers.GuildSettingsManager;
-import io.paradaux.friendlybot.core.utils.models.database.GuildSettingsEntry;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
