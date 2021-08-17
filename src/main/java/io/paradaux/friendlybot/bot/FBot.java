@@ -1,13 +1,10 @@
 package io.paradaux.friendlybot.bot;
 
-import com.jagrosh.jdautilities.command.CommandClient;
-import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import io.paradaux.friendlybot.config.FConfiguration;
-import io.paradaux.friendlybot.core.locale.LocaleLogger;
+import io.paradaux.friendlybot.bot.command.CommandListener;
+import io.paradaux.friendlybot.data.config.FConfiguration;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 
@@ -36,23 +33,11 @@ public class FBot {
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setBulkDeleteSplittingEnabled(false)
-                .addEventListeners(eventWaiter, createCommandClient());
+                .addEventListeners(eventWaiter, new CommandListener());
 
         if (token == null) {
             throw new LoginException("The Configuration File does not contain a token.");
         }
-
-        return builder.build();
-    }
-
-    private CommandClient createCommandClient() {
-        LocaleLogger.info("Initialising: CommandController");
-
-        CommandClientBuilder builder = new CommandClientBuilder()
-                .setPrefix(config.getCommandPrefix())
-                .setOwnerId("150993042558418944")
-                .setActivity(Activity.listening("modmail queries.."))
-                .addCommands();
 
         return builder.build();
     }
