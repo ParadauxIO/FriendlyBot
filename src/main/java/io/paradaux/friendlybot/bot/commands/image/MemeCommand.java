@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-package io.paradaux.friendlybot.bot.commands;
+package io.paradaux.friendlybot.bot.commands.image;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.core.utils.HttpUtils;

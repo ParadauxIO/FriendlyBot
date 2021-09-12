@@ -1,4 +1,4 @@
-package io.paradaux.friendlybot.bot.commands;
+package io.paradaux.friendlybot.bot.commands.image;
 
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
@@ -13,7 +13,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.concurrent.CompletableFuture;
 
-@Command(name="cat", description = "Get yourself a cute cat photo!", permission = "command.cat")
+@Command(name="cat", description = "Get yourself a cute cat photo!", permission = "command.cat", aliases = {"feline", "kitten"})
 public class CatCommand extends DiscordCommand {
 
     private static final String CAT_API = "https://api.thecatapi.com/v1/images/search";

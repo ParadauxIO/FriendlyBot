@@ -1,6 +1,7 @@
-package io.paradaux.friendlybot.bot.commands;
+package io.paradaux.friendlybot.bot.commands.image;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.RandomUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 
 import java.util.concurrent.TimeUnit;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class CoinFlipCommand extends BaseCommand {
 
     private static final String COIN_FLIP_GIF = "https://media1.tenor.com/images/49dc6597439a635b1614544d8e090c54/tenor.gif";
