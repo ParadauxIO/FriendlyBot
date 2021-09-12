@@ -52,8 +52,8 @@ public class CommandListener extends ListenerAdapter {
         }
 
         for (DiscordCommand c : commands) {
-            if (c.getCommand().equalsIgnoreCase(command)) {
-                c.execute(guild, new CommandBody(message, command, c.getPermission(), c.getDescription(), args));
+            if (c.getNames().contains(command)) {
+                c.execute(guild, new CommandBody(message, command, c.getPermission(), c.getDescription(), args, c.getAliases()));
                 break;
             }
         }
@@ -98,7 +98,7 @@ public class CommandListener extends ListenerAdapter {
 
         Command cmd = clazz.getAnnotation(Command.class);
 
-        command.register(cmd.name(), cmd.description(), cmd.permission());
+        command.register(cmd.name(), cmd.description(), cmd.permission(), cmd.aliases());
 
         for (DiscordCommand c : commands) {
             if (c.getCommand().equals(command.getCommand())) {

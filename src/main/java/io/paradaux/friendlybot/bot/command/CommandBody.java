@@ -15,13 +15,14 @@ public class CommandBody {
     private final String description;
 
     private final String[] args;
+    private final String[] aliases;
 
     private final Message message;
     private final MessageChannel channel;
     private final Member member;
     private final User user;
 
-    public CommandBody(Message message, String command, String permission, String description,String[] args) {
+    public CommandBody(Message message, String command, String permission, String description, String[] args, String[] aliases) {
         this.jda = message.getJDA();
 
         this.command = command;
@@ -29,6 +30,7 @@ public class CommandBody {
         this.description = description;
 
         this.args = args;
+        this.aliases = aliases;
 
         this.message = message;
         this.channel = message.getChannel();
@@ -73,5 +75,9 @@ public class CommandBody {
 
     public String getDescription() {
         return description;
+    }
+
+    public String[] getAliases() {
+        return aliases;
     }
 }

@@ -9,5 +9,6 @@ public @interface Command {
     String name() default "";
     String description() default "";
     String permission() default  "";
+    String[] aliases() default {};
 
 }
