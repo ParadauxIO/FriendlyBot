@@ -1,6 +1,7 @@
 package io.paradaux.friendlybot.bot.commands.joke;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.RandomUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class CharmanderCommand extends BaseCommand {
 
     private static final String CHARMANDER_API = "https://cdn.paradaux.io/static/charmander/";

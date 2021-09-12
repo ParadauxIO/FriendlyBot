@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.bot.commands.image;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
@@ -38,6 +39,7 @@ import org.slf4j.Logger;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class XKCDCommand extends BaseCommand {
 
     private static final String XKCD_SEARCH_API = "https://relevantxkcd.appspot.com/process?action=xkcd&query=%s";

@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.bot.commands.privileged;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.database.ModMailEntry;
 import io.paradaux.friendlybot.core.utils.models.database.ModMailResponse;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class RespondCommand extends PrivilegedCommand {
 
     private final MongoManager mongo;

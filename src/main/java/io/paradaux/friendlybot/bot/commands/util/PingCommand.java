@@ -27,6 +27,7 @@ package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.FriendlyBot;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
 import org.slf4j.Logger;
 
@@ -39,7 +40,7 @@ import org.slf4j.Logger;
  * @see FriendlyBot
  * */
 
-
+@Command(name = "", description = "", permission = "", aliases = {})
 public class PingCommand extends BaseCommand {
 
     public PingCommand(Logger logger) {

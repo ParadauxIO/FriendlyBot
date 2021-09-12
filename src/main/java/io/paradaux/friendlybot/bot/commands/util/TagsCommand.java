@@ -1,11 +1,13 @@
 package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.slf4j.Logger;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class TagsCommand extends BaseCommand {
 
     private static final String TAGS_URL = "https://paradaux.io/projects/friendlybot/tools/tag_viewer.html?serverid=%s";

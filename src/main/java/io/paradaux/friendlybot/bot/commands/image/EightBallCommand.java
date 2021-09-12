@@ -31,6 +31,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.RandomUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -45,6 +46,7 @@ import java.io.InputStreamReader;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class EightBallCommand extends BaseCommand {
 
     private static final String WAITING_IMAGE = "https://i.imgur.com/nBRPBMf.gif";

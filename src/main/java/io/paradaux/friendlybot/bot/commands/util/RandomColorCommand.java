@@ -1,6 +1,7 @@
 package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.ImageUtils;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class RandomColorCommand extends BaseCommand {
 
     private static final String IMGUR_API = "https://api.imgur.com/3/upload/";

@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.TimeUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -42,6 +43,7 @@ import org.slf4j.Logger;
 import java.util.Date;
 import java.util.Locale;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class TagCommand extends PrivilegedCommand {
 
     private final MongoManager mongo;

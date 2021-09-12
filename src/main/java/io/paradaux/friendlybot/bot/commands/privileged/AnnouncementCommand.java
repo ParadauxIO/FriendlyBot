@@ -2,6 +2,7 @@ package io.paradaux.friendlybot.bot.commands.privileged;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.PrivilegedCommand;
 import io.paradaux.friendlybot.managers.PermissionManager;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 
 import java.util.regex.Pattern;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class AnnouncementCommand extends PrivilegedCommand {
 
     private static final Pattern URL_PATTERN = Pattern.compile("^(http://|https://)?(www.)?([a-zA-Z0-9]+).[a-zA-Z0-9]*.[a-z]{3}.?([a-z]+)?");

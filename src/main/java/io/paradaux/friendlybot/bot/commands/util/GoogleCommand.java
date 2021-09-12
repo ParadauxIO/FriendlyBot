@@ -28,6 +28,7 @@ package io.paradaux.friendlybot.bot.commands.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.StringUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
@@ -38,6 +39,7 @@ import org.slf4j.Logger;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class GoogleCommand extends BaseCommand {
 
     private static final String QUERY_URL = "https://www.googleapis.com/customsearch/v1?key=%s&q=%s&safe=ACTIVE";

@@ -3,6 +3,7 @@ package io.paradaux.friendlybot.bot.commands.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.StringUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class WeatherCommand extends BaseCommand {
 
     private static final String WEATHER_API = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s";

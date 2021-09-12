@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.bot.commands.privileged;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.core.utils.embeds.PoliticsRulesEmbed;
 import io.paradaux.friendlybot.core.utils.embeds.RulesEmbed;
@@ -42,6 +43,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class SendEmbedCommand extends PrivilegedCommand {
 
     public SendEmbedCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {

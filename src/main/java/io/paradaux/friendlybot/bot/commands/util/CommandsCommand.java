@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.TimeUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
@@ -39,6 +40,7 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.stream.Collectors;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class CommandsCommand extends BaseCommand {
 
     private static final String THUMBNAIL_IMAGE = "https://cdn.paradaux.io/img/ybv70.png";

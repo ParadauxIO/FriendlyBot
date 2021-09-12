@@ -27,6 +27,7 @@ package io.paradaux.friendlybot.bot.commands.privileged;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.FriendlyBot;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.PrivilegedCommand;
 import io.paradaux.friendlybot.managers.MongoManager;
@@ -45,6 +46,7 @@ import org.slf4j.Logger;
  * @see FriendlyBot
  * */
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class BanCommand extends PrivilegedCommand {
 
     private final PunishmentManager punishments;

@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.bot.commands.image;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.HttpUtils;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -51,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class MemeCommand extends BaseCommand {
 
     private static final String GET_MEMES_API = "https://api.imgflip.com/get_memes";

@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.bot.commands.privileged;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.TimeUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.database.ModMailEntry;
@@ -45,6 +46,7 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class TicketCommand extends PrivilegedCommand {
 
     public TicketCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {

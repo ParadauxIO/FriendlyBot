@@ -26,6 +26,7 @@
 package io.paradaux.friendlybot.bot.commands.joke;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.commands.image.MemeCommand;
 import io.paradaux.friendlybot.core.utils.HttpUtils;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
@@ -44,6 +45,7 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.io.Reader;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class YodaifyCommand extends BaseCommand {
 
     private static final String YODA_IMAGE_ID = "14371066";

@@ -1,6 +1,7 @@
 package io.paradaux.friendlybot.bot.commands.joke;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.commands.image.MemeCommand;
 import io.paradaux.friendlybot.core.utils.HttpUtils;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
@@ -21,6 +22,7 @@ import java.io.Reader;
 import java.util.Collections;
 import java.util.HashSet;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class MonkeCommand extends BaseCommand {
 
     private static final HashSet<String> MONKE_IDS = new HashSet<>();

@@ -26,12 +26,14 @@
 package io.paradaux.friendlybot.bot.commands.joke;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
+@Command(name = "", description = "", permission = "", aliases = {})
 public class LmgtfyCommand extends BaseCommand {
 
     private static final String LMGTFY_LINK = "https://lmgtfy.com/?q=";
