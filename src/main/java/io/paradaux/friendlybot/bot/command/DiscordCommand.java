@@ -1,6 +1,6 @@
 package io.paradaux.friendlybot.bot.command;
 
-import io.paradaux.friendlybot.data.database.models.FGuild;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

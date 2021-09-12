@@ -3,7 +3,7 @@ package io.paradaux.friendlybot.bot.commands;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
 import io.paradaux.friendlybot.bot.command.DiscordCommand;
-import io.paradaux.friendlybot.data.database.models.FGuild;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.http.HttpApi;
 import net.dv8tion.jda.api.EmbedBuilder;

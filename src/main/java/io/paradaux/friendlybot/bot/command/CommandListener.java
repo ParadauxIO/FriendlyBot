@@ -2,13 +2,14 @@ package io.paradaux.friendlybot.bot.command;
 
 import io.paradaux.friendlybot.bot.command.exception.CommandException;
 import io.paradaux.friendlybot.core.cache.GuildCache;
-import io.paradaux.friendlybot.data.database.models.FGuild;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -22,33 +23,43 @@ public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(@NotNull GuildMessageReceivedEvent event) {
+        // Get the guild
         FGuild guild = GuildCache.getInstance().getGuild(event.getGuild().getId());
 
+        // Message stuff
         Message message = event.getMessage();
         String messageContent = message.getContentRaw();
-        String[] commandComponents = messageContent.substring(guild.getCommandPrefix().length()).split(" ");
 
-        String command = commandComponents[0];
-        String[] args = Arrays.copyOfRange(commandComponents, 1, commandComponents.length);
+        // If it isn't a valid command
+        if (!messageContent.startsWith(guild.getCommandPrefix())) {
+            return;
+        }
+
+        // Command body
+        String command = messageContent.substring(guild.getCommandPrefix().length());
+        String[] args = {};
+
+        // If there's arguments, parse them.
+        if (messageContent.contains(" ")) {
+            String[] components = command.split(" ");
+            args = Arrays.copyOfRange(components, 1, components.length);
+            command = components[0];
+        }
 
         CommandBody body = new CommandBody(message, command, args);
-        if (messageContent.startsWith(guild.getCommandPrefix())) {
-            switch (messageContent.substring(guild.getCommandPrefix().length())) {
-                case "help": {
-                    helpMenu(message);
-                    break;
-                }
 
-                default: {
-                    for (DiscordCommand c : commands) {
-                        if (c.getCommand().equals(command)) {
-                            c.execute(guild, body);
-                        }
-                    }
-                    break;
-                }
+        if (command.equalsIgnoreCase("help")) {
+            helpMenu(message);
+            return;
+        }
+
+        for (DiscordCommand c : commands) {
+            if (c.getCommand().equalsIgnoreCase(command)) {
+                c.execute(guild, body);
+                break;
             }
         }
+
     }
 
 
@@ -57,23 +68,20 @@ public class CommandListener extends ListenerAdapter {
      * */
     public void helpMenu(Message message) {
         EmbedBuilder builder = new EmbedBuilder();
-        StringBuilder descBuilder = new StringBuilder();
 
-        descBuilder.append("**FriendlyBot**: Commands\n")
-                .append("\n");
-
+        StringBuilder descBuilder = new StringBuilder().append("\n\n");
         for (DiscordCommand c : commands) {
-            descBuilder.append(c.getCommand())
-                    .append(" » ")
-                    .append(c.getDescription());
+            descBuilder.append("\\➡ **").append(c.getCommand()).append("**").append(" » ").append(c.getDescription());
         }
 
-        descBuilder.append("\n")
-                .append("**N.B**: Some commands may be role-locked.");
+        descBuilder.append("\n\n");
 
+        builder.setAuthor("**FriendlyBot**: Commands");
         builder.setDescription(descBuilder);
+        builder.setTimestamp(Instant.now());
+        builder.setFooter("N.B: Some commands may be role-locked.");
 
-        // TODO
+        message.getChannel().sendMessageEmbeds(builder.build()).queue();
     }
 
 
@@ -91,6 +99,7 @@ public class CommandListener extends ListenerAdapter {
         }
 
         Command cmd = clazz.getAnnotation(Command.class);
+        System.out.println(cmd.name() + "cmd.description");
         command.register(cmd.name(), cmd.description());
 
         for (DiscordCommand c : commands) {
