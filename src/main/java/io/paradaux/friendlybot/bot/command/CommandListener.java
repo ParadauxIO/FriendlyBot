@@ -97,8 +97,9 @@ public class CommandListener extends ListenerAdapter {
         }
 
         Command cmd = clazz.getAnnotation(Command.class);
-        System.out.println(cmd.name() + "cmd.description");
+
         command.register(cmd.name(), cmd.description(), cmd.permission());
+
         for (DiscordCommand c : commands) {
             if (c.getCommand().equals(command.getCommand())) {
                 throw new CommandException("A command by this name has already been registered.");
@@ -115,7 +116,7 @@ public class CommandListener extends ListenerAdapter {
      * */
     public void removeCommand(DiscordCommand command) {
         if (!commands.remove(command)) {
-            throw new CommandException("This command has already been registered.");
+            throw new CommandException("This command is not registered.");
         }
     }
 }
