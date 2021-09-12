@@ -26,7 +26,6 @@
 package io.paradaux.friendlybot.bot.commands.privileged;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.core.utils.embeds.AuditLogEmbed;
 import io.paradaux.friendlybot.core.utils.embeds.PoliticsRulesEmbed;
 import io.paradaux.friendlybot.core.utils.embeds.RulesEmbed;
@@ -38,6 +37,7 @@ import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntr
 import io.paradaux.friendlybot.core.utils.models.interfaces.Embed;
 import io.paradaux.friendlybot.core.utils.models.types.ModerationAction;
 import io.paradaux.friendlybot.core.utils.models.types.PrivilegedCommand;
+import io.paradaux.friendlybot.managers.PermissionManager;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;

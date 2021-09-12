@@ -25,9 +25,6 @@
 
 package io.paradaux.friendlybot.discord.listeners.modmail;
 
-import io.paradaux.friendlybot.managers.DiscordBotManager;
-import io.paradaux.friendlybot.managers.GuildSettingsManager;
-import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.core.utils.embeds.modmail.ModMailReceivedEmbed;
 import io.paradaux.friendlybot.core.utils.embeds.modmail.ModMailSentEmbed;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -36,6 +33,9 @@ import io.paradaux.friendlybot.core.utils.models.database.ModMailEntry;
 import io.paradaux.friendlybot.core.utils.models.enums.TicketStatus;
 import io.paradaux.friendlybot.core.utils.models.interfaces.Embed;
 import io.paradaux.friendlybot.core.utils.models.types.DiscordEventListener;
+import io.paradaux.friendlybot.managers.DiscordBotManager;
+import io.paradaux.friendlybot.managers.GuildSettingsManager;
+import io.paradaux.friendlybot.managers.MongoManager;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;

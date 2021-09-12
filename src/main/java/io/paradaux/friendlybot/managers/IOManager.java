@@ -30,7 +30,6 @@ import com.google.gson.GsonBuilder;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.configuration.PermissionEntry;
 import io.paradaux.friendlybot.core.utils.models.exceptions.ManagerNotReadyException;
-import io.paradaux.friendlybot.core.utils.models.exceptions.NoSuchResourceException;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;

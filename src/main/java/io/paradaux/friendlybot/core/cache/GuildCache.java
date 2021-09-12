@@ -1,7 +1,7 @@
 package io.paradaux.friendlybot.core.cache;
 
-import io.paradaux.friendlybot.data.database.models.FGuild;
-import io.paradaux.friendlybot.data.database.models.query.QFGuild;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
+import io.paradaux.friendlybot.core.data.database.models.query.QFGuild;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;

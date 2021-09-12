@@ -26,10 +26,10 @@
 package io.paradaux.friendlybot.core.utils.models.types;
 
 import com.jagrosh.jdautilities.command.Command;
-import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.core.utils.embeds.notices.SyntaxErrorEmbed;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.exceptions.NoSuchUserException;
+import io.paradaux.friendlybot.managers.PermissionManager;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;

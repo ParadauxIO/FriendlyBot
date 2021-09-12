@@ -25,13 +25,13 @@
 
 package io.paradaux.friendlybot.discord.listeners.logging;
 
-import io.paradaux.friendlybot.managers.DiscordBotManager;
-import io.paradaux.friendlybot.managers.GuildSettingsManager;
-import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.database.GuildSettingsEntry;
 import io.paradaux.friendlybot.core.utils.models.database.MessageEntry;
 import io.paradaux.friendlybot.core.utils.models.types.DiscordEventListener;
+import io.paradaux.friendlybot.managers.DiscordBotManager;
+import io.paradaux.friendlybot.managers.GuildSettingsManager;
+import io.paradaux.friendlybot.managers.MongoManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

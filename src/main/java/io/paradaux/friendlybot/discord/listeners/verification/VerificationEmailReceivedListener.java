@@ -25,13 +25,13 @@
 
 package io.paradaux.friendlybot.discord.listeners.verification;
 
-import io.paradaux.friendlybot.managers.DiscordBotManager;
-import io.paradaux.friendlybot.managers.MongoManager;
-import io.paradaux.friendlybot.managers.VerificationManager;
 import io.paradaux.friendlybot.core.utils.StringUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.exceptions.VerificationException;
 import io.paradaux.friendlybot.core.utils.models.types.DiscordEventListener;
+import io.paradaux.friendlybot.managers.DiscordBotManager;
+import io.paradaux.friendlybot.managers.MongoManager;
+import io.paradaux.friendlybot.managers.VerificationManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;

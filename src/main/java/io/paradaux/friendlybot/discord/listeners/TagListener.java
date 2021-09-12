@@ -25,10 +25,10 @@
 
 package io.paradaux.friendlybot.discord.listeners;
 
-import io.paradaux.friendlybot.managers.TagManager;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.database.TagEntry;
 import io.paradaux.friendlybot.core.utils.models.types.DiscordEventListener;
+import io.paradaux.friendlybot.managers.TagManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;

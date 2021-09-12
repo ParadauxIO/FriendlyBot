@@ -26,13 +26,13 @@
 package io.paradaux.friendlybot.bot.commands.privileged;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.managers.MongoManager;
-import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.database.ModMailEntry;
 import io.paradaux.friendlybot.core.utils.models.database.ModMailResponse;
 import io.paradaux.friendlybot.core.utils.models.enums.TicketStatus;
 import io.paradaux.friendlybot.core.utils.models.types.PrivilegedCommand;
+import io.paradaux.friendlybot.managers.MongoManager;
+import io.paradaux.friendlybot.managers.PermissionManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;

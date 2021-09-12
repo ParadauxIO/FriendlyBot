@@ -4,11 +4,7 @@ import io.paradaux.friendlybot.core.utils.models.exceptions.NoSuchResourceExcept
 import io.paradaux.friendlybot.managers.IOManager;
 
 import javax.annotation.Nullable;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class IOUtils {
 

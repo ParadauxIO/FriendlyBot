@@ -26,11 +26,11 @@
 package io.paradaux.friendlybot.bot.commands.joke;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.bot.commands.MemeCommand;
 import io.paradaux.friendlybot.core.utils.HttpUtils;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
-import io.paradaux.friendlybot.bot.commands.MemeCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;

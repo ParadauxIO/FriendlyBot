@@ -26,12 +26,12 @@
 package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.core.utils.StringUtils;
 import io.paradaux.friendlybot.core.utils.TimeUtils;
 import io.paradaux.friendlybot.core.utils.embeds.command.UserInfoEmbed;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.PrivilegedCommand;
+import io.paradaux.friendlybot.managers.PermissionManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import org.slf4j.Logger;

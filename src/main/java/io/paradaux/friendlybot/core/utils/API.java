@@ -25,8 +25,8 @@
 
 package io.paradaux.friendlybot.core.utils;
 
-import io.paradaux.friendlybot.managers.*;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.managers.*;
 import org.slf4j.Logger;
 
 public class API {

@@ -25,9 +25,9 @@
 
 package io.paradaux.friendlybot.core.utils.models.types;
 
-import io.paradaux.friendlybot.managers.PermissionManager;
 import io.paradaux.friendlybot.core.utils.embeds.notices.NoPermissionEmbed;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.managers.PermissionManager;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;

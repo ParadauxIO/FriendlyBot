@@ -26,13 +26,13 @@
 package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.managers.MongoManager;
-import io.paradaux.friendlybot.managers.TagManager;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.TimeUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.database.TagEntry;
 import io.paradaux.friendlybot.core.utils.models.types.PrivilegedCommand;
+import io.paradaux.friendlybot.managers.MongoManager;
+import io.paradaux.friendlybot.managers.TagManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
