@@ -1,6 +1,11 @@
 package io.paradaux.friendlybot.bot.command;
 
+import io.paradaux.friendlybot.FBApplication;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
+import io.paradaux.friendlybot.core.utils.embeds.notices.SyntaxErrorEmbed;
+import io.paradaux.friendlybot.core.utils.models.enums.EmbedColour;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +37,19 @@ public abstract class DiscordCommand {
         names.addAll(List.of(aliases));
         names.add(command);
     }
+
+    public void syntaxError(Message message) {
+        message.addReaction("\uD83D\uDEAB").queue();
+        EmbedBuilder builder = new EmbedBuilder();
+
+        builder.setColor(EmbedColour.ISSUE.getColour());
+        builder.setAuthor(message.getAuthor().getAsTag(), null, message.getAuthor().getAvatarUrl());
+        builder.setDescription("There was an error in your syntax.");
+        builder.setFooter("FriendlyBot v" + FBApplication.VERSION);
+
+        message.getChannel().sendMessageEmbeds(builder.build()).queue();
+    }
+
 
     public void unregister() {
         isRegistered = false;

@@ -27,6 +27,9 @@ package io.paradaux.friendlybot.bot.commands.image;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
@@ -40,7 +43,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class XKCDCommand extends BaseCommand {
+public class XKCDCommand extends DiscordCommand {
 
     private static final String XKCD_SEARCH_API = "https://relevantxkcd.appspot.com/process?action=xkcd&query=%s";
     private static final String XKCD_INFO_API = "https://xkcd.com/%s/info.0.json";
@@ -54,7 +57,7 @@ public class XKCDCommand extends BaseCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
         Message message = event.getMessage();
         String args = event.getArgs();
 

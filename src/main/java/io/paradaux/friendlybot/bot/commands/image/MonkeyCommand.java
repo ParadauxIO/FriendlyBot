@@ -2,6 +2,9 @@ package io.paradaux.friendlybot.bot.commands.image;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
@@ -14,7 +17,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class MonkeyCommand extends BaseCommand {
+public class MonkeyCommand extends DiscordCommand {
 
     private static final String MONKEY_API = "https://www.placemonkeys.com/500/350?random";
     private static final String IMGUR_API = "https://api.imgur.com/3/upload/";
@@ -27,7 +30,7 @@ public class MonkeyCommand extends BaseCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
 
         HttpApi http = new HttpApi(getLogger());
 

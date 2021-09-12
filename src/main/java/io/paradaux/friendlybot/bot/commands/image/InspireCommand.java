@@ -27,6 +27,9 @@ package io.paradaux.friendlybot.bot.commands.image;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
@@ -37,20 +40,14 @@ import org.slf4j.Logger;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-@Command(name = "", description = "", permission = "", aliases = {})
-public class InspireCommand extends BaseCommand {
+@Command(name = "inspire", description = "Sends some heartwarming inspirational quotes!", permission = "command.inspire",
+        aliases = {"inspireme", "im"})
+public class InspireCommand extends DiscordCommand {
 
     private static final String INSPIRE_API = "https://inspirobot.me/api?generate=true";
 
-    public InspireCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "inspire";
-        this.aliases = new String[]{"inspireme", "im"};
-        this.help = "Sends some heartwarming inspirational quotes!.";
-    }
-
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
 
         HttpApi http = new HttpApi(getLogger());
         HttpRequest request = http.plainRequest(INSPIRE_API);
@@ -59,9 +56,9 @@ public class InspireCommand extends BaseCommand {
             EmbedBuilder builder = new EmbedBuilder()
                     .setImage(response.body())
                     .setColor(NumberUtils.randomColor())
-                    .setFooter("For " + event.getAuthor().getName());
+                    .setFooter("For " + body.getUser().getName());
 
-            event.getMessage().getChannel().sendMessage(builder.build()).queue();
+            body.getChannel().sendMessageEmbeds(builder.build()).queue();
         }).join();
 
     }

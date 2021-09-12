@@ -27,6 +27,9 @@ package io.paradaux.friendlybot.bot.commands.image;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.HttpUtils;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -52,25 +55,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Command(name = "", description = "", permission = "", aliases = {})
-public class MemeCommand extends BaseCommand {
+@Command(name = "meme", description = "Meme generation!", permission = "command.meme", aliases = {"m"})
+public class MemeCommand extends DiscordCommand {
 
     private static final String GET_MEMES_API = "https://api.imgflip.com/get_memes";
     public static final String CAPTION_MEMES_API = "https://api.imgflip.com/caption_image";
 
-    public MemeCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "meme";
-        this.aliases = new String[]{"m"};
-        this.help = "Meme generation!";
-    }
-
     @Override
-    protected void execute(CommandEvent event) {
-        String[] args = getArgs(event.getArgs());
-        Message message = event.getMessage();
+    public void execute(FGuild guild, CommandBody body) {
+        Message message = body.getMessage();
 
-        switch (args[0]) {
+        switch (body.getArgs()[0]) {
             case "images": {
                 message.reply("I'm sending you a list of available images in your DMs...").queue();
 
@@ -98,9 +93,9 @@ public class MemeCommand extends BaseCommand {
                                 + "](" + meme.getString("url") + ")", false);
                     }
 
-                    event.getAuthor().openPrivateChannel().queue((channel) -> {
+                    body.getUser().openPrivateChannel().queue((channel) -> {
                         for (final var embed : embeds) {
-                            channel.sendMessage(embed).queue();
+                            channel.sendMessageEmbeds(embed).queue();
                         }
                     });
                 }).join();
@@ -108,15 +103,15 @@ public class MemeCommand extends BaseCommand {
             }
 
             case "caption": {
-                if (args.length < 5) {
-                    respondSyntaxError(message, ";meme caption <id> <line1> | <line2>");
+                if (body.getArgs().length < 5) {
+                    syntaxError(message);
                     return;
                 }
 
-                String id = args[1];
+                String id = body.getArgs()[1];
 
                 List<String> args2 = new ArrayList<>();
-                Collections.addAll(args2, args);
+                Collections.addAll(args2, body.getArgs());
 
                 args2.remove(0);
                 args2.remove(0);

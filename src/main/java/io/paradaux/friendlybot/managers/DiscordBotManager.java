@@ -106,65 +106,6 @@ public class DiscordBotManager {
         return instance;
     }
 
-    private CommandClient createCommandClient() {
-        logger.info("Initialising: CommandController");
-
-        CommandClientBuilder builder = new CommandClientBuilder()
-                .setPrefix(config.getCommandPrefix())
-                .setOwnerId("150993042558418944")
-                .setActivity(Activity.listening("modmail queries.."))
-                .addCommands(
-                        // Fun Commands
-                        new CharmanderCommand(config, logger),
-                        new CoinFlipCommand(config, logger),
-                        new DogCommand(config, logger),
-                        new EightBallCommand(config, logger),
-                        new InspireCommand(config, logger),
-                        new LmgtfyCommand(config, logger),
-                        new MemeCommand(config, logger),
-                        new MonkeCommand(config, logger),
-                        new MonkeyCommand(config, logger),
-                        new XKCDCommand(config, logger),
-                        new YodaifyCommand(config, logger),
-
-                        // Moderation Commands
-                        new AnnouncementCommand(config, logger, permissionManager, eventWaiter),
-                        new BanCommand(config, logger, permissionManager),
-                        new CiteCommand(config, logger, permissionManager),
-                        new KickCommand(config, logger, permissionManager),
-                        new LookupCommand(config, logger, permissionManager),
-                        new PruneCommand(config, logger, permissionManager),
-                        new RespondCommand(config, logger, permissionManager, mongo),
-                        new TempBanCommand(config, logger, permissionManager, mongo),
-                        new TicketCommand(config, logger, permissionManager),
-                        new WarnCommand(config, logger, permissionManager),
-
-                        // Technician Commands.
-                        new DmCommand(config, logger, permissionManager),
-                        new SayCommand(config, logger, permissionManager),
-                        new SendEmbedCommand(config, logger, permissionManager),
-                        new VerificationCommand(config, logger, permissionManager),
-
-                        // Utility Commands
-                        new ClearColorCommand(config, logger),
-                        new CommandsCommand(config, logger),
-                        new GoogleCommand(config, logger),
-                        new InviteCommand(logger),
-                        new MemeImagesCommand(config, logger),
-                        new PingCommand(logger),
-                        new RandomColorCommand(config, logger),
-                        new ServerInfoCommand(config, logger),
-                        new SetColorCommand(config, logger, roles),
-                        new TagCommand(config, logger, mongo),
-                        new TagsCommand(logger),
-                        new UserInfoCommand(config, logger, permissionManager),
-                        new WeatherCommand(config, logger),
-                        new WolframAlphaCommand(config, logger)
-                );
-
-        return builder.build();
-    }
-
     /**
      * Creates an Instance of JDA from the provided token.
      * @param token The Discord Token taken from the configuration file.
@@ -173,13 +114,13 @@ public class DiscordBotManager {
      * */
     public JDA login(String token) throws LoginException {
 
-        CommandClient commandClient = createCommandClient();
+
 
         JDABuilder builder = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGE_REACTIONS)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setBulkDeleteSplittingEnabled(false)
-                .addEventListeners(eventWaiter, commandClient,
+                .addEventListeners(eventWaiter,
                         new AlotListener(config, logger),
                         new DotCommandsListener(config, logger),
                         new InsultListener(config, logger),

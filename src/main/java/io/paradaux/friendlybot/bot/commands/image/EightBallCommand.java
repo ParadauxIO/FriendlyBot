@@ -32,6 +32,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.RandomUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -46,22 +49,17 @@ import java.io.InputStreamReader;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-@Command(name = "", description = "", permission = "", aliases = {})
-public class EightBallCommand extends BaseCommand {
+@Command(name = "eightball", description = "Asks the all knowing 8ball", permission = "command.eightball", aliases = {"8b", "8ball"})
+public class EightBallCommand extends DiscordCommand {
 
     private static final String WAITING_IMAGE = "https://i.imgur.com/nBRPBMf.gif";
-    private final JsonObject eightBallResponses;
+    private static final JsonObject eightBallResponses;
 
-    public EightBallCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "eightball";
-        this.help = "Asks the all knowing 8ball";
-        this.aliases = new String[]{"8b", "8ball"};
-
-        InputStream rawResponseData = getClass().getResourceAsStream("/data/8ball.json");
+    static {
+        InputStream rawResponseData = EightBallCommand.class.getResourceAsStream("/data/8ball.json");
         JsonReader reader = new JsonReader(new InputStreamReader(rawResponseData));
 
-        this.eightBallResponses = new Gson().fromJson(reader, JsonObject.class);
+        eightBallResponses = new Gson().fromJson(reader, JsonObject.class);
 
         if (eightBallResponses == null) {
             throw new RuntimeException("Eight ball responses not found.");
@@ -69,11 +67,11 @@ public class EightBallCommand extends BaseCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event) {
-        Message message = event.getMessage();
+    public void execute(FGuild guild, CommandBody body) {
+        Message message = body.getMessage();
 
-        if (event.getArgs().isEmpty()) {
-            respondSyntaxError(message, ";8ball <question>");
+        if (body.getArgs().length == 0) {
+            syntaxError(message);
         }
 
         RandomUtils rUtils = new RandomUtils(new Random());
@@ -134,10 +132,10 @@ public class EightBallCommand extends BaseCommand {
                 .setTitle(response)
                 .build();
 
-        event.getChannel().sendMessage(waitingEmbed).queue((sentMessage) -> {
+        body.getChannel().sendMessageEmbeds(waitingEmbed).queue((sentMessage) -> {
             try {
                 TimeUnit.SECONDS.sleep(4);
-                sentMessage.editMessage(responseEmbed).queue();
+                sentMessage.editMessageEmbeds(responseEmbed).queue();
             } catch (InterruptedException e) {
                 getLogger().error("Interrupted whilst shaking the magic eight ball..");
             }
