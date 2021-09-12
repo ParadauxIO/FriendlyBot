@@ -26,7 +26,7 @@
 package io.paradaux.friendlybot.bot.commands.joke;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
-import io.paradaux.friendlybot.bot.commands.MemeCommand;
+import io.paradaux.friendlybot.bot.commands.image.MemeCommand;
 import io.paradaux.friendlybot.core.utils.HttpUtils;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;

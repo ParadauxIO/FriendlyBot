@@ -28,7 +28,7 @@ package io.paradaux.friendlybot.managers;
 import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import io.paradaux.friendlybot.bot.commands.*;
+import io.paradaux.friendlybot.bot.commands.image.*;
 import io.paradaux.friendlybot.bot.commands.joke.CharmanderCommand;
 import io.paradaux.friendlybot.bot.commands.joke.LmgtfyCommand;
 import io.paradaux.friendlybot.bot.commands.joke.MonkeCommand;
