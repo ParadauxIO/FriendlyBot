@@ -46,8 +46,6 @@ public class CommandListener extends ListenerAdapter {
             command = components[0];
         }
 
-        CommandBody body = new CommandBody(message, command, args);
-
         if (command.equalsIgnoreCase("help")) {
             helpMenu(message);
             return;
@@ -55,7 +53,7 @@ public class CommandListener extends ListenerAdapter {
 
         for (DiscordCommand c : commands) {
             if (c.getCommand().equalsIgnoreCase(command)) {
-                c.execute(guild, body);
+                c.execute(guild, new CommandBody(message, command, c.getPermission(), c.getDescription(), args));
                 break;
             }
         }
@@ -100,8 +98,7 @@ public class CommandListener extends ListenerAdapter {
 
         Command cmd = clazz.getAnnotation(Command.class);
         System.out.println(cmd.name() + "cmd.description");
-        command.register(cmd.name(), cmd.description());
-
+        command.register(cmd.name(), cmd.description(), cmd.permission());
         for (DiscordCommand c : commands) {
             if (c.getCommand().equals(command.getCommand())) {
                 throw new CommandException("A command by this name has already been registered.");
