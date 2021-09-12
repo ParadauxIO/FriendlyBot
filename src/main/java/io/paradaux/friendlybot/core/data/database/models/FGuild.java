@@ -1,15 +1,18 @@
-package io.paradaux.friendlybot.data.database.models;
+package io.paradaux.friendlybot.core.data.database.models;
 
 import io.ebean.Model;
+import io.ebean.annotation.DbJsonB;
 import net.dv8tion.jda.api.entities.Guild;
 
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.List;
 
 @Entity
+@Table(name = "guilds")
 public class FGuild extends Model {
 
     @Id
@@ -33,7 +36,10 @@ public class FGuild extends Model {
 
     private String messageLogId;
 
+    @DbJsonB
     private List<String> moderators;
+
+    @DbJsonB
     private List<String> administrators;
 
     private Integer lastIncidentId;

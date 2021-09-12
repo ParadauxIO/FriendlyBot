@@ -1,4 +1,4 @@
-package io.paradaux.friendlybot.data.database.models;
+package io.paradaux.friendlybot.core.data.database.models;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
