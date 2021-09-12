@@ -29,6 +29,7 @@ repositories {
 
 dependencies {
 
+    implementation 'org.postgresql:postgresql:42.2.23'
     implementation 'net.dv8tion:JDA:4.3.0_300'
     implementation 'pw.chew:jda-chewtils:1.20'
     implementation 'org.slf4j:slf4j-api:1.7.32'
@@ -38,7 +39,6 @@ dependencies {
     implementation 'io.paradaux.http:HttpApi:1.1.2'
     implementation 'io.ebean:ebean:12.11.3'
     implementation 'com.h2database:h2:1.4.200'
-    implementation 'org.postgresql:postgresql:42.2.23.jre7'
     implementation 'org.spongepowered:configurate-hocon:4.1.2'
 
     annotationProcessor 'io.ebean:querybean-generator:12.11.3'
