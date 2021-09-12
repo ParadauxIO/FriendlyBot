@@ -2,7 +2,8 @@ package io.paradaux.friendlybot.bot;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import io.paradaux.friendlybot.bot.command.CommandListener;
-import io.paradaux.friendlybot.data.config.FConfiguration;
+import io.paradaux.friendlybot.bot.commands.CatCommand;
+import io.paradaux.friendlybot.core.data.config.FConfiguration;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -14,12 +15,19 @@ public class FBot {
 
     private final FConfiguration config;
     private final EventWaiter eventWaiter;
+    private final CommandListener commandListener;
     private final JDA client;
 
     public FBot(FConfiguration config) throws LoginException {
         this.config = config;
         this.eventWaiter = new EventWaiter();
+        this.commandListener = new CommandListener();
+        registerCommands();
         this.client = login(config.getBotToken());
+    }
+
+    public void registerCommands() {
+        commandListener.registerCommand(new CatCommand());
     }
 
     /**
@@ -33,7 +41,7 @@ public class FBot {
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setBulkDeleteSplittingEnabled(false)
-                .addEventListeners(eventWaiter, new CommandListener());
+                .addEventListeners(eventWaiter, commandListener);
 
         if (token == null) {
             throw new LoginException("The Configuration File does not contain a token.");
