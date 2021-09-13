@@ -27,6 +27,9 @@ package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.TimeUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -42,7 +45,7 @@ import java.net.http.HttpResponse;
 import java.util.Date;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class MemeImagesCommand extends BaseCommand {
+public class MemeImagesCommand extends DiscordCommand {
 
     private static final String GET_MEMES_API = "https://api.imgflip.com/get_memes";
 
@@ -53,7 +56,7 @@ public class MemeImagesCommand extends BaseCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
         HttpApi http = new HttpApi();
         HttpRequest request = http.plainRequest(GET_MEMES_API);
 

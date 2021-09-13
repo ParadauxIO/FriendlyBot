@@ -4,6 +4,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.StringUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -18,7 +21,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class WeatherCommand extends BaseCommand {
+public class WeatherCommand extends DiscordCommand {
 
     private static final String WEATHER_API = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s";
     private static final String MORE_INFORMATION_LINK = "https://openweathermap.org/city/%d";
@@ -33,7 +36,7 @@ public class WeatherCommand extends BaseCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
         Message message = event.getMessage();
 
         HttpApi http = new HttpApi(getLogger());

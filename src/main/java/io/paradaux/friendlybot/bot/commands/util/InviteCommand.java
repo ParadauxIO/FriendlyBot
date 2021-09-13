@@ -28,6 +28,9 @@ package io.paradaux.friendlybot.bot.commands.util;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.FriendlyBot;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
 import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
@@ -42,7 +45,7 @@ import org.slf4j.Logger;
  * */
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class InviteCommand extends BaseCommand {
+public class InviteCommand extends DiscordCommand {
 
     public InviteCommand(Logger logger) {
         super(logger);
@@ -52,7 +55,7 @@ public class InviteCommand extends BaseCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
         Message message = event.getMessage();
 
         String inviteInfo = "This is a utility discord bot for moderating discord servers pertaining to computer science, with a "

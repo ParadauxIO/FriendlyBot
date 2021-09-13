@@ -2,6 +2,9 @@ package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.database.UserSettingsEntry;
@@ -19,7 +22,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class SetColorCommand extends BaseCommand {
+public class SetColorCommand extends DiscordCommand {
 
     private static final short COOLDOWN = 7;
     private static final Pattern HEX_PATTERN = Pattern.compile("(0x)?[0-9a-f]+");
@@ -34,7 +37,7 @@ public class SetColorCommand extends BaseCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
         final Message message = event.getMessage();
         final Guild guild = event.getGuild();
         final String chosenColor = event.getArgs().replace("0x", "").toUpperCase();

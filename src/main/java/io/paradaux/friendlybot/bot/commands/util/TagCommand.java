@@ -27,6 +27,9 @@ package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.TimeUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -44,7 +47,7 @@ import java.util.Date;
 import java.util.Locale;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class TagCommand extends PrivilegedCommand {
+public class TagCommand extends DiscordCommand {
 
     private final MongoManager mongo;
 
@@ -56,7 +59,7 @@ public class TagCommand extends PrivilegedCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
         Message message = event.getMessage();
         String[] args = getArgs(event.getArgs());
 

@@ -29,6 +29,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.StringUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
@@ -40,7 +43,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class GoogleCommand extends BaseCommand {
+public class GoogleCommand extends DiscordCommand {
 
     private static final String QUERY_URL = "https://www.googleapis.com/customsearch/v1?key=%s&q=%s&safe=ACTIVE";
     private final String apiKey;
@@ -54,7 +57,7 @@ public class GoogleCommand extends BaseCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
         Message message = event.getMessage();
         String query = event.getArgs();
 

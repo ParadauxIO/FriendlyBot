@@ -27,6 +27,9 @@ package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.StringUtils;
 import io.paradaux.friendlybot.core.utils.TimeUtils;
 import io.paradaux.friendlybot.core.utils.embeds.command.UserInfoEmbed;
@@ -40,7 +43,7 @@ import org.slf4j.Logger;
 import java.util.List;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class UserInfoCommand extends PrivilegedCommand {
+public class UserInfoCommand extends DiscordCommand {
 
     public UserInfoCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
         super(config, logger, permissionManager);
@@ -50,7 +53,7 @@ public class UserInfoCommand extends PrivilegedCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
         Member member;
         String argument = event.getArgs();
 

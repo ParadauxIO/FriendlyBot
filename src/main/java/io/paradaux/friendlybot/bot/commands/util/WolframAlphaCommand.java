@@ -27,6 +27,9 @@ package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
@@ -40,7 +43,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class WolframAlphaCommand extends BaseCommand {
+public class WolframAlphaCommand extends DiscordCommand {
 
     private static final String WOLFRAM_API = "https://api.wolframalpha.com/v1/result?i=%s&appid=%s&";
     private static final String WOLFRAM_USER_LINK = "https://www.wolframalpha.com/input/?i=%s";
@@ -55,7 +58,7 @@ public class WolframAlphaCommand extends BaseCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
         Message message = event.getMessage();
         String args = event.getArgs();
 

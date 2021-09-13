@@ -2,6 +2,9 @@ package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.database.UserSettingsEntry;
@@ -15,20 +18,12 @@ import org.slf4j.Logger;
 
 import java.util.List;
 
-@Command(name = "", description = "", permission = "", aliases = {})
-public class ClearColorCommand extends BaseCommand {
-
-    public ClearColorCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "clearcolor";
-        this.aliases = new String[]{"clearcolour"};
-        this.help = "Clear a custom-color role.";
-    }
+@Command(name = "clearcolor", description = "Clear a custom-color role.", permission = "util.color", aliases = {"clearcolour"})
+public class ClearColorCommand extends DiscordCommand {
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
         final Message message = event.getMessage();
-        final Guild guild = event.getGuild();
 
         UserSettingsManager settings = UserSettingsManager.getInstance();
         UserSettingsEntry entry = settings.getProfileById(guild.getId(), event.getAuthor().getId());

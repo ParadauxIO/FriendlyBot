@@ -2,6 +2,9 @@ package io.paradaux.friendlybot.bot.commands.util;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.ImageUtils;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -17,7 +20,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class RandomColorCommand extends BaseCommand {
+public class RandomColorCommand extends DiscordCommand {
 
     private static final String IMGUR_API = "https://api.imgur.com/3/upload/";
 
@@ -29,7 +32,7 @@ public class RandomColorCommand extends BaseCommand {
     }
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
         short color = NumberUtils.randomColor();
 
         EmbedBuilder embed = new EmbedBuilder()
