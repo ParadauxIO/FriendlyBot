@@ -136,11 +136,11 @@ public class MemeCommand extends DiscordCommand {
                     bodyBuilder.addFormDataPart("text" + i, lines[i]);
                 }
 
-                RequestBody body = bodyBuilder.build();
+                RequestBody reqBody = bodyBuilder.build();
 
                 Request request = new Request.Builder()
                         .url(CAPTION_MEMES_API)
-                        .method("POST", body)
+                        .method("POST", reqBody)
                         .build();
 
                 HttpUtils.sendAsync(client, request).thenAccept((response -> {
@@ -160,9 +160,9 @@ public class MemeCommand extends DiscordCommand {
                         EmbedBuilder builder = new EmbedBuilder()
                                 .setImage(responseJson.getJSONObject("data").getString("url"))
                                 .setColor(NumberUtils.randomColor())
-                                .setFooter("For " + event.getAuthor().getName());
+                                .setFooter("For " + body.getUser().getName());
 
-                        event.getChannel().sendMessage(builder.build()).queue();
+                        body.getChannel().sendMessage(builder.build()).queue();
 
                     } catch (IOException ok) {
                         getLogger().error("Error occurred whilst interacting with mailgun.");
@@ -174,7 +174,7 @@ public class MemeCommand extends DiscordCommand {
             }
 
             default: {
-                respondSyntaxError(message, ";meme <images/caption> <| separated text blocks>");
+               syntaxError(message);
                 break;
             }
 

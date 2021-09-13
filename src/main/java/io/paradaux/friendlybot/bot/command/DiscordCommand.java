@@ -1,6 +1,8 @@
 package io.paradaux.friendlybot.bot.command;
 
 import io.paradaux.friendlybot.FBApplication;
+import io.paradaux.friendlybot.core.data.config.FConfiguration;
+import io.paradaux.friendlybot.core.data.config.FConfigurationLoader;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.embeds.notices.SyntaxErrorEmbed;
 import io.paradaux.friendlybot.core.utils.models.enums.EmbedColour;
@@ -50,6 +52,10 @@ public abstract class DiscordCommand {
         message.getChannel().sendMessageEmbeds(builder.build()).queue();
     }
 
+
+    public FConfiguration getConfig() {
+        return FBApplication.getConfig();
+    }
 
     public void unregister() {
         isRegistered = false;

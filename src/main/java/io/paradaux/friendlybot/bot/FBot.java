@@ -27,7 +27,7 @@ public class FBot {
     }
 
     public void registerCommands() {
-        commandListener.registerCommand(
+        commandListener.registerCommands(
                 new CatCommand(),
                 new CoinFlipCommand(),
                 new DogCommand(),

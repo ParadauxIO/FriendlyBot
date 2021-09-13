@@ -27,7 +27,10 @@ package io.paradaux.friendlybot.bot.commands.joke;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.bot.commands.image.MemeCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.HttpUtils;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
@@ -45,28 +48,21 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.io.Reader;
 
-@Command(name = "", description = "", permission = "", aliases = {})
-public class YodaifyCommand extends BaseCommand {
+@Command(name = "yodaify", description = "Convert english into Yoga's Language!", permission = "command.yodaify", aliases = {"yoda", "yodify"})
+public class YodaifyCommand extends DiscordCommand {
 
     private static final String YODA_IMAGE_ID = "14371066";
 
-    public YodaifyCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "yodaify";
-        this.aliases = new String[]{"yoda", "yodify"};
-        this.help = "Convert english into Yoga's Language!";
-    }
-
     @Override
-    protected void execute(CommandEvent event) {
-        Message message = event.getMessage();
+    public void execute(FGuild guild, CommandBody body) {
+        Message message = body.getMessage();
 
-        if (event.getArgs().isEmpty()) {
-            respondSyntaxError(message, ";yoda <sentence>");
+        if (body.getArgs().length == 0) {
+            syntaxError(message);
             return;
         }
 
-        String[] tokenisedSentence = event.getArgs().split("\\. *");
+        String[] tokenisedSentence = String.join(" ", body.getArgs()).split("\\. *");
 
         StringBuilder builder = new StringBuilder();
 
@@ -89,11 +85,11 @@ public class YodaifyCommand extends BaseCommand {
 
         bodyBuilder.addFormDataPart("text0", builder.toString());
 
-        RequestBody body = bodyBuilder.build();
+        RequestBody reqBody = bodyBuilder.build();
 
         Request request = new Request.Builder()
                 .url(MemeCommand.CAPTION_MEMES_API)
-                .method("POST", body)
+                .method("POST", reqBody)
                 .build();
 
         HttpUtils.sendAsync(client, request).thenAccept((response -> {
@@ -113,10 +109,10 @@ public class YodaifyCommand extends BaseCommand {
                 MessageEmbed embed = new EmbedBuilder()
                         .setImage(responseJson.getJSONObject("data").getString("url"))
                         .setColor(NumberUtils.randomColor())
-                        .setFooter("For " + event.getAuthor().getName())
+                        .setFooter("For " + body.getUser().getName())
                         .build();
 
-                event.getChannel().sendMessage(embed).queue();
+                body.getChannel().sendMessage(embed).queue();
 
             } catch (IOException ok) {
                 getLogger().error("Error occurred whilst interacting with Imgflip");

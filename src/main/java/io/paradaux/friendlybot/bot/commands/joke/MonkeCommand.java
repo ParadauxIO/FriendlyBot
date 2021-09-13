@@ -2,7 +2,10 @@ package io.paradaux.friendlybot.bot.commands.joke;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.bot.command.CommandBody;
+import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.bot.commands.image.MemeCommand;
+import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.HttpUtils;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.RandomUtils;
@@ -22,8 +25,8 @@ import java.io.Reader;
 import java.util.Collections;
 import java.util.HashSet;
 
-@Command(name = "", description = "", permission = "", aliases = {})
-public class MonkeCommand extends BaseCommand {
+@Command(name = "monke", description = "MONKE.", permission = "command.monke", aliases = {})
+public class MonkeCommand extends DiscordCommand {
 
     private static final HashSet<String> MONKE_IDS = new HashSet<>();
 
@@ -31,15 +34,8 @@ public class MonkeCommand extends BaseCommand {
         Collections.addAll(MONKE_IDS, "289081819", "200213111");
     }
 
-    public MonkeCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "monke";
-        this.aliases = new String[]{"MONKE"};
-        this.help = "MONKE.";
-    }
-
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(FGuild guild, CommandBody body) {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
 
@@ -48,20 +44,20 @@ public class MonkeCommand extends BaseCommand {
                 .addFormDataPart("username", getConfig().getImgflipUsername())
                 .addFormDataPart("password", getConfig().getImgflipPassword());
 
-        String[] lines = event.getArgs().split("\\|");
+        String[] lines = String.join(" ", body.getArgs()).split("\\|");
 
         if (lines.length != 2) {
-            respondSyntaxError(event.getMessage(), ";monke this is line one | this is line 2");
+            syntaxError(body.getMessage());
         }
 
         bodyBuilder.addFormDataPart("text0", lines[0]);
         bodyBuilder.addFormDataPart("text1", lines[1]);
 
-        RequestBody body = bodyBuilder.build();
+        RequestBody reqBody = bodyBuilder.build();
 
         Request request = new Request.Builder()
                 .url(MemeCommand.CAPTION_MEMES_API)
-                .method("POST", body)
+                .method("POST", reqBody)
                 .build();
 
         HttpUtils.sendAsync(client, request).thenAccept((response -> {
@@ -78,9 +74,9 @@ public class MonkeCommand extends BaseCommand {
 
                 JSONObject responseJson = new JSONObject(strBuilder.toString());
 
-                MessageEmbed embed = new EmbedBuilder().setImage(responseJson.getJSONObject("data").getString("url")).setColor(NumberUtils.randomColor()).setFooter("For " + event.getAuthor().getName()).build();
+                MessageEmbed embed = new EmbedBuilder().setImage(responseJson.getJSONObject("data").getString("url")).setColor(NumberUtils.randomColor()).setFooter("For " + body.getUser().getName()).build();
 
-                event.getChannel().sendMessage(embed).queue();
+                body.getChannel().sendMessage(embed).queue();
 
             } catch (IOException ok) {
                 getLogger().error("Error occurred whilst interacting with Imgflip");

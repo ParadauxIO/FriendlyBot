@@ -23,6 +23,9 @@ public class FBApplication {
     private static GuildCache guildCache;
     private static EBeanConnection eBeanConnection;
 
+    public static FConfiguration getConfig() {
+        return config;
+    }
 
     public static void main(String[] args) throws ConfigurateException, LoginException {
         localeManager = new LocaleManager();

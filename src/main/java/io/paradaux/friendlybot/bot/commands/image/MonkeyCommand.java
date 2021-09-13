@@ -16,18 +16,11 @@ import org.slf4j.Logger;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-@Command(name = "", description = "", permission = "", aliases = {})
+@Command(name = "monkey", description = "Get a monkey image !", permission = "command.monkey")
 public class MonkeyCommand extends DiscordCommand {
 
     private static final String MONKEY_API = "https://www.placemonkeys.com/500/350?random";
     private static final String IMGUR_API = "https://api.imgur.com/3/upload/";
-
-    public MonkeyCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "monkey";
-        this.aliases = new String[0];
-        this.help = "Get a monkey image !";
-    }
 
     @Override
     public void execute(FGuild guild, CommandBody body) {
@@ -47,9 +40,9 @@ public class MonkeyCommand extends DiscordCommand {
             EmbedBuilder builder = new EmbedBuilder()
                     .setColor(NumberUtils.randomColor())
                     .setImage(imgurMeta.getJSONObject("data").getString("link"))
-                    .setFooter("For " + event.getAuthor().getName());
+                    .setFooter("For " + body.getUser().getName());
 
-            event.getChannel().sendMessage(builder.build()).queue();
+            body.getChannel().sendMessageEmbeds(builder.build()).queue();
         }).join();
 
     }
