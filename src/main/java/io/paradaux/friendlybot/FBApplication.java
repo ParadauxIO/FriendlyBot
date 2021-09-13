@@ -1,7 +1,7 @@
 package io.paradaux.friendlybot;
 
 import io.paradaux.friendlybot.bot.FBot;
-import io.paradaux.friendlybot.core.cache.GuildCache;
+import io.paradaux.friendlybot.core.data.cache.GuildCache;
 import io.paradaux.friendlybot.core.data.config.FConfiguration;
 import io.paradaux.friendlybot.core.data.config.FConfigurationLoader;
 import io.paradaux.friendlybot.core.data.database.EBeanConnection;

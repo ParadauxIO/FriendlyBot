@@ -1,4 +1,4 @@
-package io.paradaux.friendlybot.core.cache;
+package io.paradaux.friendlybot.core.data.cache;
 
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.data.database.models.query.QFGuild;

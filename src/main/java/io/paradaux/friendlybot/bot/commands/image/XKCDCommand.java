@@ -41,8 +41,9 @@ import org.slf4j.Logger;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
 
-@Command(name = "", description = "", permission = "", aliases = {})
+@Command(name = "xkcd", description = "Links to the specified xkcd", permission = "command.xkcd")
 public class XKCDCommand extends DiscordCommand {
 
     private static final String XKCD_SEARCH_API = "https://relevantxkcd.appspot.com/process?action=xkcd&query=%s";
@@ -50,25 +51,19 @@ public class XKCDCommand extends DiscordCommand {
     private static final String XKCD_PAGE_FORMAT = "https://xkcd.com/%s/";
     private static final String XKCD_ICON = "https://webcomicshub.com/uploads/webcomics/xkcd-1280x1024.png";
 
-    public XKCDCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "xkcd";
-        this.help = "Links to the specified xkcd";
-    }
-
     @Override
     public void execute(FGuild guild, CommandBody body) {
-        Message message = event.getMessage();
-        String args = event.getArgs();
+        Message message = body.getMessage();
+        String[] args = body.getArgs();
 
-        if (args == null || args.isEmpty()) {
-            respondSyntaxError(message, ";xkcd <query>");
+        if (args == null || args.length == 0) {
+            syntaxError(message);
             return;
         }
 
         HttpApi http = new HttpApi(getLogger());
 
-        HttpRequest request = http.plainRequest(String.format(XKCD_SEARCH_API, args.replace(" ", "%20")));
+        HttpRequest request = http.plainRequest(String.format(XKCD_SEARCH_API, String.join("%20", args)));
         http.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenAccept((response) -> {
             String returnedId = response.body().split(" ")[2].replaceAll("\n","");
 
