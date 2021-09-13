@@ -1,7 +1,7 @@
 package io.paradaux.friendlybot.bot.command;
 
 import io.paradaux.friendlybot.bot.command.exception.CommandException;
-import io.paradaux.friendlybot.core.cache.GuildCache;
+import io.paradaux.friendlybot.core.data.cache.GuildCache;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -107,6 +107,15 @@ public class CommandListener extends ListenerAdapter {
         }
 
         commands.add(command);
+    }
+
+    /**
+     * Register a list of commands.
+     * */
+    public void registerCommands(DiscordCommand... commands) {
+        for (DiscordCommand command : commands) {
+            registerCommand(command);
+        }
     }
 
 
