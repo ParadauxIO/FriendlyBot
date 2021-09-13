@@ -2,7 +2,7 @@ package io.paradaux.friendlybot.bot;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import io.paradaux.friendlybot.bot.command.CommandListener;
-import io.paradaux.friendlybot.bot.commands.image.CatCommand;
+import io.paradaux.friendlybot.bot.commands.image.*;
 import io.paradaux.friendlybot.core.data.config.FConfiguration;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -27,7 +27,16 @@ public class FBot {
     }
 
     public void registerCommands() {
-        commandListener.registerCommand(new CatCommand());
+        commandListener.registerCommand(
+                new CatCommand(),
+                new CoinFlipCommand(),
+                new DogCommand(),
+                new EightBallCommand(),
+                new InspireCommand(),
+                new MemeCommand(),
+                new MonkeyCommand(),
+                new XKCDCommand()
+        );
     }
 
     /**
