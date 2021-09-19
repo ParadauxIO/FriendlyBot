@@ -107,16 +107,16 @@ public class TagCommand extends DiscordCommand {
                     return;
                 }
 
-                if (!(entry.getDiscordId().equals(body.getUser().getId()) || isStaff(body.getGuild(), body.getAuthor().getId()))) {
-                    // Not staff, not the owner.
-                    MessageEmbed embed = new EmbedBuilder()
-                            .setColor(0xeb5132)
-                            .setTitle("You do not have permission to modify this tag.")
-                            .setDescription("This tag is owned by " + retrieveMember(guild.getGuild(), entry.getDiscordId()))
-                            .build();
-                    message.getChannel().sendMessageEmbeds(embed).queue();
-                    return;
-                }
+//                if (!(entry.getDiscordId().equals(body.getUser().getId()) || isStaff(guild.getGuild(), body.getUser().getId()))) {
+//                    // Not staff, not the owner.
+//                    MessageEmbed embed = new EmbedBuilder()
+//                            .setColor(0xeb5132)
+//                            .setTitle("You do not have permission to modify this tag.")
+//                            .setDescription("This tag is owned by " + retrieveMember(guild.getGuild(), entry.getDiscordId()))
+//                            .build();
+//                    message.getChannel().sendMessageEmbeds(embed).queue();
+//                    return;
+//                }
 
                 tags.removeTag(entry);
 

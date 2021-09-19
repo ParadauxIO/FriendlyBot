@@ -43,41 +43,41 @@ public class UserInfoCommand extends DiscordCommand {
     @Override
     public void execute(FGuild guild, CommandBody body) {
         Member member;
-        String argument = event.getArgs();
+        String argument = body.getArgStr();
 
-        if (!argument.isEmpty() && isStaff(event.getGuild(), event.getAuthor().getId())) {
-            member = retrieveMember(event.getGuild(), parseTarget(event.getMessage(), getArgs(argument)[0]));
+//        if (!argument.isEmpty() && isStaff(guild.getGuild(), body.getUser().getId())) {
+//            member = retrieveMember(guild.getGuild(), parseTarget(body.getMessage(), body.getArgs()[0]));
+//
+//            if (member == null) {
+//                syntaxError(body.getMessage());
+//                return;
+//            }
+//        } else {
+//            member = body.getMember();
+//        }
 
-            if (member == null) {
-                syntaxError(body.getMessage());
-                return;
-            }
-        } else {
-            member = body.getMember();
-        }
+//        String tag = member.getUser().getAsTag();
+       // String avatarUrl = member.getUser().getAvatarUrl();
 
-        String tag = member.getUser().getAsTag();
-        String avatarUrl = member.getUser().getAvatarUrl();
+       // String status = StringUtils.toTitleCase(member.getOnlineStatus().toString());
 
-        String status = StringUtils.toTitleCase(member.getOnlineStatus().toString());
+       // String accountCreated = TimeUtils.formatTime(member.getUser().getTimeCreated());
+     //   String joinedServer = TimeUtils.formatTime(member.getTimeJoined());
+     //   String nickname = member.getNickname() != null ? member.getNickname() : "No Nickname.";
 
-        String accountCreated = TimeUtils.formatTime(member.getUser().getTimeCreated());
-        String joinedServer = TimeUtils.formatTime(member.getTimeJoined());
-        String nickname = member.getNickname() != null ? member.getNickname() : "No Nickname.";
-
-        List<Role> roles = member.getRoles();
+        //List<Role> roles = member.getRoles();
         StringBuilder builder = new StringBuilder();
 
         builder.append("[ ");
         int i = 0;
-        for (; i < member.getRoles().size()-1; i++) {
-            builder.append(member.getRoles().get(i).getName()).append(", ");
-        }
+      //  for (; i < member.getRoles().size()-1; i++) {
+        //    builder.append(member.getRoles().get(i).getName()).append(", ");
+      //  }
 
-        builder.append(roles.get(i).getName()).append(" ]");
+        //builder.append(roles.get(i).getName()).append(" ]");
 
-        UserInfoEmbed embed = new UserInfoEmbed(tag, avatarUrl, status, accountCreated, joinedServer, builder.toString(), nickname);
-        embed.sendEmbed(guild.getGuild().getJDA().getTextChannelById(body.getMessage().getChannel().getId()));
+       // UserInfoEmbed embed = new UserInfoEmbed(tag, avatarUrl, status, accountCreated, joinedServer, builder.toString(), nickname);
+      //  embed.sendEmbed(guild.getGuild().getJDA().getTextChannelById(body.getMessage().getChannel().getId()));
 
     }
 }

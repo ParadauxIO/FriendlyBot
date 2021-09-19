@@ -42,50 +42,54 @@ import java.net.http.HttpResponse;
 
 @Command(name = "", description = "", permission = "", aliases = {})
 public class WolframAlphaCommand extends DiscordCommand {
-
-    private static final String WOLFRAM_API = "https://api.wolframalpha.com/v1/result?i=%s&appid=%s&";
-    private static final String WOLFRAM_USER_LINK = "https://www.wolframalpha.com/input/?i=%s";
-    private static final String IMGUR_API = "https://api.imgur.com/3/upload/";
-    private static final String WOLFRAM_ICON = "https://www.wolframalpha.com/_next/static/images/share_3G6HuGr6.png";
-
-    public WolframAlphaCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "wolframalpha";
-        this.aliases = new String[]{"wa"};
-        this.help = "Queries WolframAlpha's API.";
-    }
-
     @Override
     public void execute(FGuild guild, CommandBody body) {
-        Message message = event.getMessage();
-        String args = event.getArgs();
-
-        if (args == null || args.isEmpty()) {
-            respondSyntaxError(message, ";wa <query>");
-            return;
-        }
-
-        HttpApi http = new HttpApi(getLogger());
-
-        // Get's the image from WA
-        HttpRequest request = http.plainRequest(String.format(WOLFRAM_API, args.replace(" ", "%20"), getConfig().getWolframAlphaApplicationId()));
-        http.sendAsync(request, HttpResponse.BodyHandlers.ofByteArray()).thenAccept((response) -> {
-            // Send that image to imgur
-            String[] headers = {"Authorization", "Client-ID " + getConfig().getImgurClientId()};
-            HttpRequest request2 = http.postBytes(IMGUR_API, response.body(), headers);
-
-            HttpResponse<String> response2 = http.sendSync(request2, HttpResponse.BodyHandlers.ofString());
-            JSONObject imgurMeta = new JSONObject(response2.body());
-
-            EmbedBuilder builder = new EmbedBuilder()
-                    .setAuthor("Wolfram Alpha Query.", String.format(WOLFRAM_USER_LINK, args.replace(" ", "%20")), WOLFRAM_ICON)
-                    .setColor(NumberUtils.randomColor())
-                    .setImage(imgurMeta.getJSONObject("data").getString("link"))
-                    .setFooter("Query: " + args);
-
-            message.getChannel().sendMessage(builder.build()).queue();
-        }).join();
 
     }
+
+//    private static final String WOLFRAM_API = "https://api.wolframalpha.com/v1/result?i=%s&appid=%s&";
+//    private static final String WOLFRAM_USER_LINK = "https://www.wolframalpha.com/input/?i=%s";
+//    private static final String IMGUR_API = "https://api.imgur.com/3/upload/";
+//    private static final String WOLFRAM_ICON = "https://www.wolframalpha.com/_next/static/images/share_3G6HuGr6.png";
+//
+//    public WolframAlphaCommand(ConfigurationEntry config, Logger logger) {
+//        super(config, logger);
+//        this.name = "wolframalpha";
+//        this.aliases = new String[]{"wa"};
+//        this.help = "Queries WolframAlpha's API.";
+//    }
+//
+//    @Override
+//    public void execute(FGuild guild, CommandBody body) {
+//        Message message = event.getMessage();
+//        String args = event.getArgs();
+//
+//        if (args == null || args.isEmpty()) {
+//            respondSyntaxError(message, ";wa <query>");
+//            return;
+//        }
+//
+//        HttpApi http = new HttpApi(getLogger());
+//
+//        // Get's the image from WA
+//        HttpRequest request = http.plainRequest(String.format(WOLFRAM_API, args.replace(" ", "%20"), getConfig().getWolframAlphaApplicationId()));
+//        http.sendAsync(request, HttpResponse.BodyHandlers.ofByteArray()).thenAccept((response) -> {
+//            // Send that image to imgur
+//            String[] headers = {"Authorization", "Client-ID " + getConfig().getImgurClientId()};
+//            HttpRequest request2 = http.postBytes(IMGUR_API, response.body(), headers);
+//
+//            HttpResponse<String> response2 = http.sendSync(request2, HttpResponse.BodyHandlers.ofString());
+//            JSONObject imgurMeta = new JSONObject(response2.body());
+//
+//            EmbedBuilder builder = new EmbedBuilder()
+//                    .setAuthor("Wolfram Alpha Query.", String.format(WOLFRAM_USER_LINK, args.replace(" ", "%20")), WOLFRAM_ICON)
+//                    .setColor(NumberUtils.randomColor())
+//                    .setImage(imgurMeta.getJSONObject("data").getString("link"))
+//                    .setFooter("Query: " + args);
+//
+//            message.getChannel().sendMessage(builder.build()).queue();
+//        }).join();
+//
+//    }
 
 }
