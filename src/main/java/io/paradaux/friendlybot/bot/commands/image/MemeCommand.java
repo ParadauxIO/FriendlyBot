@@ -25,16 +25,13 @@
 
 package io.paradaux.friendlybot.bot.commands.image;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
 import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.HttpUtils;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
-import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.exceptions.VerificationException;
-import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
 import io.paradaux.http.HttpApi;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -45,7 +42,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.Reader;

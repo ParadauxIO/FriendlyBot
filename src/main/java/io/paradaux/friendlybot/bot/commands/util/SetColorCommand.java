@@ -1,27 +1,23 @@
 package io.paradaux.friendlybot.bot.commands.util;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
 import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
-import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.database.UserSettingsEntry;
-import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
 import io.paradaux.friendlybot.managers.RoleManager;
 import io.paradaux.friendlybot.managers.UserSettingsManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
-import org.slf4j.Logger;
 
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
-@Command(name = "", description = "", permission = "", aliases = {})
+@Command(name = "setcolor", description = "Set your own user color!", permission = "util.usercolor", aliases = {"setcolour"})
 public class SetColorCommand extends DiscordCommand {
 
     private static final short COOLDOWN = 7;
@@ -29,21 +25,18 @@ public class SetColorCommand extends DiscordCommand {
 
     private final RoleManager roles;
 
-    public SetColorCommand(ConfigurationEntry config, Logger logger, RoleManager roles) {
-        super(config, logger);
-        this.name = "setcolor";
-        this.aliases = new String[]{"setcolour"};
+    public SetColorCommand(RoleManager roles) {
         this.roles = roles;
     }
 
     @Override
     public void execute(FGuild guild, CommandBody body) {
-        final Message message = event.getMessage();
-        final Guild guild = event.getGuild();
-        final String chosenColor = event.getArgs().replace("0x", "").toUpperCase();
+        final Message message = body.getMessage();
+        final Guild jDuild = guild.getGuild();
+        final String chosenColor = body.getArgStr().replace("0x", "").toUpperCase();
 
-        if (event.getArgs().isEmpty()) {
-            event.getChannel().sendMessage(new EmbedBuilder()
+        if (body.isArgsEmpty()) {
+            body.getChannel().sendMessageEmbeds(new EmbedBuilder()
                     .setColor(NumberUtils.randomColor())
                     .setTitle("Setting Your Uniquely Coloured Role")
                     .setDescription("To get your own coloured role, run `;setcolour <hex>`. This has a 3 day cooldown, so make sure "
@@ -54,7 +47,7 @@ public class SetColorCommand extends DiscordCommand {
         }
 
         if (!(HEX_PATTERN.matcher(chosenColor).results().count() > 0)) {
-            message.getChannel().sendMessage(new EmbedBuilder()
+            message.getChannel().sendMessageEmbeds(new EmbedBuilder()
                     .setColor(0xeb5132)
                     .setTitle("Invalid Hex Color")
                     .setDescription("Please format your color as a hex string between `000000` and `FFFFFF`")
@@ -63,7 +56,7 @@ public class SetColorCommand extends DiscordCommand {
         }
 
         UserSettingsManager settings = UserSettingsManager.getInstance();
-        UserSettingsEntry entry = settings.getProfileById(guild.getId(), event.getAuthor().getId());
+        UserSettingsEntry entry = settings.getProfileById(jDuild.getId(), body.getUser().getId());
         if (entry.getLastSetColor() != null && !settings.hasCooldownElapsed(entry)) {
             message.reply("You must wait until your cooldown expires before running this command again.").queue();
             return;
@@ -74,16 +67,16 @@ public class SetColorCommand extends DiscordCommand {
             return;
         }
 
-        List<Role> allRoles = guild.getRolesByName("Color Roles Begin Here", true);
+        List<Role> allRoles = jDuild.getRolesByName("Color Roles Begin Here", true);
         if (allRoles.isEmpty()) {
             throw new RuntimeException("Color role separator not present.");
         }
 
         Role separatorRole = allRoles.get(0);
 
-        if (roles.checkForConflicts(guild, chosenColor)) {
+        if (roles.checkForConflicts(jDuild, chosenColor)) {
             // role already exists, let's not create a duplicate
-            guild.addRoleToMember(event.getMember(), guild.getRolesByName(chosenColor, true).get(0)).queue();
+            jDuild.addRoleToMember(body.getMember(), jDuild.getRolesByName(chosenColor, true).get(0)).queue();
 
             entry.setCustomColorRole(chosenColor)
                     .setLastSetColor(new Date());
@@ -92,9 +85,9 @@ public class SetColorCommand extends DiscordCommand {
             return;
         }
 
-        roles.createRole(guild, chosenColor).queue((role -> {
-            guild.modifyRolePositions().selectPosition(role).moveTo(separatorRole.getPosition() - 1).queue();
-            guild.addRoleToMember(event.getMember(), role).queue();
+        roles.createRole(jDuild, chosenColor).queue((role -> {
+            jDuild.modifyRolePositions().selectPosition(role).moveTo(separatorRole.getPosition() - 1).queue();
+            jDuild.addRoleToMember(body.getMember(), role).queue();
 
             entry.setCustomColorRole(chosenColor)
                     .setLastSetColor(new Date());

@@ -25,16 +25,7 @@
 
 package io.paradaux.friendlybot.managers;
 
-import com.jagrosh.jdautilities.command.CommandClient;
-import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import io.paradaux.friendlybot.bot.commands.image.*;
-import io.paradaux.friendlybot.bot.commands.joke.CharmanderCommand;
-import io.paradaux.friendlybot.bot.commands.joke.LmgtfyCommand;
-import io.paradaux.friendlybot.bot.commands.joke.MonkeCommand;
-import io.paradaux.friendlybot.bot.commands.joke.YodaifyCommand;
-import io.paradaux.friendlybot.bot.commands.privileged.*;
-import io.paradaux.friendlybot.bot.commands.util.*;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.exceptions.ManagerNotReadyException;
 import io.paradaux.friendlybot.discord.listeners.*;
@@ -49,7 +40,10 @@ import io.paradaux.friendlybot.discord.listeners.verification.VerificationCodeRe
 import io.paradaux.friendlybot.discord.listeners.verification.VerificationEmailReceivedListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.slf4j.Logger;

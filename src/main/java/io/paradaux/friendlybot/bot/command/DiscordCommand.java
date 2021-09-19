@@ -2,17 +2,22 @@ package io.paradaux.friendlybot.bot.command;
 
 import io.paradaux.friendlybot.FBApplication;
 import io.paradaux.friendlybot.core.data.config.FConfiguration;
-import io.paradaux.friendlybot.core.data.config.FConfigurationLoader;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
-import io.paradaux.friendlybot.core.utils.embeds.notices.SyntaxErrorEmbed;
 import io.paradaux.friendlybot.core.utils.models.enums.EmbedColour;
+import io.paradaux.friendlybot.core.utils.models.exceptions.NoSuchUserException;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Command(name = "undefined", description = "undefined", permission = "undefined")
 public abstract class DiscordCommand {
@@ -52,6 +57,64 @@ public abstract class DiscordCommand {
         message.getChannel().sendMessageEmbeds(builder.build()).queue();
     }
 
+    /**
+     * Used for commands which take a user as a parameter. Tries three ways of parsing the user. The first being by an @mention, the second
+     * by a tag (Username#Discriminator) then finally via their discord id. Returns the user object if found, otherwise null.
+     * */
+    @CheckReturnValue
+    @Nullable
+    public User parseTarget(Message message, String userInput) throws NoSuchUserException {
+        try {
+            if (message.getMentionedMembers().size() == 1) {
+                return message.getMentionedMembers().get(0).getUser();
+            }
+
+            User user;
+            try {
+                user = message.getGuild().getJDA().getUserByTag(userInput);
+            } catch (IllegalArgumentException ex) {
+                user = message.getJDA().retrieveUserById(userInput).submit().get();
+            }
+
+            return user;
+        } catch (InterruptedException | ExecutionException | NumberFormatException exception) {
+            throw new NoSuchUserException(exception.getMessage());
+        }
+    }
+
+    /**
+     * Gets a message by guild and user id.
+     * */
+    @CheckReturnValue
+    @Nullable
+    public Member retrieveMember(Guild guild, String userId) {
+        try {
+            return guild.retrieveMemberById(userId)
+                    .submit()
+                    .get();
+        } catch (InterruptedException | ExecutionException e) {
+            logger.error("Interrupted Exception", e);
+        }
+
+        return null;
+    }
+
+    /**
+     * Gets a message by guild and User.
+     * */
+    @CheckReturnValue
+    @Nullable
+    public Member retrieveMember(Guild guild, User user) {
+        try {
+            return guild.retrieveMember(user)
+                    .submit()
+                    .get();
+        } catch (InterruptedException | ExecutionException e) {
+            logger.error("Interrupted Exception", e);
+        }
+
+        return null;
+    }
 
     public FConfiguration getConfig() {
         return FBApplication.getConfig();

@@ -6,11 +6,8 @@ import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.RandomUtils;
-import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.slf4j.Logger;
 
 import java.util.concurrent.TimeUnit;
 

@@ -25,35 +25,25 @@
 
 package io.paradaux.friendlybot.bot.commands.util;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
 import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.TimeUtils;
-import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
 import io.paradaux.http.HttpApi;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Date;
 
-@Command(name = "", description = "", permission = "", aliases = {})
+@Command(name = "memeimages", description = "Shows every possible meme image", permission = "commands.memeimages", aliases = {})
 public class MemeImagesCommand extends DiscordCommand {
 
     private static final String GET_MEMES_API = "https://api.imgflip.com/get_memes";
-
-    public MemeImagesCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "memeimages";
-        this.help = "Shows every possible meme image";
-    }
 
     @Override
     public void execute(FGuild guild, CommandBody body) {
@@ -74,7 +64,7 @@ public class MemeImagesCommand extends DiscordCommand {
                         .setDescription("**ID:** " + meme.getString("id") + "\n**Line count:** " + meme.getInt("box_count"))
                         .setImage(meme.getString("url"));
 
-                event.getChannel().sendMessage(builder.build()).queue();
+                body.getChannel().sendMessage(builder.build()).queue();
             }
 
             EmbedBuilder builder = new EmbedBuilder()
@@ -87,7 +77,7 @@ public class MemeImagesCommand extends DiscordCommand {
                     .addField(";meme caption 222403160 Meme Documentation | For you to read the documentation", "Caption memes by specifying the ID, then each line separated by a pipe (|)", false)
                     .setFooter("Last updated: " + TimeUtils.formatTime(new Date()), "https://cdn.paradaux.io/img/fteuv.png");
 
-            event.getChannel().sendMessage(builder.build()).queue();
+            body.getChannel().sendMessage(builder.build()).queue();
         }).join();
     }
 }

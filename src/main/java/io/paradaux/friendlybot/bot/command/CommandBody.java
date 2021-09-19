@@ -41,6 +41,14 @@ public class CommandBody {
         this.user = member.getUser();
     }
 
+    public String getArgStr() {
+        return String.join(" ", getArgs());
+    }
+
+    public boolean isArgsEmpty() {
+        return getArgs().length == 0;
+    }
+
     public JDA getJda() {
         return jda;
     }

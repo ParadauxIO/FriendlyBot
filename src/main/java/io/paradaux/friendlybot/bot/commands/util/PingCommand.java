@@ -25,14 +25,11 @@
 
 package io.paradaux.friendlybot.bot.commands.util;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.FriendlyBot;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
 import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
-import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
-import org.slf4j.Logger;
 
 /**
  * Ping Command is used to gauge DiscordAPI Latency.
@@ -43,17 +40,11 @@ import org.slf4j.Logger;
  * @see FriendlyBot
  * */
 
-@Command(name = "", description = "", permission = "", aliases = {})
+@Command(name = "ping", description = "Test bot latency", permission = "commands.ping", aliases = {})
 public class PingCommand extends DiscordCommand {
-
-    public PingCommand(Logger logger) {
-        super(logger);
-        this.name = "ping";
-        this.help = "Latency Test Command.";
-    }
 
     @Override
     public void execute(FGuild guild, CommandBody body) {
-        event.getChannel().sendMessage("Pong!").queue();
+        body.getChannel().sendMessage("Pong!").queue();
     }
 }

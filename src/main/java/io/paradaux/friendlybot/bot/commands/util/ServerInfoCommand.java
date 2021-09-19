@@ -25,38 +25,26 @@
 
 package io.paradaux.friendlybot.bot.commands.util;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
 import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
-import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Emote;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.slf4j.Logger;
 
 import java.util.List;
 
-@Command(name = "", description = "", permission = "", aliases = {})
+@Command(name = "serverinfo", description = "Provides information about the server", permission = "commands.serverinfo", aliases = {"si", "srvinfo"})
 public class ServerInfoCommand extends DiscordCommand {
-
-    public ServerInfoCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "serverinfo";
-        this.help = "Provides information about the server.";
-        this.aliases = new String[]{"si, srvinfo"};
-    }
 
     @Override
     public void execute(FGuild guild, CommandBody body) {
-        Message message = event.getMessage();
-        Guild guild = event.getGuild();
+        Message message = body.getMessage();
 
-        List<Emote> emotes = guild.getEmotes();
+
+        List<Emote> emotes = guild.getGuild().getEmotes();
         StringBuilder builder = new StringBuilder();
 
         for (final var emote : emotes) {
@@ -64,14 +52,13 @@ public class ServerInfoCommand extends DiscordCommand {
         }
 
         MessageEmbed embed = new EmbedBuilder()
-                .setTitle(guild.getName() + " » Server Information")
+                .setTitle(guild.getGuild().getName() + " » Server Information")
                 .setColor(0x009999)
-                .setThumbnail(guild.getIconUrl())
-                .addField("Owner", retrieveMember(guild, guild.getOwnerId()).getUser().getAsTag(), true)
-                .addField("Member Count", String.valueOf(guild.getMemberCount()), true)
-//                .addField("Emojis", emotes.size() + ": " + builder.toString(), false)
+                .setThumbnail(guild.getGuild().getIconUrl())
+                .addField("Owner", retrieveMember(guild.getGuild(), guild.getGuild().getOwnerId()).getUser().getAsTag(), true)
+                .addField("Member Count", String.valueOf(guild.getGuild().getMemberCount()), true)
                 .build();
 
-        message.getChannel().sendMessage(embed).queue();
+        message.getChannel().sendMessageEmbeds(embed).queue();
     }
 }

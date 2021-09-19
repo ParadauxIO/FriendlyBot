@@ -25,17 +25,13 @@
 
 package io.paradaux.friendlybot.bot.commands.util;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
 import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.TimeUtils;
-import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -43,7 +39,7 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.stream.Collectors;
 
-@Command(name = "", description = "", permission = "", aliases = {})
+@Command(name = "commands", description = "Command Information Embed", permission = "command.commands", aliases = {})
 public class CommandsCommand extends DiscordCommand {
 
     private static final String THUMBNAIL_IMAGE = "https://cdn.paradaux.io/img/ybv70.png";
@@ -53,11 +49,7 @@ public class CommandsCommand extends DiscordCommand {
     private final String utilityCommandContent2;
 
 
-    public CommandsCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "commands";
-        this.help = "Command Information Embed";
-
+    public CommandsCommand() {
         InputStream inputStream = getClass().getResourceAsStream("/data/funcommands.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         this.funCommandContent = reader.lines().collect(Collectors.joining("\n"));
@@ -73,7 +65,7 @@ public class CommandsCommand extends DiscordCommand {
 
     @Override
     public void execute(FGuild guild, CommandBody body) {
-        event.getMessage().delete().queue();
+        body.getMessage().delete().queue();
 
         MessageEmbed funCommands = new EmbedBuilder()
                 .setTitle("FriendlyBot » Commands")
@@ -89,7 +81,7 @@ public class CommandsCommand extends DiscordCommand {
                 .setFooter("Last updated: " + TimeUtils.formatTime(new Date()), "https://cdn.paradaux.io/img/fteuv.png")
                 .build();
 
-        event.getChannel().sendMessage(funCommands).queue();
-        event.getChannel().sendMessage(utilityCommands).queue();
+        body.getChannel().sendMessageEmbeds(funCommands).queue();
+        body.getChannel().sendMessageEmbeds(utilityCommands).queue();
     }
 }

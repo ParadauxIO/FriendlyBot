@@ -16,7 +16,7 @@
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO body SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
@@ -25,46 +25,40 @@
 
 package io.paradaux.friendlybot.bot.commands.util;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
 import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
+import io.paradaux.friendlybot.core.utils.StringUtils;
 import io.paradaux.friendlybot.core.utils.TimeUtils;
-import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.database.TagEntry;
-import io.paradaux.friendlybot.core.utils.models.types.PrivilegedCommand;
 import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.TagManager;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.slf4j.Logger;
 
 import java.util.Date;
 import java.util.Locale;
 
-@Command(name = "", description = "", permission = "", aliases = {})
+@Command(name = "tag", description = "Manage tags", permission = "util.managetags", aliases = {"t"})
 public class TagCommand extends DiscordCommand {
 
     private final MongoManager mongo;
 
-    public TagCommand(ConfigurationEntry config, Logger logger, MongoManager mongo) {
-        super(config, logger);
+    public TagCommand(MongoManager mongo) {
         this.mongo = mongo;
-        this.name = "tag";
-        this.help = "Manage tags. privileged";
     }
 
     @Override
     public void execute(FGuild guild, CommandBody body) {
-        Message message = event.getMessage();
-        String[] args = getArgs(event.getArgs());
+        Message message = body.getMessage();
+        String[] args = body.getArgs();
 
         if (args.length == 0) {
-            respondSyntaxError(message, ";tag <create/delete/view/list> [id] [content]");
+            syntaxError(message);
             return;
         }
 
@@ -72,23 +66,23 @@ public class TagCommand extends DiscordCommand {
 
         switch (args[0]) {
             case "create": {
-                TagEntry entry = tags.getTagById(event.getGuild().getId(), args[1].toLowerCase(Locale.ROOT));
+                TagEntry entry = tags.getTagById(guild.getGuild().getId(), args[1].toLowerCase(Locale.ROOT));
 
                 if (entry != null) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(0xeb5132)
                             .setTitle("This tag already exists")
-                            .setDescription("This tag is owned by " + retrieveMember(event.getGuild(), entry.getDiscordId()))
+                            .setDescription("This tag is owned by " + retrieveMember(guild.getGuild(), entry.getDiscordId()))
                             .build();
-                    message.getChannel().sendMessage(embed).queue();
+                    message.getChannel().sendMessageEmbeds(embed).queue();
                 }
 
                 // Tag doesn't exist, make a new one.
                 entry = new TagEntry()
                         .setId(args[1].toLowerCase(Locale.ROOT))
-                        .setContent(parseSentance(2, args))
-                        .setDiscordId(event.getAuthor().getId())
-                        .setGuildId(event.getGuild().getId())
+                        .setContent(StringUtils.parseSentence(2, args))
+                        .setDiscordId(body.getUser().getId())
+                        .setGuildId(guild.getGuild().getId())
                         .setTimeCreated(new Date());
 
                 tags.addTag(entry);
@@ -98,29 +92,29 @@ public class TagCommand extends DiscordCommand {
                         .setColor(0x00cc99)
                         .build();
 
-                event.getChannel().sendMessage(embed).queue();
+                body.getChannel().sendMessageEmbeds(embed).queue();
                 break;
             }
 
             case "delete": {
-                TagEntry entry = tags.getTagById(event.getGuild().getId(), args[1]);
+                TagEntry entry = tags.getTagById(guild.getGuild().getId(), args[1]);
                 if (entry == null) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(0xeb5132)
                             .setTitle("This tag does not exist.")
                             .build();
-                    message.getChannel().sendMessage(embed).queue();
+                    message.getChannel().sendMessageEmbeds(embed).queue();
                     return;
                 }
 
-                if (!(entry.getDiscordId().equals(event.getAuthor().getId()) || isStaff(event.getGuild(), event.getAuthor().getId()))) {
+                if (!(entry.getDiscordId().equals(body.getUser().getId()) || isStaff(body.getGuild(), body.getAuthor().getId()))) {
                     // Not staff, not the owner.
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(0xeb5132)
                             .setTitle("You do not have permission to modify this tag.")
-                            .setDescription("This tag is owned by " + retrieveMember(event.getGuild(), entry.getDiscordId()))
+                            .setDescription("This tag is owned by " + retrieveMember(guild.getGuild(), entry.getDiscordId()))
                             .build();
-                    message.getChannel().sendMessage(embed).queue();
+                    message.getChannel().sendMessageEmbeds(embed).queue();
                     return;
                 }
 
@@ -131,23 +125,23 @@ public class TagCommand extends DiscordCommand {
                         .setColor(0x00cc99)
                         .build();
 
-                message.getChannel().sendMessage(embed).queue();
+                message.getChannel().sendMessageEmbeds(embed).queue();
                 break;
             }
 
             case "view": {
-                TagEntry entry = tags.getTagById(event.getGuild().getId(), args[1].toLowerCase(Locale.ROOT));
+                TagEntry entry = tags.getTagById(guild.getGuild().getId(), args[1].toLowerCase(Locale.ROOT));
 
                 if (entry == null) {
                     MessageEmbed embed = new EmbedBuilder()
                             .setColor(0xeb5132)
                             .setTitle("This tag does not exist.")
                             .build();
-                    message.getChannel().sendMessage(embed).queue();
+                    message.getChannel().sendMessageEmbeds(embed).queue();
                     return;
                 }
 
-                Member owner = retrieveMember(event.getGuild(), entry.getDiscordId());
+                Member owner = retrieveMember(guild.getGuild(), entry.getDiscordId());
                 String tag = owner != null ? owner.getUser().getAsTag() : "User no longer in guild.";
 
                 MessageEmbed embed = new EmbedBuilder()
@@ -157,12 +151,12 @@ public class TagCommand extends DiscordCommand {
                         .addField("Created", TimeUtils.formatTime(entry.getTimeCreated()), true)
                         .build();
 
-                message.getChannel().sendMessage(embed).queue();
+                message.getChannel().sendMessageEmbeds(embed).queue();
                 break;
             }
 
             default: {
-                respondSyntaxError(message, ";tag <create/delete/view/list> [id] [content]");
+                syntaxError(message);
             }
         }
     }

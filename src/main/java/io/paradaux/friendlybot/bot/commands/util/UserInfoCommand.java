@@ -25,7 +25,6 @@
 
 package io.paradaux.friendlybot.bot.commands.util;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
 import io.paradaux.friendlybot.bot.command.DiscordCommand;
@@ -33,24 +32,13 @@ import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.StringUtils;
 import io.paradaux.friendlybot.core.utils.TimeUtils;
 import io.paradaux.friendlybot.core.utils.embeds.command.UserInfoEmbed;
-import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.core.utils.models.types.PrivilegedCommand;
-import io.paradaux.friendlybot.managers.PermissionManager;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-import org.slf4j.Logger;
 
 import java.util.List;
 
-@Command(name = "", description = "", permission = "", aliases = {})
+@Command(name = "userinfo", description = "Shows information about yourself or the specified user.", permission = "commands.userinfo", aliases = {"info", "ui"})
 public class UserInfoCommand extends DiscordCommand {
-
-    public UserInfoCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
-        super(config, logger, permissionManager);
-        this.name = "userinfo";
-        this.aliases = new String[]{"info", "ui"};
-        this.help = "Shows information about yourself or the specified user.";
-    }
 
     @Override
     public void execute(FGuild guild, CommandBody body) {
@@ -61,11 +49,11 @@ public class UserInfoCommand extends DiscordCommand {
             member = retrieveMember(event.getGuild(), parseTarget(event.getMessage(), getArgs(argument)[0]));
 
             if (member == null) {
-                respondSyntaxError(event.getMessage(), ";userinfo <user>");
+                syntaxError(body.getMessage());
                 return;
             }
         } else {
-            member = event.getMember();
+            member = body.getMember();
         }
 
         String tag = member.getUser().getAsTag();
@@ -89,7 +77,7 @@ public class UserInfoCommand extends DiscordCommand {
         builder.append(roles.get(i).getName()).append(" ]");
 
         UserInfoEmbed embed = new UserInfoEmbed(tag, avatarUrl, status, accountCreated, joinedServer, builder.toString(), nickname);
-        embed.sendEmbed(event.getTextChannel());
+        embed.sendEmbed(guild.getGuild().getJDA().getTextChannelById(body.getMessage().getChannel().getId()));
 
     }
 }

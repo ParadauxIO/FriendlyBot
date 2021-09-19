@@ -28,6 +28,7 @@ package io.paradaux.friendlybot.core.utils;
 import javax.annotation.Nullable;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -155,5 +156,12 @@ public class StringUtils {
         }
 
         throw new IllegalArgumentException("Argument did not contain boolean value.");
+    }
+
+    /**
+     * Parses a sentence from the specified arguments, beginning at the specified array index.
+     * */
+    public static String parseSentence(int startElement, String[] args) {
+        return String.join(" ", Arrays.copyOfRange(args, startElement, args.length));
     }
 }

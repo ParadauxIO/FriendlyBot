@@ -25,16 +25,12 @@
 
 package io.paradaux.friendlybot.bot.commands.joke;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
 import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
-import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import org.slf4j.Logger;
 
 @Command(name = "lmgtfy", description = "Let me lmgtfy for you...", permission = "command.lmgtfy")
 public class LmgtfyCommand extends DiscordCommand {

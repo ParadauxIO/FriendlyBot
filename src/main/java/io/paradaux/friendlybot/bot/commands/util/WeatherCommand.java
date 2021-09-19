@@ -2,25 +2,21 @@ package io.paradaux.friendlybot.bot.commands.util;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
 import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
 import io.paradaux.friendlybot.core.utils.NumberUtils;
 import io.paradaux.friendlybot.core.utils.StringUtils;
-import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
 import io.paradaux.http.HttpApi;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import org.slf4j.Logger;
 
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-@Command(name = "", description = "", permission = "", aliases = {})
+@Command(name = "weather", description = "View weather information", permission = "commands.weather", aliases = {"w"})
 public class WeatherCommand extends DiscordCommand {
 
     private static final String WEATHER_API = "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s";
@@ -29,32 +25,26 @@ public class WeatherCommand extends DiscordCommand {
     private static final String TEMPERATURE_FORMAT = "%.2f°C (%.2f°F)";
     private static final String WIND_FORMAT = "%.1fm/s %.0f° (%s)";
 
-    public WeatherCommand(ConfigurationEntry config, Logger logger) {
-        super(config, logger);
-        this.name = "weather";
-        this.help = "View weather information";
-    }
-
     @Override
     public void execute(FGuild guild, CommandBody body) {
-        Message message = event.getMessage();
+        Message message = body.getMessage();
 
         HttpApi http = new HttpApi(getLogger());
 
-        if (event.getArgs().isEmpty()) {
-            respondSyntaxError(message, ";weather <Location>");
+        if (body.getArgs().length == 0) {
+            syntaxError(message);
             return;
         }
 
-        String place = StringUtils.toTitleCase(event.getArgs());
+        String place = StringUtils.toTitleCase(String.join(" ", body.getArgs()));
 
-        HttpRequest request = http.plainRequest(String.format(WEATHER_API, place.replace(" ", "%20"), getConfig().getWeatherApiKey()));
+        HttpRequest request = http.plainRequest(String.format(WEATHER_API, place.replace(" ", "%20"), getConfig().getOpenWeatherMapApiKey()));
         http.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenAccept((response) -> {
             JsonObject weatherData = JsonParser.parseString(response.body()).getAsJsonObject();
 
             if (!(weatherData.get("cod").getAsInt() == 200)) {
 
-                event.getChannel().sendMessage(new EmbedBuilder()
+                body.getChannel().sendMessage(new EmbedBuilder()
                         .setColor(0xeb5132)
                         .setTitle("Error: " + weatherData.get("cod").getAsInt())
                         .setDescription("**Message**: " + weatherData.get("message").getAsString())
@@ -94,7 +84,7 @@ public class WeatherCommand extends DiscordCommand {
                     .setFooter("Weather Information reflects the current weather conditions, this information is provided courtesy of OpenWeatherMap.org")
                     .build();
 
-            event.getChannel().sendMessage(embed).queue();
+            body.getChannel().sendMessageEmbeds(embed).queue();
         }).join();
     }
 }

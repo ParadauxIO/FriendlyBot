@@ -25,15 +25,11 @@
 
 package io.paradaux.friendlybot.bot.commands.util;
 
-import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.FriendlyBot;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.bot.command.CommandBody;
 import io.paradaux.friendlybot.bot.command.DiscordCommand;
 import io.paradaux.friendlybot.core.data.database.models.FGuild;
-import io.paradaux.friendlybot.core.utils.models.types.BaseCommand;
-import net.dv8tion.jda.api.entities.Message;
-import org.slf4j.Logger;
 
 /**
  * This is a command which provides the user with an invite link to the current discord server.
@@ -44,25 +40,14 @@ import org.slf4j.Logger;
  * @see FriendlyBot
  * */
 
-@Command(name = "", description = "", permission = "", aliases = {})
+@Command(name = "invite", description = "Provides the user with an invite link to invite the bot.", permission = "commands.invite", aliases = {})
 public class InviteCommand extends DiscordCommand {
-
-    public InviteCommand(Logger logger) {
-        super(logger);
-        this.name = "invite";
-        this.aliases = new String[]{"inv", "i"};
-        this.help = "Provides the user with an invite link to invite the bot.";
-    }
 
     @Override
     public void execute(FGuild guild, CommandBody body) {
-        Message message = event.getMessage();
-
-        String inviteInfo = "This is a utility discord bot for moderating discord servers pertaining to computer science, with a "
+        body.getMessage().getChannel().sendMessage("This is a utility discord bot for moderating discord servers pertaining to computer science, with a "
                 + "markov chain-backed artificial intelligence. This particular instance of the bot is hosted by Rían#6500.\n\n" + "There "
                 + "is nothing stopping anyone from starting their own instance, but you will require an SMTP Login to make use " + "of the"
-                + " email verification, and a mongodb database for everything else.";
-
-        message.getChannel().sendMessage(inviteInfo).queue();
+                + " email verification, and a mongodb database for everything else.").queue();
     }
 }
