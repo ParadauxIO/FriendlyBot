@@ -2,7 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2021 Rían Errity
- * io.paradaux.friendlybot.commands.staff.moderation.WarnCommand :  31/01/2021, 01:26
+ * io.paradaux.friendlybot.commands.staff.moderation.KickCommand :  31/01/2021, 01:26
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-package io.paradaux.friendlybot.bot.commands.privileged;
+package io.paradaux.friendlybot.bot.commands.staff.mod;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.FriendlyBot;
@@ -37,7 +37,7 @@ import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
 /**
- * This is a command which warns the specified user.
+ * This is a command which kicks the specified user.
  *
  * @author Rían Errity
  * @version Last modified for 0.1.0-SNAPSHOT
@@ -46,15 +46,14 @@ import org.slf4j.Logger;
  * */
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class WarnCommand extends PrivilegedCommand {
+public class KickCommand extends PrivilegedCommand {
 
     private final PunishmentManager punishments;
 
-    public WarnCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+    public KickCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
         super(config, logger, permissionManager);
-        this.name = "warn";
-        this.aliases = new String[]{"w"};
-        this.help = "Warns the specified user";
+        this.name = "kick";
+        this.help = "Kicks the specified user";
         this.punishments = PunishmentManager.getInstance();
     }
 
@@ -71,7 +70,7 @@ public class WarnCommand extends PrivilegedCommand {
         }
 
         if (args.length < 2) {
-            respondSyntaxError(message, ";warn <userid/@mention> <reason>");
+            respondSyntaxError(message, ";kick <userid/@mention> <reason>");
             return;
         }
 
@@ -82,6 +81,11 @@ public class WarnCommand extends PrivilegedCommand {
             return;
         }
 
-        punishments.warnUser(event.getGuild(), target, event.getMember(), event.getTextChannel(),  parseSentance(1, args));
+        if (isStaff(event.getGuild(), target.getId())) {
+            message.getChannel().sendMessage("You cannot ban a staff member.").queue();
+            return;
+        }
+
+        punishments.kickUser(event.getGuild(), target, event.getMember(), event.getTextChannel(),  parseSentance(1, args));
     }
 }

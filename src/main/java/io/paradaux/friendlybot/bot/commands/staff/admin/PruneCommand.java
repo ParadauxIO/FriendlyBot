@@ -2,7 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2021 Rían Errity
- * io.paradaux.friendlybot.commands.staff.technician.SayCommand :  31/01/2021, 01:26
+ * io.paradaux.friendlybot.commands.staff.moderation.PruneCommand :  31/01/2021, 01:26
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,54 @@
  * SOFTWARE.
  */
 
-package io.paradaux.friendlybot.bot.commands.privileged;
+package io.paradaux.friendlybot.bot.commands.staff.admin;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.PrivilegedCommand;
 import io.paradaux.friendlybot.managers.PermissionManager;
+import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class SayCommand extends PrivilegedCommand {
+public class PruneCommand extends PrivilegedCommand {
 
-    public SayCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+    public PruneCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
         super(config, logger, permissionManager);
-        this.name = "say";
-        this.help = "Says the specified message, in the specified channel as the bot.";
+        this.name = "prune";
+        this.aliases = new String[]{"clear"};
+        this.help = "Prunes the specified amount of messages in the current channel.";
     }
 
     @Override
     protected void execute(CommandEvent event) {
+        Message message = event.getMessage();
 
+        String[] args = getArgs(event.getArgs());
+        String authorID = event.getAuthor().getId();
+
+        if (!isStaff(event.getGuild(), authorID)) {
+            respondNoPermission(message, "[Moderator, Administrator]");
+            return;
+        }
+
+        if (args.length == 0) {
+            respondSyntaxError(message, ";prune <amount>");
+            return;
+        }
+
+        int amount;
+        try {
+            amount = Integer.parseInt(args[0]);
+        } catch (NumberFormatException ok) {
+            respondSyntaxError(message, ";prune <amount>");
+            return;
+        }
+
+        message.getChannel().getHistory().retrievePast(amount).queue((history) -> {
+            history.forEach((historicMessage -> historicMessage.delete().queue()));
+            message.getChannel().sendMessage("Pruned " + amount + " messages.").queue();
+        });
     }
 }

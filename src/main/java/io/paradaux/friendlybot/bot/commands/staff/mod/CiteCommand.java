@@ -2,7 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2021 Rían Errity
- * io.paradaux.friendlybot.commands.staff.moderation.PruneCommand :  31/01/2021, 01:26
+ * io.paradaux.friendlybot.commands.staff.moderation.CiteCommand :  31/01/2021, 01:26
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,24 +23,26 @@
  * SOFTWARE.
  */
 
-package io.paradaux.friendlybot.bot.commands.privileged;
+package io.paradaux.friendlybot.bot.commands.staff.mod;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
+import io.paradaux.friendlybot.core.utils.embeds.moderation.CiteRuleEmbed;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
+import io.paradaux.friendlybot.core.utils.models.interfaces.Embed;
 import io.paradaux.friendlybot.core.utils.models.types.PrivilegedCommand;
 import io.paradaux.friendlybot.managers.PermissionManager;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class PruneCommand extends PrivilegedCommand {
+public class CiteCommand extends PrivilegedCommand {
 
-    public PruneCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+    public CiteCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
         super(config, logger, permissionManager);
-        this.name = "prune";
-        this.aliases = new String[]{"clear"};
-        this.help = "Prunes the specified amount of messages in the current channel.";
+        this.name = "cite";
+        this.help = "Cites a certain rule to remind users of the rules which we have in place.";
     }
 
     @Override
@@ -55,22 +57,17 @@ public class PruneCommand extends PrivilegedCommand {
             return;
         }
 
-        if (args.length == 0) {
-            respondSyntaxError(message, ";prune <amount>");
+        if (args.length < 2 || message.getMentionedChannels().size() == 0) {
+            respondSyntaxError(message, ";cite <channel> <section>");
             return;
         }
 
-        int amount;
-        try {
-            amount = Integer.parseInt(args[0]);
-        } catch (NumberFormatException ok) {
-            respondSyntaxError(message, ";prune <amount>");
-            return;
-        }
+        TextChannel channel = message.getMentionedChannels().get(0);
 
-        message.getChannel().getHistory().retrievePast(amount).queue((history) -> {
-            history.forEach((historicMessage -> historicMessage.delete().queue()));
-            message.getChannel().sendMessage("Pruned " + amount + " messages.").queue();
-        });
+        Embed citeRuleEmbed = new CiteRuleEmbed(args[1]);
+
+        message.getChannel().sendMessage("Citation sent.").queue();
+
+        citeRuleEmbed.sendEmbed(channel);
     }
 }

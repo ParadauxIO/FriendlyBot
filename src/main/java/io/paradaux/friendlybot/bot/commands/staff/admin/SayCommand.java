@@ -2,7 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2021 Rían Errity
- * io.paradaux.friendlybot.commands.staff.moderation.TempBanCommand :  06/02/2021, 18:10
+ * io.paradaux.friendlybot.commands.staff.technician.SayCommand :  31/01/2021, 01:26
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,57 +23,26 @@
  * SOFTWARE.
  */
 
-package io.paradaux.friendlybot.bot.commands.privileged;
+package io.paradaux.friendlybot.bot.commands.staff.admin;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
 import io.paradaux.friendlybot.bot.command.Command;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
 import io.paradaux.friendlybot.core.utils.models.types.PrivilegedCommand;
-import io.paradaux.friendlybot.managers.MongoManager;
 import io.paradaux.friendlybot.managers.PermissionManager;
-import io.paradaux.friendlybot.managers.PunishmentManager;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
 import org.slf4j.Logger;
 
 @Command(name = "", description = "", permission = "", aliases = {})
-public class TempBanCommand extends PrivilegedCommand {
+public class SayCommand extends PrivilegedCommand {
 
-    private final MongoManager mongo;
-    private final PunishmentManager punishments;
-
-    public TempBanCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager, MongoManager mongo) {
+    public SayCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
         super(config, logger, permissionManager);
-        this.mongo = mongo;
-        this.name = "tempban";
-        this.help = "Temporarily bans a user.";
-        this.punishments = PunishmentManager.getInstance();
+        this.name = "say";
+        this.help = "Says the specified message, in the specified channel as the bot.";
     }
 
     @Override
     protected void execute(CommandEvent event) {
 
-        Member staff = event.getMember();
-        Message message = event.getMessage();
-        String[] args = getArgs(event.getArgs());
-
-        if (!isStaff(event.getGuild(), staff.getId())) {
-            respondNoPermission(message, "[Moderator, Administrator]");
-            return;
-        }
-
-        if (event.getArgs().isEmpty()) {
-            respondSyntaxError(message, ";tempban <user> <time> <reason>");
-            return;
-        }
-
-        Member target = retrieveMember(event.getGuild(), args[0]);
-
-        if (target == null) {
-            message.reply("User does not exist.").queue();
-            return;
-        }
-
-        punishments.tempBanUser(event.getGuild(), target, event.getMember(), event.getTextChannel(),  args[1], parseSentance(2, args));
     }
 }

@@ -2,7 +2,7 @@
  * MIT License
  *
  * Copyright (c) 2021 Rían Errity
- * io.paradaux.friendlybot.commands.staff.moderation.CiteCommand :  31/01/2021, 01:26
+ * io.paradaux.friendlybot.commands.staff.moderation.WarnCommand :  31/01/2021, 01:26
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,26 +23,39 @@
  * SOFTWARE.
  */
 
-package io.paradaux.friendlybot.bot.commands.privileged;
+package io.paradaux.friendlybot.bot.commands.staff.mod;
 
 import com.jagrosh.jdautilities.command.CommandEvent;
+import io.paradaux.friendlybot.FriendlyBot;
 import io.paradaux.friendlybot.bot.command.Command;
-import io.paradaux.friendlybot.core.utils.embeds.moderation.CiteRuleEmbed;
 import io.paradaux.friendlybot.core.utils.models.configuration.ConfigurationEntry;
-import io.paradaux.friendlybot.core.utils.models.interfaces.Embed;
 import io.paradaux.friendlybot.core.utils.models.types.PrivilegedCommand;
 import io.paradaux.friendlybot.managers.PermissionManager;
+import io.paradaux.friendlybot.managers.PunishmentManager;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
 import org.slf4j.Logger;
 
-@Command(name = "", description = "", permission = "", aliases = {})
-public class CiteCommand extends PrivilegedCommand {
+/**
+ * This is a command which warns the specified user.
+ *
+ * @author Rían Errity
+ * @version Last modified for 0.1.0-SNAPSHOT
+ * @since 4/11/2020 DD/MM/YY
+ * @see FriendlyBot
+ * */
 
-    public CiteCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
+@Command(name = "", description = "", permission = "", aliases = {})
+public class WarnCommand extends PrivilegedCommand {
+
+    private final PunishmentManager punishments;
+
+    public WarnCommand(ConfigurationEntry config, Logger logger, PermissionManager permissionManager) {
         super(config, logger, permissionManager);
-        this.name = "cite";
-        this.help = "Cites a certain rule to remind users of the rules which we have in place.";
+        this.name = "warn";
+        this.aliases = new String[]{"w"};
+        this.help = "Warns the specified user";
+        this.punishments = PunishmentManager.getInstance();
     }
 
     @Override
@@ -57,17 +70,18 @@ public class CiteCommand extends PrivilegedCommand {
             return;
         }
 
-        if (args.length < 2 || message.getMentionedChannels().size() == 0) {
-            respondSyntaxError(message, ";cite <channel> <section>");
+        if (args.length < 2) {
+            respondSyntaxError(message, ";warn <userid/@mention> <reason>");
             return;
         }
 
-        TextChannel channel = message.getMentionedChannels().get(0);
+        Member target = retrieveMember(event.getGuild(), args[0]);
 
-        Embed citeRuleEmbed = new CiteRuleEmbed(args[1]);
+        if (target == null) {
+            message.getChannel().sendMessage("You did not specify a (valid) target.").queue();
+            return;
+        }
 
-        message.getChannel().sendMessage("Citation sent.").queue();
-
-        citeRuleEmbed.sendEmbed(channel);
+        punishments.warnUser(event.getGuild(), target, event.getMember(), event.getTextChannel(),  parseSentance(1, args));
     }
 }
