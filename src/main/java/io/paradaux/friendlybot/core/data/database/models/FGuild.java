@@ -5,10 +5,7 @@ import io.ebean.annotation.DbJsonB;
 import net.dv8tion.jda.api.entities.Guild;
 
 import javax.annotation.Nullable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -41,6 +38,9 @@ public class FGuild extends Model {
 
     @DbJsonB
     private List<String> administrators;
+
+    @OneToMany(mappedBy="guild", cascade=CascadeType.ALL)
+    private List<FUser> users;
 
     private Integer lastIncidentId;
     private Integer lastTicketId;
@@ -159,6 +159,14 @@ public class FGuild extends Model {
 
     public void setAdministrators(List<String> administrators) {
         this.administrators = administrators;
+    }
+
+    public List<FUser> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<FUser> users) {
+        this.users = users;
     }
 
     public Integer getLastIncidentId() {
